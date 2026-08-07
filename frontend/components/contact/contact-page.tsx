@@ -1,6 +1,7 @@
 import { RouteClosingCta } from "@/components/editorial/route-closing-cta";
 import { RouteHero } from "@/components/editorial/route-hero";
 import { SitePageShell } from "@/components/site-page-shell";
+import { linkTargetProps } from "@/lib/link-props";
 import type { ContactPageContent } from "@/lib/types";
 
 type ContactPageProps = {
@@ -65,7 +66,11 @@ export function ContactPage({ content }: ContactPageProps) {
             </span>
             <h3>Send your requirement securely by email.</h3>
             <p>{content.enquiry.formNote}</p>
-            <a className="button button-light" href={content.enquiry.directCta.href}>
+            <a
+              className="button button-light"
+              href={content.enquiry.directCta.href}
+              {...linkTargetProps(content.enquiry.directCta)}
+            >
               {content.enquiry.directCta.label} <span aria-hidden="true">↗</span>
             </a>
           </aside>

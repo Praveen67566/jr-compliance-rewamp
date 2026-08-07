@@ -1,6 +1,7 @@
 import { RouteClosingCta } from "@/components/editorial/route-closing-cta";
 import { RouteHero } from "@/components/editorial/route-hero";
 import { SitePageShell } from "@/components/site-page-shell";
+import { linkTargetProps } from "@/lib/link-props";
 import type { CareersPageContent } from "@/lib/types";
 
 type CareersPageProps = {
@@ -42,11 +43,13 @@ export function CareersPage({ content }: CareersPageProps) {
               <span className="eyebrow eyebrow-light">{content.values.eyebrow}</span>
               <h2>{content.values.title}</h2>
             </div>
+            {content.values.description ? <p>{content.values.description}</p> : null}
           </div>
           <div className="careers-values-grid">
             {content.values.items.map((item, index) => (
               <article className="careers-value-card" key={item.title}>
                 <span>0{index + 1}</span>
+                {item.image ? <img className="careers-value-image" src={item.image} alt={item.imageAlt ?? ""} /> : null}
                 <h3>{item.title}</h3>
                 <p>{item.description}</p>
               </article>
@@ -64,10 +67,18 @@ export function CareersPage({ content }: CareersPageProps) {
             </div>
             {content.lifeAtJr.description ? <p>{content.lifeAtJr.description}</p> : null}
           </div>
+          {content.lifeAtJr.highlights.length ? (
+            <ul className="careers-life-highlights" aria-label="Life at JR Compliance highlights">
+              {content.lifeAtJr.highlights.map((highlight) => (
+                <li key={highlight}>{highlight}</li>
+              ))}
+            </ul>
+          ) : null}
           <div className="careers-gallery">
             {content.lifeAtJr.gallery.map((item, index) => (
               <figure className={`careers-gallery-item careers-gallery-item--${index + 1}`} key={item.src}>
                 <img src={item.src} alt={item.alt} />
+                {item.caption ? <figcaption>{item.caption}</figcaption> : null}
               </figure>
             ))}
           </div>
@@ -98,8 +109,8 @@ export function CareersPage({ content }: CareersPageProps) {
                   <h3>{role.title}</h3>
                   <p>{role.summary}</p>
                 </div>
-                <a className="career-role-link" href={role.href}>
-                  Express interest <span aria-hidden="true">↗</span>
+                <a className="career-role-link" href={role.href} {...linkTargetProps(role)}>
+                  {role.applyLabel} <span aria-hidden="true">↗</span>
                 </a>
               </article>
             ))}
@@ -114,11 +125,13 @@ export function CareersPage({ content }: CareersPageProps) {
               <span className="eyebrow">{content.benefits.eyebrow}</span>
               <h2>{content.benefits.title}</h2>
             </div>
+            {content.benefits.description ? <p>{content.benefits.description}</p> : null}
           </div>
           <div className="careers-benefits-grid">
             {content.benefits.items.map((item, index) => (
               <article className="careers-benefit-card" key={item.title}>
                 <span>0{index + 1}</span>
+                {item.image ? <img className="careers-benefit-image" src={item.image} alt={item.imageAlt ?? ""} /> : null}
                 <h3>{item.title}</h3>
                 <p>{item.description}</p>
               </article>
@@ -134,6 +147,7 @@ export function CareersPage({ content }: CareersPageProps) {
               <span className="eyebrow eyebrow-light">{content.testimonials.eyebrow}</span>
               <h2>{content.testimonials.title}</h2>
             </div>
+            {content.testimonials.description ? <p>{content.testimonials.description}</p> : null}
           </div>
           <div className="careers-testimonial-grid">
             {content.testimonials.items.map((testimonial) => (
@@ -158,6 +172,7 @@ export function CareersPage({ content }: CareersPageProps) {
           <div>
             <span className="eyebrow">{content.faqs.eyebrow}</span>
             <h2>{content.faqs.title}</h2>
+            {content.faqs.description ? <p>{content.faqs.description}</p> : null}
           </div>
           <div className="careers-faq-list">
             {content.faqs.items.map((faq, index) => (

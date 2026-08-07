@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { linkTargetProps } from "@/lib/link-props";
 import type { NavigationItem, SiteSettings } from "@/lib/types";
 
 type SiteHeaderProps = {
@@ -59,7 +60,12 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
                       </span>
                     </button>
                   ) : (
-                    <a className="nav-link" href={sharedHref(item.href)} onClick={closeAll}>
+                    <a
+                      className="nav-link"
+                      href={sharedHref(item.href)}
+                      {...linkTargetProps(item)}
+                      onClick={closeAll}
+                    >
                       {item.label}
                     </a>
                   )}
@@ -68,7 +74,12 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
                     <div className="nav-popover">
                       <span className="popover-kicker">{item.label}</span>
                       {item.children?.map((child) => (
-                        <a href={sharedHref(child.href)} key={child.label} onClick={closeAll}>
+                        <a
+                          href={sharedHref(child.href)}
+                          key={child.label}
+                          {...linkTargetProps(child)}
+                          onClick={closeAll}
+                        >
                           <span>{child.label}</span>
                           <span aria-hidden="true">↗</span>
                         </a>
@@ -82,7 +93,7 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
         </div>
 
         <div className="header-utility-area">
-          <a className="header-cta" href={site.headerCta.href}>
+          <a className="header-cta" href={sharedHref(site.headerCta.href)} {...linkTargetProps(site.headerCta)}>
             {site.headerCta.label} <span aria-hidden="true">↗</span>
           </a>
 
@@ -103,18 +114,29 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
         <nav className="mobile-navigation container" aria-label="Mobile navigation">
           {navigation.map((item) => (
             <div className="mobile-nav-group" key={item.label}>
-              <a href={sharedHref(item.href)} onClick={closeAll}>
+              <a href={sharedHref(item.href)} {...linkTargetProps(item)} onClick={closeAll}>
                 {item.label}
                 <span aria-hidden="true">↗</span>
               </a>
               {item.children?.map((child) => (
-                <a className="mobile-subnav-link" href={sharedHref(child.href)} key={child.label} onClick={closeAll}>
+                <a
+                  className="mobile-subnav-link"
+                  href={sharedHref(child.href)}
+                  key={child.label}
+                  {...linkTargetProps(child)}
+                  onClick={closeAll}
+                >
                   {child.label}
                 </a>
               ))}
             </div>
           ))}
-          <a className="mobile-contact-link" href={site.headerCta.href} onClick={closeAll}>
+          <a
+            className="mobile-contact-link"
+            href={sharedHref(site.headerCta.href)}
+            {...linkTargetProps(site.headerCta)}
+            onClick={closeAll}
+          >
             {site.headerCta.label}
           </a>
         </nav>

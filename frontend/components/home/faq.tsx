@@ -22,9 +22,9 @@ export function Faq({ faqs }: FaqProps) {
     <section className="faq-section section" id="faq">
       <div className="container faq-layout">
         <div className="faq-intro">
-          <span className="eyebrow">Need clarity?</span>
+          {faqs.eyebrow ? <span className="eyebrow">{faqs.eyebrow}</span> : null}
           <h2>{faqs.title}</h2>
-          <p>Find answers from the JR Compliance team.</p>
+          {faqs.description ? <p>{faqs.description}</p> : null}
           <div className="faq-category-list" role="tablist" aria-label="Frequently asked question categories">
             {faqs.categories.map((category) => (
               <button
@@ -38,6 +38,7 @@ export function Faq({ faqs }: FaqProps) {
                 aria-selected={activeCategory.id === category.id}
                 type="button"
               >
+                {category.icon ? <img src={category.icon} alt="" /> : null}
                 {category.title}
               </button>
             ))}

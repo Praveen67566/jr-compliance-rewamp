@@ -1,4 +1,5 @@
-import type { HomepageContent } from "@/lib/types";
+import { linkTargetProps } from "@/lib/link-props";
+import type { FooterLinkGroup, HomepageContent } from "@/lib/types";
 
 type SiteFooterProps = Pick<HomepageContent, "site" | "footer">;
 
@@ -7,6 +8,16 @@ function sharedHref(href: string) {
 }
 
 export function SiteFooter({ site, footer }: SiteFooterProps) {
+  const linkGroups: FooterLinkGroup[] = footer.linkGroups?.length
+    ? footer.linkGroups
+    : [
+        { title: "Featured services", links: footer.featuredLinks },
+        { title: "Popular Services", links: footer.popularServices },
+      ];
+  const legalNotices = footer.legalNotices?.length
+    ? footer.legalNotices
+    : [{ title: "Disclaimer", body: footer.disclaimer.join("\n\n") }];
+
   return (
     <footer className="site-footer" id="legal">
       <div className="footer-network-layer" aria-hidden="true">
@@ -32,7 +43,18 @@ export function SiteFooter({ site, footer }: SiteFooterProps) {
             <a className="footer-contact-email" href={`mailto:${site.email}`}>
               {site.email}
             </a>
+            {site.whatsAppHref ? (
+              <a className="footer-contact-whatsapp" href={site.whatsAppHref} target="_blank" rel="noreferrer">
+                WhatsApp
+              </a>
+            ) : null}
           </div>
+
+          {site.footerCta ? (
+            <a className="footer-cta" href={sharedHref(site.footerCta.href)} {...linkTargetProps(site.footerCta)}>
+              {site.footerCta.label} <span aria-hidden="true">↗</span>
+            </a>
+          ) : null}
 
           <div className="social-links" aria-label="Social media">
             {site.socialLinks.map((social) => (
@@ -50,44 +72,47 @@ export function SiteFooter({ site, footer }: SiteFooterProps) {
         </div>
 
         <div className="footer-link-columns">
-          <div className="footer-link-column">
-            <span className="footer-label">Featured services</span>
-            {footer.featuredLinks.map((link) => (
-              <a href={sharedHref(link.href)} key={link.label}>
+          {linkGroups.map((group, index) => {
+            const useCompactGrid = index === 1 || group.title.toLowerCase().includes("popular");
+            const links = group.links.map((link) => (
+              <a href={sharedHref(link.href)} key={link.label} {...linkTargetProps(link)}>
                 {link.label}
               </a>
-            ))}
-          </div>
+            ));
 
-          <div className="footer-link-column footer-popular-column">
-            <span className="footer-label">Popular Services</span>
-            <div className="footer-popular-links">
-              {footer.popularServices.map((link) => (
-                <a href={sharedHref(link.href)} key={link.label}>
-                  {link.label}
-                </a>
-              ))}
-            </div>
-          </div>
+            return (
+              <div
+                className={`footer-link-column${useCompactGrid ? " footer-popular-column" : ""}`}
+                key={`${group.title}-${index}`}
+              >
+                <span className="footer-label">{group.title}</span>
+                {useCompactGrid ? <div className="footer-popular-links">{links}</div> : links}
+              </div>
+            );
+          })}
         </div>
       </div>
 
       <div className="container footer-disclaimer">
-        <span className="footer-label">Disclaimer</span>
-        <div>
-          {footer.disclaimer.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
-          ))}
-        </div>
+        {legalNotices.map((notice, index) => (
+          <div className="footer-notice" key={`${notice.title}-${index}`}>
+            <span className="footer-label">{notice.title}</span>
+            <div>
+              {notice.body.split("\n\n").map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
 
       <div className="container footer-bottom">
         <div className="footer-bottom-identity">
-          <span>Copyright © JR Compliance</span>
+          <span>{site.copyrightText}</span>
         </div>
         <div className="footer-bottom-legal">
           {site.legalLinks.map((link) => (
-            <a href={sharedHref(link.href)} key={link.label}>
+            <a href={sharedHref(link.href)} key={link.label} {...linkTargetProps(link)}>
               {link.label}
             </a>
           ))}

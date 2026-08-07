@@ -1,6 +1,10 @@
+/** Browser target after converting Strapi's same_tab/new_tab enum. */
+export type LinkTarget = "_self" | "_blank";
+
 export type Link = {
   label: string;
   href: string;
+  target?: LinkTarget;
 };
 
 export type NavigationItem = Link & {
@@ -10,10 +14,13 @@ export type NavigationItem = Link & {
 export type Logo = {
   name: string;
   src: string;
+  /** Optional public website associated with a CMS-managed brand mark. */
+  href?: string;
 };
 
 export type Service = Link & {
   shortLabel: string;
+  summary?: string;
   /** Optional approved CMS/legacy icon shown as decorative artwork. */
   icon?: string;
 };
@@ -27,6 +34,7 @@ export type ServiceCategory = {
 export type Metric = {
   value: string;
   label: string;
+  icon?: string;
 };
 
 export type Testimonial = {
@@ -34,12 +42,21 @@ export type Testimonial = {
   name: string;
   company: string;
   publishedOn: string;
+  role?: string;
+  image?: string;
+  companyLogo?: string;
 };
 
 export type Recognition = {
   title: string;
   summary: string;
   href: string;
+  target?: LinkTarget;
+  linkLabel: string;
+  category?: string;
+  sourceName?: string;
+  sourceLogo?: string;
+  coverImage?: string;
 };
 
 export type Faq = {
@@ -51,10 +68,58 @@ export type FaqCategory = {
   id: string;
   title: string;
   items: Faq[];
+  icon?: string;
+};
+
+export type SectionHeading = {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  alignment?: "left" | "center";
+};
+
+export type HomeCard = {
+  title: string;
+  description?: string;
+  image?: string;
+  imageAlt?: string;
+  icon?: string;
+  iconAlt?: string;
+  cta?: Link;
+};
+
+export type Insight = {
+  title: string;
+  summary: string;
+  kind: "article" | "video";
+  image: string;
+  imageAlt: string;
+  href: string;
+  target?: LinkTarget;
+  linkLabel: string;
+  publishedOn?: string;
 };
 
 export type SocialLink = Link & {
   abbreviation: string;
+};
+
+export type FooterLinkGroup = {
+  title: string;
+  links: Link[];
+};
+
+export type LegalNotice = {
+  title: string;
+  body: string;
+};
+
+export type Seo = {
+  title: string;
+  description: string;
+  canonicalUrl?: string;
+  noIndex?: boolean;
+  shareImage?: string;
 };
 
 export type SiteSettings = {
@@ -62,18 +127,24 @@ export type SiteSettings = {
   logo: string;
   footerLogo: string;
   headerCta: Link;
+  footerCta?: Link;
   phone: string;
   phoneHref: string;
   email: string;
+  whatsAppHref?: string;
   socialLinks: SocialLink[];
   footerTagline: string;
   legalLinks: Link[];
+  copyrightText: string;
 };
 
 export type FooterContent = {
   featuredLinks: Link[];
   popularServices: Link[];
+  /** CMS link groups preserve editor-provided titles and group ordering. */
+  linkGroups?: FooterLinkGroup[];
   disclaimer: string[];
+  legalNotices?: LegalNotice[];
 };
 
 export type PageChromeContent = {
@@ -83,6 +154,7 @@ export type PageChromeContent = {
 };
 
 export type HomepageContent = PageChromeContent & {
+  seo: Seo;
   hero: {
     prefix: string;
     rotatingWords: string[];
@@ -91,37 +163,46 @@ export type HomepageContent = PageChromeContent & {
     primaryCta: Link;
     image: string;
     imageAlt: string;
-    supportingCards: { title: string; description?: string }[];
+    supportingCards: HomeCard[];
   };
   trustedLogos: Logo[];
-  services: {
+  services: SectionHeading & {
     eyebrow: string;
-    title: string;
     categories: ServiceCategory[];
   };
-  whyUs: {
-    title: string;
+  whyUs: SectionHeading & {
     description: string;
-    highlights: string[];
+    cards: HomeCard[];
   };
-  metrics: {
+  regulators: SectionHeading & {
     eyebrow: string;
-    title: string;
+    logos: Logo[];
+  };
+  metrics: SectionHeading & {
+    eyebrow: string;
     items: Metric[];
     cta: Link;
+    featureImage?: string;
+    featureImageAlt?: string;
+    featureTitle?: string;
   };
-  testimonials: {
+  tickerCta?: {
     title: string;
+    description?: string;
+    cta: Link;
+  };
+  testimonials: SectionHeading & {
     items: Testimonial[];
   };
-  recognitions: {
-    title: string;
+  recognitions: SectionHeading & {
     description: string;
     items: Recognition[];
   };
-  faqs: {
-    title: string;
+  faqs: SectionHeading & {
     categories: FaqCategory[];
+  };
+  insights?: SectionHeading & {
+    items: Insight[];
   };
   closingCta: {
     title: string;
@@ -134,6 +215,7 @@ export type AboutValue = {
   title: string;
   description: string;
   image?: string;
+  imageAlt?: string;
 };
 
 export type TimelineEvent = {
@@ -147,6 +229,8 @@ export type TeamMember = {
   role: string;
   image?: string;
   profileHref?: string;
+  profileTarget?: LinkTarget;
+  profileLabel?: string;
 };
 
 export type Achievement = {
@@ -156,10 +240,7 @@ export type Achievement = {
 };
 
 export type AboutPageContent = PageChromeContent & {
-  seo: {
-    title: string;
-    description: string;
-  };
+  seo: Seo;
   hero: {
     eyebrow: string;
     title: string;
@@ -188,6 +269,7 @@ export type AboutPageContent = PageChromeContent & {
   reasons: {
     eyebrow: string;
     title: string;
+    description?: string;
     items: AboutValue[];
   };
   pioneers: {
@@ -208,6 +290,7 @@ export type AboutPageContent = PageChromeContent & {
   achievements: {
     eyebrow: string;
     title: string;
+    description?: string;
     items: Achievement[];
   };
   closingCta: {
@@ -223,12 +306,15 @@ export type CareerRole = {
   location: string;
   employmentType: string;
   summary: string;
+  applyLabel: string;
   href: string;
+  target?: LinkTarget;
 };
 
 export type CareerGalleryItem = {
   src: string;
   alt: string;
+  caption?: string;
 };
 
 export type CareerTestimonial = {
@@ -239,10 +325,7 @@ export type CareerTestimonial = {
 };
 
 export type CareersPageContent = PageChromeContent & {
-  seo: {
-    title: string;
-    description: string;
-  };
+  seo: Seo;
   hero: {
     eyebrow: string;
     title: string;
@@ -258,6 +341,7 @@ export type CareersPageContent = PageChromeContent & {
   values: {
     eyebrow: string;
     title: string;
+    description?: string;
     items: AboutValue[];
   };
   lifeAtJr: {
@@ -276,16 +360,19 @@ export type CareersPageContent = PageChromeContent & {
   benefits: {
     eyebrow: string;
     title: string;
+    description?: string;
     items: AboutValue[];
   };
   testimonials: {
     eyebrow: string;
     title: string;
+    description?: string;
     items: CareerTestimonial[];
   };
   faqs: {
     eyebrow: string;
     title: string;
+    description?: string;
     items: Faq[];
   };
   closingCta: {
@@ -304,10 +391,7 @@ export type ContactPoint = {
 };
 
 export type ContactPageContent = PageChromeContent & {
-  seo: {
-    title: string;
-    description: string;
-  };
+  seo: Seo;
   hero: {
     eyebrow: string;
     title: string;

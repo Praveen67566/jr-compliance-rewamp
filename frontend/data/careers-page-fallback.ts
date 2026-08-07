@@ -80,6 +80,7 @@ export const fallbackCareersPage: CareersPageContent = {
         employmentType: "On-site",
         summary:
           "Work on regulatory alignment, internal processes, and compliance operations. Be part of a team dedicated to maintaining integrity, precision, and structured corporate systems.",
+        applyLabel: "Express interest",
         href: "/contact-us",
       },
       {
@@ -89,6 +90,7 @@ export const fallbackCareersPage: CareersPageContent = {
         employmentType: "On-site",
         summary:
           "Support seamless integration, automation, and system reliability in a collaborative tech-driven workspace. Join a team focused on innovation, efficiency, and operational excellence.",
+        applyLabel: "Express interest",
         href: "/contact-us",
       },
       {
@@ -98,6 +100,7 @@ export const fallbackCareersPage: CareersPageContent = {
         employmentType: "On-site",
         summary:
           "Manage financial records, assist in budgeting, and support strategic planning in a compliance-focused organization offering a collaborative, growth-oriented environment.",
+        applyLabel: "Express interest",
         href: "/contact-us",
       },
       {
@@ -107,6 +110,7 @@ export const fallbackCareersPage: CareersPageContent = {
         employmentType: "On-site",
         summary:
           "Drive growth and partnerships in a fast-paced environment. Be part of strategic initiatives, client acquisition, and business expansion with a team that values innovation.",
+        applyLabel: "Express interest",
         href: "/contact-us",
       },
       {
@@ -116,6 +120,7 @@ export const fallbackCareersPage: CareersPageContent = {
         employmentType: "On-site",
         summary:
           "Join our expert finance team to oversee audits, compliance, and reporting. Contribute to critical financial decisions in a structured yet progressive corporate setup.",
+        applyLabel: "Express interest",
         href: "/contact-us",
       },
     ],

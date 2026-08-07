@@ -1,3 +1,5 @@
+import "server-only";
+
 import type {
   AboutPageContent,
   AboutValue,
@@ -11,7 +13,10 @@ import type {
   Faq,
   FaqCategory,
   FooterContent,
+  FooterLinkGroup,
   HomepageContent,
+  Insight,
+  LegalNotice,
   Link,
   Logo,
   Metric,
@@ -20,6 +25,7 @@ import type {
   Recognition,
   Service,
   ServiceCategory,
+  Seo,
   SocialLink,
   TeamMember,
   Testimonial,
@@ -27,7 +33,12 @@ import type {
 } from "@/lib/types";
 
 type UnknownRecord = Record<string, unknown>;
-type SingleTypeSlug = "home-page" | "site-setting" | "about-page" | "careers-page" | "contact-page";
+export type SingleTypeSlug =
+  | "home-page"
+  | "site-setting"
+  | "about-page"
+  | "careers-page"
+  | "contact-page";
 type PopulateValue = true | PopulateTree;
 
 interface PopulateTree {
@@ -36,6 +47,15 @@ interface PopulateTree {
 
 const strapiUrl = process.env.STRAPI_URL?.replace(/\/$/, "");
 const strapiApiToken = process.env.STRAPI_API_TOKEN;
+
+/** Shared by the Strapi adapter and the signed publish-webhook receiver. */
+export const strapiCacheTagBySlug: Record<SingleTypeSlug, string> = {
+  "site-setting": "jr-site-settings",
+  "home-page": "jr-homepage",
+  "about-page": "jr-about-page",
+  "careers-page": "jr-careers-page",
+  "contact-page": "jr-contact-page",
+};
 
 /**
  * Strapi v5 does not populate relations, media, or components by default.
@@ -67,22 +87,27 @@ const populateTrees: Record<SingleTypeSlug, PopulateTree> = {
     servicesHeading: true,
     serviceCategories: { services: { icon: true, link: true } },
     whyUs: { heading: true, cards: { image: true } },
+    regulatorsHeading: true,
+    regulatorLogos: { logo: true },
     story: { heading: true, stats: { icon: true }, featureImage: true, cta: true },
+    tickerCta: { cta: true },
     testimonialsHeading: true,
     testimonials: { personPhoto: true, companyLogo: true },
     recognitionHeading: true,
     recognitions: { sourceLogo: true, coverImage: true, link: true },
     faqHeading: true,
     faqCategories: { faqs: true },
+    insightsHeading: true,
+    insights: { image: true, link: true },
     finalCta: { cta: true },
     seo: { shareImage: true },
   },
   "about-page": {
     hero: { cta: true, image: true },
     overview: { stats: true },
-    mantra: { heading: true, items: { image: true } },
-    whyPartner: { heading: true, items: { image: true } },
-    pioneers: { heading: true, stats: true },
+    mantra: { items: { image: true } },
+    whyPartner: { items: { image: true } },
+    pioneers: { stats: true },
     storyHeading: true,
     timelineEvents: true,
     teamHeading: true,
@@ -128,12 +153,54 @@ function asArray(value: unknown): unknown[] {
   return Array.isArray(value) ? value : [];
 }
 
+/**
+ * Relations are editor-orderable in Strapi, but every collection also has a
+ * required sortOrder. Keep the API response stable when relation ordering is
+ * unavailable (for example after an export/import).
+ */
+function orderedEntries(value: unknown): unknown[] {
+  return asArray(value)
+    .map((entry, index) => {
+      const sortOrder = record(entry).sortOrder;
+      return {
+        entry,
+        index,
+        sortOrder:
+          typeof sortOrder === "number" && Number.isFinite(sortOrder)
+            ? sortOrder
+            : typeof sortOrder === "string" && /^\d+$/.test(sortOrder)
+              ? Number(sortOrder)
+              : undefined,
+      };
+    })
+    .sort((left, right) => {
+      if (left.sortOrder === undefined && right.sortOrder === undefined) {
+        return left.index - right.index;
+      }
+
+      if (left.sortOrder === undefined) {
+        return 1;
+      }
+
+      if (right.sortOrder === undefined) {
+        return -1;
+      }
+
+      return left.sortOrder - right.sortOrder || left.index - right.index;
+    })
+    .map(({ entry }) => entry);
+}
+
 function text(value: unknown): string | undefined {
   return typeof value === "string" && value.trim() ? value.trim() : undefined;
 }
 
 function record(value: unknown): UnknownRecord {
   return isRecord(value) ? value : {};
+}
+
+function boolean(value: unknown): boolean | undefined {
+  return typeof value === "boolean" ? value : undefined;
 }
 
 function titleFromHeading(value: unknown, fallback: string): string {
@@ -181,11 +248,48 @@ function mediaUrl(value: unknown): string | undefined {
   return strapiUrl ? new URL(url, strapiUrl).toString() : url;
 }
 
+function targetFromStrapi(value: unknown): Link["target"] | undefined {
+  const target = text(record(value).target);
+  if (target === "new_tab" || target === "_blank") {
+    return "_blank";
+  }
+
+  if (target === "same_tab" || target === "_self") {
+    return "_self";
+  }
+
+  return undefined;
+}
+
 function link(value: unknown, fallback: Link): Link {
   const source = record(value);
+  const target = targetFromStrapi(value) ?? fallback.target;
+
   return {
     label: text(source.label) ?? fallback.label,
     href: text(source.href) ?? fallback.href,
+    ...(target ? { target } : {}),
+  };
+}
+
+function hasLink(value: unknown): boolean {
+  const source = record(value);
+  return Boolean(text(source.label) && text(source.href));
+}
+
+function mapSeo(value: unknown, fallback: Seo, rawDefaultSeo?: unknown): Seo {
+  const seo = record(value);
+  const defaultSeo = record(rawDefaultSeo);
+  const noIndex = boolean(seo.noIndex) ?? boolean(defaultSeo.noIndex) ?? fallback.noIndex;
+  const canonicalUrl = text(seo.canonicalUrl) ?? text(defaultSeo.canonicalUrl) ?? fallback.canonicalUrl;
+  const shareImage = mediaUrl(seo.shareImage) ?? mediaUrl(defaultSeo.shareImage) ?? fallback.shareImage;
+
+  return {
+    title: text(seo.metaTitle) ?? text(defaultSeo.metaTitle) ?? fallback.title,
+    description: text(seo.metaDescription) ?? text(defaultSeo.metaDescription) ?? fallback.description,
+    ...(canonicalUrl ? { canonicalUrl } : {}),
+    ...(noIndex !== undefined ? { noIndex } : {}),
+    ...(shareImage ? { shareImage } : {}),
   };
 }
 
@@ -216,7 +320,7 @@ function mapNavigation(value: unknown, fallback: NavigationItem[]): NavigationIt
           const childRecord = record(child);
           const childLabel = text(childRecord.label);
           const href = text(childRecord.href);
-          return childLabel && href ? { label: childLabel, href } : null;
+          return childLabel && href ? link(child, { label: childLabel, href }) : null;
         })
         .filter((child): child is Link => Boolean(child));
 
@@ -232,12 +336,13 @@ function mapNavigation(value: unknown, fallback: NavigationItem[]): NavigationIt
 }
 
 function mapLogos(value: unknown, fallback: Logo[]): Logo[] {
-  const logos = asArray(value)
+  const logos = orderedEntries(value)
     .map((entry) => {
       const item = record(entry);
       const name = text(item.name);
       const src = mediaUrl(item.logo);
-      return name && src ? { name, src } : null;
+      const href = text(item.websiteUrl);
+      return name && src ? { name, src, ...(href ? { href } : {}) } : null;
     })
     .filter((logo): logo is Logo => Boolean(logo));
 
@@ -248,7 +353,7 @@ function mapServiceCategories(
   value: unknown,
   fallback: ServiceCategory[],
 ): ServiceCategory[] {
-  const categories = asArray(value)
+  const categories = orderedEntries(value)
     .map((entry) => {
       const category = record(entry);
       const title = text(category.name);
@@ -260,7 +365,7 @@ function mapServiceCategories(
       const fallbackCategory = fallback.find(
         (candidate) => candidate.id === id || candidate.title.toLowerCase() === title.toLowerCase(),
       );
-      const services = asArray(category.services)
+      const services = orderedEntries(category.services)
         .map((serviceEntry) => {
           const service = record(serviceEntry);
           const label = text(service.title);
@@ -273,10 +378,13 @@ function mapServiceCategories(
           );
           const serviceLink = link(service.link, fallbackService ?? { label, href: "#contact" });
           const icon = mediaUrl(service.icon) ?? fallbackService?.icon;
+          const summary = text(service.summary) ?? fallbackService?.summary;
           const mapped: Service = {
             label,
             href: serviceLink.href,
             shortLabel: fallbackService?.shortLabel ?? shortLabel(label),
+            ...(serviceLink.target ? { target: serviceLink.target } : {}),
+            ...(summary ? { summary } : {}),
             ...(icon ? { icon } : {}),
           };
           return mapped;
@@ -297,14 +405,15 @@ function mapServiceCategories(
 }
 
 function mapMetrics(value: unknown, fallback: Metric[]): Metric[] {
-  const metrics = asArray(value)
+  const metrics = orderedEntries(value)
     .map((entry) => {
       const stat = record(entry);
       const number = stat.value;
       const label = text(stat.label);
       const suffix = text(stat.suffix) ?? "";
       const value = typeof number === "number" || typeof number === "string" ? `${number}${suffix}` : undefined;
-      return label && value ? { label, value } : null;
+      const icon = mediaUrl(stat.icon);
+      return label && value ? { label, value, ...(icon ? { icon } : {}) } : null;
     })
     .filter((metric): metric is Metric => Boolean(metric));
 
@@ -312,7 +421,7 @@ function mapMetrics(value: unknown, fallback: Metric[]): Metric[] {
 }
 
 function mapTestimonials(value: unknown, fallback: Testimonial[]): Testimonial[] {
-  const testimonials = asArray(value)
+  const testimonials = orderedEntries(value)
     .map((entry) => {
       const item = record(entry);
       const quote = text(item.quote);
@@ -322,11 +431,16 @@ function mapTestimonials(value: unknown, fallback: Testimonial[]): Testimonial[]
       }
 
       const publishedOn = text(item.publishedOn);
+      const image = mediaUrl(item.personPhoto);
+      const companyLogo = mediaUrl(item.companyLogo);
       return {
         quote,
         name,
         company: text(item.companyName) ?? "JR Compliance client",
         publishedOn: publishedOn ? `Published on ${publishedOn}` : "",
+        ...(text(item.personRole) ? { role: text(item.personRole) } : {}),
+        ...(image ? { image } : {}),
+        ...(companyLogo ? { companyLogo } : {}),
       };
     })
     .filter((testimonial): testimonial is Testimonial => Boolean(testimonial));
@@ -335,7 +449,7 @@ function mapTestimonials(value: unknown, fallback: Testimonial[]): Testimonial[]
 }
 
 function mapRecognitions(value: unknown, fallback: Recognition[]): Recognition[] {
-  const recognitions = asArray(value)
+  const recognitions = orderedEntries(value)
     .map((entry) => {
       const item = record(entry);
       const title = text(item.title);
@@ -344,7 +458,20 @@ function mapRecognitions(value: unknown, fallback: Recognition[]): Recognition[]
         return null;
       }
 
-      return { title, summary, href: link(item.link, { label: "Read more", href: "#contact" }).href };
+      const recognitionLink = link(item.link, { label: "Read more", href: "#contact" });
+      const sourceLogo = mediaUrl(item.sourceLogo);
+      const coverImage = mediaUrl(item.coverImage);
+      return {
+        title,
+        summary,
+        href: recognitionLink.href,
+        ...(recognitionLink.target ? { target: recognitionLink.target } : {}),
+        linkLabel: recognitionLink.label,
+        ...(text(item.category) ? { category: text(item.category) } : {}),
+        ...(text(item.sourceName) ? { sourceName: text(item.sourceName) } : {}),
+        ...(sourceLogo ? { sourceLogo } : {}),
+        ...(coverImage ? { coverImage } : {}),
+      };
     })
     .filter((recognition): recognition is Recognition => Boolean(recognition));
 
@@ -352,7 +479,7 @@ function mapRecognitions(value: unknown, fallback: Recognition[]): Recognition[]
 }
 
 function mapFaqs(value: unknown, fallback: FaqCategory[]): FaqCategory[] {
-  const categories = asArray(value)
+  const categories = orderedEntries(value)
     .map((entry) => {
       const category = record(entry);
       const title = text(category.name);
@@ -360,7 +487,7 @@ function mapFaqs(value: unknown, fallback: FaqCategory[]): FaqCategory[] {
         return null;
       }
 
-      const items = asArray(category.faqs)
+      const items = orderedEntries(category.faqs)
         .map((faqEntry) => {
           const faq = record(faqEntry);
           const question = text(faq.question);
@@ -368,18 +495,49 @@ function mapFaqs(value: unknown, fallback: FaqCategory[]): FaqCategory[] {
           return question && answer ? { question, answer } : null;
         })
         .filter((faq): faq is Faq => Boolean(faq));
+      const icon = mediaUrl(category.icon);
 
       return items.length
         ? {
             id: text(category.slug) ?? title.toLowerCase().replace(/\s+/g, "-"),
             title,
             items,
+            ...(icon ? { icon } : {}),
           }
         : null;
     })
     .filter((category): category is FaqCategory => Boolean(category));
 
   return categories.length ? categories : fallback;
+}
+
+function mapInsights(value: unknown): Insight[] {
+  return orderedEntries(value)
+    .map((entry) => {
+      const item = record(entry);
+      const title = text(item.title);
+      const summary = text(item.summary);
+      const kind = text(item.kind);
+      const image = mediaUrl(item.image);
+      if (!title || !summary || (kind !== "article" && kind !== "video") || !image) {
+        return null;
+      }
+
+      const insightLink = link(item.link, { label: "Read insight", href: "#contact" });
+      const publishedOn = text(item.publishedOn);
+      return {
+        title,
+        summary,
+        kind,
+        image,
+        imageAlt: text(record(item.image).alternativeText) ?? title,
+        href: insightLink.href,
+        ...(insightLink.target ? { target: insightLink.target } : {}),
+        linkLabel: insightLink.label,
+        ...(publishedOn ? { publishedOn } : {}),
+      };
+    })
+    .filter((item): item is Insight => Boolean(item));
 }
 
 function mapSocialLinks(value: unknown, fallback: SocialLink[]): SocialLink[] {
@@ -408,41 +566,42 @@ function mapLinkGroups(value: unknown, fallback: FooterContent): FooterContent {
   const groups = asArray(value)
     .map((entry) => {
       const group = record(entry);
-      const title = text(group.title)?.toLowerCase() ?? "";
+      const title = text(group.title);
       const links = asArray(group.links)
         .map((entryLink) => {
           const item = record(entryLink);
           const label = text(item.label);
           const href = text(item.href);
-          return label && href ? { label, href } : null;
+          return label && href ? link(entryLink, { label, href }) : null;
         })
         .filter((item): item is Link => Boolean(item));
 
-      return { title, links };
+      return title && links.length ? { title, links } : null;
     })
-    .filter((group) => group.links.length);
+    .filter((group): group is FooterLinkGroup => Boolean(group));
 
-  const featured = groups.find((group) => group.title.includes("featured"))?.links;
-  const popular = groups.find((group) => group.title.includes("popular"))?.links;
+  const featured = groups.find((group) => group.title.toLowerCase().includes("featured"))?.links;
+  const popular = groups.find((group) => group.title.toLowerCase().includes("popular"))?.links;
 
   return {
     ...fallback,
+    ...(groups.length ? { linkGroups: groups } : {}),
     ...(featured ? { featuredLinks: featured } : {}),
     ...(popular ? { popularServices: popular } : {}),
   };
 }
 
-function mapLegalNotices(value: unknown, fallback: string[]): string[] {
+function mapLegalNotices(value: unknown): LegalNotice[] {
   const notices = asArray(value)
     .map((entry) => {
       const notice = record(entry);
-      const heading = text(notice.title);
+      const heading = text(notice.title) ?? "Legal notice";
       const body = richTextToPlainText(notice.body);
-      return body ? (heading ? `${heading}: ${body}` : body) : null;
+      return body ? { title: heading, body } : null;
     })
-    .filter((notice): notice is string => Boolean(notice));
+    .filter((notice): notice is LegalNotice => Boolean(notice));
 
-  return notices.length ? notices : fallback;
+  return notices;
 }
 
 /** Maps the shared site-setting record once so every route has identical chrome. */
@@ -451,6 +610,8 @@ function mapPageChrome(fallback: PageChromeContent, rawSettings: unknown): PageC
   const siteContact = record(settings.contact);
   const headerLogo = mediaUrl(settings.headerLogo);
   const footerLogo = mediaUrl(settings.footerLogo);
+  const whatsAppHref = text(siteContact.whatsAppUrl);
+  const legalNotices = mapLegalNotices(settings.legalNotices);
 
   return {
     site: {
@@ -459,12 +620,19 @@ function mapPageChrome(fallback: PageChromeContent, rawSettings: unknown): PageC
       ...(headerLogo ? { logo: headerLogo } : {}),
       ...(footerLogo ? { footerLogo } : {}),
       headerCta: link(settings.headerCta, fallback.site.headerCta),
+      ...(hasLink(settings.footerCta)
+        ? { footerCta: link(settings.footerCta, fallback.site.footerCta ?? fallback.site.headerCta) }
+        : fallback.site.footerCta
+          ? { footerCta: fallback.site.footerCta }
+          : {}),
       phone: text(siteContact.phoneDisplay) ?? fallback.site.phone,
       phoneHref: text(siteContact.phoneE164)
         ? `tel:${text(siteContact.phoneE164)?.replace(/\s/g, "")}`
         : fallback.site.phoneHref,
       email: text(siteContact.email) ?? fallback.site.email,
+      ...(whatsAppHref ? { whatsAppHref } : {}),
       footerTagline: text(settings.footerTagline) ?? fallback.site.footerTagline,
+      copyrightText: text(settings.copyrightText) ?? fallback.site.copyrightText,
       legalLinks: asArray(settings.legalLinks).length
         ? asArray(settings.legalLinks).map((item, index) =>
             link(item, fallback.site.legalLinks[index] ?? fallback.site.legalLinks[0]),
@@ -475,7 +643,7 @@ function mapPageChrome(fallback: PageChromeContent, rawSettings: unknown): PageC
     navigation: mapNavigation(settings.headerMenu, fallback.navigation),
     footer: {
       ...mapLinkGroups(settings.footerLinkGroups, fallback.footer),
-      disclaimer: mapLegalNotices(settings.legalNotices, fallback.footer.disclaimer),
+      ...(legalNotices.length ? { legalNotices } : {}),
     },
   };
 }
@@ -487,7 +655,13 @@ function mapValueItems(value: unknown, fallback: AboutValue[]): AboutValue[] {
       const title = text(item.title) ?? text(item.name);
       const description = text(item.description) ?? text(item.body);
       const image = mediaUrl(item.image);
-      return title && description ? { title, description, ...(image ? { image } : {}) } : null;
+      return title && description
+        ? {
+            title,
+            description,
+            ...(image ? { image, imageAlt: text(record(item.image).alternativeText) ?? title } : {}),
+          }
+        : null;
     })
     .filter((item): item is AboutValue => Boolean(item));
 
@@ -495,7 +669,7 @@ function mapValueItems(value: unknown, fallback: AboutValue[]): AboutValue[] {
 }
 
 function mapTimeline(value: unknown, fallback: TimelineEvent[]): TimelineEvent[] {
-  const events = asArray(value)
+  const events = orderedEntries(value)
     .map((entry) => {
       const item = record(entry);
       const period = text(item.period);
@@ -509,15 +683,25 @@ function mapTimeline(value: unknown, fallback: TimelineEvent[]): TimelineEvent[]
 }
 
 function mapTeamMembers(value: unknown, fallback: TeamMember[]): TeamMember[] {
-  const members = asArray(value)
+  const members = orderedEntries(value)
     .map((entry) => {
       const item = record(entry);
       const name = text(item.name);
       const role = text(item.role);
       const image = mediaUrl(item.photo);
-      const profileHref = text(record(item.profileLink).href) ?? text(item.profileHref);
+      const profile = record(item.profileLink);
+      const profileHref = text(profile.href) ?? text(item.profileHref);
+      const profileTarget = targetFromStrapi(profile);
+      const profileLabel = text(profile.label);
       return name && role
-        ? { name, role, ...(image ? { image } : {}), ...(profileHref ? { profileHref } : {}) }
+        ? {
+            name,
+            role,
+            ...(image ? { image } : {}),
+            ...(profileHref ? { profileHref } : {}),
+            ...(profileTarget ? { profileTarget } : {}),
+            ...(profileLabel ? { profileLabel } : {}),
+          }
         : null;
     })
     .filter((item): item is TeamMember => Boolean(item));
@@ -526,7 +710,7 @@ function mapTeamMembers(value: unknown, fallback: TeamMember[]): TeamMember[] {
 }
 
 function mapAchievements(value: unknown, fallback: Achievement[]): Achievement[] {
-  const achievements = asArray(value)
+  const achievements = orderedEntries(value)
     .map((entry) => {
       const item = record(entry);
       const title = text(item.title);
@@ -540,9 +724,13 @@ function mapAchievements(value: unknown, fallback: Achievement[]): Achievement[]
 }
 
 function mapCareerRoles(value: unknown, fallback: CareerRole[]): CareerRole[] {
-  const roles = asArray(value)
+  const roles = orderedEntries(value)
     .map((entry) => {
       const item = record(entry);
+      if (boolean(item.isOpen) === false) {
+        return null;
+      }
+
       const title = text(item.title);
       if (!title) {
         return null;
@@ -550,17 +738,31 @@ function mapCareerRoles(value: unknown, fallback: CareerRole[]): CareerRole[] {
 
       const fallbackRole = fallback.find((role) => role.title.toLowerCase() === title.toLowerCase());
       const summary = text(item.summary) ?? text(item.description);
+      const applyLink = link(
+        item.applyLink,
+        fallbackRole
+          ? { label: fallbackRole.applyLabel, href: fallbackRole.href, target: fallbackRole.target }
+          : { label: "Express interest", href: "/contact-us" },
+      );
+      const workModel = text(item.workModel) ?? text(item.employmentType);
+      const employmentType =
+        workModel === "on_site"
+          ? "On-site"
+          : workModel === "hybrid"
+            ? "Hybrid"
+            : workModel === "remote"
+              ? "Remote"
+              : workModel ?? fallbackRole?.employmentType ?? "On-site";
       return summary
         ? {
             title,
             department: text(item.department) ?? fallbackRole?.department ?? "JR Compliance",
             location: text(item.location) ?? fallbackRole?.location ?? "Delhi, India",
-            employmentType: text(item.workModel) ?? text(item.employmentType) ?? fallbackRole?.employmentType ?? "On-site",
+            employmentType,
             summary,
-            href: link(
-              item.applyLink,
-              fallbackRole ? { label: fallbackRole.title, href: fallbackRole.href } : { label: title, href: "/contact-us" },
-            ).href,
+            applyLabel: applyLink.label,
+            href: applyLink.href,
+            ...(applyLink.target ? { target: applyLink.target } : {}),
           }
         : null;
     })
@@ -570,7 +772,7 @@ function mapCareerRoles(value: unknown, fallback: CareerRole[]): CareerRole[] {
 }
 
 function mapCareerGallery(value: unknown, fallback: CareerGalleryItem[]): CareerGalleryItem[] {
-  const gallery = asArray(value)
+  const gallery = orderedEntries(value)
     .map((entry, index) => {
       const item = record(entry);
       const imageRecord = record(item.image);
@@ -581,7 +783,12 @@ function mapCareerGallery(value: unknown, fallback: CareerGalleryItem[]): Career
 
       return {
         src,
-        alt: text(imageRecord.alternativeText) ?? text(item.alt) ?? fallback[index]?.alt ?? "JR Compliance workplace culture",
+        alt:
+          text(item.alternativeText) ??
+          text(imageRecord.alternativeText) ??
+          fallback[index]?.alt ??
+          "JR Compliance workplace culture",
+        ...(text(item.caption) ? { caption: text(item.caption) } : {}),
       };
     })
     .filter((item): item is CareerGalleryItem => Boolean(item));
@@ -590,7 +797,7 @@ function mapCareerGallery(value: unknown, fallback: CareerGalleryItem[]): Career
 }
 
 function mapCareerTestimonials(value: unknown, fallback: CareerTestimonial[]): CareerTestimonial[] {
-  const testimonials = asArray(value)
+  const testimonials = orderedEntries(value)
     .map((entry) => {
       const item = record(entry);
       const quote = text(item.quote);
@@ -605,7 +812,7 @@ function mapCareerTestimonials(value: unknown, fallback: CareerTestimonial[]): C
 }
 
 function mapSimpleFaqs(value: unknown, fallback: Faq[]): Faq[] {
-  const faqs = asArray(value)
+  const faqs = orderedEntries(value)
     .map((entry) => {
       const item = record(entry);
       const question = text(item.question);
@@ -653,6 +860,12 @@ function mapHomepage(
   const hero = record(page.hero);
   const story = record(page.story);
   const finalCta = record(page.finalCta);
+  const tickerCta = record(page.tickerCta);
+  const regulatorsHeading = record(page.regulatorsHeading);
+  const testimonialsHeading = record(page.testimonialsHeading);
+  const recognitionHeading = record(page.recognitionHeading);
+  const faqHeading = record(page.faqHeading);
+  const insightsHeading = record(page.insightsHeading);
   const heroCards = asArray(hero.cards).map(record);
   const rotatingWords = asArray(hero.rotatingTerms)
     .map((term) => text(record(term).text))
@@ -664,16 +877,43 @@ function mapHomepage(
   const heroSupportCards = heroCards
     .map((card) => {
       const title = text(card.title);
-      return title ? { title, ...(text(card.description) ? { description: text(card.description) } : {}) } : null;
+      if (!title) {
+        return null;
+      }
+
+      const image = mediaUrl(card.image);
+      const icon = mediaUrl(card.icon);
+      const cta = hasLink(card.cta) ? link(card.cta, { label: title, href: "#contact" }) : undefined;
+      return {
+        title,
+        ...(text(card.description) ? { description: text(card.description) } : {}),
+        ...(image ? { image, imageAlt: text(record(card.image).alternativeText) ?? title } : {}),
+        ...(icon ? { icon, iconAlt: text(record(card.icon).alternativeText) ?? "" } : {}),
+        ...(cta ? { cta } : {}),
+      };
     })
-    .filter((card): card is { title: string; description?: string } => Boolean(card));
-  const whyHighlights = asArray(whyUs.cards)
-    .map((card) => text(record(card).title))
-    .filter((title): title is string => Boolean(title));
+    .filter((card): card is HomepageContent["hero"]["supportingCards"][number] => Boolean(card));
+  const whyCards = asArray(whyUs.cards)
+    .map((entry) => {
+      const card = record(entry);
+      const title = text(card.title);
+      const image = mediaUrl(card.image);
+      return title
+        ? {
+            title,
+            ...(text(card.description) ? { description: text(card.description) } : {}),
+            ...(image ? { image, imageAlt: text(record(card.image).alternativeText) ?? title } : {}),
+          }
+        : null;
+    })
+    .filter((card): card is HomepageContent["whyUs"]["cards"][number] => Boolean(card));
+  const insightItems = mapInsights(page.insights);
+  const tickerTitle = text(tickerCta.title);
 
   return {
     ...fallback,
     ...chrome,
+    seo: mapSeo(page.seo, fallback.seo),
     hero: {
       ...fallback.hero,
       prefix: text(hero.titleBefore) ?? fallback.hero.prefix,
@@ -682,6 +922,7 @@ function mapHomepage(
       description: text(hero.description) ?? fallback.hero.description,
       primaryCta: link(hero.cta, fallback.hero.primaryCta),
       ...(heroImage ? { image: heroImage } : {}),
+      imageAlt: text(record(hero.heroImage).alternativeText) ?? fallback.hero.imageAlt,
       ...(heroSupportCards.length ? { supportingCards: heroSupportCards } : {}),
     },
     trustedLogos: mapLogos(page.trustedLogos, fallback.trustedLogos),
@@ -689,38 +930,88 @@ function mapHomepage(
       ...fallback.services,
       eyebrow: text(record(page.servicesHeading).eyebrow) ?? fallback.services.eyebrow,
       title: titleFromHeading(page.servicesHeading, fallback.services.title),
+      description:
+        text(record(page.servicesHeading).description) ?? fallback.services.description,
       categories: mapServiceCategories(page.serviceCategories, fallback.services.categories),
     },
     whyUs: {
       ...fallback.whyUs,
+      eyebrow: text(record(whyUs.heading).eyebrow) ?? fallback.whyUs.eyebrow,
       title: titleFromHeading(whyUs.heading, fallback.whyUs.title),
       description: text(record(whyUs.heading).description) ?? fallback.whyUs.description,
-      ...(whyHighlights.length ? { highlights: whyHighlights } : {}),
+      ...(whyCards.length ? { cards: whyCards } : {}),
+    },
+    regulators: {
+      ...fallback.regulators,
+      eyebrow: text(regulatorsHeading.eyebrow) ?? fallback.regulators.eyebrow,
+      title: titleFromHeading(regulatorsHeading, fallback.regulators.title),
+      description: text(regulatorsHeading.description) ?? fallback.regulators.description,
+      logos: mapLogos(page.regulatorLogos, fallback.regulators.logos),
     },
     metrics: {
       ...fallback.metrics,
       eyebrow: text(record(story.heading).eyebrow) ?? fallback.metrics.eyebrow,
       title: titleFromHeading(story.heading, fallback.metrics.title),
+      description: text(record(story.heading).description) ?? fallback.metrics.description,
       items: mapMetrics(story.stats, fallback.metrics.items),
       cta: link(story.cta, fallback.metrics.cta),
+      ...(mediaUrl(story.featureImage)
+        ? {
+            featureImage: mediaUrl(story.featureImage),
+            featureImageAlt:
+              text(record(story.featureImage).alternativeText) ?? fallback.metrics.featureImageAlt,
+          }
+        : {}),
+      ...(text(story.featureTitle) ? { featureTitle: text(story.featureTitle) } : {}),
     },
+    ...(tickerTitle || hasLink(tickerCta.cta)
+      ? {
+          tickerCta: {
+            title: tickerTitle ?? fallback.tickerCta?.title ?? "Let's Talk Compliance",
+            ...(text(tickerCta.description)
+              ? { description: text(tickerCta.description) }
+              : fallback.tickerCta?.description
+                ? { description: fallback.tickerCta.description }
+                : {}),
+            cta: link(tickerCta.cta, fallback.tickerCta?.cta ?? fallback.closingCta.cta),
+          },
+        }
+      : fallback.tickerCta
+        ? { tickerCta: fallback.tickerCta }
+        : {}),
     testimonials: {
       ...fallback.testimonials,
-      title: titleFromHeading(page.testimonialsHeading, fallback.testimonials.title),
+      eyebrow: text(testimonialsHeading.eyebrow) ?? fallback.testimonials.eyebrow,
+      title: titleFromHeading(testimonialsHeading, fallback.testimonials.title),
+      description: text(testimonialsHeading.description) ?? fallback.testimonials.description,
       items: mapTestimonials(page.testimonials, fallback.testimonials.items),
     },
     recognitions: {
       ...fallback.recognitions,
-      title: titleFromHeading(page.recognitionHeading, fallback.recognitions.title),
-      description:
-        text(record(page.recognitionHeading).description) ?? fallback.recognitions.description,
+      eyebrow: text(recognitionHeading.eyebrow) ?? fallback.recognitions.eyebrow,
+      title: titleFromHeading(recognitionHeading, fallback.recognitions.title),
+      description: text(recognitionHeading.description) ?? fallback.recognitions.description,
       items: mapRecognitions(page.recognitions, fallback.recognitions.items),
     },
     faqs: {
       ...fallback.faqs,
-      title: titleFromHeading(page.faqHeading, fallback.faqs.title),
+      eyebrow: text(faqHeading.eyebrow) ?? fallback.faqs.eyebrow,
+      title: titleFromHeading(faqHeading, fallback.faqs.title),
+      description: text(faqHeading.description) ?? fallback.faqs.description,
       categories: mapFaqs(page.faqCategories, fallback.faqs.categories),
     },
+    ...(insightItems.length
+      ? {
+          insights: {
+            eyebrow: text(insightsHeading.eyebrow),
+            title: titleFromHeading(insightsHeading, "Regulatory insights"),
+            ...(text(insightsHeading.description)
+              ? { description: text(insightsHeading.description) }
+              : {}),
+            items: insightItems,
+          },
+        }
+      : {}),
     closingCta: {
       ...fallback.closingCta,
       title: text(finalCta.title) ?? fallback.closingCta.title,
@@ -752,10 +1043,7 @@ function mapAboutPage(
   return {
     ...fallback,
     ...chrome,
-    seo: {
-      title: text(record(page.seo).metaTitle) ?? fallback.seo.title,
-      description: text(record(page.seo).metaDescription) ?? fallback.seo.description,
-    },
+    seo: mapSeo(page.seo, fallback.seo, record(rawSettings).defaultSeo),
     hero: {
       ...fallback.hero,
       eyebrow: text(hero.eyebrow) ?? fallback.hero.eyebrow,
@@ -791,6 +1079,8 @@ function mapAboutPage(
       ...fallback.reasons,
       eyebrow: text(record(reasons.heading).eyebrow) ?? text(reasons.eyebrow) ?? fallback.reasons.eyebrow,
       title: text(reasons.title) ?? titleFromComponent(reasons.heading, fallback.reasons.title),
+      description:
+        text(record(reasons.heading).description) ?? text(reasons.description) ?? fallback.reasons.description,
       items: mapValueItems(reasons.items, fallback.reasons.items),
     },
     pioneers: {
@@ -818,6 +1108,10 @@ function mapAboutPage(
         text(record(page.achievementsHeading).eyebrow) ?? text(record(achievements.heading).eyebrow) ?? text(achievements.eyebrow) ?? fallback.achievements.eyebrow,
       title:
         text(achievements.title) ?? titleFromComponent(page.achievementsHeading, titleFromComponent(achievements.heading, fallback.achievements.title)),
+      description:
+        text(record(page.achievementsHeading).description) ??
+        text(record(achievements.heading).description) ??
+        fallback.achievements.description,
       items: mapAchievements(page.achievements ?? achievements.items, fallback.achievements.items),
     },
     closingCta: {
@@ -847,10 +1141,7 @@ function mapCareersPage(
   return {
     ...fallback,
     ...chrome,
-    seo: {
-      title: text(record(page.seo).metaTitle) ?? fallback.seo.title,
-      description: text(record(page.seo).metaDescription) ?? fallback.seo.description,
-    },
+    seo: mapSeo(page.seo, fallback.seo, record(rawSettings).defaultSeo),
     hero: {
       ...fallback.hero,
       eyebrow: text(hero.eyebrow) ?? fallback.hero.eyebrow,
@@ -869,13 +1160,18 @@ function mapCareersPage(
       ...fallback.values,
       eyebrow: text(record(values.heading).eyebrow) ?? text(values.eyebrow) ?? fallback.values.eyebrow,
       title: text(values.title) ?? titleFromComponent(values.heading, fallback.values.title),
+      description:
+        text(record(values.heading).description) ?? text(values.description) ?? fallback.values.description,
       items: mapValueItems(values.items, fallback.values.items),
     },
     lifeAtJr: {
       ...fallback.lifeAtJr,
       eyebrow: text(record(lifeAtJr.heading).eyebrow) ?? text(lifeAtJr.eyebrow) ?? fallback.lifeAtJr.eyebrow,
       title: text(lifeAtJr.title) ?? titleFromComponent(lifeAtJr.heading, fallback.lifeAtJr.title),
-      description: text(record(lifeAtJr.heading).description) ?? text(lifeAtJr.description) ?? fallback.lifeAtJr.description,
+      description:
+        [text(record(lifeAtJr.heading).description), text(lifeAtJr.description)]
+          .filter((item): item is string => Boolean(item))
+          .join(" ") || fallback.lifeAtJr.description,
       highlights: mapTextList(lifeAtJr.highlights, fallback.lifeAtJr.highlights),
       gallery: mapCareerGallery(page.careerGallery ?? lifeAtJr.gallery, fallback.lifeAtJr.gallery),
     },
@@ -890,18 +1186,23 @@ function mapCareersPage(
       ...fallback.benefits,
       eyebrow: text(record(benefits.heading).eyebrow) ?? text(benefits.eyebrow) ?? fallback.benefits.eyebrow,
       title: text(benefits.title) ?? titleFromComponent(benefits.heading, fallback.benefits.title),
+      description:
+        text(record(benefits.heading).description) ?? text(benefits.description) ?? fallback.benefits.description,
       items: mapValueItems(benefits.items, fallback.benefits.items),
     },
     testimonials: {
       ...fallback.testimonials,
       eyebrow: text(record(page.testimonialsHeading).eyebrow) ?? fallback.testimonials.eyebrow,
       title: titleFromComponent(page.testimonialsHeading, fallback.testimonials.title),
+      description:
+        text(record(page.testimonialsHeading).description) ?? fallback.testimonials.description,
       items: mapCareerTestimonials(page.careerTestimonials, fallback.testimonials.items),
     },
     faqs: {
       ...fallback.faqs,
       eyebrow: text(record(page.faqHeading).eyebrow) ?? fallback.faqs.eyebrow,
       title: titleFromComponent(page.faqHeading, fallback.faqs.title),
+      description: text(record(page.faqHeading).description) ?? fallback.faqs.description,
       items: mapSimpleFaqs(page.careerFaqs, fallback.faqs.items),
     },
     closingCta: {
@@ -928,10 +1229,7 @@ function mapContactPage(
   return {
     ...fallback,
     ...chrome,
-    seo: {
-      title: text(record(page.seo).metaTitle) ?? fallback.seo.title,
-      description: text(record(page.seo).metaDescription) ?? fallback.seo.description,
-    },
+    seo: mapSeo(page.seo, fallback.seo, record(rawSettings).defaultSeo),
     hero: {
       ...fallback.hero,
       eyebrow: text(hero.eyebrow) ?? fallback.hero.eyebrow,
@@ -981,22 +1279,14 @@ function queryFor(slug: SingleTypeSlug): string {
   return params.toString();
 }
 
-const cacheTagBySlug: Record<SingleTypeSlug, string> = {
-  "site-setting": "jr-site-settings",
-  "home-page": "jr-homepage",
-  "about-page": "jr-about-page",
-  "careers-page": "jr-careers-page",
-  "contact-page": "jr-contact-page",
-};
-
 async function getSingleType(slug: SingleTypeSlug): Promise<unknown> {
-  if (!strapiUrl) {
+  if (!strapiUrl || !strapiApiToken) {
     return null;
   }
 
   const response = await fetch(`${strapiUrl}/api/${slug}?${queryFor(slug)}`, {
-    headers: strapiApiToken ? { Authorization: `Bearer ${strapiApiToken}` } : undefined,
-    next: { revalidate: 60, tags: [cacheTagBySlug[slug]] },
+    headers: { Authorization: `Bearer ${strapiApiToken}` },
+    next: { revalidate: 60, tags: [strapiCacheTagBySlug[slug]] },
   });
 
   if (!response.ok) {
@@ -1010,7 +1300,7 @@ async function getSingleType(slug: SingleTypeSlug): Promise<unknown> {
 export async function getHomepageFromStrapi(
   fallback: HomepageContent,
 ): Promise<HomepageContent | null> {
-  if (!strapiUrl) {
+  if (!strapiUrl || !strapiApiToken) {
     return null;
   }
 
@@ -1032,7 +1322,7 @@ export async function getHomepageFromStrapi(
 export async function getAboutPageFromStrapi(
   fallback: AboutPageContent,
 ): Promise<AboutPageContent | null> {
-  if (!strapiUrl) {
+  if (!strapiUrl || !strapiApiToken) {
     return null;
   }
 
@@ -1052,7 +1342,7 @@ export async function getAboutPageFromStrapi(
 export async function getCareersPageFromStrapi(
   fallback: CareersPageContent,
 ): Promise<CareersPageContent | null> {
-  if (!strapiUrl) {
+  if (!strapiUrl || !strapiApiToken) {
     return null;
   }
 
@@ -1072,7 +1362,7 @@ export async function getCareersPageFromStrapi(
 export async function getContactPageFromStrapi(
   fallback: ContactPageContent,
 ): Promise<ContactPageContent | null> {
-  if (!strapiUrl) {
+  if (!strapiUrl || !strapiApiToken) {
     return null;
   }
 

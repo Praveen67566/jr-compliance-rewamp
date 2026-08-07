@@ -1,3 +1,4 @@
+import { linkTargetProps } from "@/lib/link-props";
 import type { Link } from "@/lib/types";
 
 type RouteClosingCtaProps = {
@@ -22,7 +23,7 @@ export function RouteClosingCta({
           <h2>{title}</h2>
           <p>{description}</p>
         </div>
-        <a className="button button-light" href={cta.href}>
+        <a className="button button-light" href={cta.href} {...linkTargetProps(cta)}>
           {cta.label} <span aria-hidden="true">↗</span>
         </a>
       </div>

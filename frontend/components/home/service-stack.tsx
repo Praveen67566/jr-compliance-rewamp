@@ -2,6 +2,7 @@
 
 import { type KeyboardEvent, useState } from "react";
 
+import { linkTargetProps } from "@/lib/link-props";
 import type { HomepageContent } from "@/lib/types";
 
 type ServiceStackProps = {
@@ -47,10 +48,11 @@ export function ServiceStack({ services }: ServiceStackProps) {
       <span className="services-ambient services-ambient--two" aria-hidden="true" />
       <div className="container">
         <div className="section-heading services-heading">
-          <div className="services-heading-copy">
-            <span className="eyebrow">{services.eyebrow}</span>
-            <h2>{services.title}</h2>
-          </div>
+            <div className="services-heading-copy">
+              <span className="eyebrow">{services.eyebrow}</span>
+              <h2>{services.title}</h2>
+              {services.description ? <p>{services.description}</p> : null}
+            </div>
           <div className="service-tab-shell">
             <div className="service-tab-list" role="tablist" aria-label="Compliance service categories">
               {services.categories.map((category, index) => (
@@ -95,6 +97,7 @@ export function ServiceStack({ services }: ServiceStackProps) {
                         className={`service-card ${isGlobal ? "service-card--global" : ""}`}
                         href={service.href}
                         key={service.label}
+                        {...linkTargetProps(service)}
                         style={{ animationDelay: `${index * 90}ms` }}
                       >
                         <span className="service-card-top">
@@ -121,6 +124,7 @@ export function ServiceStack({ services }: ServiceStackProps) {
                           </span>
                         ) : null}
                         <span className="service-name">{service.label}</span>
+                        {service.summary ? <span className="service-summary">{service.summary}</span> : null}
                         <span className="service-arrow" aria-hidden="true">
                           ↗
                         </span>

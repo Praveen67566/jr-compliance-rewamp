@@ -41,7 +41,11 @@ validated deliberately.
 | `frontend/components/` | Reusable shell components; `site-page-shell.tsx` centralizes header/footer, `editorial/` centralizes the Compliance Network route primitives, and route folders compose their pages. |
 | `frontend/app/globals.css` | Original responsive visual system and CSS-only motion, with reduced-motion support. |
 | `frontend/public/images/` | Small selected copy of approved legacy logo/photo assets. `images/services/` preserves the 15 exact legacy service/flag SVGs; `images/services-blue/` holds their blue-theme derivatives used by the home fallback. Do not point new UI at `site/assets/`. |
-| `cms/CONTENT_MODEL.md` | Definitive Strapi v5 model and editor onboarding. Read this before scaffolding the CMS. |
+| `cms/` | Active Strapi v5 TypeScript project: schemas, core REST APIs, opt-in local seed, CMS-to-Next revalidation, editor setup, and PostgreSQL-capable configuration (`pg` is a production dependency). |
+| `cms/CONTENT_MODEL.md` | Definitive editorial contract: five single types, fourteen collections, and thirty-four components. Change it deliberately alongside the schemas and Next mapper. |
+| `cms/README.md` | CMS local workflow, editor permissions, REST contract, seed policy, and revalidation behavior. |
+| `ecosystem.config.js` | PM2 process definition for the 24/7 Linux/VPS deployment: one frontend and one CMS process, bound to loopback-only private ports with no secrets in source. |
+| `prod.md` | Required production deployment and launch runbook for the frontend, CMS, PM2, Nginx/TLS, database, media, migration, secrets, and cache invalidation. |
 | `theme.md` | Required Compliance Network design system for the home page and all future routes. |
 
 ## What is built
@@ -83,6 +87,30 @@ validated deliberately.
   direct phone/email/location routes; a live enquiry form remains intentionally
   deferred until receiver, validation, consent handling, and spam protection
   are decided.
+- The Strapi v5 CMS is implemented in `cms/`: five single types (`site-setting`,
+  `home-page`, `about-page`, `careers-page`, `contact-page`), fourteen
+  collections, thirty-four components, and core REST route/controller/service
+  files for all nineteen types. All editorial content uses Draft & Publish;
+  i18n is intentionally off.
+- Every active page and shared header/footer has a typed CMS mapping. CMS
+  controls copy, links/targets, order, SEO, imagery/alt text, shared navigation,
+  footer groups, legal notices, and optional home insights. Next.js continues to
+  own layout, interaction, animation, and the visual theme.
+- The local seed is intentionally opt-in. It creates approved demo content and
+  media only for a fresh local SQLite database, creates it as **Published**, and
+  refuses production/non-SQLite/existing editor content. An empty Draft tab is
+  expected before seeding; use the Published tab after a successful seed.
+- The frontend emits an app icon, `robots.txt`, and a sitemap for the four
+  active routes. It uses `SITE_URL` for the production origin and has baseline
+  response hardening headers; the host still needs TLS-edge HSTS, rate limiting,
+  and a tested CSP for the selected CMS/media origin.
+- `frontend` production start honors a host-provided `PORT` and otherwise uses
+  `8123`, preserving the local port convention.
+- `ecosystem.config.js` is the production PM2 entry point for a single VPS. It
+  starts the frontend on `127.0.0.1:8123` and the CMS on
+  `127.0.0.1:1337` as single forked processes; Nginx proxies public HTTPS
+  traffic to those private ports. CMS publish notifications call the frontend
+  directly over loopback rather than exposing the revalidation endpoint.
 
 ## Content source already mapped from `site/index.html`
 
@@ -129,32 +157,65 @@ to `/#services` until validated detail pages are migrated.
 Use `frontend/.env.example` as the environment template. The token name must
 stay `STRAPI_API_TOKEN` (not `NEXT_PUBLIC_*` and not the old `STRAPI_TOKEN`).
 
-## CMS next step
+## CMS implementation and deployment status
 
-`cms/` is intentionally a blueprint rather than a generated Strapi project:
-the requested phase is “frontend first.” When the CMS phase begins, create a
-Strapi v5 TypeScript app **inside `cms/`**, then build the exact five single
-types, components, collection types, roles, media policy, and seeding order in
-`cms/CONTENT_MODEL.md`. Do not change the Next content model casually; update
-the mapper and fallback types together if a CMS field changes.
+The CMS is implemented, not a blueprint. A fresh isolated SQLite runtime smoke
+has verified that Strapi starts, the opt-in seed completes, anonymous reads are
+denied, and a disposable read-only API token can fetch all five published single
+types. Frontend runtime smoke has verified both fallback-mode rendering and a
+seeded CMS-to-Next end-to-end flow for all four public routes, plus signed
+webhook handling.
+
+The production integration still requires a real PostgreSQL database, durable
+object/media storage, production secrets, content migration, and a real
+read-only frontend token. `cms/config/plugins.ts` currently has only the local
+upload provider, so do not run it on ephemeral production storage.
+
+At the latest audit, frontend production dependencies have zero known
+vulnerabilities. The CMS dependency tree has 29 findings, including three
+high-severity findings in the current Strapi upload/admin chain. The latest
+checked Strapi release is also `5.51.2` and pins the affected upload dependency,
+so wait for vendor remediation or obtain formal security risk acceptance; do
+not override it or apply `npm audit fix --force` blindly.
+
+Almost all CMS source/config is currently untracked by Git. Commit the intended
+CMS source while keeping `.env`, `.tmp/`, `public/uploads/`, generated builds,
+and `.strapi/` ignored before any Git-based deployment. The full ordered
+deployment and rollback procedure is in `prod.md`.
+
+For a 24/7 self-hosted Linux server, deploy through the committed PM2 ecosystem
+file rather than leaving `npm run start` attached to a terminal. Run PM2 as the
+non-root deploy user, use `pm2 startup` plus `pm2 save` for reboot persistence,
+and keep the frontend at one instance until its cache can be shared safely.
+Store ignored production environment files before builds, bind application ports
+only to loopback, and build each update in a new release checkout rather than
+changing dependencies beneath a running process.
 
 ## Local commands
 
 ```bash
 cd frontend
-npm install
+npm ci
 npm run dev
 npm run typecheck
 npm run build
+
+cd ../cms
+npm ci
+npx tsc --noEmit
+npm run build
 ```
 
-The npm dev/start scripts use port **8123** to avoid the existing service on
-port 3000.
+The frontend dev script uses port **8123** to avoid the existing service on
+port 3000. Its production start script uses `$PORT` when the host provides it,
+then falls back to `8123` locally.
 
-`npm run typecheck` and `npm run build` both passed after the initial build.
-The project is currently on Next.js 16.3.0; it was selected after resolving the
-security advisories detected during installation (`npm install` reports zero
-known vulnerabilities).
+Validation on 2026-08-07 passed: frontend clean install, typecheck, production
+build, page/asset/link/fragment smoke checks, metadata routes, security-header
+checks, signed webhook checks, and seeded CMS-to-frontend end-to-end checks;
+CMS clean install, TypeScript check, production build, schema validation, and
+isolated seed/API runtime smoke. The remaining deployment gates are
+intentionally documented above and in `prod.md`.
 
 Next.js generates `frontend/AGENTS.md` during `next dev`. If that file exists,
 read the relevant guide under `frontend/node_modules/next/dist/docs/` before
@@ -163,12 +224,13 @@ breaking changes.
 
 ## Safe next tasks
 
-1. Scaffold and seed the Strapi app from `cms/CONTENT_MODEL.md`, then verify a
-   real CMS publish flows through `frontend/lib/strapi.ts`.
-2. Implement individual service/detail pages one at a time, using the CMS
+1. Monitor for a Strapi release that remediates the current production audit
+   findings, test it in staging, and rerun the complete validation suite (or
+   obtain a formal security risk acceptance before any launch).
+2. Choose/configure durable CMS media storage, provision PostgreSQL, rehearse
+   encrypted content/media migration on staging, and follow `prod.md`.
+3. Implement individual service/detail pages one at a time, using the CMS
    service model and validated URL slugs.
-3. Add real enquiry and job-application integrations only after the target receiver,
-   validation, consent copy, and spam protection are explicitly decided.
-4. Add deploy configuration and Strapi publish webhooks to revalidate the
-   `jr-homepage`, `jr-about-page`, `jr-careers-page`, `jr-contact-page`, and
-   `jr-site-settings` cache tags after publishing.
+4. Add real enquiry and job-application integrations only after the target
+   receiver, validation, consent copy, and spam protection are explicitly
+   decided.

@@ -1,3 +1,4 @@
+import { linkTargetProps } from "@/lib/link-props";
 import type { Link } from "@/lib/types";
 
 type RouteHeroProps = {
@@ -23,7 +24,7 @@ export function RouteHero({ eyebrow, title, description, cta, image, imageAlt }:
           <h1>{title}</h1>
           <p>{description}</p>
           {cta ? (
-            <a className="button button-light" href={cta.href}>
+            <a className="button button-light" href={cta.href} {...linkTargetProps(cta)}>
               {cta.label} <span aria-hidden="true">↗</span>
             </a>
           ) : null}

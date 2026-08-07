@@ -2,16 +2,14 @@ import type { Metadata } from "next";
 
 import { AboutPage } from "@/components/about/about-page";
 import { getAboutPage } from "@/lib/content";
+import { pageMetadata } from "@/lib/page-metadata";
 
 export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
   const content = await getAboutPage();
 
-  return {
-    title: content.seo.title,
-    description: content.seo.description,
-  };
+  return pageMetadata(content.seo, "/about-us");
 }
 
 export default async function Page() {

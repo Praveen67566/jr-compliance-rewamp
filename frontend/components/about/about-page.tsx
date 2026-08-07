@@ -1,6 +1,7 @@
 import { RouteClosingCta } from "@/components/editorial/route-closing-cta";
 import { RouteHero } from "@/components/editorial/route-hero";
 import { SitePageShell } from "@/components/site-page-shell";
+import { linkTargetProps } from "@/lib/link-props";
 import type { AboutPageContent, TeamMember } from "@/lib/types";
 
 type AboutPageProps = {
@@ -22,7 +23,12 @@ function TeamCard({ member }: { member: TeamMember }) {
   );
 
   return member.profileHref ? (
-    <a className="about-team-card" href={member.profileHref} target="_blank" rel="noreferrer">
+    <a
+      className="about-team-card"
+      href={member.profileHref}
+      {...linkTargetProps({ target: member.profileTarget ?? "_blank" })}
+      aria-label={member.profileLabel ?? `View ${member.name}'s profile`}
+    >
       {content}
     </a>
   ) : (
@@ -106,11 +112,13 @@ export function AboutPage({ content }: AboutPageProps) {
               <span className="eyebrow eyebrow-light">{content.reasons.eyebrow}</span>
               <h2>{content.reasons.title}</h2>
             </div>
+            {content.reasons.description ? <p>{content.reasons.description}</p> : null}
           </div>
           <div className="about-reasons-grid">
             {content.reasons.items.map((item, index) => (
               <article className="about-reason-card" key={item.title}>
                 <span>0{index + 1}</span>
+                {item.image ? <img className="about-reason-image" src={item.image} alt={item.imageAlt ?? ""} /> : null}
                 <h3>{item.title}</h3>
                 <p>{item.description}</p>
               </article>
@@ -156,7 +164,7 @@ export function AboutPage({ content }: AboutPageProps) {
               <TeamCard key={member.name} member={member} />
             ))}
           </div>
-          <a className="text-link text-link-light" href={content.team.cta.href}>
+          <a className="text-link text-link-light" href={content.team.cta.href} {...linkTargetProps(content.team.cta)}>
             {content.team.cta.label} <span aria-hidden="true">↗</span>
           </a>
         </div>
@@ -169,6 +177,7 @@ export function AboutPage({ content }: AboutPageProps) {
               <span className="eyebrow">{content.achievements.eyebrow}</span>
               <h2>{content.achievements.title}</h2>
             </div>
+            {content.achievements.description ? <p>{content.achievements.description}</p> : null}
           </div>
           <div className="about-achievements-grid">
             {content.achievements.items.map((item, index) => (

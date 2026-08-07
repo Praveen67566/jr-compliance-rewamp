@@ -11,10 +11,12 @@ export const fallbackHomepage: HomepageContent = {
     logo: "/images/jr-logo.svg",
     footerLogo: "/images/jr-footer-logo.svg",
     headerCta: { label: "Contact Us", href: "/contact-us" },
+    footerCta: { label: "Contact Us", href: "/contact-us" },
     phone: "+91-1800-121-410-410",
     phoneHref: "tel:1800121410410",
     email: "support@jrcompliance.com",
     footerTagline: "Your trusted partner for the latest regulatory updates.",
+    copyrightText: "Copyright © JR Compliance",
     legalLinks: [
       { label: "Privacy Policy", href: "#legal" },
       { label: "Terms and Conditions", href: "#legal" },
@@ -76,6 +78,11 @@ export const fallbackHomepage: HomepageContent = {
     { label: "Careers", href: "/careers" },
     { label: "About Us", href: "/about-us" },
   ],
+  seo: {
+    title: "JR Compliance | Global Compliance Consultants",
+    description:
+      "Global compliance, certification, and corporate services from JR Compliance.",
+  },
   hero: {
     prefix: "Bridging",
     rotatingWords: ["Businesses", "Companies", "Manufacturers", "Brands"],
@@ -218,18 +225,49 @@ export const fallbackHomepage: HomepageContent = {
     ],
   },
   whyUs: {
+    eyebrow: "Why JR Compliance",
     title: "We simplify Global Regulatory Compliance with Expert Solutions",
     description:
       "At JR Compliance, we simplify regulatory requirements for businesses worldwide, leveraging our proven expertise. With a team of over 200 experts, we have successfully managed over 150 projects for over 20 national brands across various industries. Our dedication to compliance is reflected in our high success rate, ensuring seamless market access through our extensive network of international partners.",
-    highlights: [
-      "Instant Compliance Solutions",
-      "Guaranteed Global Support",
-      "Trusted Corporate Services",
+    cards: [
+      {
+        title: "Instant Compliance Solutions",
+        description: "Clear guidance from the first requirement through approval.",
+        image: "/images/about/mantra/global.webp",
+        imageAlt: "Global compliance support",
+      },
+      {
+        title: "Guaranteed Global Support",
+        description: "Connected support across markets and regulatory systems.",
+        image: "/images/about/mantra/tailored.webp",
+        imageAlt: "Tailored compliance support",
+      },
+      {
+        title: "Trusted Corporate Services",
+        description: "Structured services that help businesses move with confidence.",
+        image: "/images/about/mantra/comprehensive.webp",
+        imageAlt: "Corporate compliance support",
+      },
+    ],
+  },
+  regulators: {
+    eyebrow: "Regulatory expertise",
+    title: "Trusted compliance network",
+    description: "Focused support across key compliance pathways.",
+    logos: [
+      { name: "BIS", src: "/images/services-blue/bis.svg" },
+      { name: "EPR", src: "/images/services-blue/epr.svg" },
+      { name: "TEC", src: "/images/services-blue/tec.svg" },
+      { name: "WPC", src: "/images/services-blue/wpc.svg" },
+      { name: "BEE", src: "/images/services-blue/bee.svg" },
     ],
   },
   metrics: {
     eyebrow: "From Every Corner to Every Regulation",
     title: "Where Data Tells the Story",
+    featureImage: "/images/team.webp",
+    featureImageAlt: "JR Compliance team members",
+    featureTitle: "A connected route to compliance",
     items: [
       { value: "1,000+", label: "Happy Clients" },
       { value: "360", label: "Compliance Services" },
@@ -240,7 +278,13 @@ export const fallbackHomepage: HomepageContent = {
       href: "#about",
     },
   },
+  tickerCta: {
+    title: "Let's Talk Compliance",
+    description: "Connect with the JR Compliance team.",
+    cta: { label: "Contact Us", href: "/contact-us" },
+  },
   testimonials: {
+    eyebrow: "Client stories",
     title: "Creating Trust-Driven Relationships",
     items: [
       {
@@ -274,6 +318,7 @@ export const fallbackHomepage: HomepageContent = {
     ],
   },
   recognitions: {
+    eyebrow: "Media",
     title: "Earning Trust, Backed By Recognition",
     description: "Based on 10,000+ customer reviews",
     items: [
@@ -281,6 +326,7 @@ export const fallbackHomepage: HomepageContent = {
         title: "JR Compliance: Revolutionizing Certification Processes with Innovative Solutions",
         summary:
           "JR Compliance provides easy access to global certification via a user-friendly platform.",
+        linkLabel: "Read more",
         href: "#contact",
       },
       {
@@ -288,6 +334,7 @@ export const fallbackHomepage: HomepageContent = {
           "JR Compliance: Helping Local Manufacturers Thrive in the Face of COVID-19 Challenges",
         summary:
           "JR Compliance provides comprehensive compliance services to manufacturers to help them meet global standards.",
+        linkLabel: "Read more",
         href: "#contact",
       },
       {
@@ -295,12 +342,15 @@ export const fallbackHomepage: HomepageContent = {
           "JR Compliance: Simplifying Global Compliance for Manufacturers Amidst Regulatory Changes.",
         summary:
           "JR Compliance provides manufacturers with knowledge in navigating complex compliance requirements.",
+        linkLabel: "Read more",
         href: "#contact",
       },
     ],
   },
   faqs: {
+    eyebrow: "Need clarity?",
     title: "FAQ",
+    description: "Find answers from the JR Compliance team.",
     categories: [
       {
         id: "registration",
