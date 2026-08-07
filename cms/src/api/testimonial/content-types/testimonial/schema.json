@@ -1,0 +1,48 @@
+{
+  "kind": "collectionType",
+  "collectionName": "testimonials",
+  "info": {
+    "singularName": "testimonial",
+    "pluralName": "testimonials",
+    "displayName": "Testimonial",
+    "description": "A client testimonial selected by the homepage."
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "quote": {
+      "type": "text",
+      "required": true
+    },
+    "personName": {
+      "type": "string",
+      "required": true
+    },
+    "personRole": {
+      "type": "string"
+    },
+    "companyName": {
+      "type": "string"
+    },
+    "personPhoto": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "companyLogo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "publishedOn": {
+      "type": "date"
+    },
+    "sortOrder": {
+      "type": "integer",
+      "min": 0,
+      "required": true
+    }
+  }
+}

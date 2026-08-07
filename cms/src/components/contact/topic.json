@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_contact_topics",
+  "info": {
+    "displayName": "Topic"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

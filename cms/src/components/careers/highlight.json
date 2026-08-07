@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_careers_highlights",
+  "info": {
+    "displayName": "Highlight"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

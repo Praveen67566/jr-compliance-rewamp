@@ -1,0 +1,13 @@
+# Runtime configuration and generated Strapi artefacts.
+.env
+.cache/
+.tmp/
+build/
+dist/
+node_modules/
+.strapi/
+.strapi-updater.json
+types/generated/
+
+# Local upload provider output. Seed source remains outside this directory.
+public/uploads/

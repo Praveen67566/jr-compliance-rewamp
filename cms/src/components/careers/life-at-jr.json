@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_careers_life_at_jrs",
+  "info": {
+    "displayName": "Life at JR"
+  },
+  "options": {},
+  "attributes": {
+    "heading": {
+      "type": "component",
+      "component": "shared.section-heading",
+      "repeatable": false,
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "highlights": {
+      "type": "component",
+      "component": "careers.highlight",
+      "repeatable": true
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_contact_responses",
+  "info": {
+    "displayName": "Response"
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "steps": {
+      "type": "component",
+      "component": "contact.response-step",
+      "repeatable": true,
+      "required": true
+    }
+  }
+}

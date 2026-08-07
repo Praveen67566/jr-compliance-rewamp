@@ -1,0 +1,52 @@
+{
+  "kind": "singleType",
+  "collectionName": "contact_pages",
+  "info": {
+    "singularName": "contact-page",
+    "pluralName": "contact-pages",
+    "displayName": "Contact Page",
+    "description": "Content for the Contact Us editorial route."
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "hero": {
+      "type": "component",
+      "component": "contact.hero",
+      "repeatable": false,
+      "required": true
+    },
+    "contactPoints": {
+      "type": "component",
+      "component": "contact.point",
+      "repeatable": true,
+      "required": true
+    },
+    "enquiry": {
+      "type": "component",
+      "component": "contact.enquiry",
+      "repeatable": false,
+      "required": true
+    },
+    "response": {
+      "type": "component",
+      "component": "contact.response",
+      "repeatable": false,
+      "required": true
+    },
+    "finalCta": {
+      "type": "component",
+      "component": "home.cta-band",
+      "repeatable": false,
+      "required": true
+    },
+    "seo": {
+      "type": "component",
+      "component": "shared.seo",
+      "repeatable": false,
+      "required": true
+    }
+  }
+}

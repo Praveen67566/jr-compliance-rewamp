@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "brand_logos",
+  "info": {
+    "singularName": "brand-logo",
+    "pluralName": "brand-logos",
+    "displayName": "Brand Logo",
+    "description": "A client or regulator logo selected by the homepage."
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "kind": {
+      "type": "enumeration",
+      "enum": ["client", "regulator"],
+      "required": true
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images"]
+    },
+    "sortOrder": {
+      "type": "integer",
+      "min": 0,
+      "required": true
+    },
+    "websiteUrl": {
+      "type": "string"
+    }
+  }
+}

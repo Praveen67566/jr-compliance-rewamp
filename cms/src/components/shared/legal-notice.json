@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_shared_legal_notices",
+  "info": {
+    "displayName": "Legal notice"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "body": {
+      "type": "blocks",
+      "required": true
+    }
+  }
+}

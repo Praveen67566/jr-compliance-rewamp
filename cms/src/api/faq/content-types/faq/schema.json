@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "faqs",
+  "info": {
+    "singularName": "faq",
+    "pluralName": "faqs",
+    "displayName": "FAQ",
+    "description": "An ordered frequently asked question."
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "question": {
+      "type": "string",
+      "required": true
+    },
+    "answer": {
+      "type": "blocks",
+      "required": true
+    },
+    "sortOrder": {
+      "type": "integer",
+      "min": 0,
+      "required": true
+    },
+    "faqCategory": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::faq-category.faq-category",
+      "inversedBy": "faqs",
+      "required": true
+    }
+  }
+}

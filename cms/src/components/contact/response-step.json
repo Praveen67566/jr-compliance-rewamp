@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_contact_response_steps",
+  "info": {
+    "displayName": "Response step"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    }
+  }
+}

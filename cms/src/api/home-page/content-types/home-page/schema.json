@@ -1,0 +1,121 @@
+{
+  "kind": "singleType",
+  "collectionName": "home_pages",
+  "info": {
+    "singularName": "home-page",
+    "pluralName": "home-pages",
+    "displayName": "Home Page",
+    "description": "Editorially ordered content for the homepage."
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "hero": {
+      "type": "component",
+      "component": "home.hero",
+      "repeatable": false,
+      "required": true
+    },
+    "trustedLogos": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::brand-logo.brand-logo"
+    },
+    "servicesHeading": {
+      "type": "component",
+      "component": "shared.section-heading",
+      "repeatable": false,
+      "required": true
+    },
+    "serviceCategories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::service-category.service-category"
+    },
+    "whyUs": {
+      "type": "component",
+      "component": "home.why-us",
+      "repeatable": false,
+      "required": true
+    },
+    "regulatorsHeading": {
+      "type": "component",
+      "component": "shared.section-heading",
+      "repeatable": false,
+      "required": true
+    },
+    "regulatorLogos": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::brand-logo.brand-logo"
+    },
+    "story": {
+      "type": "component",
+      "component": "home.story",
+      "repeatable": false,
+      "required": true
+    },
+    "tickerCta": {
+      "type": "component",
+      "component": "home.cta-band",
+      "repeatable": false
+    },
+    "testimonialsHeading": {
+      "type": "component",
+      "component": "shared.section-heading",
+      "repeatable": false,
+      "required": true
+    },
+    "testimonials": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::testimonial.testimonial"
+    },
+    "recognitionHeading": {
+      "type": "component",
+      "component": "shared.section-heading",
+      "repeatable": false,
+      "required": true
+    },
+    "recognitions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::recognition.recognition"
+    },
+    "faqHeading": {
+      "type": "component",
+      "component": "shared.section-heading",
+      "repeatable": false,
+      "required": true
+    },
+    "faqCategories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::faq-category.faq-category"
+    },
+    "insightsHeading": {
+      "type": "component",
+      "component": "shared.section-heading",
+      "repeatable": false
+    },
+    "insights": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::insight.insight"
+    },
+    "finalCta": {
+      "type": "component",
+      "component": "home.cta-band",
+      "repeatable": false,
+      "required": true
+    },
+    "seo": {
+      "type": "component",
+      "component": "shared.seo",
+      "repeatable": false,
+      "required": true
+    }
+  }
+}

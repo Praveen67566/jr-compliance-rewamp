@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "career_gallery_items",
+  "info": {
+    "singularName": "career-gallery-item",
+    "pluralName": "career-gallery-items",
+    "displayName": "Career Gallery Item",
+    "description": "An ordered culture image selected by the Careers page."
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images"]
+    },
+    "alternativeText": {
+      "type": "string",
+      "required": true
+    },
+    "caption": {
+      "type": "string"
+    },
+    "sortOrder": {
+      "type": "integer",
+      "min": 0,
+      "required": true
+    }
+  }
+}

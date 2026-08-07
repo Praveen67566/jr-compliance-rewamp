@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_about_content_clusters",
+  "info": {
+    "displayName": "Content cluster"
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "items": {
+      "type": "component",
+      "component": "about.value-item",
+      "repeatable": true,
+      "required": true
+    }
+  }
+}

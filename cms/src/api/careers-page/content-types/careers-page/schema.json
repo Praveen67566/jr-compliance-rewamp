@@ -1,0 +1,96 @@
+{
+  "kind": "singleType",
+  "collectionName": "careers_pages",
+  "info": {
+    "singularName": "careers-page",
+    "pluralName": "careers-pages",
+    "displayName": "Careers Page",
+    "description": "Content for the Careers editorial route."
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "hero": {
+      "type": "component",
+      "component": "careers.hero",
+      "repeatable": false,
+      "required": true
+    },
+    "purpose": {
+      "type": "component",
+      "component": "careers.purpose",
+      "repeatable": false,
+      "required": true
+    },
+    "values": {
+      "type": "component",
+      "component": "careers.content-cluster",
+      "repeatable": false,
+      "required": true
+    },
+    "lifeAtJr": {
+      "type": "component",
+      "component": "careers.life-at-jr",
+      "repeatable": false,
+      "required": true
+    },
+    "careerGallery": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::career-gallery-item.career-gallery-item"
+    },
+    "openingsHeading": {
+      "type": "component",
+      "component": "shared.section-heading",
+      "repeatable": false,
+      "required": true
+    },
+    "careerOpenings": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::job-opening.job-opening"
+    },
+    "benefits": {
+      "type": "component",
+      "component": "careers.content-cluster",
+      "repeatable": false,
+      "required": true
+    },
+    "testimonialsHeading": {
+      "type": "component",
+      "component": "shared.section-heading",
+      "repeatable": false,
+      "required": true
+    },
+    "careerTestimonials": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::career-testimonial.career-testimonial"
+    },
+    "faqHeading": {
+      "type": "component",
+      "component": "shared.section-heading",
+      "repeatable": false,
+      "required": true
+    },
+    "careerFaqs": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::faq.faq"
+    },
+    "finalCta": {
+      "type": "component",
+      "component": "home.cta-band",
+      "repeatable": false,
+      "required": true
+    },
+    "seo": {
+      "type": "component",
+      "component": "shared.seo",
+      "repeatable": false,
+      "required": true
+    }
+  }
+}

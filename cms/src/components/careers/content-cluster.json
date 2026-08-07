@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_careers_content_clusters",
+  "info": {
+    "displayName": "Content cluster"
+  },
+  "options": {},
+  "attributes": {
+    "heading": {
+      "type": "component",
+      "component": "shared.section-heading",
+      "repeatable": false,
+      "required": true
+    },
+    "items": {
+      "type": "component",
+      "component": "about.value-item",
+      "repeatable": true,
+      "required": true
+    }
+  }
+}

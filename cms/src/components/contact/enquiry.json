@@ -1,0 +1,35 @@
+{
+  "collectionName": "components_contact_enquiries",
+  "info": {
+    "displayName": "Enquiry"
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "topics": {
+      "type": "component",
+      "component": "contact.topic",
+      "repeatable": true
+    },
+    "directCta": {
+      "type": "component",
+      "component": "shared.cta",
+      "repeatable": false,
+      "required": true
+    },
+    "formNote": {
+      "type": "text",
+      "required": true
+    }
+  }
+}

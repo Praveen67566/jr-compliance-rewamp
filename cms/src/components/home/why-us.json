@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_home_why_uses",
+  "info": {
+    "displayName": "Why us"
+  },
+  "options": {},
+  "attributes": {
+    "heading": {
+      "type": "component",
+      "component": "shared.section-heading",
+      "repeatable": false,
+      "required": true
+    },
+    "cards": {
+      "type": "component",
+      "component": "home.image-card",
+      "repeatable": true,
+      "required": true
+    }
+  }
+}

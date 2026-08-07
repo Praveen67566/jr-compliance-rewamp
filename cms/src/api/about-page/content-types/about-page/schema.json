@@ -1,0 +1,102 @@
+{
+  "kind": "singleType",
+  "collectionName": "about_pages",
+  "info": {
+    "singularName": "about-page",
+    "pluralName": "about-pages",
+    "displayName": "About Page",
+    "description": "Content for the About Us editorial route."
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "hero": {
+      "type": "component",
+      "component": "about.hero",
+      "repeatable": false,
+      "required": true
+    },
+    "overview": {
+      "type": "component",
+      "component": "about.overview",
+      "repeatable": false,
+      "required": true
+    },
+    "mantra": {
+      "type": "component",
+      "component": "about.content-cluster",
+      "repeatable": false,
+      "required": true
+    },
+    "storyHeading": {
+      "type": "component",
+      "component": "shared.section-heading",
+      "repeatable": false,
+      "required": true
+    },
+    "timelineEvents": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::timeline-event.timeline-event"
+    },
+    "whyPartner": {
+      "type": "component",
+      "component": "about.content-cluster",
+      "repeatable": false,
+      "required": true
+    },
+    "pioneers": {
+      "type": "component",
+      "component": "about.pioneers",
+      "repeatable": false,
+      "required": true
+    },
+    "teamHeading": {
+      "type": "component",
+      "component": "shared.section-heading",
+      "repeatable": false,
+      "required": true
+    },
+    "teamFeatureImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "teamCta": {
+      "type": "component",
+      "component": "shared.cta",
+      "repeatable": false,
+      "required": true
+    },
+    "teamMembers": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::team-member.team-member"
+    },
+    "achievementsHeading": {
+      "type": "component",
+      "component": "shared.section-heading",
+      "repeatable": false,
+      "required": true
+    },
+    "achievements": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::achievement.achievement"
+    },
+    "finalCta": {
+      "type": "component",
+      "component": "home.cta-band",
+      "repeatable": false,
+      "required": true
+    },
+    "seo": {
+      "type": "component",
+      "component": "shared.seo",
+      "repeatable": false,
+      "required": true
+    }
+  }
+}

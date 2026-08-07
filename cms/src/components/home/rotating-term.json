@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_home_rotating_terms",
+  "info": {
+    "displayName": "Rotating term"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

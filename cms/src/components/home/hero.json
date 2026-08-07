@@ -1,0 +1,44 @@
+{
+  "collectionName": "components_home_heroes",
+  "info": {
+    "displayName": "Hero"
+  },
+  "options": {},
+  "attributes": {
+    "titleBefore": {
+      "type": "string",
+      "required": true
+    },
+    "rotatingTerms": {
+      "type": "component",
+      "component": "home.rotating-term",
+      "repeatable": true,
+      "required": true
+    },
+    "titleAfter": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "cta": {
+      "type": "component",
+      "component": "shared.cta",
+      "repeatable": false,
+      "required": true
+    },
+    "heroImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"],
+      "required": true
+    },
+    "cards": {
+      "type": "component",
+      "component": "home.hero-card",
+      "repeatable": true
+    }
+  }
+}

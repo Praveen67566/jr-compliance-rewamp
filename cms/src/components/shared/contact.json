@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_shared_contacts",
+  "info": {
+    "displayName": "Contact"
+  },
+  "options": {},
+  "attributes": {
+    "phoneDisplay": {
+      "type": "string",
+      "required": true
+    },
+    "phoneE164": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "whatsAppUrl": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

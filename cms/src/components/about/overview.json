@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_about_overviews",
+  "info": {
+    "displayName": "Overview"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "stats": {
+      "type": "component",
+      "component": "about.stat",
+      "repeatable": true,
+      "required": true
+    }
+  }
+}

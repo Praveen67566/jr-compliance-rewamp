@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_home_stories",
+  "info": {
+    "displayName": "Story"
+  },
+  "options": {},
+  "attributes": {
+    "heading": {
+      "type": "component",
+      "component": "shared.section-heading",
+      "repeatable": false,
+      "required": true
+    },
+    "stats": {
+      "type": "component",
+      "component": "home.stat",
+      "repeatable": true,
+      "required": true
+    },
+    "featureImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "featureTitle": {
+      "type": "string"
+    },
+    "cta": {
+      "type": "component",
+      "component": "shared.cta",
+      "repeatable": false
+    }
+  }
+}
