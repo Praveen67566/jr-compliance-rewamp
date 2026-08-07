@@ -98,6 +98,23 @@ information hierarchy of the supplied reference:
   navy/cobalt panel, never a generic white drawer.
 - Header and section anchors use a `102px` scroll offset.
 
+## Editorial route system
+
+About Us, Careers, and Contact Us use the shared `SitePageShell` and the
+`RouteHero` / `RouteClosingCta` primitives. New editorial routes should extend
+those shared components before adding route-specific CSS.
+
+- Begin with a bluefield route hero: blueprint grid, one or two slow orbit
+  rings, a signal node, pale-blue copy, and an optional approved media frame.
+- Alternate dark bluefields with ice reading surfaces so long editorial content
+  stays easy to scan. Do not introduce an unrelated white marketing page.
+- Use numbered cards, timeline nodes, blue-glass panels, and understated image
+  overlays to create hierarchy. Cards may lift on hover, but content should
+  never move continuously.
+- Use a dark bluefield final CTA and the shared network footer for every route.
+- Page data must remain in an explicit `*-page` Strapi single type with a typed
+  local fallback; never hard-code route copy in a component.
+
 ## Component rules
 
 | Component | Required treatment |

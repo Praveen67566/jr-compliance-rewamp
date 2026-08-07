@@ -1,5 +1,4 @@
-import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
+import { SitePageShell } from "@/components/site-page-shell";
 import { Faq } from "@/components/home/faq";
 import { Hero } from "@/components/home/hero";
 import { ServiceStack } from "@/components/home/service-stack";
@@ -13,9 +12,7 @@ export function HomePage({ content }: HomePageProps) {
   const repeatedLogos = [...content.trustedLogos, ...content.trustedLogos];
 
   return (
-    <div className="site-shell">
-      <SiteHeader navigation={content.navigation} site={content.site} />
-      <main>
+    <SitePageShell footer={content.footer} navigation={content.navigation} site={content.site}>
         <Hero hero={content.hero} />
 
         <section className="logo-strip" aria-label="Trusted client brands">
@@ -159,8 +156,6 @@ export function HomePage({ content }: HomePageProps) {
             </a>
           </div>
         </section>
-      </main>
-      <SiteFooter footer={content.footer} site={content.site} />
-    </div>
+    </SitePageShell>
   );
 }

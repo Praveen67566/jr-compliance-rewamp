@@ -2,6 +2,10 @@ import type { HomepageContent } from "@/lib/types";
 
 type SiteFooterProps = Pick<HomepageContent, "site" | "footer">;
 
+function sharedHref(href: string) {
+  return href.startsWith("#") ? `/${href}` : href;
+}
+
 export function SiteFooter({ site, footer }: SiteFooterProps) {
   return (
     <footer className="site-footer" id="legal">
@@ -15,7 +19,7 @@ export function SiteFooter({ site, footer }: SiteFooterProps) {
       <div className="container footer-top">
         <div className="footer-brand-block">
           <div className="footer-brand-meta">
-            <a className="footer-brand" href="#top" aria-label={`${site.name} home`}>
+            <a className="footer-brand" href="/" aria-label={`${site.name} home`}>
               <img src={site.footerLogo} alt={site.name} />
             </a>
             <p>{site.footerTagline}</p>
@@ -49,7 +53,7 @@ export function SiteFooter({ site, footer }: SiteFooterProps) {
           <div className="footer-link-column">
             <span className="footer-label">Featured services</span>
             {footer.featuredLinks.map((link) => (
-              <a href={link.href} key={link.label}>
+              <a href={sharedHref(link.href)} key={link.label}>
                 {link.label}
               </a>
             ))}
@@ -59,7 +63,7 @@ export function SiteFooter({ site, footer }: SiteFooterProps) {
             <span className="footer-label">Popular Services</span>
             <div className="footer-popular-links">
               {footer.popularServices.map((link) => (
-                <a href={link.href} key={link.label}>
+                <a href={sharedHref(link.href)} key={link.label}>
                   {link.label}
                 </a>
               ))}
@@ -83,7 +87,7 @@ export function SiteFooter({ site, footer }: SiteFooterProps) {
         </div>
         <div className="footer-bottom-legal">
           {site.legalLinks.map((link) => (
-            <a href={link.href} key={link.label}>
+            <a href={sharedHref(link.href)} key={link.label}>
               {link.label}
             </a>
           ))}

@@ -9,6 +9,10 @@ type SiteHeaderProps = {
   site: SiteSettings;
 };
 
+function sharedHref(href: string) {
+  return href.startsWith("#") ? `/${href}` : href;
+}
+
 export function SiteHeader({ navigation, site }: SiteHeaderProps) {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -29,7 +33,7 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
     >
       <div className="header-shell container">
         <div className="header-brand-area">
-          <a className="brand" href="#top" aria-label={`${site.name} home`} onClick={closeAll}>
+          <a className="brand" href="/" aria-label={`${site.name} home`} onClick={closeAll}>
             <img src={site.logo} alt={site.name} />
           </a>
         </div>
@@ -55,7 +59,7 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
                       </span>
                     </button>
                   ) : (
-                    <a className="nav-link" href={item.href} onClick={closeAll}>
+                    <a className="nav-link" href={sharedHref(item.href)} onClick={closeAll}>
                       {item.label}
                     </a>
                   )}
@@ -64,7 +68,7 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
                     <div className="nav-popover">
                       <span className="popover-kicker">{item.label}</span>
                       {item.children?.map((child) => (
-                        <a href={child.href} key={child.label} onClick={closeAll}>
+                        <a href={sharedHref(child.href)} key={child.label} onClick={closeAll}>
                           <span>{child.label}</span>
                           <span aria-hidden="true">↗</span>
                         </a>
@@ -78,8 +82,8 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
         </div>
 
         <div className="header-utility-area">
-          <a className="header-cta" href="#contact">
-            Contact Us <span aria-hidden="true">↗</span>
+          <a className="header-cta" href={site.headerCta.href}>
+            {site.headerCta.label} <span aria-hidden="true">↗</span>
           </a>
 
           <button
@@ -99,19 +103,19 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
         <nav className="mobile-navigation container" aria-label="Mobile navigation">
           {navigation.map((item) => (
             <div className="mobile-nav-group" key={item.label}>
-              <a href={item.href} onClick={closeAll}>
+              <a href={sharedHref(item.href)} onClick={closeAll}>
                 {item.label}
                 <span aria-hidden="true">↗</span>
               </a>
               {item.children?.map((child) => (
-                <a className="mobile-subnav-link" href={child.href} key={child.label} onClick={closeAll}>
+                <a className="mobile-subnav-link" href={sharedHref(child.href)} key={child.label} onClick={closeAll}>
                   {child.label}
                 </a>
               ))}
             </div>
           ))}
-          <a className="mobile-contact-link" href="#contact" onClick={closeAll}>
-            Contact Us
+          <a className="mobile-contact-link" href={site.headerCta.href} onClick={closeAll}>
+            {site.headerCta.label}
           </a>
         </nav>
       ) : null}

@@ -10,6 +10,7 @@ export const fallbackHomepage: HomepageContent = {
     name: "JR Compliance",
     logo: "/images/jr-logo.svg",
     footerLogo: "/images/jr-footer-logo.svg",
+    headerCta: { label: "Contact Us", href: "/contact-us" },
     phone: "+91-1800-121-410-410",
     phoneHref: "tel:1800121410410",
     email: "support@jrcompliance.com",
@@ -72,8 +73,8 @@ export const fallbackHomepage: HomepageContent = {
         { label: "Australia", href: "#services" },
       ],
     },
-    { label: "Careers", href: "#contact" },
-    { label: "About Us", href: "#about" },
+    { label: "Careers", href: "/careers" },
+    { label: "About Us", href: "/about-us" },
   ],
   hero: {
     prefix: "Bridging",

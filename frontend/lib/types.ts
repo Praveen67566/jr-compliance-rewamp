@@ -61,6 +61,7 @@ export type SiteSettings = {
   name: string;
   logo: string;
   footerLogo: string;
+  headerCta: Link;
   phone: string;
   phoneHref: string;
   email: string;
@@ -69,9 +70,19 @@ export type SiteSettings = {
   legalLinks: Link[];
 };
 
-export type HomepageContent = {
+export type FooterContent = {
+  featuredLinks: Link[];
+  popularServices: Link[];
+  disclaimer: string[];
+};
+
+export type PageChromeContent = {
   site: SiteSettings;
   navigation: NavigationItem[];
+  footer: FooterContent;
+};
+
+export type HomepageContent = PageChromeContent & {
   hero: {
     prefix: string;
     rotatingWords: string[];
@@ -117,9 +128,208 @@ export type HomepageContent = {
     description: string;
     cta: Link;
   };
-  footer: {
-    featuredLinks: Link[];
-    popularServices: Link[];
-    disclaimer: string[];
+};
+
+export type AboutValue = {
+  title: string;
+  description: string;
+  image?: string;
+};
+
+export type TimelineEvent = {
+  period: string;
+  title: string;
+  description: string;
+};
+
+export type TeamMember = {
+  name: string;
+  role: string;
+  image?: string;
+  profileHref?: string;
+};
+
+export type Achievement = {
+  title: string;
+  description: string;
+  image?: string;
+};
+
+export type AboutPageContent = PageChromeContent & {
+  seo: {
+    title: string;
+    description: string;
+  };
+  hero: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    image?: string;
+    imageAlt: string;
+    cta: Link;
+  };
+  overview: {
+    title: string;
+    description: string;
+    stats: Metric[];
+  };
+  mantra: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    values: AboutValue[];
+  };
+  story: {
+    eyebrow: string;
+    title: string;
+    description?: string;
+    milestones: TimelineEvent[];
+  };
+  reasons: {
+    eyebrow: string;
+    title: string;
+    items: AboutValue[];
+  };
+  pioneers: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    stats: Metric[];
+  };
+  team: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    image?: string;
+    imageAlt: string;
+    members: TeamMember[];
+    cta: Link;
+  };
+  achievements: {
+    eyebrow: string;
+    title: string;
+    items: Achievement[];
+  };
+  closingCta: {
+    title: string;
+    description: string;
+    cta: Link;
+  };
+};
+
+export type CareerRole = {
+  title: string;
+  department: string;
+  location: string;
+  employmentType: string;
+  summary: string;
+  href: string;
+};
+
+export type CareerGalleryItem = {
+  src: string;
+  alt: string;
+};
+
+export type CareerTestimonial = {
+  quote: string;
+  name: string;
+  role: string;
+  image?: string;
+};
+
+export type CareersPageContent = PageChromeContent & {
+  seo: {
+    title: string;
+    description: string;
+  };
+  hero: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    cta: Link;
+  };
+  purpose: {
+    eyebrow: string;
+    title: string;
+    vision: string;
+    mission: string;
+  };
+  values: {
+    eyebrow: string;
+    title: string;
+    items: AboutValue[];
+  };
+  lifeAtJr: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    highlights: string[];
+    gallery: CareerGalleryItem[];
+  };
+  openings: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    roles: CareerRole[];
+  };
+  benefits: {
+    eyebrow: string;
+    title: string;
+    items: AboutValue[];
+  };
+  testimonials: {
+    eyebrow: string;
+    title: string;
+    items: CareerTestimonial[];
+  };
+  faqs: {
+    eyebrow: string;
+    title: string;
+    items: Faq[];
+  };
+  closingCta: {
+    title: string;
+    description: string;
+    cta: Link;
+  };
+};
+
+export type ContactPoint = {
+  label: string;
+  value: string;
+  href: string;
+  detail: string;
+  icon?: string;
+};
+
+export type ContactPageContent = PageChromeContent & {
+  seo: {
+    title: string;
+    description: string;
+  };
+  hero: {
+    eyebrow: string;
+    title: string;
+    description: string;
+  };
+  contactPoints: ContactPoint[];
+  enquiry: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    topics: string[];
+    directCta: Link;
+    formNote: string;
+  };
+  response: {
+    eyebrow: string;
+    title: string;
+    steps: AboutValue[];
+  };
+  closingCta: {
+    title: string;
+    description: string;
+    cta: Link;
   };
 };
