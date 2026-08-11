@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_registration_faq_sections",
+  "info": {
+    "displayName": "Registration FAQ section"
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "items": {
+      "type": "component",
+      "component": "registration.faq-item",
+      "repeatable": true,
+      "required": true,
+      "min": 1
+    }
+  }
+}

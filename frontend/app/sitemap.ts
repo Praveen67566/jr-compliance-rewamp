@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 
+import { companyRegistrationSlugs } from "@/data/company-registration-pages-fallback";
 import { publicSiteUrl } from "@/lib/site-url";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -26,5 +27,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.7,
     },
+    ...companyRegistrationSlugs.map((slug) => ({
+      url: new URL(`/corporate/${slug}`, siteUrl).toString(),
+      changeFrequency: "monthly" as const,
+      priority: 0.75,
+    })),
   ];
 }

@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_registration_text_items",
+  "info": {
+    "displayName": "Text item"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "text",
+      "required": true
+    }
+  }
+}

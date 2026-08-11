@@ -36,8 +36,10 @@ closed before a production launch:
    Keep `.env`, `.tmp/`, `public/uploads/`, `dist/`, and `.strapi/` ignored.
 4. **Use an isolated production database and migrate content deliberately.**
    Do not deploy the local SQLite database or enable the demo seed in
-   production. The CMS bootstrap can upgrade only the exact original demo
-   header-menu signature; it does not replace customized navigation records.
+   production. The CMS bootstrap can upgrade only an exact known demo
+   header-menu signature (the original flat menu or the previous categorized
+   menu with two placeholder Company Registration links); it does not replace
+   customized navigation records.
 
 The PostgreSQL driver (`pg@8.22.0`) is included in the CMS lockfile. The
 remaining database, media, audit, and source-control gates require deployment
@@ -114,6 +116,7 @@ DATABASE_POOL_MIN=2
 DATABASE_POOL_MAX=10
 
 SEED_DEMO_CONTENT=false
+SEED_COMPANY_REGISTRATION_PAGES=false
 
 # Same-VPS private publish notification; Nginx denies this endpoint publicly.
 NEXT_REVALIDATE_URL=http://127.0.0.1:8123/api/revalidate
@@ -146,9 +149,9 @@ makes relative Strapi media URLs browser-visible using this origin, and visitors
 cannot load a loopback URL from their own devices.
 
 Create a Strapi Content API token with only the read operations required for
-the five published single types and their populated content/media. Do not grant
-the public role content or upload access, and never send this token to the
-browser.
+the five published single types, the Company Registration Page collection, and
+their populated content/media. Do not grant the public role content or upload
+access, and never send this token to the browser.
 
 ## 24/7 VPS process supervision (PM2)
 
@@ -315,8 +318,9 @@ npm run strapi -- import --file /secure-backups/jr-cms-YYYY-MM-DD
 ```
 
 Do not add `--force` unless the target, backup, and recovery plan have been
-verified. Confirm all five single types are **Published**, media records point
-to durable storage, and the frontend token can read only published data.
+verified. Confirm all five single types and the nineteen Company Registration
+records are **Published**, media records point to durable storage, and the
+frontend token can read only published data.
 
 ### 4. Build the frontend
 

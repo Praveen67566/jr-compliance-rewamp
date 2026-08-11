@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_registration_detail_items",
+  "info": {
+    "displayName": "Detail item"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    }
+  }
+}

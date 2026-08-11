@@ -5,6 +5,7 @@ import type { Core } from "@strapi/strapi";
 
 import { withNextRevalidationSuppressed } from "../revalidation";
 
+import companyRegistrationPages from "./company-registration-pages.json";
 import {
   achievements,
   blocks,
@@ -44,6 +45,7 @@ const CONTENT_TYPES = {
   aboutPage: "api::about-page.about-page",
   careersPage: "api::careers-page.careers-page",
   contactPage: "api::contact-page.contact-page",
+  companyRegistrationPage: "api::company-registration-page.company-registration-page",
   serviceCategory: "api::service-category.service-category",
   service: "api::service.service",
   brandLogo: "api::brand-logo.brand-logo",
@@ -109,34 +111,86 @@ function textValue(value: unknown): string | undefined {
   return typeof value === "string" && value.length ? value : undefined;
 }
 
-function comparableLegacyHeaderMenu(value: unknown) {
+function timestampValue(value: unknown): number | undefined {
+  if (value instanceof Date) {
+    return value.getTime();
+  }
+
+  if (typeof value !== "string" && typeof value !== "number") {
+    return undefined;
+  }
+
+  const timestamp = new Date(value).getTime();
+  return Number.isFinite(timestamp) ? timestamp : undefined;
+}
+
+type ComparableLink = {
+  label?: string;
+  href?: string;
+  target: string;
+};
+
+type ComparableHeaderItem = {
+  label?: string;
+  href?: string;
+  children?: ComparableLink[];
+  categories?: Array<{ title?: string; links: ComparableLink[] }>;
+};
+
+function comparableLink(value: unknown): ComparableLink {
+  const link = objectValue(value);
+  return {
+    label: textValue(link.label),
+    href: textValue(link.href),
+    target: textValue(link.target) ?? "same_tab",
+  };
+}
+
+function comparableHeaderMenu(value: unknown): ComparableHeaderItem[] | null {
   if (!Array.isArray(value)) {
     return null;
   }
 
   return value.map((entry) => {
     const item = objectValue(entry);
-    const categories = Array.isArray(item.categories) ? item.categories : [];
-    if (categories.length) {
-      return null;
-    }
-
-    const children = (Array.isArray(item.children) ? item.children : []).map((child) => {
-      const link = objectValue(child);
+    const children = (Array.isArray(item.children) ? item.children : []).map(comparableLink);
+    const categories = (Array.isArray(item.categories) ? item.categories : []).map((entry) => {
+      const category = objectValue(entry);
       return {
-        label: textValue(link.label),
-        href: textValue(link.href),
-        target: textValue(link.target) ?? "same_tab",
+        title: textValue(category.title),
+        links: (Array.isArray(category.links) ? category.links : []).map(comparableLink),
       };
     });
     const comparable = {
       label: textValue(item.label),
       href: textValue(item.href),
       ...(children.length ? { children } : {}),
+      ...(categories.length ? { categories } : {}),
     };
 
     return comparable;
   });
+}
+
+function previousCategorizedHeaderMenu(): ComparableHeaderItem[] {
+  const menu = comparableHeaderMenu(initialSite.headerMenu) ?? [];
+
+  return menu.map((item) => ({
+    ...item,
+    ...(item.categories
+      ? {
+          categories: item.categories.map((category) => ({
+            ...category,
+            links: category.links.map((link) =>
+              link.label === "Indian Subsidiary" ||
+              link.label === "RBI Mutual Fund Company Registration"
+                ? { ...link, href: "/#services" }
+                : link,
+            ),
+          })),
+        }
+      : {}),
+  }));
 }
 
 /**
@@ -145,8 +199,7 @@ function comparableLegacyHeaderMenu(value: unknown) {
  */
 export async function migrateLegacyHeaderMenu(strapi: Core.Strapi): Promise<void> {
   const siteSettings = documentService(strapi, CONTENT_TYPES.siteSetting);
-  const existing = await siteSettings.findFirst({
-    status: "published",
+  const populate = {
     populate: {
       headerMenu: {
         populate: {
@@ -155,13 +208,38 @@ export async function migrateLegacyHeaderMenu(strapi: Core.Strapi): Promise<void
         },
       },
     },
-  });
+  };
+  const [existing, draft] = await Promise.all([
+    siteSettings.findFirst({ status: "published", ...populate }),
+    siteSettings.findFirst({ status: "draft", ...populate }),
+  ]);
 
-  if (
-    !existing ||
-    JSON.stringify(comparableLegacyHeaderMenu(existing.headerMenu)) !==
-      JSON.stringify(legacyHeaderMenu)
-  ) {
+  if (!existing) {
+    return;
+  }
+
+  const currentMenu = comparableHeaderMenu(existing.headerMenu);
+  const draftMenu = comparableHeaderMenu(draft?.headerMenu);
+  if (draft) {
+    const publishedUpdatedAt = timestampValue(existing.updatedAt);
+    const draftUpdatedAt = timestampValue(draft.updatedAt);
+    if (
+      publishedUpdatedAt === undefined ||
+      draftUpdatedAt === undefined ||
+      publishedUpdatedAt !== draftUpdatedAt ||
+      JSON.stringify(draftMenu) !== JSON.stringify(currentMenu)
+    ) {
+      // Publishing the menu also publishes the Site Setting draft. Never do
+      // that while any editor-managed Site Setting field has pending changes.
+      return;
+    }
+  }
+
+  const isOriginalFlatMenu = JSON.stringify(currentMenu) === JSON.stringify(legacyHeaderMenu);
+  const isPreviousCategorizedMenu =
+    JSON.stringify(currentMenu) === JSON.stringify(previousCategorizedHeaderMenu());
+
+  if (!isOriginalFlatMenu && !isPreviousCategorizedMenu) {
     return;
   }
 
@@ -171,7 +249,7 @@ export async function migrateLegacyHeaderMenu(strapi: Core.Strapi): Promise<void
     status: "published",
   });
   strapi.log.info(
-    "Migrated the original demo header menu to the categorized Corporate, Approval, and Global navigation.",
+    "Migrated the exact demo header menu to the current categorized Company Registration navigation.",
   );
 }
 
@@ -187,6 +265,109 @@ async function createPublished(
   data: Record<string, unknown>,
 ): Promise<SeedDocument> {
   return documentService(strapi, uid).create({ data, status: "published" });
+}
+
+type CompanyRegistrationSeedPage = (typeof companyRegistrationPages)[number];
+
+function companyRegistrationPageData(
+  page: CompanyRegistrationSeedPage,
+  sortOrder: number,
+): Record<string, unknown> {
+  return {
+    title: page.hero.title,
+    menuLabel: page.menuLabel,
+    slug: page.slug,
+    hero: {
+      eyebrow: page.hero.eyebrow,
+      description: page.hero.description,
+      cta: sameTab(page.hero.cta.label, page.hero.cta.href),
+    },
+    overview: {
+      eyebrow: page.overview.eyebrow,
+      title: page.overview.title,
+      paragraphs: page.overview.paragraphs.map((text) => ({ text })),
+    },
+    challenges: page.challenges,
+    advantages: page.advantages,
+    process: page.process,
+    whyChoose: page.whyChoose,
+    breakdown: {
+      eyebrow: page.breakdown.eyebrow,
+      title: page.breakdown.title,
+      groups: page.breakdown.groups.map((group) => ({
+        title: group.title,
+        items: group.items.map((text) => ({ text })),
+      })),
+    },
+    faqs: page.faqs,
+    finalCta: {
+      title: page.closingCta.title,
+      description: page.closingCta.description,
+      cta: sameTab(page.closingCta.cta.label, page.closingCta.cta.href),
+    },
+    seo: {
+      metaTitle: page.seo.title,
+      metaDescription: page.seo.description,
+      noIndex: false,
+    },
+    sortOrder,
+  };
+}
+
+async function createCompanyRegistrationPages(
+  strapi: Core.Strapi,
+  options: { onlyMissing?: boolean } = {},
+): Promise<number> {
+  const registrationPages = documentService(strapi, CONTENT_TYPES.companyRegistrationPage);
+  let created = 0;
+
+  for (const [sortOrder, page] of companyRegistrationPages.entries()) {
+    if (options.onlyMissing) {
+      const filters = { slug: { $eq: page.slug } };
+      const [draft, published] = await Promise.all([
+        registrationPages.findFirst({ filters, status: "draft" }),
+        registrationPages.findFirst({ filters, status: "published" }),
+      ]);
+      if (draft || published) {
+        continue;
+      }
+    }
+
+    await registrationPages.create({
+      data: companyRegistrationPageData(page, sortOrder),
+      status: "published",
+    });
+    created += 1;
+  }
+
+  return created;
+}
+
+/**
+ * Explicit local-only backfill for a CMS that already contains editor data.
+ * It creates only missing approved slugs and never updates existing records.
+ */
+export async function seedMissingCompanyRegistrationPages(strapi: Core.Strapi): Promise<void> {
+  if (process.env.SEED_COMPANY_REGISTRATION_PAGES !== "true") {
+    return;
+  }
+
+  const databaseClient = process.env.DATABASE_CLIENT ?? "sqlite";
+  if (process.env.NODE_ENV === "production" || databaseClient !== "sqlite") {
+    strapi.log.warn(
+      "JR Company Registration backfill refused: it is restricted to local SQLite and cannot run in production.",
+    );
+    return;
+  }
+
+  await withNextRevalidationSuppressed(strapi, async () => {
+    const created = await createCompanyRegistrationPages(strapi, { onlyMissing: true });
+    strapi.log.info(
+      created
+        ? `Created ${created} missing Company Registration page record${created === 1 ? "" : "s"}.`
+        : "Company Registration page backfill skipped: all approved slugs already exist.",
+    );
+  });
 }
 
 function mediaMimeType(source: string): string {
@@ -297,8 +478,8 @@ async function hasExistingEditorContent(strapi: Core.Strapi): Promise<boolean> {
 
 /**
  * Opt-in fresh-database seed. It uploads the approved local media copies and
- * creates published content for the complete current route scope. It never
- * overwrites editor data and it deliberately excludes legacy detail routes.
+ * creates published content for the complete current route scope, including
+ * the approved Company Registration detail pages. It never overwrites editor data.
  */
 export async function seedInitialContent(strapi: Core.Strapi): Promise<void> {
   if (process.env.SEED_DEMO_CONTENT !== "true") {
@@ -369,6 +550,8 @@ export async function seedInitialContent(strapi: Core.Strapi): Promise<void> {
       });
     }
   }
+
+  await createCompanyRegistrationPages(strapi);
 
   const faqCategoryDocuments: SeedDocument[] = [];
   for (const category of homeFaqCategories) {

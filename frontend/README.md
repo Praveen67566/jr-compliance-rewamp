@@ -1,8 +1,9 @@
 # JR Compliance frontend
 
 The active frontend is a Next.js 16 App Router rebuild of the JR Compliance
-home page plus `/about-us`, `/careers`, and `/contact-us`. It is intentionally
-separate from the legacy Webflow export in `../site`.
+home page, `/about-us`, `/careers`, `/contact-us`, and nineteen Company
+Registration pages under `/corporate/[slug]`. It is intentionally separate
+from the legacy Webflow export in `../site`.
 
 ## Run locally
 
@@ -28,17 +29,21 @@ canonical URL absolute in generated metadata; it does not expose credentials.
 
 ## Content architecture
 
-- `data/*-page-fallback.ts` is the safe, normalized legacy-content fallback
-  while Strapi is not live.
+- `data/*-page-fallback.ts` and
+  `data/company-registration-pages-fallback.ts` are the safe, normalized
+  legacy-content fallbacks while Strapi is not live.
 - `lib/types.ts` defines the shared shell and page UI contracts.
 - `lib/strapi.ts` is a server-only Strapi v5 adapter. It uses explicit REST
   population and maps `site-setting`, `home-page`, `about-page`,
-  `careers-page`, and `contact-page` into the UI contracts.
+  `careers-page`, `contact-page`, and exact-slug
+  `company-registration-page` collection entries into the UI contracts.
 - CMS link targets, collection `sortOrder` values, shared footer groups, and
   shared SEO are carried through the typed adapter rather than hard-coded in
   individual routes.
 - `components/site-page-shell.tsx` centralizes the shared header/footer;
   `components/editorial/` centralizes the Compliance Network route primitives.
+- `components/company-registration/company-registration-page.tsx` is the
+  Tailwind-first fixed template shared by all nineteen registration routes.
 - The CMS schema and editor setup are documented in `../cms/CONTENT_MODEL.md`.
 
 ## CMS publish revalidation

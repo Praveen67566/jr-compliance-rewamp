@@ -33,6 +33,8 @@ Make only the smallest safe change needed for the request.
 - Keep page content loading through `lib/content.ts` and `lib/strapi.ts`.
 - Keep TypeScript contracts in `lib/types.ts`.
 - Keep fallback content in `data/*-fallback.ts`.
+- Keep repeated Company Registration routes in `app/corporate/[slug]` with one
+  shared Tailwind page component and the fixed typed fallback contract.
 - Match the Compliance Network theme from `theme.md`.
 - Do not create a new color palette.
 - Do not hard-code editor-managed copy in components if it belongs in Strapi/fallback data.
@@ -46,6 +48,8 @@ Make only the smallest safe change needed for the request.
 - Keep Strapi REST population explicit in `frontend/lib/strapi.ts`.
 - Do not replace explicit populate paths with `populate=deep`.
 - Keep editable content, links, order, SEO, and media in Strapi/fallback data.
+- Use the dedicated `company-registration-page` collection for those service
+  routes; do not turn it into a generic page builder or dynamic zone.
 - If a CMS schema changes, update all related files together:
   - `cms/CONTENT_MODEL.md`
   - CMS schema files
@@ -100,4 +104,25 @@ If a command cannot be run, clearly explain why.
 - Tell me what validation passed or failed.
 
 ## Prompt:-
-Now complete the cms also according to added navbar don't change existing anything only make the cms complete according to the currently added navbar
+Company Registration :-
+Sole Proprietorship
+Nidhi Company
+NGO Registration
+Section 8 Company
+Partnership Firm
+Producer Company
+Indian Subsidiary
+Pvt Ltd Company
+Insurance Company
+RBI Micro Finance Company
+One Person Company (OPC)
+Public Limited Company
+RBI NBFC Registration
+Limited Liability Partnership (LLP)
+RBI Asset Reconstruction Registration
+RBI Mutual Fund Company Registration
+Foreign Company Reg.
+Trust Registration
+Society Registration
+Now lets start with company registration pages firstly every page exist in site/corporate nameing like similar what you have to do copy the content only and follow our theme and also project structure in a way
+that its easy to integrate strapi cms and follow a consistent design for all the pages and don't change structure or the pages already build and use tailwind css.

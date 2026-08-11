@@ -14,6 +14,7 @@ const ALL_PAGE_TAGS = [
   "jr-about-page",
   "jr-careers-page",
   "jr-contact-page",
+  "jr-company-registration-pages",
 ] as const;
 
 /**
@@ -27,6 +28,9 @@ const cacheTagsByUid: Record<string, readonly string[]> = {
   "api::about-page.about-page": ["jr-about-page"],
   "api::careers-page.careers-page": ["jr-careers-page"],
   "api::contact-page.contact-page": ["jr-contact-page"],
+  "api::company-registration-page.company-registration-page": [
+    "jr-company-registration-pages",
+  ],
   "api::service-category.service-category": ["jr-homepage"],
   "api::service.service": ["jr-homepage"],
   "api::brand-logo.brand-logo": ["jr-homepage"],

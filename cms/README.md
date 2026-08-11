@@ -6,6 +6,7 @@ This is the Strapi v5 TypeScript CMS for the active JR Compliance routes:
 - `/about-us` — `about-page`
 - `/careers` — `careers-page`
 - `/contact-us` — `contact-page`
+- `/corporate/[slug]` — `company-registration-page` collection (nineteen approved slugs)
 - shared header/footer — `site-setting`
 
 The exact editorial contract lives in [CONTENT_MODEL.md](./CONTENT_MODEL.md).
@@ -52,10 +53,26 @@ The seed uploads media with meaningful alternative text; editors should review
 each crop/caption before production publishing. It does not read from nor expose
 `site/assets` in the frontend.
 
+For an existing local SQLite CMS, use the narrower backfill once instead of the
+full demo seed. It creates only missing approved Company Registration slugs and
+never updates an editor's existing record:
+
+```bash
+# In cms/.env, for one local run only:
+SEED_DEMO_CONTENT=false
+SEED_COMPANY_REGISTRATION_PAGES=true
+npm run develop
+```
+
+After the completion log, set `SEED_COMPANY_REGISTRATION_PAGES=false` and
+restart. The backfill refuses production and non-SQLite databases. Existing
+deployment content must be moved through the reviewed Strapi transfer/import
+workflow instead of an automatic production write.
+
 ## Schema and editor policy
 
-The committed schemas define five single types, fourteen collection types, and
-thirty-five components. All editorial types use Draft & Publish. Page-selected
+The committed schemas define five single types, fifteen collection types, and
+forty-four components. All editorial types use Draft & Publish. Page-selected
 relations are intentionally unidirectional, ordered selections; the inverse
 pairs are only Service Category → Service and FAQ Category → FAQ.
 
@@ -67,10 +84,12 @@ The shared navbar is edited under **Site Setting → Header Menu**:
 - `children` remains available for a small single-level submenu, but should not
   be combined with `categories` on the same menu item.
 
-The fresh local seed includes all currently approved navbar categories and
-links. On startup, the CMS also migrates the exact original six-item demo menu
-to the categorized navbar. The check is idempotent and signature-based: a menu
-that was edited or already contains categories is not modified. Until an
+The fresh local seed includes all currently approved navbar categories, links,
+and nineteen Company Registration records. On startup, the CMS also migrates
+only an exact known demo-menu signature: either the original flat menu or the
+previous categorized seed whose Indian Subsidiary and Mutual Fund links still
+pointed to `/#services`. The check is idempotent and signature-based; any
+customized menu or pending Site Setting draft is left untouched. Until an
 unmatched custom menu is completed and published, the frontend retains its
 matching typed fallback.
 
@@ -83,7 +102,8 @@ Set permissions deliberately:
 
 - Public role: no reads for these content types and no Upload access.
 - `next-site-reader` API token: read-only access to the five single types,
-  listed collections, and Upload `find` only.
+  the `company-registration-page` collection, listed supporting collections,
+  and Upload `find` only.
 - Content Editor: create/read/update listed content and media, but no schema or
   delete access.
 - Publisher/Admin: editor access plus publish.
@@ -111,10 +131,12 @@ GET /api/home-page?status=published
 GET /api/about-page?status=published
 GET /api/careers-page?status=published
 GET /api/contact-page?status=published
+GET /api/company-registration-pages?filters[slug][$eq]=<slug>&status=published
 ```
 
-Relations and media are not populated by default. Keep the centralized explicit
-populate trees in `frontend/lib/strapi.ts`; do not switch them to `populate=deep`.
+Relations, media, and nested components are not populated by default. Keep the
+centralized explicit populate trees in `frontend/lib/strapi.ts`; do not switch
+them to `populate=deep`.
 
 ## Signed cache revalidation
 

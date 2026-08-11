@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_registration_overviews",
+  "info": {
+    "displayName": "Registration overview"
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "paragraphs": {
+      "type": "component",
+      "component": "registration.text-item",
+      "repeatable": true,
+      "required": true,
+      "min": 1
+    }
+  }
+}

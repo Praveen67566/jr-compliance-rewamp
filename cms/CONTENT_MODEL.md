@@ -1,10 +1,11 @@
-# Strapi v5 content model — homepage and editorial routes
+# Strapi v5 content model — homepage, editorial, and registration routes
 
-This is the CMS contract for the new Next.js homepage and the initial editorial
-routes: About Us, Careers, and Contact Us. It preserves useful legacy content
-from the corresponding `site/*.html` files, but does **not** preserve Webflow
-UI. Layout, motion, colours, and responsive behaviour belong in Next.js;
-editors only own the copy, links, ordering, and approved media.
+This is the CMS contract for the new Next.js homepage, the initial editorial
+routes (About Us, Careers, Contact Us), and the nineteen approved Company
+Registration routes. It preserves useful legacy content from the corresponding
+`site/*.html` and `site/corporate/*.html` files, but does **not** preserve
+Webflow UI. Layout, motion, colours, and responsive behaviour belong in
+Next.js; editors own copy, links, ordering, SEO, and approved media.
 
 Use named fields rather than a page-builder dynamic zone for these initial routes.
 That makes the front-end contract stable and easy for non-technical editors to
@@ -130,6 +131,28 @@ All `sortOrder` values are required integers, minimum `0`. The front end sorts
 children by this field as a safe fallback; each route's explicit relations
 determine which entries appear on that route.
 
+### `company-registration-page` — API: `api::company-registration-page.company-registration-page`
+
+One published record per approved `/corporate/[slug]` route. This is a fixed
+service-detail contract, not a generic page builder.
+
+| Field | Strapi field | Rules |
+| --- | --- | --- |
+| `title` | Short text | Required; public H1 and CMS record name |
+| `menuLabel` | Short text | Required; matches the Company Registration navbar label |
+| `slug` | UID from `title` | Required; exact route segment |
+| `hero` | `registration.hero` | Required |
+| `overview` | `registration.overview` | Required |
+| `challenges` | `registration.card-section` | Required; ordered page-specific cards |
+| `advantages` | `registration.card-section` | Required; ordered page-specific cards |
+| `process` | `registration.card-section` | Required; ordered six-step process |
+| `whyChoose` | `registration.card-section` | Required; ordered JR Compliance reasons |
+| `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
+| `faqs` | `registration.faq-section` | Required |
+| `finalCta` | `home.cta-band` | Required |
+| `seo` | `shared.seo` | Required |
+| `sortOrder` | Integer, minimum `0` | Required; route editorial order |
+
 | Type (API) | Fields | Relations |
 | --- | --- | --- |
 | **Service Category** (`service-category`, `service-categories`) | `name` short text*, `slug` UID from `name`*, `description` long text, `sortOrder` integer* | `services`: **one-to-many** to Service (inverse of `serviceCategory`) |
@@ -210,6 +233,15 @@ settings, colour pickers, Webflow IDs, or public form endpoints.
 | `contact.enquiry` | `eyebrow` short text, `title` short text*, `description` long text*, `topics` repeatable `contact.topic` component, `directCta` `shared.cta`*, `formNote` long text* |
 | `contact.response-step` | `title` short text*, `description` long text* |
 | `contact.response` | `eyebrow` short text, `title` short text*, `steps` repeatable `contact.response-step`* |
+| `registration.text-item` | `text` long text* |
+| `registration.detail-item` | `title` short text*, `description` long text* |
+| `registration.hero` | `eyebrow` short text*, `description` long text*, `cta` `shared.cta`*; page H1 comes from the parent `title` |
+| `registration.overview` | `eyebrow` short text*, `title` short text*, `paragraphs` repeatable `registration.text-item`* |
+| `registration.card-section` | `eyebrow` short text*, `title` short text*, `items` repeatable `registration.detail-item`* |
+| `registration.breakdown-group` | `title` short text*, `items` repeatable `registration.text-item`* |
+| `registration.breakdown-section` | `eyebrow` short text*, `title` short text*, `groups` repeatable `registration.breakdown-group`* |
+| `registration.faq-item` | `question` short text*, `answer` long text* |
+| `registration.faq-section` | `eyebrow` short text*, `title` short text*, `items` repeatable `registration.faq-item`* |
 
 ## Legacy content to seed
 
@@ -242,6 +274,7 @@ invent claims or silently repair source inconsistencies.
 | `/about-us` | `site/about-us.html` | Hero “Your #1 Partner for 360° Compliance Solutions”; 13+/100+/4.8 proof stats; the five Our Mantra cards; six dated timeline events (2013–14 through 2022); four “Why partner with us?” cards; Pioneers stats; 14 JRians; five achievement cards; final Contact Us CTA. |
 | `/careers` | `site/careers.html` | Hero, Vision/Mission, four values, culture gallery, five active openings, four benefits, six unique employee testimonials, four career FAQs, and final Contact Us CTA. Preserve job labels but have an editor validate legacy department/category inconsistencies before publishing. |
 | `/contact-us` | `site/contact-us.html` | “Let's Ensure Your Compliance Together”; phone, email, Bawana office address; direct-contact copy; future form labels/consent/success/error copy; final CTA anchored to the contact options. Do not copy the commented legacy Bitrix webhook or its credential-like URL. |
+| `/corporate/[slug]` (nineteen Company Registration routes) | Matching approved files under `site/corporate/` | Page-specific SEO, hero, overview, four challenges, four advantages, six process steps, Why JR cards, Eligibility/Documents/Who Needs It breakdown, FAQs, and shared final CTA. Exclude the duplicated private-company challenge block, hidden placeholder processes/tabs/resources, copied testimonials, Webflow lead form, and all legacy UI/transport code. |
 
 Copy the approved media into Strapi Media Library first. The local Next.js
 fallback copies are development safety nets only; a published Strapi record
@@ -273,7 +306,7 @@ attributes are flattened and documents use `documentId`; do not copy v4
 | Consumer | Allowed permissions |
 | --- | --- |
 | **Public role** | None for these content types or Upload. The browser never receives a Strapi token. |
-| **`next-site-reader` API token** | Custom, read-only: `find` for `site-setting`, `home-page`, `about-page`, `careers-page`, and `contact-page`; `find` and `findOne` for every listed collection type; Upload `find`. No create, update, delete, publish, or admin access. Store only as `STRAPI_API_TOKEN` on the Next server. |
+| **`next-site-reader` API token** | Custom, read-only: `find` for `site-setting`, `home-page`, `about-page`, `careers-page`, and `contact-page`; `find` and `findOne` for `company-registration-page` and every listed supporting collection type; Upload `find`. No create, update, delete, publish, or admin access. Store only as `STRAPI_API_TOKEN` on the Next server. |
 | **Content Editor admin role** | Content Manager create/read/update for the listed types and Media Library upload/edit. No schema access and no delete permission. |
 | **Publisher/Admin role** | Editor permissions plus publish. Content Type Builder remains development-only and developer-owned. |
 
@@ -285,6 +318,7 @@ GET /api/home-page?status=published
 GET /api/about-page?status=published
 GET /api/careers-page?status=published
 GET /api/contact-page?status=published
+GET /api/company-registration-pages?filters[slug][$eq]=<slug>&status=published
 ```
 
 Strapi does not populate relations, components, or media by default. The Next
@@ -305,22 +339,29 @@ plugins or issue a browser request per card. The API token is sent as
    public CMS URL. Never commit them.
 3. In local development, create the components above first, then the homepage
    and editorial collection types, then `site-setting`, `home-page`,
-   `about-page`, `careers-page`, and `contact-page`. Enable Draft & Publish on
-   all of them. Commit Strapi’s generated schemas to git; do not create schema
-   changes directly in production.
+   `about-page`, `careers-page`, `contact-page`, and the dedicated
+   `company-registration-page` collection. Enable Draft & Publish on all of
+   them. Commit Strapi’s generated schemas to git; do not create schema changes
+   directly in production.
 4. Configure the media provider and migrate the approved legacy images/logos.
    Add filename, alt text, and captions before selecting them in content.
 5. Create the service categories/services, logos, FAQ categories/FAQs,
    testimonials, recognitions, and optional insights. Set `sortOrder` values.
 6. Fill and publish `site-setting`, including the ordered Header Menu categories
-   and their ordered links, then fill the four page records and select the
-   intended ordered relation entries. Verify every link and media item.
+   and their ordered links, then fill the four single-page records and one
+   Company Registration record for each approved slug. Select the intended
+   ordered relations and verify every link and media item. An existing local
+   SQLite CMS may use the one-time
+   `SEED_COMPANY_REGISTRATION_PAGES=true` backfill to create only missing
+   approved slugs; it is refused in production and never updates an existing
+   record.
 7. Create the `next-site-reader` custom API token and apply the permissions
    above. Put `STRAPI_URL` and `STRAPI_API_TOKEN` in the Next server environment
    (never `NEXT_PUBLIC_*`).
-8. Wire the typed route fetchers to the five single-type endpoints with their
-   explicit populate contracts, render only published data, and add signed
-   Strapi publish webhooks to invalidate the matching Next cache tags.
+8. Wire the typed route fetchers to the five single-type endpoints and the
+   exact-slug registration collection query with explicit populate contracts,
+   render only published data, and add signed Strapi publish webhooks to
+   invalidate the matching Next cache tags.
 9. Test with an editor: change home or route hero copy, reorder a service/team
    member/opening, replace media, save a draft, publish it, and confirm the
    live page updates without a code change.

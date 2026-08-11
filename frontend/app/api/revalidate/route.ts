@@ -2,7 +2,10 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 
 import { revalidateTag } from "next/cache";
 
-import { strapiCacheTagBySlug, type SingleTypeSlug } from "@/lib/strapi";
+import {
+  strapiCacheTagBySlug,
+  type RevalidatableContentSlug,
+} from "@/lib/strapi";
 
 export const runtime = "nodejs";
 
@@ -26,13 +29,13 @@ function isValidSignature(body: string, signature: string | null, secret: string
   return received.length === expectedBuffer.length && timingSafeEqual(received, expectedBuffer);
 }
 
-function pageSlugFromModel(value: unknown): SingleTypeSlug | null {
+function pageSlugFromModel(value: unknown): RevalidatableContentSlug | null {
   if (typeof value !== "string") {
     return null;
   }
 
   return (
-    (Object.keys(strapiCacheTagBySlug) as SingleTypeSlug[]).find(
+    (Object.keys(strapiCacheTagBySlug) as RevalidatableContentSlug[]).find(
       (slug) => value === slug || value.endsWith(`.${slug}`) || value.includes(`::${slug}.`),
     ) ?? null
   );

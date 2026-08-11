@@ -1,7 +1,11 @@
 import type { Core } from "@strapi/strapi";
 
 import { registerNextRevalidation } from "./revalidation";
-import { migrateLegacyHeaderMenu, seedInitialContent } from "./seed";
+import {
+  migrateLegacyHeaderMenu,
+  seedInitialContent,
+  seedMissingCompanyRegistrationPages,
+} from "./seed";
 
 export default {
   /**
@@ -23,5 +27,6 @@ export default {
     registerNextRevalidation(strapi);
     await migrateLegacyHeaderMenu(strapi);
     await seedInitialContent(strapi);
+    await seedMissingCompanyRegistrationPages(strapi);
   },
 };

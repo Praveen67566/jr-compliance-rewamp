@@ -18,7 +18,7 @@ The main CMS flow is:
 
 1. Editors update content in Strapi.
 2. Strapi stores records in SQLite locally or PostgreSQL in production.
-3. The frontend fetches published single types and related collections through REST.
+3. The frontend fetches published single types and related collections through REST, including one Company Registration entry filtered by exact slug.
 4. `cms/src/revalidation.ts` can notify Next.js after publish changes.
 5. Next.js revalidates the affected cache tags and fetches fresh CMS content.
 
@@ -77,7 +77,11 @@ The main CMS flow is:
 ## App entry points
 
 `cms/src/index.ts`
-: Strapi lifecycle entry. On bootstrap it registers the Next.js revalidation hooks, safely upgrades the exact original demo header menu when present, and optionally runs the local seed.
+: Strapi lifecycle entry. On bootstrap it registers the Next.js revalidation
+  hooks, safely upgrades only an exact known demo-header signature (including
+  the two former Company Registration placeholder links), preserves any
+  pending Site Setting draft, and optionally runs the local seed or
+  missing-page backfill.
 
 `cms/src/revalidation.ts`
 : Signed webhook sender for Next.js cache revalidation. It watches Strapi document and media lifecycle events, maps changed CMS models to frontend cache tags, signs the payload with HMAC SHA-256, and sends it to `NEXT_REVALIDATE_URL`.
@@ -85,10 +89,21 @@ The main CMS flow is:
 ## Seed files
 
 `cms/src/seed/index.ts`
-: Opt-in local seed runner. It only runs when `SEED_DEMO_CONTENT=true`, refuses production, refuses non-SQLite databases, refuses existing content, uploads approved media from `frontend/public/images`, and creates published demo records.
+: Opt-in local seed runner. The full seed only runs when
+  `SEED_DEMO_CONTENT=true`, refuses production, refuses non-SQLite databases,
+  refuses existing content, uploads approved media from
+  `frontend/public/images`, and creates published demo records. The narrower
+  `SEED_COMPANY_REGISTRATION_PAGES=true` backfill is also local-SQLite-only and
+  adds missing approved registration slugs without overwriting editor records.
 
 `cms/src/seed/content.ts`
 : The actual seed content: shared settings, page content, service categories, services, logos, testimonials, recognitions, FAQs, team members, jobs, gallery items, and related records.
+
+`cms/src/seed/company-registration-pages.json`
+: A seed-time JSON mirror of the nineteen typed frontend registration
+  fallbacks. It contains editor data only and is converted to the dedicated
+  Strapi components by `seed/index.ts`; it contains no Webflow classes, scripts,
+  forms, or legacy asset URLs.
 
 ## API content types
 
@@ -117,6 +132,12 @@ Each content type folder follows the Strapi pattern:
 : Contact Us page content. Stores hero, contact methods, office/address content, enquiry copy, response steps, SEO, and CTA.
 
 ### Collection types
+
+`cms/src/api/company-registration-page/`
+: Dedicated detail-page records for the nineteen Company Registration slugs.
+  Each record uses the fixed hero, overview, challenges, advantages, process,
+  Why JR, breakdown, FAQ, closing CTA, and SEO fields; it is not a generic page
+  builder.
 
 `cms/src/api/service-category/`
 : Service category records used by the home Service Stack. Categories group services.
@@ -181,6 +202,10 @@ Strapi components are reusable field groups stored as JSON schemas in `cms/src/c
 
 `cms/src/components/contact/`
 : Contact page field groups: hero, contact points, enquiry topics, response steps, response content.
+
+`cms/src/components/registration/`
+: Fixed Company Registration field groups for hero copy, overview paragraphs,
+  detail cards, breakdown groups, FAQs, and their section wrappers.
 
 ## Admin customization
 

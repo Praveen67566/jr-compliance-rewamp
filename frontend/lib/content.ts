@@ -1,14 +1,24 @@
+import { cache } from "react";
+
 import { fallbackAboutPage } from "@/data/about-page-fallback";
 import { fallbackCareersPage } from "@/data/careers-page-fallback";
+import { companyRegistrationFallback } from "@/data/company-registration-pages-fallback";
 import { fallbackContactPage } from "@/data/contact-page-fallback";
 import { fallbackHomepage } from "@/data/homepage-fallback";
 import {
   getAboutPageFromStrapi,
   getCareersPageFromStrapi,
+  getCompanyRegistrationPageFromStrapi,
   getContactPageFromStrapi,
   getHomepageFromStrapi,
 } from "@/lib/strapi";
-import type { AboutPageContent, CareersPageContent, ContactPageContent, HomepageContent } from "@/lib/types";
+import type {
+  AboutPageContent,
+  CareersPageContent,
+  CompanyRegistrationPageContent,
+  ContactPageContent,
+  HomepageContent,
+} from "@/lib/types";
 
 export const getHomepage = cache(async function getHomepage(): Promise<HomepageContent> {
   return (await getHomepageFromStrapi(fallbackHomepage)) ?? fallbackHomepage;
@@ -25,4 +35,21 @@ export const getCareersPage = cache(async function getCareersPage(): Promise<Car
 export const getContactPage = cache(async function getContactPage(): Promise<ContactPageContent> {
   return (await getContactPageFromStrapi(fallbackContactPage)) ?? fallbackContactPage;
 });
-import { cache } from "react";
+
+export const getCompanyRegistrationPage = cache(async function getCompanyRegistrationPage(
+  slug: string,
+): Promise<CompanyRegistrationPageContent | null> {
+  const page = companyRegistrationFallback(slug);
+  if (!page) {
+    return null;
+  }
+
+  const fallback: CompanyRegistrationPageContent = {
+    ...page,
+    site: fallbackHomepage.site,
+    navigation: fallbackHomepage.navigation,
+    footer: fallbackHomepage.footer,
+  };
+
+  return (await getCompanyRegistrationPageFromStrapi(slug, fallback)) ?? fallback;
+});

@@ -8,6 +8,7 @@ import type {
   CareerRole,
   CareerTestimonial,
   CareersPageContent,
+  CompanyRegistrationPageContent,
   ContactPageContent,
   ContactPoint,
   Faq,
@@ -24,6 +25,8 @@ import type {
   NavigationItem,
   PageChromeContent,
   Recognition,
+  RegistrationBreakdownGroup,
+  RegistrationDetail,
   Service,
   ServiceCategory,
   Seo,
@@ -40,6 +43,7 @@ export type SingleTypeSlug =
   | "about-page"
   | "careers-page"
   | "contact-page";
+export type RevalidatableContentSlug = SingleTypeSlug | "company-registration-page";
 type PopulateValue = true | PopulateTree;
 
 interface PopulateTree {
@@ -50,12 +54,13 @@ const strapiUrl = process.env.STRAPI_URL?.replace(/\/$/, "");
 const strapiApiToken = process.env.STRAPI_API_TOKEN;
 
 /** Shared by the Strapi adapter and the signed publish-webhook receiver. */
-export const strapiCacheTagBySlug: Record<SingleTypeSlug, string> = {
+export const strapiCacheTagBySlug: Record<RevalidatableContentSlug, string> = {
   "site-setting": "jr-site-settings",
   "home-page": "jr-homepage",
   "about-page": "jr-about-page",
   "careers-page": "jr-careers-page",
   "contact-page": "jr-contact-page",
+  "company-registration-page": "jr-company-registration-pages",
 };
 
 /**
@@ -144,6 +149,19 @@ const populateTrees: Record<SingleTypeSlug, PopulateTree> = {
     finalCta: { cta: true },
     seo: { shareImage: true },
   },
+};
+
+const companyRegistrationPopulateTree: PopulateTree = {
+  hero: { cta: true },
+  overview: { paragraphs: true },
+  challenges: { items: true },
+  advantages: { items: true },
+  process: { items: true },
+  whyChoose: { items: true },
+  breakdown: { groups: { items: true } },
+  faqs: { items: true },
+  finalCta: { cta: true },
+  seo: { shareImage: true },
 };
 
 function isRecord(value: unknown): value is UnknownRecord {
@@ -1289,21 +1307,143 @@ function mapContactPage(
   };
 }
 
+type RegistrationCardSection = CompanyRegistrationPageContent["challenges"];
+
+function mapRegistrationDetails(
+  value: unknown,
+  fallback: RegistrationDetail[],
+): RegistrationDetail[] {
+  const items = orderedEntries(value)
+    .map((entry) => {
+      const item = record(entry);
+      const title = text(item.title);
+      const description = text(item.description);
+      return title && description ? { title, description } : null;
+    })
+    .filter((item): item is RegistrationDetail => Boolean(item));
+
+  return items.length ? items : fallback;
+}
+
+function mapRegistrationCardSection(
+  value: unknown,
+  fallback: RegistrationCardSection,
+): RegistrationCardSection {
+  const section = record(value);
+
+  return {
+    eyebrow: text(section.eyebrow) ?? fallback.eyebrow,
+    title: text(section.title) ?? fallback.title,
+    items: mapRegistrationDetails(section.items, fallback.items),
+  };
+}
+
+function mapRegistrationBreakdown(
+  value: unknown,
+  fallback: CompanyRegistrationPageContent["breakdown"],
+): CompanyRegistrationPageContent["breakdown"] {
+  const section = record(value);
+  const groups = orderedEntries(section.groups)
+    .map((entry) => {
+      const group = record(entry);
+      const title = text(group.title);
+      if (!title) {
+        return null;
+      }
+
+      const fallbackGroup = fallback.groups.find(
+        (candidate) => candidate.title.toLowerCase() === title.toLowerCase(),
+      );
+      const items = mapTextList(group.items, fallbackGroup?.items ?? []);
+      return items.length ? { title, items } : null;
+    })
+    .filter((group): group is RegistrationBreakdownGroup => Boolean(group));
+
+  return {
+    eyebrow: text(section.eyebrow) ?? fallback.eyebrow,
+    title: text(section.title) ?? fallback.title,
+    groups: groups.length ? groups : fallback.groups,
+  };
+}
+
+function mapRegistrationFaqSection(
+  value: unknown,
+  fallback: CompanyRegistrationPageContent["faqs"],
+): CompanyRegistrationPageContent["faqs"] {
+  const section = record(value);
+
+  return {
+    eyebrow: text(section.eyebrow) ?? fallback.eyebrow,
+    title: text(section.title) ?? fallback.title,
+    items: mapSimpleFaqs(section.items, fallback.items),
+  };
+}
+
+function mapCompanyRegistrationPage(
+  fallback: CompanyRegistrationPageContent,
+  rawPage: unknown,
+  rawSettings: unknown,
+): CompanyRegistrationPageContent {
+  const page = record(rawPage);
+  const chrome = mapPageChrome(fallback, rawSettings);
+  const hero = record(page.hero);
+  const overview = record(page.overview);
+  const finalCta = record(page.finalCta);
+
+  return {
+    ...fallback,
+    ...chrome,
+    slug: text(page.slug) ?? fallback.slug,
+    menuLabel: text(page.menuLabel) ?? fallback.menuLabel,
+    seo: mapSeo(page.seo, fallback.seo, record(rawSettings).defaultSeo),
+    hero: {
+      eyebrow: text(hero.eyebrow) ?? fallback.hero.eyebrow,
+      title: text(page.title) ?? fallback.hero.title,
+      description: text(hero.description) ?? fallback.hero.description,
+      cta: link(hero.cta, fallback.hero.cta),
+    },
+    overview: {
+      eyebrow: text(overview.eyebrow) ?? fallback.overview.eyebrow,
+      title: text(overview.title) ?? fallback.overview.title,
+      paragraphs: mapTextList(overview.paragraphs, fallback.overview.paragraphs),
+    },
+    challenges: mapRegistrationCardSection(page.challenges, fallback.challenges),
+    advantages: mapRegistrationCardSection(page.advantages, fallback.advantages),
+    process: mapRegistrationCardSection(page.process, fallback.process),
+    whyChoose: mapRegistrationCardSection(page.whyChoose, fallback.whyChoose),
+    breakdown: mapRegistrationBreakdown(page.breakdown, fallback.breakdown),
+    faqs: mapRegistrationFaqSection(page.faqs, fallback.faqs),
+    closingCta: {
+      title: text(finalCta.title) ?? fallback.closingCta.title,
+      description: text(finalCta.description) ?? fallback.closingCta.description,
+      cta: link(finalCta.cta, fallback.closingCta.cta),
+    },
+  };
+}
+
+function addPopulateTree(params: URLSearchParams, tree: PopulateTree, prefix = "populate") {
+  Object.entries(tree).forEach(([field, nested]) => {
+    const fieldPrefix = `${prefix}[${field}]`;
+    if (nested === true) {
+      params.set(fieldPrefix, "true");
+    } else {
+      addPopulateTree(params, nested, `${fieldPrefix}[populate]`);
+    }
+  });
+}
+
 function queryFor(slug: SingleTypeSlug): string {
   const params = new URLSearchParams({ status: "published" });
 
-  const addPopulateTree = (tree: PopulateTree, prefix = "populate") => {
-    Object.entries(tree).forEach(([field, nested]) => {
-      const fieldPrefix = `${prefix}[${field}]`;
-      if (nested === true) {
-        params.set(fieldPrefix, "true");
-      } else {
-        addPopulateTree(nested, `${fieldPrefix}[populate]`);
-      }
-    });
-  };
+  addPopulateTree(params, populateTrees[slug]);
+  return params.toString();
+}
 
-  addPopulateTree(populateTrees[slug]);
+function companyRegistrationQuery(slug: string): string {
+  const params = new URLSearchParams({ status: "published" });
+  params.set("filters[slug][$eq]", slug);
+  params.set("pagination[pageSize]", "1");
+  addPopulateTree(params, companyRegistrationPopulateTree);
   return params.toString();
 }
 
@@ -1323,6 +1463,30 @@ async function getSingleType(slug: SingleTypeSlug): Promise<unknown> {
 
   const body = (await response.json()) as { data?: unknown };
   return body.data;
+}
+
+async function getCompanyRegistrationEntry(slug: string): Promise<unknown> {
+  if (!strapiUrl || !strapiApiToken) {
+    return null;
+  }
+
+  const response = await fetch(
+    `${strapiUrl}/api/company-registration-pages?${companyRegistrationQuery(slug)}`,
+    {
+      headers: { Authorization: `Bearer ${strapiApiToken}` },
+      next: {
+        revalidate: 60,
+        tags: [strapiCacheTagBySlug["company-registration-page"]],
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error(`Strapi request for company-registration-page failed with ${response.status}`);
+  }
+
+  const body = (await response.json()) as { data?: unknown };
+  return asArray(body.data)[0] ?? null;
 }
 
 export async function getHomepageFromStrapi(
@@ -1403,6 +1567,30 @@ export async function getContactPageFromStrapi(
     return mapContactPage(fallback, page, settings);
   } catch (error) {
     console.error("Unable to load Contact content from Strapi; using fallback content.", error);
+    return null;
+  }
+}
+
+export async function getCompanyRegistrationPageFromStrapi(
+  slug: string,
+  fallback: CompanyRegistrationPageContent,
+): Promise<CompanyRegistrationPageContent | null> {
+  if (!strapiUrl || !strapiApiToken) {
+    return null;
+  }
+
+  try {
+    const [page, settings] = await Promise.all([
+      getCompanyRegistrationEntry(slug),
+      getSingleType("site-setting"),
+    ]);
+
+    return page ? mapCompanyRegistrationPage(fallback, page, settings) : null;
+  } catch (error) {
+    console.warn(
+      `Unable to load ${slug} from Strapi; using company-registration fallback content.`,
+      error,
+    );
     return null;
   }
 }

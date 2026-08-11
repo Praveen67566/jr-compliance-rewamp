@@ -6,10 +6,10 @@ This repository is a staged rebuild of JR Compliance. The old Webflow export is
 kept only as a **content and approved-media reference**. The new frontend is a
 standalone, responsive Next.js application with a Strapi v5 content boundary.
 
-The completed scope is the new home page plus the first shared-chrome editorial
-routes: `/about-us`, `/careers`, and `/contact-us`. The remaining legacy routes
-are still out of scope until their content models and destinations are
-validated deliberately.
+The completed scope is the new home page, the shared-chrome editorial routes
+(`/about-us`, `/careers`, `/contact-us`), and the first nineteen Company
+Registration detail routes under `/corporate/[slug]`. Other legacy routes stay
+out of scope until their content models and destinations are validated.
 
 ## Non-negotiable rules
 
@@ -35,8 +35,8 @@ validated deliberately.
 | --- | --- |
 | `site/` | 354-page legacy Webflow archive; matching legacy HTML files are content-only sources for the completed routes. |
 | `frontend/` | New Next.js 16 App Router application. This is the active frontend. |
-| `frontend/data/*-page-fallback.ts` | Design-stage, typed fallback content normalized from the matching legacy page. It keeps every completed route working before Strapi is deployed. |
-| `frontend/lib/types.ts` | Shared shell and rendering contracts (`HomepageContent`, `AboutPageContent`, `CareersPageContent`, `ContactPageContent`). |
+| `frontend/data/*-page-fallback.ts`, `frontend/data/company-registration-pages-fallback.ts` | Typed fallback content normalized from matching legacy pages. It keeps every completed route working before Strapi is deployed. |
+| `frontend/lib/types.ts` | Shared shell and rendering contracts, including the fixed `CompanyRegistrationPageContent` service-detail contract. |
 | `frontend/lib/strapi.ts` | Server-only Strapi v5 REST client, explicit route-specific populate paths, media URL handling, and schema-to-UI mappers. |
 | `frontend/components/` | Reusable shell components; `site-page-shell.tsx` centralizes header/footer, `editorial/` centralizes the Compliance Network route primitives, and route folders compose their pages. |
 | `frontend/app/globals.css` | Tailwind v4 theme tokens, baseline reset, shared utility primitives, anchor offsets, and reduced-motion support only. |
@@ -46,7 +46,7 @@ validated deliberately.
 | `frontend/postcss.config.mjs` | Tailwind v4 PostCSS integration. |
 | `frontend/public/images/` | Small selected copy of approved legacy logo/photo assets. `images/services/` preserves the 15 exact legacy service/flag SVGs; `images/services-blue/` holds their blue-theme derivatives used by the home fallback. Do not point new UI at `site/assets/`. |
 | `cms/` | Active Strapi v5 TypeScript project: schemas, core REST APIs, opt-in local seed, CMS-to-Next revalidation, editor setup, and PostgreSQL-capable configuration (`pg` is a production dependency). |
-| `cms/CONTENT_MODEL.md` | Definitive editorial contract: five single types, fourteen collections, and thirty-five components. Change it deliberately alongside the schemas and Next mapper. |
+| `cms/CONTENT_MODEL.md` | Definitive editorial contract: five single types, fifteen collections, and forty-four components. Change it deliberately alongside the schemas and Next mapper. |
 | `cms/README.md` | CMS local workflow, editor permissions, REST contract, seed policy, and revalidation behavior. |
 | `ecosystem.config.js` | PM2 process definition for the 24/7 Linux/VPS deployment: one frontend and one CMS process, bound to loopback-only private ports with no secrets in source. |
 | `prod.md` | Required production deployment and launch runbook for the frontend, CMS, PM2, Nginx/TLS, database, media, migration, secrets, and cache invalidation. |
@@ -95,10 +95,16 @@ validated deliberately.
   direct phone/email/location routes; a live enquiry form remains intentionally
   deferred until receiver, validation, consent handling, and spam protection
   are decided.
+- Nineteen Company Registration pages use one dynamic App Router route and one
+  fixed Tailwind template. Their approved legacy hero, overview, challenges,
+  advantages, process, breakdown, and FAQ content lives in a typed fallback and
+  the matching Strapi collection. Repeated private-company blocks, hidden
+  placeholder tabs/processes, Webflow forms, and copied resource sections were
+  deliberately excluded.
 - The Strapi v5 CMS is implemented in `cms/`: five single types (`site-setting`,
-  `home-page`, `about-page`, `careers-page`, `contact-page`), fourteen
-  collections, thirty-five components, and core REST route/controller/service
-  files for all nineteen types. All editorial content uses Draft & Publish;
+  `home-page`, `about-page`, `careers-page`, `contact-page`), fifteen
+  collections, forty-four components, and core REST route/controller/service
+  files for all twenty types. All editorial content uses Draft & Publish;
   i18n is intentionally off.
 - Every active page and shared header/footer has a typed CMS mapping. CMS
   controls copy, links/targets, order, SEO, imagery/alt text, shared navigation,
@@ -107,8 +113,11 @@ validated deliberately.
 - The local seed is intentionally opt-in. It creates approved demo content and
   media only for a fresh local SQLite database, creates it as **Published**, and
   refuses production/non-SQLite/existing editor content. An empty Draft tab is
-  expected before seeding; use the Published tab after a successful seed.
-- The frontend emits an app icon, `robots.txt`, and a sitemap for the four
+  expected before seeding; use the Published tab after a successful seed. A
+  separate local-only `SEED_COMPANY_REGISTRATION_PAGES=true` backfill can add
+  missing approved registration slugs to an existing SQLite CMS without
+  overwriting editor records.
+- The frontend emits an app icon, `robots.txt`, and a sitemap for all twenty-three
   active routes. It uses `SITE_URL` for the production origin and has baseline
   response hardening headers; the host still needs TLS-edge HSTS, rate limiting,
   and a tested CSP for the selected CMS/media origin.
@@ -145,6 +154,11 @@ to `/#services` until validated detail pages are migrated.
 - `site/contact-us.html`: Contact hero, phone/email/Bawana office details,
   contact copy, direct CTA, and the legacy future-form copy. Do not migrate its
   commented credential-like webhook.
+- The nineteen approved files under `site/corporate/` matching the Company
+  Registration navbar slugs: service hero/overview, four challenges, four
+  advantages, six process steps, eligibility/documents/audience breakdown, and
+  FAQs. These files are content-only sources; shared Webflow template artifacts
+  and unverified duplicate sections are not migrated.
 
 ## Strapi integration behavior
 
@@ -152,7 +166,8 @@ to `/#services` until validated detail pages are migrated.
    source.
 2. With `STRAPI_URL` and a server-only `STRAPI_API_TOKEN`, the app requests the
    published `site-setting` plus the matching `home-page`, `about-page`,
-   `careers-page`, or `contact-page` single type every 60 seconds.
+   `careers-page`, or `contact-page` single type, or filters the published
+   `company-registration-pages` collection by exact slug, every 60 seconds.
 3. `frontend/lib/strapi.ts` explicitly populates only the nested relations and
    media each route requires. Do not replace this with `populate=deep`.
 4. The adapter maps the documented Strapi v5 fields to typed page contracts; it
@@ -170,9 +185,11 @@ stay `STRAPI_API_TOKEN` (not `NEXT_PUBLIC_*` and not the old `STRAPI_TOKEN`).
 The CMS is implemented, not a blueprint. A fresh isolated SQLite runtime smoke
 has verified that Strapi starts, the opt-in seed completes, anonymous reads are
 denied, and a disposable read-only API token can fetch all five published single
-types. Frontend runtime smoke has verified both fallback-mode rendering and a
-seeded CMS-to-Next end-to-end flow for all four public routes, plus signed
-webhook handling.
+types. Frontend runtime smoke has verified fallback-mode rendering and the
+seeded CMS-to-Next flow for the original four public routes, plus signed webhook
+handling. The nineteen Company Registration routes added later are covered by
+typed and production-build validation; repeat the runtime CMS smoke after those
+collection entries are imported into the target environment.
 
 The production integration still requires a real PostgreSQL database, durable
 object/media storage, production secrets, content migration, and a real
@@ -237,8 +254,9 @@ breaking changes.
    obtain a formal security risk acceptance before any launch).
 2. Choose/configure durable CMS media storage, provision PostgreSQL, rehearse
    encrypted content/media migration on staging, and follow `prod.md`.
-3. Implement individual service/detail pages one at a time, using the CMS
-   service model and validated URL slugs.
+3. Continue with the next approved service category using a dedicated fixed
+   content contract and validated URL slugs; do not widen the Company
+   Registration model into a generic page builder.
 4. Add real enquiry and job-application integrations only after the target
    receiver, validation, consent copy, and spam protection are explicitly
    decided.

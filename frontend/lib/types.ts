@@ -424,3 +424,74 @@ export type ContactPageContent = PageChromeContent & {
     cta: Link;
   };
 };
+
+/** A title-and-description pair used by the fixed registration-page sections. */
+export type RegistrationDetail = {
+  title: string;
+  description: string;
+};
+
+/** One named group in the service breakdown (for example, Documents). */
+export type RegistrationBreakdownGroup = {
+  title: string;
+  items: string[];
+};
+
+/**
+ * Editor-managed content shared by every Company Registration detail route.
+ * The shape is deliberately fixed: it is a service contract, not a generic
+ * page builder, so every route keeps the same information architecture.
+ */
+export type CompanyRegistrationPageData = {
+  slug: string;
+  menuLabel: string;
+  seo: Seo;
+  hero: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    cta: Link;
+  };
+  overview: {
+    eyebrow: string;
+    title: string;
+    paragraphs: string[];
+  };
+  challenges: {
+    eyebrow: string;
+    title: string;
+    items: RegistrationDetail[];
+  };
+  advantages: {
+    eyebrow: string;
+    title: string;
+    items: RegistrationDetail[];
+  };
+  process: {
+    eyebrow: string;
+    title: string;
+    items: RegistrationDetail[];
+  };
+  whyChoose: {
+    eyebrow: string;
+    title: string;
+    items: RegistrationDetail[];
+  };
+  breakdown: {
+    eyebrow: string;
+    title: string;
+    groups: RegistrationBreakdownGroup[];
+  };
+  faqs: {
+    eyebrow: string;
+    title: string;
+    items: Faq[];
+  };
+  closingCta: {
+    title: string;
+    description: string;
+    cta: Link;
+  };
+};
+
+export type CompanyRegistrationPageContent = PageChromeContent & CompanyRegistrationPageData;

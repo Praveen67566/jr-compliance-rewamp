@@ -134,8 +134,26 @@ those shared components before adding route-specific CSS.
   overlays to create hierarchy. Cards may lift on hover, but content should
   never move continuously.
 - Use a dark bluefield final CTA and the shared network footer for every route.
-- Page data must remain in an explicit `*-page` Strapi single type with a typed
-  local fallback; never hard-code route copy in a component.
+- Page data must remain in an explicit route-specific Strapi type with a typed
+  local fallback. Use a single type for unique routes and a dedicated
+  collection for repeated detail routes; never hard-code editor copy in a
+  component or widen the model into a generic page builder.
+
+### Company Registration detail system
+
+- All `/corporate/[slug]` Company Registration pages share one fixed visual and
+  content sequence: bluefield hero, ice overview, dark challenges, ice
+  advantages, numbered process, cobalt Why JR field, ice breakdown, FAQ, and
+  the shared closing CTA/footer.
+- Use Tailwind utilities for the complete detail-page composition. The network
+  grid and orbit treatment may also use Tailwind arbitrary gradients; do not
+  add a page stylesheet when utilities remain readable.
+- Preserve the 1320px shell and the documented section rhythm. Cards may adapt
+  from four to two to one column, while six process steps adapt from three to
+  two to one column without horizontal scrolling.
+- Dense service copy belongs on ice or restrained dark-blue cards with readable
+  line length. Native `details`/`summary` is preferred for static service FAQs
+  because it retains keyboard behavior without client JavaScript.
 
 ## Component rules
 
