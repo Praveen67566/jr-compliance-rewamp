@@ -17,7 +17,7 @@ export function RouteClosingCta({
   return (
     <section className="route-closing-cta">
       <div className="route-closing-grid" aria-hidden="true" />
-      <div className="container route-closing-inner">
+      <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px] route-closing-inner">
         <div>
           <span className="eyebrow eyebrow-light">{eyebrow}</span>
           <h2>{title}</h2>

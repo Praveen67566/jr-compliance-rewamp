@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "../components/site-header.css";
+import "../components/home/home.css";
+import "../components/site-footer.css";
+import "../components/editorial/editorial.css";
+import "./animations.css";
+import "./responsive.css";
 
 export const metadata: Metadata = {
   title: "JR Compliance | Global Compliance Consultants",

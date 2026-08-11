@@ -14,7 +14,7 @@ export function ContactPage({ content }: ContactPageProps) {
       <RouteHero {...content.hero} />
 
       <section className="contact-points-section section" id="contact-options">
-        <div className="container">
+        <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
           <div className="route-section-heading">
             <div>
               <span className="eyebrow">Contact options</span>
@@ -49,7 +49,7 @@ export function ContactPage({ content }: ContactPageProps) {
       </section>
 
       <section className="contact-enquiry-section section">
-        <div className="container contact-enquiry-layout">
+        <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px] contact-enquiry-layout">
           <div className="contact-enquiry-copy">
             <span className="eyebrow eyebrow-light">{content.enquiry.eyebrow}</span>
             <h2>{content.enquiry.title}</h2>
@@ -78,7 +78,7 @@ export function ContactPage({ content }: ContactPageProps) {
       </section>
 
       <section className="contact-response-section section">
-        <div className="container">
+        <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
           <div className="route-section-heading">
             <div>
               <span className="eyebrow">{content.response.eyebrow}</span>

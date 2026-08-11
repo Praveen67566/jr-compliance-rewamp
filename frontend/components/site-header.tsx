@@ -32,7 +32,7 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
         }
       }}
     >
-      <div className="header-shell container">
+      <div className="header-shell site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
         <div className="header-brand-area">
           <a className="brand" href="/" aria-label={`${site.name} home`} onClick={closeAll}>
             <img src={site.logo} alt={site.name} />
@@ -111,7 +111,7 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
       </div>
 
       {mobileOpen ? (
-        <nav className="mobile-navigation container" aria-label="Mobile navigation">
+        <nav className="mobile-navigation site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]" aria-label="Mobile navigation">
           {navigation.map((item) => (
             <div className="mobile-nav-group" key={item.label}>
               <a href={sharedHref(item.href)} {...linkTargetProps(item)} onClick={closeAll}>

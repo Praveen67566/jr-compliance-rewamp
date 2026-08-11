@@ -18,7 +18,7 @@ export function RouteHero({ eyebrow, title, description, cta, image, imageAlt }:
       <div className="route-hero-orbit route-hero-orbit--one" aria-hidden="true" />
       <div className="route-hero-orbit route-hero-orbit--two" aria-hidden="true" />
 
-      <div className="container route-hero-layout">
+      <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px] route-hero-layout">
         <div className="route-hero-copy">
           <span className="eyebrow eyebrow-light">{eyebrow}</span>
           <h1>{title}</h1>

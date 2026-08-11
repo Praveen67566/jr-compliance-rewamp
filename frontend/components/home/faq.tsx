@@ -20,7 +20,7 @@ export function Faq({ faqs }: FaqProps) {
 
   return (
     <section className="faq-section section" id="faq">
-      <div className="container faq-layout">
+      <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px] faq-layout">
         <div className="faq-intro">
           {faqs.eyebrow ? <span className="eyebrow">{faqs.eyebrow}</span> : null}
           <h2>{faqs.title}</h2>

@@ -39,7 +39,11 @@ validated deliberately.
 | `frontend/lib/types.ts` | Shared shell and rendering contracts (`HomepageContent`, `AboutPageContent`, `CareersPageContent`, `ContactPageContent`). |
 | `frontend/lib/strapi.ts` | Server-only Strapi v5 REST client, explicit route-specific populate paths, media URL handling, and schema-to-UI mappers. |
 | `frontend/components/` | Reusable shell components; `site-page-shell.tsx` centralizes header/footer, `editorial/` centralizes the Compliance Network route primitives, and route folders compose their pages. |
-| `frontend/app/globals.css` | Original responsive visual system and CSS-only motion, with reduced-motion support. |
+| `frontend/app/globals.css` | Tailwind v4 theme tokens, baseline reset, shared utility primitives, anchor offsets, and reduced-motion support only. |
+| `frontend/app/animations.css` | Shared CSS-only keyframes for the Compliance Network ambient motion. |
+| `frontend/app/responsive.css` | Responsive parity rules for the existing component visuals; keep route-specific rules out of `globals.css`. |
+| `frontend/components/site-header.css`, `site-footer.css`, `home/home.css`, `editorial/editorial.css` | Component-owned Compliance Network artwork, card treatments, pseudo-elements, and layout details. They preserve the current visual output while keeping the stylesheet surface close to its owner. |
+| `frontend/postcss.config.mjs` | Tailwind v4 PostCSS integration. |
 | `frontend/public/images/` | Small selected copy of approved legacy logo/photo assets. `images/services/` preserves the 15 exact legacy service/flag SVGs; `images/services-blue/` holds their blue-theme derivatives used by the home fallback. Do not point new UI at `site/assets/`. |
 | `cms/` | Active Strapi v5 TypeScript project: schemas, core REST APIs, opt-in local seed, CMS-to-Next revalidation, editor setup, and PostgreSQL-capable configuration (`pg` is a production dependency). |
 | `cms/CONTENT_MODEL.md` | Definitive editorial contract: five single types, fourteen collections, and thirty-four components. Change it deliberately alongside the schemas and Next mapper. |
@@ -73,6 +77,7 @@ validated deliberately.
 - Every home-page surface now uses the Compliance Network palette: navy,
   cobalt, electric blue, sky blue, and ice-blue reading surfaces only.
 - `prefers-reduced-motion` disables decorative animation.
+- Tailwind v4 is the frontend utility layer. Shared containers, section rhythm, eyebrows, reset, fonts, and responsive spacing use Tailwind; complex bluefield art, pseudo-elements, and keyframes stay in small owner-oriented stylesheets so visual parity is retained without a monolithic global file.
 - Content in the fallback was normalized for encoding issues from the legacy
   export (for example curly quotes and em dashes).
 - The old post-footer duplicate BIS FAQ was deliberately excluded as a legacy

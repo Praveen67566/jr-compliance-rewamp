@@ -48,6 +48,26 @@ specific palette.
 Use pale-blue translucent borders on dark surfaces, not pure white borders.
 Use `#061a43` / `#0b315f` for dark text on ice-blue reading surfaces.
 
+## Implementation and CSS ownership
+
+Tailwind v4 is the default implementation layer for this theme. The approved
+tokens above are exposed to Tailwind from `frontend/app/globals.css`; use those
+tokens and arbitrary values based on them rather than inventing a parallel
+palette.
+
+- Use Tailwind utilities first for layout, spacing, sizing, typography,
+  responsive changes, borders, and standard interactive states.
+- Keep `frontend/app/globals.css` limited to tokens, reset/base behavior,
+  shared primitives, anchor offsets, and reduced-motion support.
+- Keep component-specific visual work beside its owner: header, home, footer,
+  and editorial styles are separated under `frontend/components/`; shared
+  ambient keyframes and existing cross-component responsive parity rules live
+  in `frontend/app/animations.css` and `frontend/app/responsive.css`.
+- Use CSS only where utilities would obscure the design: multi-layer bluefield
+  gradients, blueprint masks, pseudo-elements, orbit artwork, and keyframes.
+- Preserve exact rendered values when migrating an existing surface. This is a
+  code-organization change, not authorization to redesign a component.
+
 ## Typography
 
 - `--display` is for page headlines, section statements, metric values, and

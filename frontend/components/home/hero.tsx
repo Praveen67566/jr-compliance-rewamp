@@ -49,7 +49,7 @@ export function Hero({ hero }: HeroProps) {
       <div className="hero-orb hero-orb-one" aria-hidden="true" />
       <div className="hero-orb hero-orb-two" aria-hidden="true" />
 
-      <div className="container hero-layout">
+      <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px] hero-layout">
         <div className="hero-copy">
           <div className="hero-eyebrow">
             <span className="status-dot" /> Compliance Consultants

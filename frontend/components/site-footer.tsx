@@ -27,7 +27,7 @@ export function SiteFooter({ site, footer }: SiteFooterProps) {
         <span className="footer-network-node footer-network-node--two" />
       </div>
 
-      <div className="container footer-top">
+      <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px] footer-top">
         <div className="footer-brand-block">
           <div className="footer-brand-meta">
             <a className="footer-brand" href="/" aria-label={`${site.name} home`}>
@@ -93,7 +93,7 @@ export function SiteFooter({ site, footer }: SiteFooterProps) {
         </div>
       </div>
 
-      <div className="container footer-disclaimer">
+      <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px] footer-disclaimer">
         {legalNotices.map((notice, index) => (
           <div className="footer-notice" key={`${notice.title}-${index}`}>
             <span className="footer-label">{notice.title}</span>
@@ -106,7 +106,7 @@ export function SiteFooter({ site, footer }: SiteFooterProps) {
         ))}
       </div>
 
-      <div className="container footer-bottom">
+      <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px] footer-bottom">
         <div className="footer-bottom-identity">
           <span>{site.copyrightText}</span>
         </div>

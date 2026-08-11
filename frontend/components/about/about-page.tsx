@@ -42,7 +42,7 @@ export function AboutPage({ content }: AboutPageProps) {
       <RouteHero {...content.hero} />
 
       <section className="about-proof-section">
-        <div className="container about-proof-grid">
+        <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px] about-proof-grid">
           <div className="about-proof-copy">
             <span className="eyebrow">Our foundation</span>
             <h2>{content.overview.title}</h2>
@@ -61,7 +61,7 @@ export function AboutPage({ content }: AboutPageProps) {
       </section>
 
       <section className="about-mantra-section section">
-        <div className="container">
+        <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
           <div className="route-section-heading about-section-heading">
             <div>
               <span className="eyebrow eyebrow-light">{content.mantra.eyebrow}</span>
@@ -84,7 +84,7 @@ export function AboutPage({ content }: AboutPageProps) {
       </section>
 
       <section className="about-story-section section">
-        <div className="container">
+        <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
           <div className="route-section-heading">
             <div>
               <span className="eyebrow">{content.story.eyebrow}</span>
@@ -106,7 +106,7 @@ export function AboutPage({ content }: AboutPageProps) {
       </section>
 
       <section className="about-reasons-section section">
-        <div className="container">
+        <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
           <div className="route-section-heading route-section-heading--light">
             <div>
               <span className="eyebrow eyebrow-light">{content.reasons.eyebrow}</span>
@@ -128,7 +128,7 @@ export function AboutPage({ content }: AboutPageProps) {
       </section>
 
       <section className="about-pioneers-section section">
-        <div className="container about-pioneers-layout">
+        <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px] about-pioneers-layout">
           <div>
             <span className="eyebrow">{content.pioneers.eyebrow}</span>
             <h2>{content.pioneers.title}</h2>
@@ -146,7 +146,7 @@ export function AboutPage({ content }: AboutPageProps) {
       </section>
 
       <section className="about-team-section section" id="team">
-        <div className="container">
+        <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
           <div className="about-team-heading">
             <div>
               <span className="eyebrow eyebrow-light">{content.team.eyebrow}</span>
@@ -171,7 +171,7 @@ export function AboutPage({ content }: AboutPageProps) {
       </section>
 
       <section className="about-achievements-section section">
-        <div className="container">
+        <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
           <div className="route-section-heading">
             <div>
               <span className="eyebrow">{content.achievements.eyebrow}</span>

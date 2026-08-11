@@ -46,7 +46,7 @@ export function ServiceStack({ services }: ServiceStackProps) {
     <section className={`services-section services-section--${activeCategory.id} section`} id="services">
       <span className="services-ambient services-ambient--one" aria-hidden="true" />
       <span className="services-ambient services-ambient--two" aria-hidden="true" />
-      <div className="container">
+      <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
         <div className="section-heading services-heading">
             <div className="services-heading-copy">
               <span className="eyebrow">{services.eyebrow}</span>

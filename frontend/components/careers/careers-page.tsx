@@ -14,7 +14,7 @@ export function CareersPage({ content }: CareersPageProps) {
       <RouteHero {...content.hero} />
 
       <section className="careers-purpose-section section">
-        <div className="container">
+        <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
           <div className="route-section-heading">
             <div>
               <span className="eyebrow">{content.purpose.eyebrow}</span>
@@ -37,7 +37,7 @@ export function CareersPage({ content }: CareersPageProps) {
       </section>
 
       <section className="careers-values-section section">
-        <div className="container">
+        <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
           <div className="route-section-heading route-section-heading--light">
             <div>
               <span className="eyebrow eyebrow-light">{content.values.eyebrow}</span>
@@ -59,7 +59,7 @@ export function CareersPage({ content }: CareersPageProps) {
       </section>
 
       <section className="careers-life-section section">
-        <div className="container">
+        <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
           <div className="route-section-heading careers-life-heading">
             <div>
               <span className="eyebrow">{content.lifeAtJr.eyebrow}</span>
@@ -86,7 +86,7 @@ export function CareersPage({ content }: CareersPageProps) {
       </section>
 
       <section className="careers-openings-section section" id="current-openings">
-        <div className="container">
+        <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
           <div className="route-section-heading route-section-heading--light careers-openings-heading">
             <div>
               <span className="eyebrow eyebrow-light">{content.openings.eyebrow}</span>
@@ -119,7 +119,7 @@ export function CareersPage({ content }: CareersPageProps) {
       </section>
 
       <section className="careers-benefits-section section">
-        <div className="container">
+        <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
           <div className="route-section-heading">
             <div>
               <span className="eyebrow">{content.benefits.eyebrow}</span>
@@ -141,7 +141,7 @@ export function CareersPage({ content }: CareersPageProps) {
       </section>
 
       <section className="careers-testimonials-section section">
-        <div className="container">
+        <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
           <div className="route-section-heading route-section-heading--light">
             <div>
               <span className="eyebrow eyebrow-light">{content.testimonials.eyebrow}</span>
@@ -168,7 +168,7 @@ export function CareersPage({ content }: CareersPageProps) {
       </section>
 
       <section className="careers-faq-section section">
-        <div className="container careers-faq-layout">
+        <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px] careers-faq-layout">
           <div>
             <span className="eyebrow">{content.faqs.eyebrow}</span>
             <h2>{content.faqs.title}</h2>

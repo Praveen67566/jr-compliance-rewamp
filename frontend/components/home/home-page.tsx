@@ -39,7 +39,7 @@ export function HomePage({ content }: HomePageProps) {
         <ServiceStack services={content.services} />
 
         <section className="why-section section" id="about">
-          <div className="container why-layout">
+          <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px] why-layout">
             <div className="why-copy">
               <span className="eyebrow eyebrow-light">{content.whyUs.eyebrow}</span>
               <h2>{content.whyUs.title}</h2>
@@ -73,7 +73,7 @@ export function HomePage({ content }: HomePageProps) {
         </section>
 
         <section className="regulators-section section" aria-labelledby="regulators-heading">
-          <div className="container">
+          <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
             <div className="section-heading regulators-heading">
               <span className="eyebrow">{content.regulators.eyebrow}</span>
               <h2 id="regulators-heading">{content.regulators.title}</h2>
@@ -96,7 +96,7 @@ export function HomePage({ content }: HomePageProps) {
         </section>
 
         <section className="metrics-section section">
-          <div className="container">
+          <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
             <div className="metrics-heading">
               <div>
                 <span className="eyebrow">{content.metrics.eyebrow}</span>
@@ -141,7 +141,7 @@ export function HomePage({ content }: HomePageProps) {
         ) : null}
 
         <section className="testimonials-section section">
-          <div className="container">
+          <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
             <div className="section-heading compact-heading">
               <span className="eyebrow">{content.testimonials.eyebrow}</span>
               <h2>{content.testimonials.title}</h2>
@@ -170,7 +170,7 @@ export function HomePage({ content }: HomePageProps) {
         </section>
 
         <section className="recognitions-section section">
-          <div className="container">
+          <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
             <div className="recognition-heading">
               <div>
                 <span className="eyebrow">{content.recognitions.eyebrow}</span>
@@ -206,7 +206,7 @@ export function HomePage({ content }: HomePageProps) {
 
         {content.insights?.items.length ? (
           <section className="insights-section section" aria-labelledby="insights-heading">
-            <div className="container">
+            <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
               <div className="section-heading compact-heading">
                 {content.insights.eyebrow ? <span className="eyebrow">{content.insights.eyebrow}</span> : null}
                 <h2 id="insights-heading">{content.insights.title}</h2>
@@ -233,7 +233,7 @@ export function HomePage({ content }: HomePageProps) {
         <Faq faqs={content.faqs} />
 
         <section className="closing-cta" id="contact">
-          <div className="container closing-cta-inner">
+          <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px] closing-cta-inner">
             <div>
               <span className="eyebrow eyebrow-light">Let&apos;s Talk Compliance</span>
               <h2>{content.closingCta.title}</h2>
