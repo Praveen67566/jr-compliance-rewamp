@@ -2,6 +2,7 @@ import { SitePageShell } from "@/components/site-page-shell";
 import { Faq } from "@/components/home/faq";
 import { Hero } from "@/components/home/hero";
 import { ServiceStack } from "@/components/home/service-stack";
+import { TrustedBrandsMarquee } from "@/components/home/trusted-brands-marquee";
 import { linkTargetProps } from "@/lib/link-props";
 import type { HomepageContent } from "@/lib/types";
 
@@ -10,31 +11,13 @@ type HomePageProps = {
 };
 
 export function HomePage({ content }: HomePageProps) {
-  const repeatedLogos = [...content.trustedLogos, ...content.trustedLogos];
   const repeatedRegulatorLogos = [...content.regulators.logos, ...content.regulators.logos];
 
   return (
     <SitePageShell footer={content.footer} navigation={content.navigation} site={content.site}>
         <Hero hero={content.hero} />
 
-        <section className="logo-strip" aria-label="Trusted client brands">
-          <div className="logo-strip-label">Trusted by leading brands</div>
-          <div className="logo-marquee">
-            <div className="logo-marquee-track">
-              {repeatedLogos.map((logo, index) => (
-                <div className="brand-logo" key={`${logo.name}-${index}`}>
-                  {logo.href ? (
-                    <a href={logo.href} target="_blank" rel="noreferrer" aria-label={`${logo.name} website`}>
-                      <img src={logo.src} alt={index < content.trustedLogos.length ? logo.name : ""} />
-                    </a>
-                  ) : (
-                    <img src={logo.src} alt={index < content.trustedLogos.length ? logo.name : ""} />
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        <TrustedBrandsMarquee logos={content.trustedLogos} />
 
         <ServiceStack services={content.services} />
 
@@ -73,6 +56,12 @@ export function HomePage({ content }: HomePageProps) {
         </section>
 
         <section className="regulators-section section" aria-labelledby="regulators-heading">
+          <div className="regulator-network-layer" aria-hidden="true">
+            <span className="regulator-network-orbit regulator-network-orbit--one" />
+            <span className="regulator-network-orbit regulator-network-orbit--two" />
+            <span className="regulator-network-node regulator-network-node--one" />
+            <span className="regulator-network-node regulator-network-node--two" />
+          </div>
           <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
             <div className="section-heading regulators-heading">
               <span className="eyebrow">{content.regulators.eyebrow}</span>

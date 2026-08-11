@@ -50,13 +50,11 @@
   from {
     filter: blur(5px);
     opacity: 0;
-    transform: translateY(8px);
   }
 
   to {
     filter: blur(0);
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
@@ -207,16 +205,6 @@
   }
 }
 
-@keyframes logo-marquee {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(calc(-50% - var(--logo-marquee-offset)));
-  }
-}
-
 @keyframes contact-ticker {
   from {
     transform: translateX(0);
@@ -250,4 +238,3 @@
     transform: scale(1);
   }
 }
-

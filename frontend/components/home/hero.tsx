@@ -55,7 +55,17 @@ export function Hero({ hero }: HeroProps) {
             <span className="status-dot" /> Compliance Consultants
           </div>
           <h1>
-            {hero.prefix} <span className="hero-rotating-word">{activeWord}</span>
+            {hero.prefix}{" "}
+            <span className="hero-rotating-slot">
+              <span className="hero-rotating-word-sizer" aria-hidden="true">
+                {hero.rotatingWords.map((word, index) => (
+                  <span key={`${word}-${index}`}>{word}</span>
+                ))}
+              </span>
+              <span className="hero-rotating-word" key={activeWord}>
+                {activeWord}
+              </span>
+            </span>
             <br />
             {hero.suffix}
           </h1>

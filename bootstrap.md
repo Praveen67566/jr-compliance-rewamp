@@ -104,25 +104,13 @@ If a command cannot be run, clearly explain why.
 - Tell me what validation passed or failed.
 
 ## Prompt:-
-Company Registration :-
-Sole Proprietorship
-Nidhi Company
-NGO Registration
-Section 8 Company
-Partnership Firm
-Producer Company
-Indian Subsidiary
-Pvt Ltd Company
-Insurance Company
-RBI Micro Finance Company
-One Person Company (OPC)
-Public Limited Company
-RBI NBFC Registration
-Limited Liability Partnership (LLP)
-RBI Asset Reconstruction Registration
-RBI Mutual Fund Company Registration
-Foreign Company Reg.
-Trust Registration
-Society Registration
-Now lets start with company registration pages firstly every page exist in site/corporate nameing like similar what you have to do copy the content only and follow our theme and also project structure in a way
-that its easy to integrate strapi cms and follow a consistent design for all the pages and don't change structure or the pages already build and use tailwind css.
+
+Home Page UI Improvements:-
+
+1:- In Hero Section I have given you two images first one where the text is Compliance Consultants Bridging Companies to Worldwide Standards and when companies changes into brands then problem arries it basically move to top so it fells like glitch so make it stable.
+
+2:-  Improve “Trusted by Leading Brands” carousel :-  Logos move right to left infinitely, with the center logo slightly larger, sharper, brighter, and glowing. Edge logos should be smaller, dimmer, and slightly blurred. Add smooth edge fades and pause slowly the animation on hover. Keep the dark blue futuristic glass-card design.
+
+3:- Trusted compliance network in this section add any good moving animation in background according to the theme.
+
+and remember this is intigrated with strapi cms so don't change anything unneccessary and if something is going to effect the setup of strapi cms integration first explan me that and stop the process.

@@ -381,8 +381,7 @@
   }
 
   .logo-marquee-track {
-    --logo-marquee-offset: 21px;
-    gap: 42px;
+    --brand-marquee-gap: 42px;
   }
 
   .brand-logo {
@@ -1061,4 +1060,3 @@
     height: 170px;
   }
 }
-
