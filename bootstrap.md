@@ -100,6 +100,4 @@ If a command cannot be run, clearly explain why.
 - Tell me what validation passed or failed.
 
 ## Prompt:-
-
-In Frontend the design is good but the css is only one file global.css its going to be hard to maintain by 
-any developer. follow the exact same design no need to change anything but use mostly tailwind css and add only common things or global things in global css as the name sugest i dont i dont want a single change in design exact same design and update the bootstrape, explaner_frontend , context accordingly.
+Now complete the cms also according to added navbar don't change existing anything only make the cms complete according to the currently added navbar

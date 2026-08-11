@@ -1,5 +1,10 @@
 import type { HomepageContent } from "@/lib/types";
 
+const navigationCategory = (title: string, links: readonly (readonly [string, string])[]) => ({
+  title,
+  links: links.map(([label, href]) => ({ label, href })),
+});
+
 /**
  * Temporary local source of truth. It mirrors the fields documented in
  * cms/CONTENT_MODEL.md and is replaced at runtime when Strapi is configured.
@@ -44,35 +49,161 @@ export const fallbackHomepage: HomepageContent = {
   navigation: [
     {
       label: "Corporate",
-      href: "#services",
-      children: [
-        { label: "Company Registration", href: "#services" },
-        { label: "MCA Services", href: "#services" },
-        { label: "Import Export Service", href: "#services" },
-        { label: "Government License & Certification", href: "#services" },
-        { label: "IPR Services", href: "#services" },
+      href: "/#services",
+      categories: [
+        navigationCategory("Company Registration", [
+          ["Sole Proprietorship", "/corporate/sole-proprietorship-registration"],
+          ["Nidhi Company", "/corporate/nidhi-company-registration"],
+          ["NGO Registration", "/corporate/ngo-registration"],
+          ["Section 8 Company", "/corporate/section-8-company-registration"],
+          ["Partnership Firm", "/corporate/partnership-firm-registration"],
+          ["Producer Company", "/corporate/producer-company-registration"],
+          ["Indian Subsidiary", "/#services"],
+          ["Pvt Ltd Company", "/corporate/private-limited-company-registration-consultant"],
+          ["Insurance Company", "/corporate/insurance-company-registration"],
+          ["RBI Micro Finance Company", "/corporate/microfinance-company-registration"],
+          ["One Person Company (OPC)", "/corporate/opc-registration"],
+          ["Public Limited Company", "/corporate/public-limited-company-registration"],
+          ["RBI NBFC Registration", "/corporate/nbfc-registration"],
+          ["Limited Liability Partnership (LLP)", "/corporate/llp-registration"],
+          ["RBI Asset Reconstruction Registration", "/corporate/asset-reconstruction-company-registration"],
+          ["RBI Mutual Fund Company Registration", "/#services"],
+          ["Foreign Company Reg.", "/corporate/foreign-company-registration"],
+          ["Trust Registration", "/corporate/trust-registration"],
+          ["Society Registration", "/corporate/society-registration"],
+        ]),
+        navigationCategory("MCA Services", [
+          ["DSC", "/corporate/dsc-certificate"], ["Organisation DSC", "/#services"], ["Addition of Director", "/#services"],
+          ["Removal of Director", "/#services"], ["DIR 3 KYC", "/#services"], ["INC 20A", "/#services"],
+          ["ADT -1", "/#services"], ["Co. Name Change", "/#services"], ["Alter in MOA/AOA", "/#services"],
+          ["Change in Company Pan/Tan", "/#services"], ["Name Approval/RUN filing", "/#services"],
+          ["Company Conversion", "/#services"], ["Increase Authorize/Paid Up Capital", "/#services"],
+          ["Closure of a Company", "/#services"], ["ROC Change/Address Change", "/#services"],
+          ["Share Transfer", "/#services"], ["Post Compliance", "/corporate/post-compliance"],
+          ["ROC Compliance", "/#services"], ["Statutory Compliance", "/corporate/statutory-compliance"],
+          ["Annual Compliance", "/#services"],
+        ]),
+        navigationCategory("Import Export Service", [
+          ["IEC Code", "/corporate/iec-registration"], ["AD Code", "/corporate/ad-code-registration"],
+          ["ICE Gate Registration", "/corporate/icegate-registration"], ["Port Registration", "/corporate/port-registration"],
+          ["APEDA/ RCMC Registration", "/corporate/apeda-registration"],
+          ["Spice Board Registration", "/corporate/spice-board-registration-consultant"],
+          ["Coffee Board Registration", "/corporate/coffee-board-registration"],
+          ["Tea Board Registration", "/corporate/tea-board-registration"], ["Tobacco Board Registration", "/#services"],
+        ]),
+        navigationCategory("Government License & Certification", [
+          ["Ayush License", "/corporate/ayush-license"], ["Trade License", "/corporate/trade-license"],
+          ["NSIC Registration", "/corporate/nsic-registration"], ["RERA Registration", "/corporate/rera-registration"],
+          ["GEM Registration", "/corporate/gem-registration"], ["Psara Registration", "/corporate/psara-license-registration-consultant"],
+          ["ISO (ALL TYPES)", "/corporate/iso-certification"], ["GMP", "/corporate/gmp-certification"],
+          ["HACCP", "/corporate/hazard-analysis-and-critical-control-point"],
+        ]),
+        navigationCategory("IPR Services", [
+          ["TRADEMARK Registration", "/corporate/trademark-registration"], ["TM Search", "/corporate/trademark-registration/trademark-search"],
+          ["TM Application Filing", "/corporate/trademark-registration/trademark-application-filing"],
+          ["Formality Check Fail", "/corporate/trademark-registration/trademark-formality-check-fail"],
+          ["TM Modification", "/corporate/trademark-registration/trademark-modification"], ["TM Objection", "/corporate/trademark-registration/trademark-objection"],
+          ["TM Hearing", "/corporate/trademark-registration/trademark-hearing"], ["TM Opposition", "/corporate/trademark-registration/trademark-opposition"],
+          ["Trademark Evidence Filing", "/corporate/trademark-registration/trademark-evidence-filing"],
+          ["Trademark Renewal", "/corporate/trademark-registration/trademark-renewal"], ["Trademark Transfer", "/#services"],
+          ["LPC", "/corporate/trademark-registration/legal-proceedings-certificate"], ["Copyright Registration", "/corporate/copyright-registration"],
+          ["Copyright Objection", "/corporate/copyright-objection"], ["Design Registration", "/corporate/design-registration"],
+          ["Patent Registration", "/corporate/patent-registration-consultant"], ["Legal Agreement", "/#services"], ["Logo Designing", "/#services"],
+        ]),
+        navigationCategory("FSSAI", [
+          ["Fssai Basic Registration", "/corporate/fssai-certificate"], ["Fssai State", "/corporate/fssai/fssai-state-license"],
+          ["Fssai Central", "/corporate/fssai/fssai-central-license"], ["Fssai Modification", "/#services"],
+          ["Fssai Renewal", "/#services"], ["Fssai Return", "/corporate/fssai/fssai-return-filing"], ["Water Report", "/corporate/water-report"],
+        ]),
+        navigationCategory("SEBI Business Registration", [["Portfolio Manager Registration", "/corporate/portfolio-manager-registration"]]),
+        navigationCategory("Tax and Accounting", [
+          ["GST Registration", "/corporate/gst-registration"], ["GST Return", "/corporate/gst-return"], ["TDS Return", "/corporate/tds-return"],
+          ["MSME Return (MSME Form-1)", "/corporate/msme-return"], ["ROC Return", "/corporate/roc-return"],
+          ["Professional Tax Registration", "/corporate/professional-tax-registration"], ["Income Tax Return (ITR)", "/corporate/income-tax-return-filing"],
+          ["PAN Registration (Company)", "/corporate/pan-registration-company"], ["PAN Registration (Individual)", "/corporate/pan-registration-individual"],
+          ["Accounting", "/#services"], ["Tax Exemption Under 80IAC", "/#services"],
+        ]),
+        navigationCategory("Labour Compliance", [
+          ["Shop & Establishment Registration", "/corporate/shop-and-establishment-act-registration"], ["ESIC Registration", "/corporate/esic-registration"],
+          ["EPF Registration", "/corporate/epf-registration"], ["PF/ESI Return", "/corporate/pf-esi-return"],
+        ]),
+        navigationCategory("Fund Raising", [
+          ["MSME", "/corporate/msme-registration"], ["Startup India Registration", "/corporate/startup-india-registration"],
+          ["Seed Funding", "/corporate/seed-funding"], ["Pitch Deck", "/#services"], ["CSR", "/corporate/csr-regisration"],
+          ["NITI AYOG", "/corporate/niti-aayog"], ["FCRA Registration", "/corporate/fcra-registration"],
+        ]),
       ],
     },
     {
       label: "Approval",
-      href: "#services",
-      children: [
-        { label: "BIS", href: "#services" },
-        { label: "Pollution Advisory", href: "#services" },
-        { label: "TEC", href: "#services" },
-        { label: "WPC", href: "#services" },
-        { label: "CDSCO", href: "#services" },
+      href: "/#services",
+      categories: [
+        navigationCategory("Bureau of Indian Standards (BIS)", [
+          ["ISI Certification", "/approval/isi-certificate"], ["FMCS Certification", "/approval/bis-certification/fmcs-bis-certification"],
+          ["CRS Certification", "/approval/bis-certification/crs-certification"], ["Scheme-X", "/approval/bis-certification/scheme-x"],
+        ]),
+        navigationCategory("Pollution Advisory", [
+          ["Extended Producer's Responsibility (EPR)", "/approval/epr-certification"], ["EPR- E waste", "/approval/epr-certification/e-waste-compliance"],
+          ["EPR- Battery waste", "/approval/epr-certification/battery-waste-compliance"], ["EPR- Plastic waste", "/approval/epr-certification/plastic-waste-compliance"],
+          ["EPR- Tyre waste", "/approval/epr-certification/tyre-waste"], ["EPR- Used oil waste", "/approval/epr-certification/used-oil"],
+          ["CPCB Guidelines", "/approval/cpcb-registration"], ["Delhi Pollution Control Committee", "/approval/state-pollution-board/dspcc"],
+          ["State Pollution Board / Pollution Control Committee", "/approval/state-pollution-board"],
+        ]),
+        navigationCategory("Telecommunication Engineering Centre (TEC)", [
+          ["MTCTE", "/approval/wpc-certification"], ["Voluntary", "/#services"], ["Communication Security Certification Scheme (ComSec)", "/#services"],
+        ]),
+        navigationCategory("Wireless Planning and Coordination (WPC)", [
+          ["ETA", "/approval/wpc-certification"], ["Dealer Possesion License (DPL)", "/approval/dealer-possession-license"],
+          ["Non Dealer Possesion License (NDPL)", "/approval/non-dealer-possession-license"], ["Experimental License", "/#services"],
+          ["VHF", "/#services"], ["UHF", "/#services"], ["Demo License", "/#services"],
+        ]),
+        navigationCategory("Bureau of Energy Efficiency (BEE)", [
+          ["Star Labeling", "/approval/wpc-certification"], ["Energy Conservation Building Code (ECBC)", "/#services"],
+        ]),
+        navigationCategory("CDSCO Registration", [
+          ["MDR CDSCO Registration", "/approval/cdsco-registration/drug-cdsco-registration"], ["Form MD-15 (Import License)", "/#services"],
+          ["Form MD-5 (Manufacturing License)", "/#services"], ["Form MD-9 (Manufacturing License)", "/#services"],
+          ["Form MD-42 (Sell, Stock, Exhibit)", "/#services"], ["Form MD-6 (Loan License)", "/#services"],
+          ["Form MD-10 (Loan License)", "/#services"], ["Cosmetic CDSCO Registration", "/approval/cdsco-registration/cosmetic-cdsco-registration"],
+          ["COS-2 (Cosmetic Import License)", "/#services"], ["COS-8 (Manufacturing License)", "/#services"],
+          ["CDSCO In Vitro Diagnostics Registration", "/approval/cdsco-registration/in-vitro-diagnostics"],
+          ["Drug CDSCO Registration", "/approval/cdsco-registration/drug-cdsco-registration"],
+        ]),
+        navigationCategory("AERB Approval", [
+          ["Diagnostic X Ray Equipment", "/approval/aerb-license/aerb-diagnostic-x-ray-equipment"], ["NOC", "/#services"],
+          ["Type Approval", "/#services"], ["License for Operations", "/#services"], ["Nominate RSO", "/#services"],
+        ]),
+        navigationCategory("LMPC Certification", [["Packaged Commodity Registration", "/approval/wpc-certification"], ["Model Approval", "/#services"]]),
+        navigationCategory("STQC", [
+          ["STQC Certification", "/#services"], ["ISO 27001 ISMS", "/stqc/iso-27001-isms"], ["ISO 9001 QMS", "/stqc/iso-9001-qms"],
+          ["ISO 20000 ITSM", "/stqc/iso-20000-itsm"], ["S-Mark Product Safety", "/stqc/s-mark-product-safety"],
+          ["Biometric Devices", "/stqc/biometric-device-certification"], ["Smart Card Certification", "/stqc/smart-card-certification"],
+          ["Common Criteria (IC3S)", "/stqc/common-criteria-certification"], ["Website Quality Certification", "/stqc/website-quality-certification"],
+          ["Software Certification", "/stqc/software-certification"], ["Software Testing & Assessment", "/stqc/software-testing-assessment"],
+          ["Information Security Testing", "/stqc/information-security-testing"], ["e-Procurement (ePS)", "/stqc/e-procurement-certification"],
+          ["QR Code Scanner", "/stqc/qr-code-scanner-certification"], ["IoT System Certification", "/stqc/iot-system-certification"],
+          ["NCMC Certification", "/stqc/ncmc-certification"], ["Toll Management (TMS)", "/stqc/toll-management-certification"],
+        ]),
       ],
     },
     {
       label: "Global",
-      href: "#services",
-      children: [
-        { label: "Asia", href: "#services" },
-        { label: "Africa", href: "#services" },
-        { label: "North America", href: "#services" },
-        { label: "South America", href: "#services" },
-        { label: "Australia", href: "#services" },
+      href: "/#services",
+      categories: [
+        navigationCategory("Asia", [
+          ["India", "/approval/wpc-certification"], ["Bahrain", "/#services"], ["Brunei", "/#services"], ["Combodia", "/#services"],
+          ["Hong Kong", "/#services"], ["Indonesia", "/#services"], ["Israel", "/#services"], ["Jorden", "/#services"],
+          ["Kuwait", "/#services"], ["Lebanon", "/#services"], ["Macau", "/#services"], ["Malaysia", "/#services"],
+          ["Nepal", "/#services"], ["Oman", "/#services"], ["Pakistan", "/#services"], ["Phillppines", "/#services"],
+          ["Qatar", "/#services"], ["Saudi Arabia", "/#services"], ["Sri lanka", "/#services"], ["Singapore", "/#services"],
+          ["Thailand", "/#services"], ["Vietnam", "/#services"], ["Yemen", "/#services"], ["UAE", "/#services"],
+          ["China", "/#services"], ["Japan", "/#services"], ["Taiwan", "/#services"], ["Russia", "/#services"],
+          ["South Korea", "/#services"], ["Bangladesh", "/#services"],
+        ]),
+        navigationCategory("Africa", [["Egypt", "/approval/wpc-certification"], ["Tanzania", "/#services"], ["Morocoo", "/#services"], ["Tunisia", "/#services"], ["South Africa", "/#services"]]),
+        navigationCategory("North America", [["Barbados", "/approval/wpc-certification"], ["Costa Rica", "/#services"], ["Dominican Republic", "/#services"], ["USA", "/#services"], ["Canada", "/#services"]]),
+        navigationCategory("South America", [["Chile", "/approval/wpc-certification"], ["Colombia", "/#services"], ["Ecuador", "/#services"], ["Peru", "/#services"], ["Venzuela", "/#services"], ["Mexico", "/#services"], ["Brazil", "/#services"], ["Argentina", "/#services"]]),
+        navigationCategory("Australia", [["New Zealand", "/approval/wpc-certification"], ["Australia", "/#services"]]),
       ],
     },
     { label: "Careers", href: "/careers" },

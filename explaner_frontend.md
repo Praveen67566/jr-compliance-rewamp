@@ -106,7 +106,7 @@ The main flow is:
 : Shared page wrapper. Adds `SiteHeader`, page content, and `SiteFooter`.
 
 `frontend/components/site-header.tsx`
-: Shared navbar/header. It renders the JR logo, desktop navigation, grouped mega-menu, search shortcut, contact CTA, and mobile navigation. It consumes CMS/fallback navigation data.
+: Shared navbar/header. It renders the JR logo, desktop navigation, a two-pane category/link mega menu, contact CTA, and mobile navigation. Layout and responsive styling use Tailwind utilities; it consumes CMS/fallback navigation data.
 
 `frontend/components/site-header.css`
 : Header-only bluefield, navigation rail, popover, and mobile-menu artwork. It is imported once by the root layout to preserve the established cascade.
@@ -159,7 +159,7 @@ The main flow is:
 ## Data fallbacks
 
 `frontend/data/homepage-fallback.ts`
-: Typed local fallback for the home page and shared chrome. Includes site settings, navbar, footer, hero, services, trust logos, testimonials, FAQs, and other home sections.
+: Typed local fallback for the home page and shared chrome. Its navbar includes nested categories and links for Corporate, Approval, and Global so the menu remains complete while Strapi is unavailable or an older CMS record is awaiting migration.
 
 `frontend/data/about-page-fallback.ts`
 : Typed local fallback for About Us content.
@@ -178,7 +178,7 @@ These files keep the site working when Strapi is offline. They also document the
 : The main TypeScript content contract. Defines shared link, navigation, site settings, footer, SEO, home page, About, Careers, Contact, service, FAQ, testimonial, recognition, and related types.
 
 `frontend/lib/strapi.ts`
-: Server-side Strapi v5 adapter. Builds explicit populate queries, fetches published single types, converts Strapi media URLs, maps Strapi fields into frontend types, and safely falls back when CMS data is missing.
+: Server-side Strapi v5 adapter. Builds explicit populate queries—including `headerMenu.categories.links`—fetches published single types, converts Strapi media URLs, maps Strapi fields into frontend types, and safely falls back when CMS data is missing.
 
 `frontend/lib/content.ts`
 : Small route-facing content loader. Exposes functions used by pages to get home/about/careers/contact content.

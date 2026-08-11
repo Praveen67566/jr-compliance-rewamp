@@ -36,7 +36,8 @@ closed before a production launch:
    Keep `.env`, `.tmp/`, `public/uploads/`, `dist/`, and `.strapi/` ignored.
 4. **Use an isolated production database and migrate content deliberately.**
    Do not deploy the local SQLite database or enable the demo seed in
-   production.
+   production. The CMS bootstrap can upgrade only the exact original demo
+   header-menu signature; it does not replace customized navigation records.
 
 The PostgreSQL driver (`pg@8.22.0`) is included in the CMS lockfile. The
 remaining database, media, audit, and source-control gates require deployment

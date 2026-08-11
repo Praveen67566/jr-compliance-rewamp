@@ -7,8 +7,15 @@ export type Link = {
   target?: LinkTarget;
 };
 
+export type NavigationCategory = {
+  title: string;
+  links: Link[];
+};
+
 export type NavigationItem = Link & {
   children?: Link[];
+  /** Desktop mega-menu categories; local fallback protects existing flat CMS menus. */
+  categories?: NavigationCategory[];
 };
 
 export type Logo = {

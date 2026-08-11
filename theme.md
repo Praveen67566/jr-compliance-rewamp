@@ -112,8 +112,10 @@ information hierarchy of the supplied reference:
   sticky states. Do not switch to a full-width white bar on scroll.
 - JR logo on the left, a centered ice navigation capsule, and electric-blue
   Contact Us CTA on the right.
-- Desktop dropdowns use an ice surface with cobalt hover rows. Escape closes an
-  open menu.
+- Desktop mega menus stay within the shared `1320px` content width and use a
+  roughly 25/75 split: navy category rail on the left, ice-blue link panel on
+  the right, and three link columns where space permits. The active category
+  uses cobalt/electric-blue emphasis; Escape closes an open menu.
 - Collapse to the compact menu at `980px`; keep the mobile menu as a structured
   navy/cobalt panel, never a generic white drawer.
 - Header and section anchors use a `102px` scroll offset.

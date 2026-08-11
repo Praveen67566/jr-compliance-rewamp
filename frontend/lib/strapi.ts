@@ -20,6 +20,7 @@ import type {
   Link,
   Logo,
   Metric,
+  NavigationCategory,
   NavigationItem,
   PageChromeContent,
   Recognition,
@@ -66,7 +67,7 @@ const populateTrees: Record<SingleTypeSlug, PopulateTree> = {
   "site-setting": {
     headerLogo: true,
     footerLogo: true,
-    headerMenu: { children: true },
+    headerMenu: { children: true, categories: { links: true } },
     headerCta: true,
     footerCta: true,
     footerLinkGroups: { links: true },
@@ -323,11 +324,38 @@ function mapNavigation(value: unknown, fallback: NavigationItem[]): NavigationIt
           return childLabel && href ? link(child, { label: childLabel, href }) : null;
         })
         .filter((child): child is Link => Boolean(child));
+      const fallbackItem = fallback.find((fallbackEntry) => fallbackEntry.label === label);
+      const categories = asArray(item.categories)
+        .map((entry) => {
+          const category = record(entry);
+          const title = text(category.title);
+          const links = asArray(category.links)
+            .map((categoryLink) => {
+              const categoryLinkRecord = record(categoryLink);
+              const categoryLinkLabel = text(categoryLinkRecord.label);
+              const href = text(categoryLinkRecord.href);
+
+              return categoryLinkLabel && href
+                ? link(categoryLink, { label: categoryLinkLabel, href })
+                : null;
+            })
+            .filter((categoryLink): categoryLink is Link => Boolean(categoryLink));
+
+          return title && links.length ? { title, links } : null;
+        })
+        .filter((category): category is NavigationCategory => Boolean(category));
 
       return {
         label,
         href: text(item.href) ?? children[0]?.href ?? "#services",
         ...(children.length ? { children } : {}),
+        // Older CMS entries do not have nested categories. Keep the approved
+        // local menu available until those records are migrated in Strapi.
+        ...(categories.length
+          ? { categories }
+          : fallbackItem?.categories
+            ? { categories: fallbackItem.categories }
+            : {}),
       };
     })
     .filter((item): item is NavigationItem => Boolean(item));

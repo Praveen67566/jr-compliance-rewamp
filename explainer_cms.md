@@ -77,7 +77,7 @@ The main CMS flow is:
 ## App entry points
 
 `cms/src/index.ts`
-: Strapi lifecycle entry. On bootstrap it registers the Next.js revalidation hooks and optionally runs the local seed.
+: Strapi lifecycle entry. On bootstrap it registers the Next.js revalidation hooks, safely upgrades the exact original demo header menu when present, and optionally runs the local seed.
 
 `cms/src/revalidation.ts`
 : Signed webhook sender for Next.js cache revalidation. It watches Strapi document and media lifecycle events, maps changed CMS models to frontend cache tags, signs the payload with HMAC SHA-256, and sends it to `NEXT_REVALIDATE_URL`.
@@ -168,7 +168,7 @@ Strapi components are reusable field groups stored as JSON schemas in `cms/src/c
 : Cross-page primitives: `link`, `cta`, `seo`, `section-heading`, `contact`, `social-link`, and `legal-notice`.
 
 `cms/src/components/navigation/`
-: Header/footer navigation structures: `menu-item` and `link-group`.
+: Header/footer navigation structures: `menu-item`, nested `menu-category`, and `link-group`.
 
 `cms/src/components/home/`
 : Home page field groups: hero, rotating terms, hero cards, stats, stories, image cards, CTA band, and why-us content.

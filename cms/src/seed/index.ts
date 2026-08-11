@@ -27,9 +27,15 @@ import {
 } from "./content";
 
 type SeedDocument = { documentId: string };
+type DocumentRecord = SeedDocument & Record<string, unknown>;
 type DocumentService = {
   create: (options: { data: Record<string, unknown>; status: "published" }) => Promise<SeedDocument>;
-  findFirst: (options: { status: "published" }) => Promise<SeedDocument | null>;
+  findFirst: (options: Record<string, unknown>) => Promise<DocumentRecord | null>;
+  update: (options: {
+    documentId: string;
+    data: Record<string, unknown>;
+    status: "published";
+  }) => Promise<DocumentRecord | null>;
 };
 
 const CONTENT_TYPES = {
@@ -53,6 +59,121 @@ const CONTENT_TYPES = {
   careerTestimonial: "api::career-testimonial.career-testimonial",
   careerGalleryItem: "api::career-gallery-item.career-gallery-item",
 } as const;
+
+const legacyHeaderMenu = [
+  {
+    label: "Corporate",
+    href: "#services",
+    children: [
+      sameTab("Company Registration", "#services"),
+      sameTab("MCA Services", "#services"),
+      sameTab("Import Export Service", "#services"),
+      sameTab("Government License & Certification", "#services"),
+      sameTab("IPR Services", "#services"),
+    ],
+  },
+  {
+    label: "Approval",
+    href: "#services",
+    children: [
+      sameTab("BIS", "#services"),
+      sameTab("Pollution Advisory", "#services"),
+      sameTab("TEC", "#services"),
+      sameTab("WPC", "#services"),
+      sameTab("CDSCO", "#services"),
+    ],
+  },
+  {
+    label: "Global",
+    href: "#services",
+    children: [
+      sameTab("Asia", "#services"),
+      sameTab("Africa", "#services"),
+      sameTab("North America", "#services"),
+      sameTab("South America", "#services"),
+      sameTab("Australia", "#services"),
+    ],
+  },
+  { label: "Careers", href: "/careers" },
+  { label: "About Us", href: "/about-us" },
+  { label: "Contact Us", href: "/contact-us" },
+];
+
+function objectValue(value: unknown): Record<string, unknown> {
+  return value !== null && typeof value === "object" && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : {};
+}
+
+function textValue(value: unknown): string | undefined {
+  return typeof value === "string" && value.length ? value : undefined;
+}
+
+function comparableLegacyHeaderMenu(value: unknown) {
+  if (!Array.isArray(value)) {
+    return null;
+  }
+
+  return value.map((entry) => {
+    const item = objectValue(entry);
+    const categories = Array.isArray(item.categories) ? item.categories : [];
+    if (categories.length) {
+      return null;
+    }
+
+    const children = (Array.isArray(item.children) ? item.children : []).map((child) => {
+      const link = objectValue(child);
+      return {
+        label: textValue(link.label),
+        href: textValue(link.href),
+        target: textValue(link.target) ?? "same_tab",
+      };
+    });
+    const comparable = {
+      label: textValue(item.label),
+      href: textValue(item.href),
+      ...(children.length ? { children } : {}),
+    };
+
+    return comparable;
+  });
+}
+
+/**
+ * Upgrade only the exact original demo header. Editor-created or partially
+ * migrated menus never match this signature and are therefore not modified.
+ */
+export async function migrateLegacyHeaderMenu(strapi: Core.Strapi): Promise<void> {
+  const siteSettings = documentService(strapi, CONTENT_TYPES.siteSetting);
+  const existing = await siteSettings.findFirst({
+    status: "published",
+    populate: {
+      headerMenu: {
+        populate: {
+          children: true,
+          categories: { populate: { links: true } },
+        },
+      },
+    },
+  });
+
+  if (
+    !existing ||
+    JSON.stringify(comparableLegacyHeaderMenu(existing.headerMenu)) !==
+      JSON.stringify(legacyHeaderMenu)
+  ) {
+    return;
+  }
+
+  await siteSettings.update({
+    documentId: existing.documentId,
+    data: { headerMenu: initialSite.headerMenu },
+    status: "published",
+  });
+  strapi.log.info(
+    "Migrated the original demo header menu to the categorized Corporate, Approval, and Global navigation.",
+  );
+}
 
 function documentService(strapi: Core.Strapi, uid: string): DocumentService {
   // Project schemas are loaded dynamically by Strapi, so generated application

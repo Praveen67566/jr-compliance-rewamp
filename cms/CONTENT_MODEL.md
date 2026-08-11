@@ -174,7 +174,8 @@ collection pairs above.
 | `shared.contact` | `phoneDisplay` short text*, `phoneE164` short text*, `email` email*, `whatsAppUrl` short text* |
 | `shared.social-link` | `network` enum `linkedin` / `facebook` / `x` / `youtube` / `instagram`*, `url` short text* |
 | `shared.legal-notice` | `title` short text*, `body` Rich Text (Blocks)* |
-| `navigation.menu-item` | `label` short text*, `href` short text, `children` repeatable `shared.link` component; use children for mega-menu groups and `href` alone for Careers/About Us |
+| `navigation.menu-item` | `label` short text*, `href` short text, `children` repeatable `shared.link` component, `categories` repeatable `navigation.menu-category` component; use categories for multi-column mega menus, children for a simple submenu, and `href` alone for Careers/About Us |
+| `navigation.menu-category` | `title` short text*, `links` repeatable `shared.link` component* |
 | `navigation.link-group` | `title` short text*, `links` repeatable `shared.link` component* |
 | `home.rotating-term` | `text` short text* |
 | `home.hero-card` | `title` short text*, `description` long text, `image` single image media, `icon` single image media, `cta` `shared.cta` component |
@@ -311,8 +312,9 @@ plugins or issue a browser request per card. The API token is sent as
    Add filename, alt text, and captions before selecting them in content.
 5. Create the service categories/services, logos, FAQ categories/FAQs,
    testimonials, recognitions, and optional insights. Set `sortOrder` values.
-6. Fill and publish `site-setting`, then fill the four page records and select
-   the intended ordered relation entries. Verify every link and media item.
+6. Fill and publish `site-setting`, including the ordered Header Menu categories
+   and their ordered links, then fill the four page records and select the
+   intended ordered relation entries. Verify every link and media item.
 7. Create the `next-site-reader` custom API token and apply the permissions
    above. Put `STRAPI_URL` and `STRAPI_API_TOKEN` in the Next server environment
    (never `NEXT_PUBLIC_*`).

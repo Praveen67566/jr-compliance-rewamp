@@ -55,9 +55,24 @@ each crop/caption before production publishing. It does not read from nor expose
 ## Schema and editor policy
 
 The committed schemas define five single types, fourteen collection types, and
-thirty-four components. All editorial types use Draft & Publish. Page-selected
+thirty-five components. All editorial types use Draft & Publish. Page-selected
 relations are intentionally unidirectional, ordered selections; the inverse
 pairs are only Service Category → Service and FAQ Category → FAQ.
+
+The shared navbar is edited under **Site Setting → Header Menu**:
+
+- Corporate, Approval, and Global use ordered `categories`. Each category has
+  a title and ordered `links`; this drives the two-pane mega menu.
+- Careers and About Us use only their direct `href`.
+- `children` remains available for a small single-level submenu, but should not
+  be combined with `categories` on the same menu item.
+
+The fresh local seed includes all currently approved navbar categories and
+links. On startup, the CMS also migrates the exact original six-item demo menu
+to the categorized navbar. The check is idempotent and signature-based: a menu
+that was edited or already contains categories is not modified. Until an
+unmatched custom menu is completed and published, the frontend retains its
+matching typed fallback.
 
 Do not create a generic `Page`, a dynamic-zone page builder, a navigation
 collection, CSS fields, animation settings, or public submission endpoints.

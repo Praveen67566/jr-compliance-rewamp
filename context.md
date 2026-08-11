@@ -46,7 +46,7 @@ validated deliberately.
 | `frontend/postcss.config.mjs` | Tailwind v4 PostCSS integration. |
 | `frontend/public/images/` | Small selected copy of approved legacy logo/photo assets. `images/services/` preserves the 15 exact legacy service/flag SVGs; `images/services-blue/` holds their blue-theme derivatives used by the home fallback. Do not point new UI at `site/assets/`. |
 | `cms/` | Active Strapi v5 TypeScript project: schemas, core REST APIs, opt-in local seed, CMS-to-Next revalidation, editor setup, and PostgreSQL-capable configuration (`pg` is a production dependency). |
-| `cms/CONTENT_MODEL.md` | Definitive editorial contract: five single types, fourteen collections, and thirty-four components. Change it deliberately alongside the schemas and Next mapper. |
+| `cms/CONTENT_MODEL.md` | Definitive editorial contract: five single types, fourteen collections, and thirty-five components. Change it deliberately alongside the schemas and Next mapper. |
 | `cms/README.md` | CMS local workflow, editor permissions, REST contract, seed policy, and revalidation behavior. |
 | `ecosystem.config.js` | PM2 process definition for the 24/7 Linux/VPS deployment: one frontend and one CMS process, bound to loopback-only private ports with no secrets in source. |
 | `prod.md` | Required production deployment and launch runbook for the frontend, CMS, PM2, Nginx/TLS, database, media, migration, secrets, and cache invalidation. |
@@ -58,7 +58,10 @@ validated deliberately.
   and `/contact-us`, all using the same Compliance Network theme.
 - Persistent navy/cobalt header field with a floating cool-white navigation
   rail. Its top breathing room is retained while sticky; the desktop nav is
-  grouped in an inset capsule and collapses at 980px.
+  grouped in an inset capsule and collapses at 980px. Corporate, Approval, and
+  Global open a bounded two-pane mega menu: a navy category rail and an ice
+  three-column link panel populated by Strapi, with the typed home fallback
+  covering offline and pre-migration CMS records.
 - Shared footer continues the same navy/cobalt network field through a
   structured blue-glass content panel, subtle grid/orbit detail, and responsive
   service/legal groups.
@@ -94,7 +97,7 @@ validated deliberately.
   are decided.
 - The Strapi v5 CMS is implemented in `cms/`: five single types (`site-setting`,
   `home-page`, `about-page`, `careers-page`, `contact-page`), fourteen
-  collections, thirty-four components, and core REST route/controller/service
+  collections, thirty-five components, and core REST route/controller/service
   files for all nineteen types. All editorial content uses Draft & Publish;
   i18n is intentionally off.
 - Every active page and shared header/footer has a typed CMS mapping. CMS
