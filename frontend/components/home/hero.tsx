@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 
 import { linkTargetProps } from "@/lib/link-props";
@@ -16,6 +16,84 @@ type FloatingCardProps = {
   children: ReactNode;
 };
 
+type WordPhase = "deleting" | "holding" | "typing";
+
+const wordHoldDuration = 1800;
+const wordDeleteDuration = 52;
+const wordTypeDuration = 84;
+
+function usePrefersReducedMotion() {
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updatePreference = () => setPrefersReducedMotion(mediaQuery.matches);
+
+    updatePreference();
+    mediaQuery.addEventListener("change", updatePreference);
+
+    return () => mediaQuery.removeEventListener("change", updatePreference);
+  }, []);
+
+  return prefersReducedMotion;
+}
+
+function useTypedRotatingWord(words: string[], prefersReducedMotion: boolean) {
+  const [wordIndex, setWordIndex] = useState(0);
+  const [displayedWord, setDisplayedWord] = useState(() => words[0] ?? "");
+  const [phase, setPhase] = useState<WordPhase>("holding");
+
+  useEffect(() => {
+    const firstWord = words[0] ?? "";
+
+    if (prefersReducedMotion || words.length < 2) {
+      setWordIndex(0);
+      setDisplayedWord(firstWord);
+      setPhase("holding");
+      return undefined;
+    }
+
+    const activeWord = words[wordIndex] ?? firstWord;
+
+    if (phase === "holding") {
+      const timeout = window.setTimeout(() => setPhase("deleting"), wordHoldDuration);
+      return () => window.clearTimeout(timeout);
+    }
+
+    if (phase === "deleting") {
+      if (!displayedWord) {
+        setWordIndex((current) => (current + 1) % words.length);
+        setPhase("typing");
+        return undefined;
+      }
+
+      const timeout = window.setTimeout(() => {
+        setDisplayedWord((current) => current.slice(0, -1));
+      }, wordDeleteDuration);
+
+      return () => window.clearTimeout(timeout);
+    }
+
+    if (displayedWord.length >= activeWord.length) {
+      setPhase("holding");
+      return undefined;
+    }
+
+    const timeout = window.setTimeout(() => {
+      setDisplayedWord(activeWord.slice(0, displayedWord.length + 1));
+    }, wordTypeDuration);
+
+    return () => window.clearTimeout(timeout);
+  }, [displayedWord, phase, prefersReducedMotion, wordIndex, words]);
+
+  const activeWord = words[wordIndex] ?? words[0] ?? "";
+
+  return {
+    activeWord,
+    displayedWord: prefersReducedMotion ? activeWord : displayedWord,
+  };
+}
+
 function FloatingCard({ card, className, children }: FloatingCardProps) {
   return card?.cta ? (
     <a className={className} href={card.cta.href} {...linkTargetProps(card.cta)}>
@@ -27,21 +105,10 @@ function FloatingCard({ card, className, children }: FloatingCardProps) {
 }
 
 export function Hero({ hero }: HeroProps) {
-  const [wordIndex, setWordIndex] = useState(0);
-  const activeWord = hero.rotatingWords[wordIndex] ?? hero.rotatingWords[0];
+  const rotatingWords = useMemo(() => hero.rotatingWords.filter(Boolean), [hero.rotatingWords]);
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const { activeWord, displayedWord } = useTypedRotatingWord(rotatingWords, prefersReducedMotion);
   const [businessCard, certificationCard, reachCard] = hero.supportingCards;
-
-  useEffect(() => {
-    if (hero.rotatingWords.length < 2) {
-      return undefined;
-    }
-
-    const interval = window.setInterval(() => {
-      setWordIndex((current) => (current + 1) % hero.rotatingWords.length);
-    }, 2600);
-
-    return () => window.clearInterval(interval);
-  }, [hero.rotatingWords]);
 
   return (
     <section className="hero" id="top">
@@ -62,9 +129,8 @@ export function Hero({ hero }: HeroProps) {
                   <span key={`${word}-${index}`}>{word}</span>
                 ))}
               </span>
-              <span className="hero-rotating-word" key={activeWord}>
-                {activeWord}
-              </span>
+              <span className="hero-rotating-word" aria-hidden="true">{displayedWord}</span>
+              <span className="sr-only">{activeWord}</span>
             </span>
             <br />
             {hero.suffix}

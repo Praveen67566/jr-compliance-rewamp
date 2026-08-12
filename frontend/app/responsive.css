@@ -196,7 +196,9 @@
   }
 
   .reach-card {
+    bottom: 8px;
     right: 0;
+    top: auto;
   }
 
   .services-heading {
@@ -328,7 +330,7 @@
   .hero-photo-frame {
     border-width: 5px;
     border-radius: 20px;
-    bottom: 46px;
+    bottom: 118px;
     left: 4%;
     right: 4%;
     top: 10%;
@@ -351,9 +353,10 @@
   }
 
   .reach-card {
+    bottom: 8px;
     max-width: 168px;
     padding: 10px;
-    top: 29%;
+    top: auto;
   }
 
   .certification-card span:not(.mini-seal),

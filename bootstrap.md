@@ -105,6 +105,8 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-UI Improvement In About Us Page:-
-1:- Add Animation in background which is Parallax Animation where the background white or look like simple and see the image i want according to our theme make something from that a good ui don't change the whole page ui
-only change sections where no background animations and add animations improve the ui of about us page only change the ui structure and theme and content is going to same also know that this is connected with strapi cms so anything that affects the cms integration don't change that.
+UI Improvement In Home Page:-
+1:- Bridging {Brands} to Worldwide Standards in this where this Brands changes into companies then the animation should look like someone is typing the letter.
+2:- And in the given image :- Global Reach An extensive network of partners across 20+ countries card is coming above image it should not comes above the image.
+
+Improve the ui only here dont change anything else and the important point is that here strapi cms is integrated so dont change anything that affects strapi cms 

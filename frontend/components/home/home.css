@@ -121,8 +121,31 @@
   text-decoration-color: rgba(139, 220, 255, 0.42);
   text-decoration-thickness: 2px;
   text-underline-offset: 8px;
-  animation: word-in 480ms ease both;
   white-space: nowrap;
+}
+
+.hero-rotating-word::after {
+  animation: hero-typing-caret 720ms steps(1, end) infinite;
+  background: currentColor;
+  border-radius: 1px;
+  content: "";
+  display: inline-block;
+  height: 0.76em;
+  margin-left: 0.08em;
+  transform: translateY(0.08em);
+  width: 2px;
+}
+
+@keyframes hero-typing-caret {
+  0%,
+  45% {
+    opacity: 1;
+  }
+
+  46%,
+  100% {
+    opacity: 0;
+  }
 }
 
 .hero-copy > p {
@@ -222,7 +245,7 @@
   background: linear-gradient(145deg, #63bfff, #1450ad);
   border: 8px solid rgba(149, 219, 255, 0.2);
   border-radius: 30px;
-  bottom: 32px;
+  bottom: 112px;
   box-shadow: 0 30px 70px rgba(1, 8, 25, 0.35);
   left: 8%;
   overflow: hidden;
@@ -336,6 +359,7 @@
 .reach-card {
   align-items: center;
   background: rgba(6, 45, 104, 0.9);
+  bottom: 8px;
   border-color: rgba(139, 220, 255, 0.47);
   border-radius: 17px;
   color: #ecfbfb;
@@ -344,7 +368,7 @@
   max-width: 228px;
   padding: 13px 14px;
   right: -2%;
-  top: 23%;
+  top: auto;
   animation: card-float 5.5s 700ms ease-in-out infinite alternate;
 }
 
