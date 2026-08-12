@@ -266,7 +266,10 @@
 
 .about-proof-section {
   background: linear-gradient(135deg, #eff9ff, #ddecfa 100%);
+  isolation: isolate;
+  overflow: hidden;
   padding-bottom: 78px;
+  position: relative;
 }
 
 .about-proof-grid {
@@ -282,6 +285,303 @@
   padding-bottom: 42px;
   padding-top: 42px;
   position: relative;
+  z-index: 1;
+}
+
+/* CSS-only layered map art adds quiet parallax depth without becoming page content. */
+.about-parallax {
+  --about-parallax-orbit-x: -18px;
+  --about-parallax-orbit-y: 14px;
+  --about-parallax-route-angle: -19deg;
+  --about-parallax-route-x: 18px;
+  --about-parallax-route-y: -12px;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+  z-index: 0;
+}
+
+.about-parallax-grid,
+.about-parallax-orbit,
+.about-parallax-route,
+.about-parallax-signal {
+  display: block;
+  position: absolute;
+}
+
+.about-parallax-grid {
+  background-image: linear-gradient(rgba(13, 92, 184, 0.075) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(13, 92, 184, 0.075) 1px, transparent 1px);
+  background-size: 58px 58px;
+  inset: -12%;
+  mask-image: radial-gradient(ellipse at center, black 14%, transparent 74%);
+  opacity: 0.62;
+  animation: about-parallax-grid-drift 28s linear infinite alternate;
+}
+
+.about-parallax-orbit {
+  border: 1px solid rgba(25, 126, 222, 0.22);
+  border-radius: 50%;
+  box-shadow: 0 0 0 30px rgba(42, 139, 231, 0.055), 0 0 0 78px rgba(42, 139, 231, 0.03);
+  height: clamp(270px, 29vw, 455px);
+  opacity: 0.9;
+  width: clamp(270px, 29vw, 455px);
+  animation: about-parallax-orbit-drift 19s ease-in-out infinite;
+}
+
+.about-parallax-route {
+  border: 1px solid rgba(22, 116, 208, 0.2);
+  border-bottom: 0;
+  border-left: 0;
+  border-radius: 50% 50% 0 0;
+  height: 172px;
+  opacity: 0.82;
+  width: min(42vw, 560px);
+  animation: about-parallax-route-drift 15s ease-in-out infinite;
+}
+
+.about-parallax-route::before {
+  background: linear-gradient(90deg, transparent, rgba(22, 140, 245, 0.42) 18%, rgba(22, 140, 245, 0.42) 82%, transparent);
+  content: "";
+  height: 1px;
+  left: 13%;
+  position: absolute;
+  top: 61%;
+  transform: rotate(-26deg);
+  width: 76%;
+}
+
+.about-parallax-route::after {
+  background: var(--blue-sky);
+  border: 3px solid rgba(248, 252, 255, 0.82);
+  border-radius: 50%;
+  box-shadow: 0 0 0 6px rgba(22, 140, 245, 0.1), 0 0 20px rgba(22, 140, 245, 0.35);
+  content: "";
+  height: 9px;
+  position: absolute;
+  right: 15%;
+  top: 45%;
+  width: 9px;
+}
+
+.about-parallax-signal {
+  background: var(--blue-sky);
+  border: 3px solid rgba(248, 252, 255, 0.82);
+  border-radius: 50%;
+  box-shadow: 0 0 0 7px rgba(22, 140, 245, 0.1), 0 0 18px rgba(22, 140, 245, 0.4);
+  height: 9px;
+  width: 9px;
+  animation: about-parallax-signal-pulse 5.8s ease-in-out infinite;
+}
+
+.about-parallax-signal--one {
+  animation-delay: -1.4s;
+}
+
+.about-parallax-signal--two {
+  animation-delay: -3.2s;
+}
+
+.about-parallax--proof .about-parallax-orbit {
+  right: -8%;
+  top: -52%;
+}
+
+.about-parallax--proof .about-parallax-route {
+  bottom: -59px;
+  left: -5%;
+}
+
+.about-parallax--proof .about-parallax-signal--one {
+  left: 9%;
+  top: 30%;
+}
+
+.about-parallax--proof .about-parallax-signal--two {
+  bottom: 24%;
+  right: 18%;
+}
+
+.about-parallax--story {
+  --about-parallax-orbit-x: 16px;
+  --about-parallax-orbit-y: -13px;
+  --about-parallax-route-angle: 22deg;
+  --about-parallax-route-x: -17px;
+  --about-parallax-route-y: 13px;
+}
+
+.about-parallax--story .about-parallax-grid {
+  opacity: 0.42;
+  animation-delay: -9s;
+}
+
+.about-parallax--story .about-parallax-orbit {
+  bottom: -56%;
+  left: -8%;
+}
+
+.about-parallax--story .about-parallax-route {
+  right: -6%;
+  top: -39px;
+}
+
+.about-parallax--story .about-parallax-signal--one {
+  right: 10%;
+  top: 25%;
+}
+
+.about-parallax--story .about-parallax-signal--two {
+  bottom: 20%;
+  left: 16%;
+}
+
+.about-parallax--pioneers {
+  --about-parallax-orbit-x: -12px;
+  --about-parallax-orbit-y: -16px;
+  --about-parallax-route-angle: -12deg;
+  --about-parallax-route-x: 16px;
+  --about-parallax-route-y: 16px;
+}
+
+.about-parallax--pioneers .about-parallax-grid {
+  opacity: 0.48;
+  animation-delay: -16s;
+}
+
+.about-parallax--pioneers .about-parallax-orbit {
+  right: 3%;
+  top: -49%;
+}
+
+.about-parallax--pioneers .about-parallax-route {
+  bottom: -39px;
+  left: 34%;
+}
+
+.about-parallax--pioneers .about-parallax-signal--one {
+  left: 21%;
+  top: 28%;
+}
+
+.about-parallax--pioneers .about-parallax-signal--two {
+  bottom: 25%;
+  right: 9%;
+}
+
+.about-parallax--achievements {
+  --about-parallax-orbit-x: 19px;
+  --about-parallax-orbit-y: 12px;
+  --about-parallax-route-angle: 17deg;
+  --about-parallax-route-x: -14px;
+  --about-parallax-route-y: -14px;
+}
+
+.about-parallax--achievements .about-parallax-grid {
+  animation-delay: -21s;
+}
+
+.about-parallax--achievements .about-parallax-orbit {
+  bottom: -52%;
+  left: -5%;
+}
+
+.about-parallax--achievements .about-parallax-route {
+  right: -4%;
+  top: -36px;
+}
+
+.about-parallax--achievements .about-parallax-signal--one {
+  right: 13%;
+  top: 24%;
+}
+
+.about-parallax--achievements .about-parallax-signal--two {
+  bottom: 23%;
+  left: 12%;
+}
+
+@keyframes about-parallax-grid-drift {
+  from {
+    background-position: 0 0, 0 0;
+    transform: translate3d(-1.5%, -1%, 0);
+  }
+
+  to {
+    background-position: 58px 58px, 58px 58px;
+    transform: translate3d(1.5%, 1%, 0);
+  }
+}
+
+@keyframes about-parallax-orbit-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(var(--about-parallax-orbit-x), var(--about-parallax-orbit-y), 0) scale(1.025);
+  }
+}
+
+@keyframes about-parallax-route-drift {
+  0%,
+  100% {
+    transform: rotate(var(--about-parallax-route-angle)) translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: rotate(var(--about-parallax-route-angle))
+      translate3d(var(--about-parallax-route-x), var(--about-parallax-route-y), 0);
+  }
+}
+
+@keyframes about-parallax-signal-pulse {
+  0%,
+  100% {
+    opacity: 0.46;
+    transform: scale(0.78);
+  }
+
+  52% {
+    opacity: 0.92;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 820px) {
+  .about-parallax-orbit {
+    box-shadow: 0 0 0 23px rgba(42, 139, 231, 0.05), 0 0 0 55px rgba(42, 139, 231, 0.025);
+    height: 300px;
+    width: 300px;
+  }
+
+  .about-parallax-route {
+    width: min(68vw, 470px);
+  }
+}
+
+@media (max-width: 560px) {
+  .about-parallax-grid {
+    inset: -25%;
+    opacity: 0.42;
+  }
+
+  .about-parallax-orbit {
+    box-shadow: 0 0 0 17px rgba(42, 139, 231, 0.045), 0 0 0 38px rgba(42, 139, 231, 0.02);
+    height: 210px;
+    width: 210px;
+  }
+
+  .about-parallax-route {
+    height: 132px;
+    opacity: 0.68;
+    width: 350px;
+  }
+
+  .about-parallax-signal--two {
+    display: none;
+  }
 }
 
 .about-proof-copy h2 {
@@ -691,6 +991,16 @@
 .about-pioneers-section {
   background: linear-gradient(135deg, #e8f6ff, #cbe8fb);
   color: #071b43;
+  isolation: isolate;
+  overflow: hidden;
+  position: relative;
+}
+
+.about-story-section .site-container,
+.about-achievements-section .site-container,
+.about-pioneers-layout {
+  position: relative;
+  z-index: 1;
 }
 
 .about-pioneers-layout {

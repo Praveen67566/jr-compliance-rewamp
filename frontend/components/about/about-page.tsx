@@ -8,6 +8,21 @@ type AboutPageProps = {
   content: AboutPageContent;
 };
 
+type AboutParallaxVariant = "proof" | "story" | "pioneers" | "achievements";
+
+/** Decorative, CSS-driven depth layers for the quieter ice-blue About sections. */
+function AboutParallaxBackdrop({ variant }: { variant: AboutParallaxVariant }) {
+  return (
+    <div className={`about-parallax about-parallax--${variant}`} aria-hidden="true">
+      <span className="about-parallax-grid" />
+      <span className="about-parallax-orbit" />
+      <span className="about-parallax-route" />
+      <span className="about-parallax-signal about-parallax-signal--one" />
+      <span className="about-parallax-signal about-parallax-signal--two" />
+    </div>
+  );
+}
+
 function TeamCard({ member }: { member: TeamMember }) {
   const content = (
     <>
@@ -42,6 +57,7 @@ export function AboutPage({ content }: AboutPageProps) {
       <RouteHero {...content.hero} />
 
       <section className="about-proof-section">
+        <AboutParallaxBackdrop variant="proof" />
         <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px] about-proof-grid">
           <div className="about-proof-copy">
             <span className="eyebrow">Our foundation</span>
@@ -84,6 +100,7 @@ export function AboutPage({ content }: AboutPageProps) {
       </section>
 
       <section className="about-story-section section">
+        <AboutParallaxBackdrop variant="story" />
         <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
           <div className="route-section-heading">
             <div>
@@ -128,6 +145,7 @@ export function AboutPage({ content }: AboutPageProps) {
       </section>
 
       <section className="about-pioneers-section section">
+        <AboutParallaxBackdrop variant="pioneers" />
         <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px] about-pioneers-layout">
           <div>
             <span className="eyebrow">{content.pioneers.eyebrow}</span>
@@ -171,6 +189,7 @@ export function AboutPage({ content }: AboutPageProps) {
       </section>
 
       <section className="about-achievements-section section">
+        <AboutParallaxBackdrop variant="achievements" />
         <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
           <div className="route-section-heading">
             <div>

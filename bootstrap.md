@@ -105,9 +105,6 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Frontend UI Improvement:-
-1. Take the Next Step Towards Success this section should have a background animation moving and not slowly moving a quick moving animation which matches the theme.
-2. I want a Good animation also in the Footer Section with the matching theme.
-3. And The Header Given In The Image Text Not Showing Correct that also with matching theme.
-
-keep In Mind That This is also connected with Strapi CMS so based on that do the changes don't change the structure follow the theme
+UI Improvement In About Us Page:-
+1:- Add Animation in background which is Parallax Animation where the background white or look like simple and see the image i want according to our theme make something from that a good ui don't change the whole page ui
+only change sections where no background animations and add animations improve the ui of about us page only change the ui structure and theme and content is going to same also know that this is connected with strapi cms so anything that affects the cms integration don't change that.
