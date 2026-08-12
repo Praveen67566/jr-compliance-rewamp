@@ -102,7 +102,7 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
 
                             return (
                               <button
-                                className={`mb-1.5 flex w-full min-h-12 items-center justify-between rounded-2xl px-5 py-3.5 text-left text-[0.93rem] font-extrabold leading-tight transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky ${
+                                className={`mb-1.5 flex min-h-12 w-full appearance-none items-center justify-between rounded-2xl bg-transparent px-5 py-3.5 text-left text-[0.93rem] font-extrabold leading-tight transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky ${
                                   isSelected
                                     ? "border border-sky bg-[linear-gradient(135deg,var(--blue-cobalt-700),var(--blue-navy-700))] text-cloud shadow-[inset_0_1px_rgba(255,255,255,0.22),0_10px_26px_rgba(0,64,155,0.2)]"
                                     : "border border-transparent text-[#c7e7fb] hover:border-sky/30 hover:bg-sky/10 hover:text-cloud"

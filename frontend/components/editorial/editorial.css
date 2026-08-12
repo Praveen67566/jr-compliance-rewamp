@@ -1464,10 +1464,12 @@
 }
 
 .route-closing-cta {
+  --closing-grid-shift: 54px;
   background:
     radial-gradient(circle at 83% 16%, rgba(38, 149, 255, 0.48), transparent 27%),
     linear-gradient(126deg, #020e29, #074293 59%, #04235a);
   color: white;
+  isolation: isolate;
   overflow: hidden;
   padding: 100px 0;
   position: relative;
@@ -1476,11 +1478,14 @@
 .route-closing-grid {
   background-image: linear-gradient(rgba(159, 224, 255, 0.1) 1px, transparent 1px),
     linear-gradient(90deg, rgba(159, 224, 255, 0.1) 1px, transparent 1px);
+  background-position: 0 0, 0 0;
   background-size: 54px 54px;
   inset: 0;
   mask-image: linear-gradient(90deg, transparent, black 35%, transparent);
   pointer-events: none;
   position: absolute;
+  z-index: 0;
+  animation: closing-grid-flow 3.8s linear infinite;
 }
 
 .route-closing-cta::before {
@@ -1492,6 +1497,7 @@
   right: -175px;
   top: -285px;
   width: 530px;
+  animation: closing-orbit-sweep 5.6s ease-in-out infinite;
 }
 
 .route-closing-inner {
@@ -1500,6 +1506,7 @@
   gap: 40px;
   justify-content: space-between;
   position: relative;
+  z-index: 1;
 }
 
 .route-closing-inner h2 {
@@ -1514,4 +1521,3 @@
   margin: 23px 0 0;
   max-width: 680px;
 }
-

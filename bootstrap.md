@@ -105,12 +105,9 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Home Page UI Improvements:-
+Frontend UI Improvement:-
+1. Take the Next Step Towards Success this section should have a background animation moving and not slowly moving a quick moving animation which matches the theme.
+2. I want a Good animation also in the Footer Section with the matching theme.
+3. And The Header Given In The Image Text Not Showing Correct that also with matching theme.
 
-1:- In Hero Section I have given you two images first one where the text is Compliance Consultants Bridging Companies to Worldwide Standards and when companies changes into brands then problem arries it basically move to top so it fells like glitch so make it stable.
-
-2:-  Improve “Trusted by Leading Brands” carousel :-  Logos move right to left infinitely, with the center logo slightly larger, sharper, brighter, and glowing. Edge logos should be smaller, dimmer, and slightly blurred. Add smooth edge fades and pause slowly the animation on hover. Keep the dark blue futuristic glass-card design.
-
-3:- Trusted compliance network in this section add any good moving animation in background according to the theme.
-
-and remember this is intigrated with strapi cms so don't change anything unneccessary and if something is going to effect the setup of strapi cms integration first explan me that and stop the process.
+keep In Mind That This is also connected with Strapi CMS so based on that do the changes don't change the structure follow the theme

@@ -203,10 +203,10 @@ checked Strapi release is also `5.51.2` and pins the affected upload dependency,
 so wait for vendor remediation or obtain formal security risk acceptance; do
 not override it or apply `npm audit fix --force` blindly.
 
-Almost all CMS source/config is currently untracked by Git. Commit the intended
-CMS source while keeping `.env`, `.tmp/`, `public/uploads/`, generated builds,
-and `.strapi/` ignored before any Git-based deployment. The full ordered
-deployment and rollback procedure is in `prod.md`.
+The intended CMS source/config is tracked by Git. Keep `.env`, `.tmp/`,
+`public/uploads/`, generated builds, and `.strapi/` ignored before any
+Git-based deployment. The full ordered deployment and rollback procedure is in
+`prod.md`.
 
 For a 24/7 self-hosted Linux server, deploy through the committed PM2 ecosystem
 file rather than leaving `npm run start` attached to a terminal. Run PM2 as the

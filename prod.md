@@ -14,6 +14,11 @@ For a 24/7 Linux/VPS host, use the committed
 with PM2. PM2 is the process manager; Nginx (or an equivalent TLS reverse
 proxy) is still required in front of it.
 
+For a concrete first setup of the temporary
+`cms.jrcompliance.com` / `test.jrcompliance.com` VPS environment, see
+[`initial_deployement_setup_steps.md`](./initial_deployement_setup_steps.md).
+That guide does not replace the production launch gates in this document.
+
 ## Release status
 
 The application build and smoke tests pass, but the following gates must be
@@ -30,10 +35,10 @@ closed before a production launch:
    object-storage provider (or a backed persistent volume for a single CMS
    instance) before importing content. Ephemeral container storage will lose
    uploads.
-3. **Track the CMS source.** At validation time almost all of `cms/` was
-   untracked. A Git-based deploy will omit it until the intended CMS source,
-   configuration, lockfile, and public assets are reviewed and committed.
-   Keep `.env`, `.tmp/`, `public/uploads/`, `dist/`, and `.strapi/` ignored.
+3. **Verify the CMS source before each release.** The intended `cms/` source,
+   configuration, lockfile, and public assets must remain tracked and reviewed
+   in the release commit. Keep `.env`, `.tmp/`, `public/uploads/`, `dist/`,
+   and `.strapi/` ignored.
 4. **Use an isolated production database and migrate content deliberately.**
    Do not deploy the local SQLite database or enable the demo seed in
    production. The CMS bootstrap can upgrade only an exact known demo
@@ -42,8 +47,8 @@ closed before a production launch:
    customized navigation records.
 
 The PostgreSQL driver (`pg@8.22.0`) is included in the CMS lockfile. The
-remaining database, media, audit, and source-control gates require deployment
-environment decisions and cannot be completed from this repository alone.
+remaining database, media, and audit gates require deployment-environment
+decisions and cannot be completed from this repository alone.
 
 ## Hosting requirements
 
@@ -317,6 +322,13 @@ npm run strapi -- export --file /secure-backups/jr-cms-YYYY-MM-DD
 npm run strapi -- import --file /secure-backups/jr-cms-YYYY-MM-DD
 ```
 
+To populate an empty test CMS with this repository's included starter content,
+run `SEED_DEMO_CONTENT=true` only in a fresh disposable **local SQLite** source,
+then export that source and import the archive into the empty test target. See
+the detailed procedure in
+[`initial_deployement_setup_steps.md`](./initial_deployement_setup_steps.md).
+Never enable the seed in a deployed PostgreSQL environment.
+
 Do not add `--force` unless the target, backup, and recovery plan have been
 verified. Confirm all five single types and the nineteen Company Registration
 records are **Published**, media records point to durable storage, and the
@@ -369,31 +381,108 @@ publish because the frontend also refreshes content on its 60-second interval.
 
 ### Routine server update
 
-Build a reviewed release in a **new** checkout or release directory; do not run
-`npm ci` over the `node_modules` of a process currently serving traffic. Keep
-the prior release until post-deploy smoke checks pass. After the new release is
-built and its protected environment files are in place, activate it and reload
-PM2 from that release:
+Not every change needs a server deployment. Choose the smallest correct path:
+
+| Change | How it becomes live |
+| --- | --- |
+| CMS copy, links, sort order, SEO, or media | Save and **Publish** it in Strapi. No code build/restart is needed. The signed webhook invalidates the affected frontend cache; normal ISR refreshes within 60 seconds if the webhook is unavailable. |
+| Frontend code or static `frontend/public/` assets only | Build a new frontend release and reload only `jr-compliance-frontend`. |
+| CMS code, schema, or plugin configuration | Back up database/media first, build a new CMS release, and reload `jr-compliance-cms`. Also rebuild/reload the frontend when its types, mapper, fallback, or CMS contract changed. |
+| Environment, port, Nginx, TLS, or database settings | Treat as infrastructure work: update the protected environment before building, coordinate related configuration, validate Nginx before reload, and restart only the affected process. |
+
+### CMS content or media change
+
+An editor should save the record, then click **Publish**. A draft alone does
+not update the public site. Do not manually call the public revalidation route:
+Nginx deliberately denies it. On the same VPS, Strapi calls it privately over
+`NEXT_REVALIDATE_URL` with the shared HMAC secret.
+
+Confirm the live result in the browser, or check the CMS log for a revalidation
+warning. A webhook failure does not block publishing; the frontend falls back
+to its normal 60-second cache refresh. For uploaded media, also verify that the
+file survives a CMS restart and is included in the media backup.
+
+### Safe code or configuration release
+
+Build every reviewed release in a **new** checkout or release directory. Do
+not run `npm ci` over the `node_modules` of a process currently serving
+traffic, and do not overwrite an existing secret file with an unreviewed copy.
+Keep the previous release until post-deploy smoke checks pass.
+
+Before changing a release, inspect rather than overwrite its state:
 
 ```bash
+git status --short
+git fetch origin
+git log --oneline HEAD..origin/main
+```
+
+Use the repository's actual branch name in place of `main` if it differs. If
+`git status --short` reports changes, review them before proceeding; do not use
+`git reset --hard` to make deployment easier.
+
+Create a new release from the reviewed commit, install its protected
+environment files **before** its builds, and ensure they retain mode `0600`.
+Build only the applications affected by the change:
+
+```bash
+# A frontend-only code or static-asset change.
 cd /srv/jr-compliance-releases/<new-release>/frontend
 npm ci
 npm run typecheck
 npm run build
 
+# A CMS code/schema change. Take a verified database/media backup first.
 cd ../cms
 npm ci
 npm run build
+```
 
-cd ..
-pm2 startOrReload ecosystem.config.js --env production --update-env
+The current local upload provider stores media under
+`cms/public/uploads/`, which a fresh checkout does not contain. Before
+activating a CMS release, connect that path to the persistent, backed upload
+storage (for example, with the host's bind mount or a carefully verified
+symlink), or restore the media there and verify ownership. Do not switch to a
+fresh release with an empty upload directory and assume existing CMS media will
+still work.
+
+After the build succeeds, activate the new release according to the host's
+release mechanism. If it uses a stable `current` symlink, switch that symlink
+only after both the build and protected environment files are ready. Then
+reload only the process that changed:
+
+```bash
+# Run through the active release's ecosystem file.
+pm2 startOrReload /srv/jr-compliance-releases/current/ecosystem.config.js \
+  --only jr-compliance-frontend --env production --update-env
+
+# Use this instead for a CMS-only release.
+pm2 startOrReload /srv/jr-compliance-releases/current/ecosystem.config.js \
+  --only jr-compliance-cms --env production --update-env
+
 pm2 status
 pm2 save
 ```
 
-If your release mechanism uses a stable `current` symlink, run the PM2 command
-through the new `current/ecosystem.config.js` after switching the symlink. Do
-not delete the prior release until the validation checklist passes.
+When the CMS schema and frontend CMS contract changed together, build both and
+reload the CMS first, then the frontend. A rollback must restore compatible
+application versions together in that case.
+
+For a protected-environment-only change that does not alter the release path,
+restart the named process with refreshed variables after checking the edited
+file:
+
+```bash
+pm2 restart jr-compliance-frontend --update-env
+# or
+pm2 restart jr-compliance-cms --update-env
+```
+
+`STRAPI_URL`, `STRAPI_API_TOKEN`, `STRAPI_REVALIDATE_SECRET`, and `SITE_URL`
+must be present before rebuilding the frontend. For a CMS port change, update
+the PM2 port, Nginx upstream, and `NEXT_REVALIDATE_URL` together. For an Nginx
+change, run `sudo nginx -t` and reload Nginx only when that validation succeeds.
+Do not delete the previous release until the launch-validation checks pass.
 
 ## Launch validation
 
