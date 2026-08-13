@@ -1,6 +1,8 @@
 import { SitePageShell } from "@/components/site-page-shell";
+import { RouteClosingCta } from "@/components/editorial/route-closing-cta";
 import { Faq } from "@/components/home/faq";
 import { Hero } from "@/components/home/hero";
+import { KeychainRevealSection } from "@/components/home/keychain-reveal-section";
 import { ServiceStack } from "@/components/home/service-stack";
 import { TrustedBrandsMarquee } from "@/components/home/trusted-brands-marquee";
 import { linkTargetProps } from "@/lib/link-props";
@@ -11,8 +13,6 @@ type HomePageProps = {
 };
 
 export function HomePage({ content }: HomePageProps) {
-  const repeatedRegulatorLogos = [...content.regulators.logos, ...content.regulators.logos];
-
   return (
     <SitePageShell footer={content.footer} navigation={content.navigation} site={content.site}>
         <Hero hero={content.hero} />
@@ -63,23 +63,28 @@ export function HomePage({ content }: HomePageProps) {
             <span className="regulator-network-node regulator-network-node--two" />
           </div>
           <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
-            <div className="section-heading regulators-heading">
-              <span className="eyebrow">{content.regulators.eyebrow}</span>
-              <h2 id="regulators-heading">{content.regulators.title}</h2>
-              {content.regulators.description ? <p>{content.regulators.description}</p> : null}
-            </div>
-            <div className="regulator-logo-grid">
-              {repeatedRegulatorLogos.map((logo, index) => (
-                <div className="regulator-logo" key={`${logo.name}-${index}`}>
-                  {logo.href ? (
-                    <a href={logo.href} target="_blank" rel="noreferrer" aria-label={`${logo.name} website`}>
-                      <img src={logo.src} alt={index < content.regulators.logos.length ? logo.name : ""} />
-                    </a>
-                  ) : (
-                    <img src={logo.src} alt={index < content.regulators.logos.length ? logo.name : ""} />
-                  )}
-                </div>
-              ))}
+            <div className="regulator-panel">
+              <div className="section-heading regulators-heading">
+                <span className="eyebrow">{content.regulators.eyebrow}</span>
+                <h2 id="regulators-heading">{content.regulators.title}</h2>
+                {content.regulators.description ? <p>{content.regulators.description}</p> : null}
+              </div>
+              <div className="regulator-route-divider" aria-hidden="true">
+                <span />
+              </div>
+              <div className="regulator-logo-grid">
+                {content.regulators.logos.map((logo, index) => (
+                  <div className="regulator-logo" key={`${logo.name}-${index}`}>
+                    {logo.href ? (
+                      <a href={logo.href} target="_blank" rel="noreferrer" aria-label={`${logo.name} website`}>
+                        <img src={logo.src} alt={logo.name} />
+                      </a>
+                    ) : (
+                      <img src={logo.src} alt={logo.name} />
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -129,16 +134,21 @@ export function HomePage({ content }: HomePageProps) {
           </section>
         ) : null}
 
-        <section className="testimonials-section section">
+        <KeychainRevealSection
+          className="testimonials-section section"
+          itemCount={content.testimonials.items.length}
+          labelledBy="testimonials-heading"
+        >
           <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
             <div className="section-heading compact-heading">
               <span className="eyebrow">{content.testimonials.eyebrow}</span>
-              <h2>{content.testimonials.title}</h2>
+              <h2 id="testimonials-heading">{content.testimonials.title}</h2>
               {content.testimonials.description ? <p>{content.testimonials.description}</p> : null}
             </div>
             <div className="testimonial-grid">
               {content.testimonials.items.map((testimonial) => (
                 <article className="testimonial-card" key={`${testimonial.name}-${testimonial.quote}`}>
+                  <span className="keychain-card-anchor" aria-hidden="true" />
                   <span className="quote-mark">“</span>
                   <p>{testimonial.quote}</p>
                   <footer>
@@ -156,14 +166,18 @@ export function HomePage({ content }: HomePageProps) {
               ))}
             </div>
           </div>
-        </section>
+        </KeychainRevealSection>
 
-        <section className="recognitions-section section">
+        <KeychainRevealSection
+          className="recognitions-section section"
+          itemCount={content.recognitions.items.length}
+          labelledBy="recognitions-heading"
+        >
           <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
             <div className="recognition-heading">
               <div>
                 <span className="eyebrow">{content.recognitions.eyebrow}</span>
-                <h2>{content.recognitions.title}</h2>
+                <h2 id="recognitions-heading">{content.recognitions.title}</h2>
               </div>
               <p>{content.recognitions.description}</p>
             </div>
@@ -175,6 +189,7 @@ export function HomePage({ content }: HomePageProps) {
                   key={recognition.title}
                   {...linkTargetProps(recognition)}
                 >
+                  <span className="keychain-card-anchor" aria-hidden="true" />
                   {recognition.coverImage ? <img className="recognition-cover" src={recognition.coverImage} alt="" /> : null}
                   <span className="recognition-index">0{index + 1}</span>
                   {recognition.category ? <span className="recognition-category">{recognition.category}</span> : null}
@@ -191,7 +206,7 @@ export function HomePage({ content }: HomePageProps) {
               ))}
             </div>
           </div>
-        </section>
+        </KeychainRevealSection>
 
         {content.insights?.items.length ? (
           <section className="insights-section section" aria-labelledby="insights-heading">
@@ -221,22 +236,7 @@ export function HomePage({ content }: HomePageProps) {
 
         <Faq faqs={content.faqs} />
 
-        <section className="closing-cta" id="contact">
-          <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px] closing-cta-inner">
-            <div>
-              <span className="eyebrow eyebrow-light">Let&apos;s Talk Compliance</span>
-              <h2>{content.closingCta.title}</h2>
-              <p>{content.closingCta.description}</p>
-            </div>
-            <a
-              className="button button-light closing-button"
-              href={content.closingCta.cta.href}
-              {...linkTargetProps(content.closingCta.cta)}
-            >
-              {content.closingCta.cta.label} <span aria-hidden="true">↗</span>
-            </a>
-          </div>
-        </section>
+        <RouteClosingCta id="contact" {...content.closingCta} />
     </SitePageShell>
   );
 }

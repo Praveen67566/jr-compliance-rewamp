@@ -1,34 +1,28 @@
 "use client";
 
-import { type FocusEvent, useCallback, useEffect, useRef, useState } from "react";
+import { type FocusEvent, type ReactNode, useCallback, useEffect, useRef, useState } from "react";
 
-import { linkTargetProps } from "@/lib/link-props";
-import type { Link } from "@/lib/types";
-
-type RouteClosingCtaProps = {
-  cta: Link;
-  description: string;
-  eyebrow?: string;
-  id?: string;
-  title: string;
+type KeychainRevealSectionProps = {
+  children: ReactNode;
+  className: string;
+  itemCount: number;
+  labelledBy: string;
 };
 
-export function RouteClosingCta({
-  cta,
-  description,
-  eyebrow = "Let's Talk Compliance",
-  id,
-  title,
-}: RouteClosingCtaProps) {
+const SETTLE_DURATION = 1_100;
+
+export function KeychainRevealSection({ children, className, itemCount, labelledBy }: KeychainRevealSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const firstFrameRef = useRef<number | null>(null);
   const secondFrameRef = useRef<number | null>(null);
+  const settleTimerRef = useRef<number | null>(null);
   const revealCycleRef = useRef(0);
   const isInViewportRef = useRef(false);
+  const hasFocusRef = useRef(false);
   const prefersReducedMotionRef = useRef(false);
   const [isReady, setIsReady] = useState(false);
-  const [isInView, setIsInView] = useState(false);
-  const [hasFocus, setHasFocus] = useState(false);
+  const [isSettled, setIsSettled] = useState(false);
+  const [isSettling, setIsSettling] = useState(false);
 
   const cancelScheduledReveal = useCallback(() => {
     revealCycleRef.current += 1;
@@ -42,23 +36,31 @@ export function RouteClosingCta({
       window.cancelAnimationFrame(secondFrameRef.current);
       secondFrameRef.current = null;
     }
+
+    if (settleTimerRef.current !== null) {
+      window.clearTimeout(settleTimerRef.current);
+      settleTimerRef.current = null;
+    }
   }, []);
 
   const showFinalState = useCallback(() => {
     cancelScheduledReveal();
-    setIsInView(true);
+    setIsSettling(false);
+    setIsSettled(true);
   }, [cancelScheduledReveal]);
 
-  const primeReveal = useCallback(() => {
+  const primeCards = useCallback(() => {
     cancelScheduledReveal();
-    setIsInView(false);
+    setIsSettling(false);
+    setIsSettled(false);
   }, [cancelScheduledReveal]);
 
-  const replayReveal = useCallback(() => {
+  const replayCards = useCallback(() => {
     cancelScheduledReveal();
     const revealCycle = revealCycleRef.current;
 
-    setIsInView(false);
+    setIsSettling(false);
+    setIsSettled(false);
 
     firstFrameRef.current = window.requestAnimationFrame(() => {
       firstFrameRef.current = null;
@@ -73,7 +75,16 @@ export function RouteClosingCta({
           return;
         }
 
-        setIsInView(true);
+        setIsSettling(true);
+        setIsSettled(true);
+
+        settleTimerRef.current = window.setTimeout(() => {
+          if (revealCycleRef.current === revealCycle) {
+            setIsSettling(false);
+          }
+
+          settleTimerRef.current = null;
+        }, SETTLE_DURATION);
       });
     });
   }, [cancelScheduledReveal]);
@@ -100,9 +111,9 @@ export function RouteClosingCta({
       setIsReady(true);
 
       if (isInViewportRef.current) {
-        replayReveal();
-      } else {
-        primeReveal();
+        replayCards();
+      } else if (!hasFocusRef.current) {
+        primeCards();
       }
     };
 
@@ -120,15 +131,15 @@ export function RouteClosingCta({
             return;
           }
 
-          if (section.contains(document.activeElement)) {
+          if (hasFocusRef.current) {
             showFinalState();
             return;
           }
 
           if (entry.isIntersecting) {
-            replayReveal();
-          } else if (!section.contains(document.activeElement)) {
-            primeReveal();
+            replayCards();
+          } else if (!hasFocusRef.current) {
+            primeCards();
           }
         },
         {
@@ -148,10 +159,10 @@ export function RouteClosingCta({
       motionQuery.removeEventListener("change", applyMotionPreference);
       cancelScheduledReveal();
     };
-  }, [cancelScheduledReveal, primeReveal, replayReveal, showFinalState]);
+  }, [cancelScheduledReveal, primeCards, replayCards, showFinalState]);
 
   const handleFocus = () => {
-    setHasFocus(true);
+    hasFocusRef.current = true;
     showFinalState();
   };
 
@@ -160,47 +171,39 @@ export function RouteClosingCta({
       return;
     }
 
-    setHasFocus(false);
+    hasFocusRef.current = false;
 
     if (!isInViewportRef.current && !prefersReducedMotionRef.current) {
       setIsReady(true);
-      primeReveal();
+      primeCards();
     }
   };
 
-  const sectionClasses = [
-    "route-closing-cta",
+  const revealClasses = [
+    className,
+    "keychain-reveal",
     isReady ? "is-reveal-ready" : "",
-    isInView ? "is-in-view" : "",
-    hasFocus ? "is-focus-within" : "",
+    isSettled ? "is-settled" : "",
+    isSettling ? "is-settling" : "",
   ]
     .filter(Boolean)
     .join(" ");
 
   return (
     <section
-      className={sectionClasses}
-      id={id}
+      aria-labelledby={labelledBy}
+      className={revealClasses}
+      data-keychain-count={itemCount}
       onBlurCapture={handleBlur}
       onFocusCapture={handleFocus}
       ref={sectionRef}
     >
-      <div className="route-closing-surface" aria-hidden="true" />
-      <div className="route-closing-grid" aria-hidden="true" />
-      <div className="route-closing-chevron-mark" aria-hidden="true">
-        <span className="route-closing-chevron route-closing-chevron--one" />
-        <span className="route-closing-chevron route-closing-chevron--two" />
+      <div className="keychain-motif" aria-hidden="true">
+        <span className="keychain-ring" />
+        <span className="keychain-tag keychain-tag--back" />
+        <span className="keychain-tag keychain-tag--front" />
       </div>
-      <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px] route-closing-inner">
-        <div>
-          <span className="eyebrow eyebrow-light">{eyebrow}</span>
-          <h2>{title}</h2>
-          <p>{description}</p>
-        </div>
-        <a className="button button-light route-closing-button" href={cta.href} {...linkTargetProps(cta)}>
-          {cta.label} <span className="route-closing-button-arrow" aria-hidden="true">↗</span>
-        </a>
-      </div>
+      {children}
     </section>
   );
 }

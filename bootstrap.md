@@ -104,9 +104,11 @@ If a command cannot be run, clearly explain why.
 - Tell me what validation passed or failed.
 
 ## Prompt:-
+UI Improvement:-
+! DOn't Change Anything Which Impact the Strapi Cms Integration These all changes are only ui changes don't change anything in content:-
+1:- Take the Next Step Towards Success This Section should improved in all the pages where it is being used not only in home page and given result by you is not what i expected there is three steps in animation first 
+it should look like arrow only double arrow then slowly it converts into the whole visible section and it should work on scroll.
+2:- the keychain animation :- in Creating Trust-Driven Relationships , Earning Trust, Backed By Recognition
+here only animation worked at once then i have to reload then it is working i don't want that at every scroll the Take The Next Step And These Keychain Animation should work at every scroll not only at first time.
 
-UI Improvement In Home Page:-
-1:- Bridging {Brands} to Worldwide Standards in this where this Brands changes into companies then the animation should look like someone is typing the letter.
-2:- And in the given image :- Global Reach An extensive network of partners across 20+ countries card is coming above image it should not comes above the image.
-
-Improve the ui only here dont change anything else and the important point is that here strapi cms is integrated so dont change anything that affects strapi cms 
+Now only change the ui.
