@@ -1,4 +1,5 @@
 import { RouteClosingCta } from "@/components/editorial/route-closing-cta";
+import { ConsultationForm } from "@/components/forms/consultation-form";
 import { SitePageShell } from "@/components/site-page-shell";
 import { linkTargetProps } from "@/lib/link-props";
 import type {
@@ -130,6 +131,11 @@ export function CompanyRegistrationPage({ content }: CompanyRegistrationPageProp
             </div>
           </div>
 
+          {content.site.leadForm.enabled ? (
+            <div className="relative z-[2] mx-auto w-full max-w-[540px] self-center">
+              <ConsultationForm pageTitle={content.seo.title} settings={content.site.leadForm} />
+            </div>
+          ) : (
           <div
             className="relative mx-auto aspect-[1.06] w-full max-w-[520px] overflow-hidden rounded-[30px] border border-sky/35 bg-navy-800/80 shadow-[0_30px_80px_rgba(0,8,34,0.42)]"
             aria-hidden="true"
@@ -160,6 +166,7 @@ export function CompanyRegistrationPage({ content }: CompanyRegistrationPageProp
               Connected expertise
             </span>
           </div>
+          )}
         </div>
       </section>
 

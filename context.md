@@ -92,9 +92,8 @@ out of scope until their content models and destinations are validated.
   transport is intentionally not implemented until its security workflow is
   approved.
 - Contact Us uses the legacy contact methods and Bawana address. It offers
-  direct phone/email/location routes; a live enquiry form remains intentionally
-  deferred until receiver, validation, consent handling, and spam protection
-  are decided.
+  direct phone/email/location routes plus the centralized, server-validated
+  consultation form shared by every current hero template.
 - Nineteen Company Registration pages use one dynamic App Router route and one
   fixed Tailwind template. Their approved legacy hero, overview, challenges,
   advantages, process, breakdown, and FAQ content lives in a typed fallback and
@@ -103,7 +102,7 @@ out of scope until their content models and destinations are validated.
   deliberately excluded.
 - The Strapi v5 CMS is implemented in `cms/`: five single types (`site-setting`,
   `home-page`, `about-page`, `careers-page`, `contact-page`), fifteen
-  collections, forty-four components, and core REST route/controller/service
+  collections, forty-six components, and core REST route/controller/service
   files for all twenty types. All editorial content uses Draft & Publish;
   i18n is intentionally off.
 - Every active page and shared header/footer has a typed CMS mapping. CMS
@@ -152,8 +151,8 @@ to `/#services` until validated detail pages are migrated.
 - `site/careers.html`: Careers hero, vision/mission, values, culture gallery,
   five openings, benefits, six employee testimonials, four FAQs, and final CTA.
 - `site/contact-us.html`: Contact hero, phone/email/Bawana office details,
-  contact copy, direct CTA, and the legacy future-form copy. Do not migrate its
-  commented credential-like webhook.
+  contact copy, and direct CTA. The new form is an original centralized Next.js
+  implementation; do not migrate the legacy commented credential-like webhook.
 - The nineteen approved files under `site/corporate/` matching the Company
   Registration navbar slugs: service hero/overview, four challenges, four
   advantages, six process steps, eligibility/documents/audience breakdown, and

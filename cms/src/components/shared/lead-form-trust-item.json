@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_shared_lead_form_trust_items",
+  "info": {
+    "displayName": "Lead form trust item",
+    "description": "An optional recognition name, logo, and destination shown with the consultation form."
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "link": {
+      "type": "component",
+      "component": "shared.link",
+      "repeatable": false
+    }
+  }
+}

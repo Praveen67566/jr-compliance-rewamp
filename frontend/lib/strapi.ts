@@ -18,6 +18,8 @@ import type {
   HomepageContent,
   Insight,
   LegalNotice,
+  LeadFormSettings,
+  LeadFormTrustItem,
   Link,
   Logo,
   Metric,
@@ -80,6 +82,10 @@ const populateTrees: Record<SingleTypeSlug, PopulateTree> = {
     legalLinks: true,
     legalNotices: true,
     socialLinks: true,
+    leadForm: {
+      privacyLink: true,
+      trustItems: { logo: true, link: true },
+    },
     defaultSeo: { shareImage: true },
   },
   "home-page": {
@@ -650,6 +656,73 @@ function mapLegalNotices(value: unknown): LegalNotice[] {
   return notices;
 }
 
+function localRedirectPath(value: unknown, fallback: string): string {
+  const candidate = text(value);
+  if (!candidate || !candidate.startsWith("/") || candidate.startsWith("//") || candidate.includes("\\")) {
+    return fallback;
+  }
+
+  try {
+    const base = new URL("https://jr-compliance.invalid");
+    const parsed = new URL(candidate, base);
+    return parsed.origin === base.origin ? `${parsed.pathname}${parsed.search}${parsed.hash}` : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function mapLeadFormSettings(value: unknown, fallback: LeadFormSettings): LeadFormSettings {
+  const settings = record(value);
+  const trustItems = asArray(settings.trustItems)
+    .map((entry) => {
+      const item = record(entry);
+      const name = text(item.name);
+      if (!name) {
+        return null;
+      }
+
+      const logo = mediaUrl(item.logo);
+      const itemLink = hasLink(item.link)
+        ? link(item.link, { label: name, href: "#" })
+        : undefined;
+
+      return {
+        name,
+        ...(logo ? { logo } : {}),
+        ...(itemLink ? { link: itemLink } : {}),
+      };
+    })
+    .filter((item): item is LeadFormTrustItem => Boolean(item));
+
+  return {
+    enabled: boolean(settings.enabled) ?? fallback.enabled,
+    heading: text(settings.heading) ?? fallback.heading,
+    subtitle: text(settings.subtitle) ?? fallback.subtitle,
+    nameLabel: text(settings.nameLabel) ?? fallback.nameLabel,
+    namePlaceholder: text(settings.namePlaceholder) ?? fallback.namePlaceholder,
+    emailLabel: text(settings.emailLabel) ?? fallback.emailLabel,
+    emailPlaceholder: text(settings.emailPlaceholder) ?? fallback.emailPlaceholder,
+    phoneLabel: text(settings.phoneLabel) ?? fallback.phoneLabel,
+    phonePlaceholder: text(settings.phonePlaceholder) ?? fallback.phonePlaceholder,
+    messageLabel: text(settings.messageLabel) ?? fallback.messageLabel,
+    messagePlaceholder: text(settings.messagePlaceholder) ?? fallback.messagePlaceholder,
+    consentText: text(settings.consentText) ?? fallback.consentText,
+    privacyLink: link(settings.privacyLink, fallback.privacyLink),
+    submitLabel: text(settings.submitLabel) ?? fallback.submitLabel,
+    submittingLabel: text(settings.submittingLabel) ?? fallback.submittingLabel,
+    successTitle: text(settings.successTitle) ?? fallback.successTitle,
+    successMessage: text(settings.successMessage) ?? fallback.successMessage,
+    redirectPath: localRedirectPath(settings.redirectPath, fallback.redirectPath),
+    secureLabel: text(settings.secureLabel) ?? fallback.secureLabel,
+    durationLabel: text(settings.durationLabel) ?? fallback.durationLabel,
+    noSpamLabel: text(settings.noSpamLabel) ?? fallback.noSpamLabel,
+    trustHeading: text(settings.trustHeading) ?? fallback.trustHeading,
+    trustDescription: text(settings.trustDescription) ?? fallback.trustDescription,
+    trustItems: trustItems.length ? trustItems : fallback.trustItems,
+    experienceText: text(settings.experienceText) ?? fallback.experienceText,
+  };
+}
+
 /** Maps the shared site-setting record once so every route has identical chrome. */
 function mapPageChrome(fallback: PageChromeContent, rawSettings: unknown): PageChromeContent {
   const settings = record(rawSettings);
@@ -679,6 +752,7 @@ function mapPageChrome(fallback: PageChromeContent, rawSettings: unknown): PageC
       ...(whatsAppHref ? { whatsAppHref } : {}),
       footerTagline: text(settings.footerTagline) ?? fallback.site.footerTagline,
       copyrightText: text(settings.copyrightText) ?? fallback.site.copyrightText,
+      leadForm: mapLeadFormSettings(settings.leadForm, fallback.site.leadForm),
       legalLinks: asArray(settings.legalLinks).length
         ? asArray(settings.legalLinks).map((item, index) =>
             link(item, fallback.site.legalLinks[index] ?? fallback.site.legalLinks[0]),

@@ -1,5 +1,6 @@
+import { ConsultationForm } from "@/components/forms/consultation-form";
 import { linkTargetProps } from "@/lib/link-props";
-import type { Link } from "@/lib/types";
+import type { LeadFormSettings, Link } from "@/lib/types";
 
 type RouteHeroProps = {
   eyebrow: string;
@@ -8,10 +9,12 @@ type RouteHeroProps = {
   cta?: Link;
   image?: string;
   imageAlt?: string;
+  leadForm: LeadFormSettings;
+  pageTitle: string;
 };
 
 /** Shared bluefield page opening for the editorial routes. */
-export function RouteHero({ eyebrow, title, description, cta, image, imageAlt }: RouteHeroProps) {
+export function RouteHero({ eyebrow, title, description, cta, image, imageAlt, leadForm, pageTitle }: RouteHeroProps) {
   return (
     <section className="route-hero" id="top">
       <div className="route-hero-grid" aria-hidden="true" />
@@ -30,14 +33,20 @@ export function RouteHero({ eyebrow, title, description, cta, image, imageAlt }:
           ) : null}
         </div>
 
-        <div className={`route-hero-visual${image ? " route-hero-visual--media" : ""}`}>
-          <div className="route-hero-signal route-hero-signal--one" aria-hidden="true" />
-          <div className="route-hero-signal route-hero-signal--two" aria-hidden="true" />
-          {image ? <img src={image} alt={imageAlt ?? ""} /> : <div className="route-hero-network" aria-hidden="true" />}
-          <span className="route-hero-status" aria-hidden="true">
-            <i /> Connected expertise
-          </span>
-        </div>
+        {leadForm.enabled ? (
+          <div className="relative z-[2] mx-auto w-full max-w-[540px] self-center">
+            <ConsultationForm pageTitle={pageTitle} settings={leadForm} />
+          </div>
+        ) : (
+          <div className={`route-hero-visual${image ? " route-hero-visual--media" : ""}`}>
+            <div className="route-hero-signal route-hero-signal--one" aria-hidden="true" />
+            <div className="route-hero-signal route-hero-signal--two" aria-hidden="true" />
+            {image ? <img src={image} alt={imageAlt ?? ""} /> : <div className="route-hero-network" aria-hidden="true" />}
+            <span className="route-hero-status" aria-hidden="true">
+              <i /> Connected expertise
+            </span>
+          </div>
+        )}
       </div>
     </section>
   );

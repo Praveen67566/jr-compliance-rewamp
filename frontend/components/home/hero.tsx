@@ -3,11 +3,14 @@
 import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 
+import { ConsultationForm } from "@/components/forms/consultation-form";
 import { linkTargetProps } from "@/lib/link-props";
-import type { HomepageContent } from "@/lib/types";
+import type { HomepageContent, LeadFormSettings } from "@/lib/types";
 
 type HeroProps = {
   hero: HomepageContent["hero"];
+  leadForm: LeadFormSettings;
+  pageTitle: string;
 };
 
 type FloatingCardProps = {
@@ -104,7 +107,7 @@ function FloatingCard({ card, className, children }: FloatingCardProps) {
   );
 }
 
-export function Hero({ hero }: HeroProps) {
+export function Hero({ hero, leadForm, pageTitle }: HeroProps) {
   const rotatingWords = useMemo(() => hero.rotatingWords.filter(Boolean), [hero.rotatingWords]);
   const prefersReducedMotion = usePrefersReducedMotion();
   const { activeWord, displayedWord } = useTypedRotatingWord(rotatingWords, prefersReducedMotion);
@@ -144,6 +147,11 @@ export function Hero({ hero }: HeroProps) {
           </a>
         </div>
 
+        {leadForm.enabled ? (
+          <div className="relative z-[2] mx-auto w-full max-w-[560px] self-center">
+            <ConsultationForm pageTitle={pageTitle} settings={leadForm} />
+          </div>
+        ) : (
         <div className="hero-visual" aria-label="JR Compliance specialists">
           <div className="hero-visual-glow" aria-hidden="true" />
           <div className="hero-photo-frame">
@@ -186,6 +194,7 @@ export function Hero({ hero }: HeroProps) {
             </div>
           </FloatingCard>
         </div>
+        )}
       </div>
     </section>
   );

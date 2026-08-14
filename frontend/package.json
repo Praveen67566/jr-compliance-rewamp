@@ -6,6 +6,7 @@
     "dev": "next dev --port 8123",
     "build": "next build",
     "start": "next start --port ${PORT:-8123}",
+    "test": "tsx --test tests/**/*.test.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -19,6 +20,7 @@
     "@types/react": "19.1.10",
     "@types/react-dom": "19.1.9",
     "tailwindcss": "^4.3.3",
+    "tsx": "^4.23.12",
     "typescript": "5.8.3"
   }
 }

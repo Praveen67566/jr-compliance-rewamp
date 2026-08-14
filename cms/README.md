@@ -7,7 +7,7 @@ This is the Strapi v5 TypeScript CMS for the active JR Compliance routes:
 - `/careers` — `careers-page`
 - `/contact-us` — `contact-page`
 - `/corporate/[slug]` — `company-registration-page` collection (nineteen approved slugs)
-- shared header/footer — `site-setting`
+- shared header/footer and global consultation-form copy — `site-setting`
 
 The exact editorial contract lives in [CONTENT_MODEL.md](./CONTENT_MODEL.md).
 Next.js owns the Compliance Network layout, interaction, and motion; Strapi owns
@@ -72,7 +72,7 @@ workflow instead of an automatic production write.
 ## Schema and editor policy
 
 The committed schemas define five single types, fifteen collection types, and
-forty-four components. All editorial types use Draft & Publish. Page-selected
+forty-six components. All editorial types use Draft & Publish. Page-selected
 relations are intentionally unidirectional, ordered selections; the inverse
 pairs are only Service Category → Service and FAQ Category → FAQ.
 
@@ -83,6 +83,11 @@ The shared navbar is edited under **Site Setting → Header Menu**:
 - Careers and About Us use only their direct `href`.
 - `children` remains available for a small single-level submenu, but should not
   be combined with `categories` on the same menu item.
+
+The centralized form copy is edited under **Site Setting → Lead Form**. Its
+message label and placeholder are editor-managed, but the message remains
+required in frontend and server validation. Webhook configuration and form
+transport do not live in Strapi.
 
 The fresh local seed includes all currently approved navbar categories, links,
 and nineteen Company Registration records. On startup, the CMS also migrates

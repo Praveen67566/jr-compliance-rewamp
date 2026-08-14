@@ -10,7 +10,7 @@ The CMS provides content for:
 - `/about-us` through the `about-page` single type
 - `/careers` through the `careers-page` single type
 - `/contact-us` through the `contact-page` single type
-- shared header/footer through the `site-setting` single type
+- shared header/footer and global consultation-form copy through the `site-setting` single type
 
 The frontend reads published CMS content using a server-only API token. If Strapi is unavailable, the frontend uses local fallback data from `frontend/data/*-fallback.ts`.
 
@@ -117,7 +117,10 @@ Each content type folder follows the Strapi pattern:
 ### Single types
 
 `cms/src/api/site-setting/`
-: Shared site chrome. Stores site name, header/footer logos, header menu, header CTA, footer links, contact details, social links, legal links, and legal notices.
+: Shared site chrome and lead-form copy. Stores site name, header/footer logos,
+  header menu, CTAs, footer links, contact details, social/legal links, and the
+  centralized consultation-form labels, trust content, consent link, success
+  copy, redirect path, and enabled state. It never stores webhook configuration.
 
 `cms/src/api/home-page/`
 : Home page content. Stores hero, trusted logos, services section selections, why-us content, metrics, testimonials, recognitions, FAQs, optional insights, and closing CTA.

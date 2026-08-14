@@ -26,7 +26,7 @@ The main flow is:
 ## Root files
 
 `frontend/package.json`
-: Defines the frontend package, dependencies, and scripts. It includes Tailwind CSS v4 and its PostCSS adapter. Important scripts are `npm run dev`, `npm run typecheck`, `npm run build`, and `npm run start`.
+: Defines the frontend package, dependencies, and scripts. It includes Tailwind CSS v4, its PostCSS adapter, and `tsx` for the built-in Node test runner. Important scripts are `npm run dev`, `npm run test`, `npm run typecheck`, `npm run build`, and `npm run start`.
 
 `frontend/package-lock.json`
 : Locks exact installed npm dependency versions.
@@ -44,7 +44,7 @@ The main flow is:
 : TypeScript incremental build cache. Generated file.
 
 `frontend/.env.example`
-: Safe environment variable template. Shows names like `STRAPI_URL`, `STRAPI_API_TOKEN`, `SITE_URL`, and `STRAPI_REVALIDATE_SECRET`.
+: Safe environment variable template. Shows names like `STRAPI_URL`, `STRAPI_API_TOKEN`, `SITE_URL`, `STRAPI_REVALIDATE_SECRET`, and the server-only `LEAD_WEBHOOK_BASE_URL`.
 
 `frontend/.env.local`
 : Local machine environment values. This can contain secrets and should not be committed.
@@ -107,6 +107,16 @@ The main flow is:
 `frontend/app/api/revalidate/route.ts`
 : Secure Strapi webhook endpoint. It verifies an HMAC signature from Strapi and revalidates the matching Next cache tags after publish/unpublish/delete events.
 
+`frontend/app/api/leads/route.ts`
+: Same-origin consultation endpoint. It validates and normalizes the required
+  fields, checks consent/honeypot/origin, applies the single-instance rate
+  limit, derives the legacy lead type from the page path, and makes one
+  server-side downstream request with an exact allow-listed payload.
+
+`frontend/app/thank-you/page.tsx`
+: Branded, noindex confirmation route used only after the downstream webhook
+  returns a successful 2xx response. It is intentionally absent from sitemap.
+
 ## Shared components
 
 `frontend/components/site-page-shell.tsx`
@@ -124,13 +134,25 @@ The main flow is:
 `frontend/components/site-footer.css`
 : Footer-only network field, glass panel, and legal-area styling.
 
+`frontend/components/forms/consultation-form.tsx`
+: The one reusable consultation form. It owns field state, accessible feedback,
+  required-message validation, UTM capture, consent, honeypot, loading state,
+  same-origin submission, and redirect. Form copy/trust content comes from the
+  global typed Site Setting contract.
+
+`frontend/components/forms/consultation-form-trigger.tsx`
+: Small anchor helper for a CTA-only surface that should navigate to the shared
+  form instead of duplicating form markup.
+
 ## Home components
 
 `frontend/components/home/home-page.tsx`
 : Composes the full home page: hero, logo band, service stack, why JR, regulators, metrics, ticker CTA, testimonials, recognitions, FAQ, insights, and closing CTA.
 
 `frontend/components/home/hero.tsx`
-: Home hero section. Handles the main headline, rotating words, CTA, team image, and supporting cards.
+: Home hero section. Handles the main headline, rotating words, CTA, and the
+  centralized form. The previous team image/supporting-card artwork remains the
+  fallback when the CMS disables the form.
 
 `frontend/components/home/home.css`
 : Home-only visual details, including the hero, service stack, bands, cards, FAQ, and closing CTA. Use Tailwind utilities in the TSX for ordinary layout/spacing; retain this file for complex layered art, pseudo-elements, and animation hooks.
@@ -218,6 +240,14 @@ These files keep the site working when Strapi is offline. They also document the
 
 `frontend/lib/link-props.ts`
 : Converts CMS link targets into safe anchor props. Adds `rel="noreferrer"` for new-tab links.
+
+`frontend/lib/leads.ts`
+: Pure consultation validation, phone/path normalization, lead-type routing,
+  and exact webhook payload construction. Focused tests cover this contract.
+
+`frontend/lib/lead-rate-limit.ts`
+: Bounded in-memory fixed-window protection for the current single frontend
+  process. Production also requires the documented Nginx/edge limit.
 
 ## Public assets
 

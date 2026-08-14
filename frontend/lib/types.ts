@@ -129,6 +129,41 @@ export type Seo = {
   shareImage?: string;
 };
 
+export type LeadFormTrustItem = {
+  name: string;
+  logo?: string;
+  link?: Link;
+};
+
+/** Global, editor-managed copy for the shared consultation form. */
+export type LeadFormSettings = {
+  enabled: boolean;
+  heading: string;
+  subtitle: string;
+  nameLabel: string;
+  namePlaceholder: string;
+  emailLabel: string;
+  emailPlaceholder: string;
+  phoneLabel: string;
+  phonePlaceholder: string;
+  messageLabel: string;
+  messagePlaceholder: string;
+  consentText: string;
+  privacyLink: Link;
+  submitLabel: string;
+  submittingLabel: string;
+  successTitle: string;
+  successMessage: string;
+  redirectPath: string;
+  secureLabel: string;
+  durationLabel: string;
+  noSpamLabel: string;
+  trustHeading?: string;
+  trustDescription?: string;
+  trustItems: LeadFormTrustItem[];
+  experienceText?: string;
+};
+
 export type SiteSettings = {
   name: string;
   logo: string;
@@ -143,6 +178,7 @@ export type SiteSettings = {
   footerTagline: string;
   legalLinks: Link[];
   copyrightText: string;
+  leadForm: LeadFormSettings;
 };
 
 export type FooterContent = {

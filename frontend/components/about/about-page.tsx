@@ -54,7 +54,7 @@ function TeamCard({ member }: { member: TeamMember }) {
 export function AboutPage({ content }: AboutPageProps) {
   return (
     <SitePageShell footer={content.footer} navigation={content.navigation} site={content.site}>
-      <RouteHero {...content.hero} />
+      <RouteHero {...content.hero} leadForm={content.site.leadForm} pageTitle={content.seo.title} />
 
       <section className="about-proof-section">
         <AboutParallaxBackdrop variant="proof" />

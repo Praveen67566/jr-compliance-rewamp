@@ -20,7 +20,8 @@ second locale.
 
 ### `site-setting` — API: `api::site-setting.site-setting`
 
-One global record used by the shared header and footer.
+One global record used by the shared header, footer, and centralized expert
+consultation form.
 
 | Field | Strapi field | Rules |
 | --- | --- | --- |
@@ -37,6 +38,7 @@ One global record used by the shared header and footer.
 | `legalNotices` | Repeatable `shared.legal-notice` component | Optional; holds Disclaimer and Intellectual Property copy |
 | `socialLinks` | Repeatable `shared.social-link` component | Required |
 | `copyrightText` | Short text | Required |
+| `leadForm` | `shared.lead-form-settings` component | Optional for backwards-compatible rollout; when absent, the frontend uses its typed form fallback |
 | `defaultSeo` | `shared.seo` component | Optional fallback for non-home routes |
 
 ### `home-page` — API: `api::home-page.home-page`
@@ -113,14 +115,14 @@ CMS content type; only editorial job information and page content do.
 ### `contact-page` — API: `api::contact-page.contact-page`
 
 One record for `/contact-us`. It owns contact-page copy and approved contact
-media; a future secure submission workflow belongs in Next.js/server
-infrastructure, not in a public CMS field.
+media. The live submission workflow belongs in Next.js/server infrastructure;
+only global form copy belongs in `site-setting.leadForm`.
 
 | Field | Strapi field | Rules / relation |
 | --- | --- | --- |
 | `hero` | `contact.hero` component | Required; eyebrow, title, description |
 | `contactPoints` | Repeatable `contact.point` component | Required; one each for phone, email, and office location |
-| `enquiry` | `contact.enquiry` component | Required; direct contact CTA and future form-copy/note only |
+| `enquiry` | `contact.enquiry` component | Required; secondary direct-contact CTA and supporting note |
 | `response` | `contact.response` component | Required; heading and ordered connection steps |
 | `finalCta` | `home.cta-band` component | Required |
 | `seo` | `shared.seo` component | Required |
@@ -197,6 +199,8 @@ collection pairs above.
 | `shared.contact` | `phoneDisplay` short text*, `phoneE164` short text*, `email` email*, `whatsAppUrl` short text* |
 | `shared.social-link` | `network` enum `linkedin` / `facebook` / `x` / `youtube` / `instagram`*, `url` short text* |
 | `shared.legal-notice` | `title` short text*, `body` Rich Text (Blocks)* |
+| `shared.lead-form-settings` | `enabled` boolean* (default `true`), `heading` short text*, `subtitle` short text*, `nameLabel` short text*, `namePlaceholder` short text*, `emailLabel` short text*, `emailPlaceholder` short text*, `phoneLabel` short text*, `phonePlaceholder` short text*, `messageLabel` short text*, `messagePlaceholder` short text*, `consentText` long text*, `privacyLink` `shared.link`*, `submitLabel` short text*, `submittingLabel` short text*, `successTitle` short text*, `successMessage` long text*, `redirectPath` short text*, `secureLabel` short text*, `durationLabel` short text*, `noSpamLabel` short text*, `trustHeading` short text, `trustDescription` long text, `trustItems` repeatable `shared.lead-form-trust-item`, `experienceText` short text. The message itself is always required by the form and submission API; the CMS exposes no optional-message switch. |
+| `shared.lead-form-trust-item` | `name` short text*, `logo` single image media, `link` `shared.link` component; items render in editor order and may fall back to their name when no logo is selected |
 | `navigation.menu-item` | `label` short text*, `href` short text, `children` repeatable `shared.link` component, `categories` repeatable `navigation.menu-category` component; use categories for multi-column mega menus, children for a simple submenu, and `href` alone for Careers/About Us |
 | `navigation.menu-category` | `title` short text*, `links` repeatable `shared.link` component* |
 | `navigation.link-group` | `title` short text*, `links` repeatable `shared.link` component* |
@@ -273,7 +277,7 @@ invent claims or silently repair source inconsistencies.
 | --- | --- | --- |
 | `/about-us` | `site/about-us.html` | Hero “Your #1 Partner for 360° Compliance Solutions”; 13+/100+/4.8 proof stats; the five Our Mantra cards; six dated timeline events (2013–14 through 2022); four “Why partner with us?” cards; Pioneers stats; 14 JRians; five achievement cards; final Contact Us CTA. |
 | `/careers` | `site/careers.html` | Hero, Vision/Mission, four values, culture gallery, five active openings, four benefits, six unique employee testimonials, four career FAQs, and final Contact Us CTA. Preserve job labels but have an editor validate legacy department/category inconsistencies before publishing. |
-| `/contact-us` | `site/contact-us.html` | “Let's Ensure Your Compliance Together”; phone, email, Bawana office address; direct-contact copy; future form labels/consent/success/error copy; final CTA anchored to the contact options. Do not copy the commented legacy Bitrix webhook or its credential-like URL. |
+| `/contact-us` | `site/contact-us.html` | “Let's Ensure Your Compliance Together”; phone, email, Bawana office address; direct-contact copy; final CTA anchored to the contact options. Centralized form copy comes from `site-setting.leadForm`; do not copy the commented legacy Bitrix webhook or its credential-like URL. |
 | `/corporate/[slug]` (nineteen Company Registration routes) | Matching approved files under `site/corporate/` | Page-specific SEO, hero, overview, four challenges, four advantages, six process steps, Why JR cards, Eligibility/Documents/Who Needs It breakdown, FAQs, and shared final CTA. Exclude the duplicated private-company challenge block, hidden placeholder processes/tabs/resources, copied testimonials, Webflow lead form, and all legacy UI/transport code. |
 
 Copy the approved media into Strapi Media Library first. The local Next.js

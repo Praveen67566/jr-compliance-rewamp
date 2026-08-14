@@ -1,0 +1,111 @@
+{
+  "collectionName": "components_shared_lead_form_settings",
+  "info": {
+    "displayName": "Lead form settings",
+    "description": "Global editor-managed copy and trust content for the expert consultation form."
+  },
+  "options": {},
+  "attributes": {
+    "enabled": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    },
+    "heading": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "string",
+      "required": true
+    },
+    "nameLabel": {
+      "type": "string",
+      "required": true
+    },
+    "namePlaceholder": {
+      "type": "string",
+      "required": true
+    },
+    "emailLabel": {
+      "type": "string",
+      "required": true
+    },
+    "emailPlaceholder": {
+      "type": "string",
+      "required": true
+    },
+    "phoneLabel": {
+      "type": "string",
+      "required": true
+    },
+    "phonePlaceholder": {
+      "type": "string",
+      "required": true
+    },
+    "messageLabel": {
+      "type": "string",
+      "required": true
+    },
+    "messagePlaceholder": {
+      "type": "string",
+      "required": true
+    },
+    "consentText": {
+      "type": "text",
+      "required": true
+    },
+    "privacyLink": {
+      "type": "component",
+      "component": "shared.link",
+      "repeatable": false,
+      "required": true
+    },
+    "submitLabel": {
+      "type": "string",
+      "required": true
+    },
+    "submittingLabel": {
+      "type": "string",
+      "required": true
+    },
+    "successTitle": {
+      "type": "string",
+      "required": true
+    },
+    "successMessage": {
+      "type": "text",
+      "required": true
+    },
+    "redirectPath": {
+      "type": "string",
+      "required": true
+    },
+    "secureLabel": {
+      "type": "string",
+      "required": true
+    },
+    "durationLabel": {
+      "type": "string",
+      "required": true
+    },
+    "noSpamLabel": {
+      "type": "string",
+      "required": true
+    },
+    "trustHeading": {
+      "type": "string"
+    },
+    "trustDescription": {
+      "type": "text"
+    },
+    "trustItems": {
+      "type": "component",
+      "component": "shared.lead-form-trust-item",
+      "repeatable": true
+    },
+    "experienceText": {
+      "type": "string"
+    }
+  }
+}

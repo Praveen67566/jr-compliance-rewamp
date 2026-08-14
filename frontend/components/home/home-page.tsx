@@ -15,7 +15,7 @@ type HomePageProps = {
 export function HomePage({ content }: HomePageProps) {
   return (
     <SitePageShell footer={content.footer} navigation={content.navigation} site={content.site}>
-        <Hero hero={content.hero} />
+        <Hero hero={content.hero} leadForm={content.site.leadForm} pageTitle={content.seo.title} />
 
         <TrustedBrandsMarquee logos={content.trustedLogos} />
 

@@ -1,10 +1,7 @@
 import { fallbackHomepage } from "@/data/homepage-fallback";
 import type { ContactPageContent } from "@/lib/types";
 
-/**
- * Contact content from the visible legacy page. The action remains intentionally
- * absent until an approved server-side enquiry workflow is defined.
- */
+/** Contact content from the visible legacy page with a secondary email route. */
 export const fallbackContactPage: ContactPageContent = {
   site: fallbackHomepage.site,
   navigation: fallbackHomepage.navigation,
@@ -51,7 +48,7 @@ export const fallbackContactPage: ContactPageContent = {
     topics: ["Technical approvals", "Corporate services", "Global compliance"],
     directCta: { label: "Email our team", href: "mailto:support@jrcompliance.com" },
     formNote:
-      "A secure request form will be connected after the approved submission, consent, and spam-protection workflow is in place.",
+      "Prefer email? Send your documents or detailed requirement directly and our team will respond.",
   },
   response: {
     eyebrow: "Connect with confidence",

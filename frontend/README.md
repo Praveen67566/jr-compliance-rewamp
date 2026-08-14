@@ -10,6 +10,7 @@ from the legacy Webflow export in `../site`.
 ```bash
 npm install
 npm run dev
+npm run test
 npm run typecheck
 npm run build
 ```
@@ -25,7 +26,14 @@ Without `STRAPI_URL`, each route renders its typed local content in
 `data/*-page-fallback.ts`.
 
 Set `SITE_URL` to the deployed public origin. It keeps any site-relative CMS
-canonical URL absolute in generated metadata; it does not expose credentials.
+canonical URL absolute in generated metadata and is the strict origin allow-list
+for `/api/leads`; production lead intake fails closed if it is missing or
+invalid. It does not expose credentials.
+
+Set the server-only `LEAD_WEBHOOK_BASE_URL` to
+`https://webhook.jrcompliance.com`. The browser sends consultation requests to
+the same-origin `/api/leads` route; it never receives the downstream receiver
+configuration or the Strapi token.
 
 ## Content architecture
 
@@ -44,7 +52,39 @@ canonical URL absolute in generated metadata; it does not expose credentials.
   `components/editorial/` centralizes the Compliance Network route primitives.
 - `components/company-registration/company-registration-page.tsx` is the
   Tailwind-first fixed template shared by all nineteen registration routes.
+- `components/forms/consultation-form.tsx` owns the form UI, required-message
+  validation, consent, honeypot, UTM capture, submission state, and redirect.
+  `app/api/leads/route.ts` validates it again, rate-limits requests, derives the
+  lead type from the page path, and forwards one exact allow-listed payload.
 - The CMS schema and editor setup are documented in `../cms/CONTENT_MODEL.md`.
+
+## Centralized consultation form
+
+The global form copy is `site-setting.leadForm` in Strapi and
+`fallbackHomepage.site.leadForm` locally. Home, the shared editorial hero, and
+the shared Company Registration template render the same component in their
+hero visual slot, which covers every current content route without per-page
+form markup. Publishing Site Setting refreshes all page cache tags.
+
+For a future page whose content extends `PageChromeContent`, place the same form
+in its intended hero slot:
+
+```tsx
+<ConsultationForm
+  pageTitle={content.seo.title}
+  settings={content.site.leadForm}
+/>
+```
+
+For a CTA-only surface, use `ConsultationFormTrigger`; it links to the shared
+`expert-consultation` anchor instead of creating another form. If editors turn
+off `leadForm.enabled`, current hero templates retain their existing artwork.
+
+The server route sends `technical` leads for `/approval/*` and `/ad/*`,
+`corporate` leads for `/corporate/*`, and `global` leads for all other paths.
+The message is required and always forwarded. Supported UTM values are omitted
+as a group when none are present. Successful requests redirect to the noindex
+`/thank-you` page.
 
 ## CMS publish revalidation
 

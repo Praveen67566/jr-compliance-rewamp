@@ -1046,7 +1046,7 @@ export async function seedInitialContent(strapi: Core.Strapi): Promise<void> {
       topics: ["Technical approvals", "Corporate services", "Global compliance"].map((text) => ({ text })),
       directCta: sameTab("Email our team", "mailto:support@jrcompliance.com"),
       formNote:
-        "A secure request form will be connected after the approved submission, consent, and spam-protection workflow is in place.",
+        "Prefer email? Send your documents or detailed requirement directly and our team will respond.",
     },
     response: {
       eyebrow: "Connect with confidence",

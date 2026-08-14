@@ -411,10 +411,13 @@ STRAPI_URL=https://cms.jrcompliance.com
 STRAPI_API_TOKEN=<next-site-reader-token>
 STRAPI_REVALIDATE_SECRET=<exactly-the-same-value-as-cms/.env>
 SITE_URL=https://test.jrcompliance.com
+LEAD_WEBHOOK_BASE_URL=https://webhook.jrcompliance.com
 ```
 
-None of these secrets may use a `NEXT_PUBLIC_*` variable name. Build and start
-only the frontend:
+None of these server values may use a `NEXT_PUBLIC_*` variable name.
+`LEAD_WEBHOOK_BASE_URL` is required before accepting live consultation
+requests; the lead route fails closed when it is missing or invalid. Build and
+start only the frontend:
 
 ```bash
 cd "$PROJECT_DIR/frontend"
@@ -440,12 +443,34 @@ pm2 restart jr-compliance-frontend --update-env
 
 Append this second server block to the existing
 `/etc/nginx/sites-available/jr-compliance-test.conf` file. Do not replace the
-CMS block.
+CMS block. Add the `limit_req_zone` declaration once outside both server
+blocks, because this sites-enabled file is included from Nginx's `http`
+context:
 
 ```nginx
+limit_req_zone $binary_remote_addr zone=jr_lead_submissions:10m rate=10r/m;
+
 server {
     listen 80;
     server_name test.jrcompliance.com;
+
+    # Public lead intake: keep the payload small and add an edge flood limit in
+    # front of the app's stricter per-address single-process limiter.
+    location = /api/leads {
+        client_max_body_size 16k;
+        limit_req zone=jr_lead_submissions burst=5 nodelay;
+        limit_req_status 429;
+
+        proxy_pass http://127.0.0.1:8123;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Port $server_port;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 10s;
+    }
 
     location / {
         proxy_pass http://127.0.0.1:8123;
@@ -472,6 +497,11 @@ sudo nginx -t
 sudo systemctl reload nginx
 sudo certbot --nginx --redirect -d test.jrcompliance.com
 ```
+
+The `/api/leads` edge limit is required whenever live submissions are enabled.
+Keep Next.js bound to loopback so the application can trust Nginx's
+`X-Real-IP`; configure real-IP handling explicitly before adding another proxy
+or CDN.
 
 ## 8. Initial validation and what happens after publishing
 

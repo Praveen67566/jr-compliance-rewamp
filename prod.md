@@ -144,11 +144,14 @@ STRAPI_URL=https://cms.example.com
 STRAPI_API_TOKEN=<read-only-next-site-reader-token>
 STRAPI_REVALIDATE_SECRET=<same-shared-random-secret-as-cms>
 SITE_URL=https://www.example.com
+LEAD_WEBHOOK_BASE_URL=https://webhook.jrcompliance.com
 ```
 
 `STRAPI_URL` and `STRAPI_API_TOKEN` are optional only while deliberately using
 the typed local fallback. Production CMS mode needs both. `SITE_URL` is
 required for absolute canonical metadata, `robots.txt`, and `sitemap.xml`.
+`LEAD_WEBHOOK_BASE_URL` is server-only and required before accepting live
+consultation requests; the route fails closed when it is missing or invalid.
 Keep `STRAPI_URL` on the public CMS hostname, not `127.0.0.1`: the frontend
 makes relative Strapi media URLs browser-visible using this origin, and visitors
 cannot load a loopback URL from their own devices.
@@ -217,6 +220,9 @@ first. On Ubuntu/Debian, place the following initial HTTP configuration in
 then enable it. Nginx is the only service that should listen publicly.
 
 ```nginx
+# This file is included from Nginx's http context.
+limit_req_zone $binary_remote_addr zone=jr_lead_submissions:10m rate=10r/m;
+
 server {
     listen 80;
     server_name example.com;
@@ -226,6 +232,24 @@ server {
 server {
     listen 80;
     server_name www.example.com;
+
+    # Public lead intake: keep the payload small and add an edge flood limit in
+    # front of the app's stricter per-address single-process limiter.
+    location = /api/leads {
+        client_max_body_size 16k;
+        limit_req zone=jr_lead_submissions burst=5 nodelay;
+        limit_req_status 429;
+
+        proxy_pass http://127.0.0.1:8123;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Port $server_port;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 10s;
+    }
 
     location / {
         proxy_pass http://127.0.0.1:8123;
@@ -279,6 +303,12 @@ server blocks. Keep a tested Content-Security-Policy at the edge that permits
 the selected CMS/media origin. The loopback webhook configuration above means
 external `POST /api/revalidate` requests are denied by Nginx; if the CMS moves
 off-host, remove that denial only after adding strict edge rate limiting.
+The `/api/leads` edge limit is required in production. Its application-level
+Map is intentionally bounded for the current one-process VPS deployment, resets
+on restart, and must be replaced with shared storage before adding frontend
+instances. Keep Next.js bound to loopback so Nginx-controlled `X-Real-IP`
+remains trustworthy; configure real-IP handling explicitly if another proxy or
+CDN is introduced.
 
 ## Deploy order
 
@@ -349,8 +379,8 @@ npm run build
 
 The frontend already emits baseline `nosniff`, frame, referrer, permissions,
 and opener-policy headers and suppresses `X-Powered-By`. At the TLS edge also
-enable HSTS once the canonical HTTPS domain is confirmed, rate-limit
-`/api/revalidate`, and add a tested Content-Security-Policy that permits the
+enable HSTS once the canonical HTTPS domain is confirmed, keep `/api/revalidate`
+private, rate-limit `/api/leads`, and add a tested Content-Security-Policy that permits the
 chosen CMS/media origin.
 
 ### 5. Start or reload both services with PM2
@@ -478,7 +508,8 @@ pm2 restart jr-compliance-frontend --update-env
 pm2 restart jr-compliance-cms --update-env
 ```
 
-`STRAPI_URL`, `STRAPI_API_TOKEN`, `STRAPI_REVALIDATE_SECRET`, and `SITE_URL`
+`STRAPI_URL`, `STRAPI_API_TOKEN`, `STRAPI_REVALIDATE_SECRET`, `SITE_URL`, and
+`LEAD_WEBHOOK_BASE_URL`
 must be present before rebuilding the frontend. For a CMS port change, update
 the PM2 port, Nginx upstream, and `NEXT_REVALIDATE_URL` together. For an Nginx
 change, run `sudo nginx -t` and reload Nginx only when that validation succeeds.
@@ -497,14 +528,19 @@ Run these checks against the production domains after DNS and TLS are live:
 4. Confirm every local image, CMS image, primary navigation link, direct phone
    link, email link, and external social link works. Test desktop, tablet,
    mobile, keyboard focus, and reduced-motion behavior in real browsers.
-5. With the frontend token, verify all five published CMS endpoints return
+5. Submit one approved staging consultation and verify exact lead-type routing,
+   required-message/consent errors, successful `/thank-you` redirect, and no PII
+   in application logs. Confirm the sixth rapid request is rejected and Nginx
+   returns `429` under the configured edge limit; do not run this against live
+   lead intake without coordinating the test record.
+6. With the frontend token, verify all five published CMS endpoints return
    expected content. Confirm the anonymous CMS request is denied.
-6. Change a harmless CMS field, save a draft, publish it, and verify the
+7. Change a harmless CMS field, save a draft, publish it, and verify the
    matching page updates through the signed webhook (or within 60 seconds if
    the webhook is intentionally unavailable).
-7. Check the CMS admin, media upload, database backup job, and object-storage
+8. Check the CMS admin, media upload, database backup job, and object-storage
    restore procedure.
-8. Re-run `npm audit --omit=dev` for both applications. Do not launch while
+9. Re-run `npm audit --omit=dev` for both applications. Do not launch while
    the CMS high-severity findings remain unresolved or formally risk-accepted.
 
 ## Rollback

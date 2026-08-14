@@ -5,7 +5,7 @@
     "singularName": "site-setting",
     "pluralName": "site-settings",
     "displayName": "Site Setting",
-    "description": "Global content for the shared header and footer."
+    "description": "Global content for the shared header, footer, and consultation form."
   },
   "options": {
     "draftAndPublish": true
@@ -80,6 +80,11 @@
     "copyrightText": {
       "type": "string",
       "required": true
+    },
+    "leadForm": {
+      "type": "component",
+      "component": "shared.lead-form-settings",
+      "repeatable": false
     },
     "defaultSeo": {
       "type": "component",
