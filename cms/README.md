@@ -61,6 +61,7 @@ never updates an editor's existing record:
 # In cms/.env, for one local run only:
 SEED_DEMO_CONTENT=false
 SEED_COMPANY_REGISTRATION_PAGES=true
+SEED_LEAD_FORM_SETTINGS=false
 npm run develop
 ```
 
@@ -68,6 +69,22 @@ After the completion log, set `SEED_COMPANY_REGISTRATION_PAGES=false` and
 restart. The backfill refuses production and non-SQLite databases. Existing
 deployment content must be moved through the reviewed Strapi transfer/import
 workflow instead of an automatic production write.
+
+For an existing local SQLite CMS whose published **Site Setting** predates the
+Lead Form component, run this one-time backfill instead. It adds the approved
+Lead Form settings only when they are absent; it never overwrites an existing
+form and skips a Site Setting with pending editor draft changes.
+
+```bash
+# In cms/.env, for one local run only:
+SEED_DEMO_CONTENT=false
+SEED_COMPANY_REGISTRATION_PAGES=false
+SEED_LEAD_FORM_SETTINGS=true
+npm run develop
+```
+
+After the completion log, set `SEED_LEAD_FORM_SETTINGS=false` and restart. It
+also refuses production and non-SQLite databases.
 
 ## Schema and editor policy
 

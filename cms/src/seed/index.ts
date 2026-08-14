@@ -107,6 +107,10 @@ function objectValue(value: unknown): Record<string, unknown> {
     : {};
 }
 
+function hasComponentValue(value: unknown): boolean {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
 function textValue(value: unknown): string | undefined {
   return typeof value === "string" && value.length ? value : undefined;
 }
@@ -368,6 +372,82 @@ export async function seedMissingCompanyRegistrationPages(strapi: Core.Strapi): 
         : "Company Registration page backfill skipped: all approved slugs already exist.",
     );
   });
+}
+
+/**
+ * Explicit local-only backfill for a Site Setting created before the Lead Form
+ * component existed. It is intentionally additive: an editor-owned form or
+ * any pending Site Setting draft is left untouched.
+ */
+export async function seedMissingLeadFormSettings(strapi: Core.Strapi): Promise<void> {
+  if (process.env.SEED_LEAD_FORM_SETTINGS !== "true") {
+    return;
+  }
+
+  const databaseClient = process.env.DATABASE_CLIENT ?? "sqlite";
+  if (process.env.NODE_ENV === "production" || databaseClient !== "sqlite") {
+    strapi.log.warn(
+      "JR Lead Form backfill refused: it is restricted to local SQLite and cannot run in production.",
+    );
+    return;
+  }
+
+  const siteSettings = documentService(strapi, CONTENT_TYPES.siteSetting);
+  const populate = { populate: { leadForm: true } };
+  const [published, draft] = await Promise.all([
+    siteSettings.findFirst({ status: "published", ...populate }),
+    siteSettings.findFirst({ status: "draft", ...populate }),
+  ]);
+
+  if (!published) {
+    strapi.log.warn(
+      "JR Lead Form backfill skipped: no published Site Setting exists to update.",
+    );
+    return;
+  }
+
+  if (!draft || draft.documentId !== published.documentId) {
+    strapi.log.warn(
+      "JR Lead Form backfill skipped: no matching unchanged Site Setting draft exists to publish safely.",
+    );
+    return;
+  }
+
+  if (hasComponentValue(published.leadForm)) {
+    strapi.log.info("JR Lead Form backfill skipped: the published Site Setting already has a Lead Form.");
+    return;
+  }
+
+  if (hasComponentValue(draft?.leadForm)) {
+    strapi.log.warn(
+      "JR Lead Form backfill skipped: a Lead Form exists in the Site Setting draft. Review and publish it instead.",
+    );
+    return;
+  }
+
+  const publishedUpdatedAt = timestampValue(published.updatedAt);
+  const draftUpdatedAt = timestampValue(draft.updatedAt);
+  if (
+    publishedUpdatedAt === undefined ||
+    draftUpdatedAt === undefined ||
+    publishedUpdatedAt !== draftUpdatedAt
+  ) {
+    // A published update also publishes the Site Setting draft. Do not turn
+    // unrelated editor work live merely to add the missing component.
+    strapi.log.warn(
+      "JR Lead Form backfill skipped: the Site Setting has pending draft changes. Publish or discard them before running it.",
+    );
+    return;
+  }
+
+  await withNextRevalidationSuppressed(strapi, async () => {
+    await siteSettings.update({
+      documentId: published.documentId,
+      data: { leadForm: initialSite.leadForm },
+      status: "published",
+    });
+  });
+  strapi.log.info("JR Lead Form backfill completed. Default Lead Form settings are published.");
 }
 
 function mediaMimeType(source: string): string {

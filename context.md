@@ -115,7 +115,9 @@ out of scope until their content models and destinations are validated.
   expected before seeding; use the Published tab after a successful seed. A
   separate local-only `SEED_COMPANY_REGISTRATION_PAGES=true` backfill can add
   missing approved registration slugs to an existing SQLite CMS without
-  overwriting editor records.
+  overwriting editor records. `SEED_LEAD_FORM_SETTINGS=true` fills approved
+  Lead Form settings only when a published Site Setting lacks them; it never
+  overwrites editor content and skips pending Site Setting draft changes.
 - The frontend emits an app icon, `robots.txt`, and a sitemap for all twenty-three
   active routes. It uses `SITE_URL` for the production origin and has baseline
   response hardening headers; the host still needs TLS-edge HSTS, rate limiting,

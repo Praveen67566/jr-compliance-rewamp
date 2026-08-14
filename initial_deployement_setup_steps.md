@@ -162,6 +162,7 @@ DATABASE_POOL_MAX=10
 
 SEED_DEMO_CONTENT=false
 SEED_COMPANY_REGISTRATION_PAGES=false
+SEED_LEAD_FORM_SETTINGS=false
 
 NEXT_REVALIDATE_URL=http://127.0.0.1:8123/api/revalidate
 STRAPI_REVALIDATE_SECRET=<shared-random-secret>
@@ -272,7 +273,7 @@ records or uploaded media until they are created or imported.
   fallback data and the images already in `frontend/public/images`.
 - For editable CMS content, import a reviewed Strapi export or create records
   and publish them in Content Manager.
-- Do **not** enable either `SEED_*` setting on this PostgreSQL server. The seed
+- Do **not** enable any `SEED_*` setting on this PostgreSQL server. The seed
   is intentionally limited to a fresh local SQLite development environment.
 
 ### Populate this empty test CMS with the included starter data
@@ -303,6 +304,7 @@ environment-specific.
    DATABASE_FILENAME=.tmp/seed-source.db
    SEED_DEMO_CONTENT=true
    SEED_COMPANY_REGISTRATION_PAGES=false
+   SEED_LEAD_FORM_SETTINGS=false
    NEXT_REVALIDATE_URL=
    STRAPI_REVALIDATE_SECRET=
    ```

@@ -357,8 +357,10 @@ plugins or issue a browser request per card. The API token is sent as
    ordered relations and verify every link and media item. An existing local
    SQLite CMS may use the one-time
    `SEED_COMPANY_REGISTRATION_PAGES=true` backfill to create only missing
-   approved slugs; it is refused in production and never updates an existing
-   record.
+   approved slugs. `SEED_LEAD_FORM_SETTINGS=true` can add the approved Lead
+   Form settings only when a published Site Setting lacks them. Both are
+   refused in production and do not overwrite editor content; the Lead Form
+   backfill also skips pending Site Setting draft changes.
 7. Create the `next-site-reader` custom API token and apply the permissions
    above. Put `STRAPI_URL` and `STRAPI_API_TOKEN` in the Next server environment
    (never `NEXT_PUBLIC_*`).

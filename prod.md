@@ -122,6 +122,7 @@ DATABASE_POOL_MAX=10
 
 SEED_DEMO_CONTENT=false
 SEED_COMPANY_REGISTRATION_PAGES=false
+SEED_LEAD_FORM_SETTINGS=false
 
 # Same-VPS private publish notification; Nginx denies this endpoint publicly.
 NEXT_REVALIDATE_URL=http://127.0.0.1:8123/api/revalidate
@@ -315,7 +316,7 @@ CDN is introduced.
 ### 1. Prepare staging first
 
 1. Provision a staging PostgreSQL database and durable media bucket/provider.
-2. Deploy the CMS from `cms/` with `SEED_DEMO_CONTENT=false`.
+2. Deploy the CMS from `cms/` with all `SEED_*` flags set to `false`.
 3. Create the first administrator, configure editor/publisher permissions, and
    create the read-only frontend token.
 4. Deploy the frontend from `frontend/` with its staging CMS URL and secrets.
@@ -337,8 +338,8 @@ admin login before moving data.
 
 ### 3. Move content and media
 
-The local seed is for a fresh local SQLite database only. It must stay off in
-production.
+The full local seed and narrow local backfills are for local SQLite only. All
+`SEED_*` flags must stay off in production.
 
 For the current seeded/local content, first rehearse an encrypted Strapi export
 and import on staging. Take a PostgreSQL snapshot and media backup before every
@@ -357,7 +358,7 @@ run `SEED_DEMO_CONTENT=true` only in a fresh disposable **local SQLite** source,
 then export that source and import the archive into the empty test target. See
 the detailed procedure in
 [`initial_deployement_setup_steps.md`](./initial_deployement_setup_steps.md).
-Never enable the seed in a deployed PostgreSQL environment.
+Never enable any `SEED_*` flag in a deployed PostgreSQL environment.
 
 Do not add `--force` unless the target, backup, and recovery plan have been
 verified. Confirm all five single types and the nineteen Company Registration

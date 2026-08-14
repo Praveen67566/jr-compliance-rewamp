@@ -5,6 +5,7 @@ import {
   migrateLegacyHeaderMenu,
   seedInitialContent,
   seedMissingCompanyRegistrationPages,
+  seedMissingLeadFormSettings,
 } from "./seed";
 
 export default {
@@ -28,5 +29,6 @@ export default {
     await migrateLegacyHeaderMenu(strapi);
     await seedInitialContent(strapi);
     await seedMissingCompanyRegistrationPages(strapi);
+    await seedMissingLeadFormSettings(strapi);
   },
 };

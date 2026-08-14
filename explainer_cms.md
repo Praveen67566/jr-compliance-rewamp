@@ -80,8 +80,8 @@ The main CMS flow is:
 : Strapi lifecycle entry. On bootstrap it registers the Next.js revalidation
   hooks, safely upgrades only an exact known demo-header signature (including
   the two former Company Registration placeholder links), preserves any
-  pending Site Setting draft, and optionally runs the local seed or
-  missing-page backfill.
+  pending Site Setting draft, and optionally runs the local seed or narrow
+  local backfills.
 
 `cms/src/revalidation.ts`
 : Signed webhook sender for Next.js cache revalidation. It watches Strapi document and media lifecycle events, maps changed CMS models to frontend cache tags, signs the payload with HMAC SHA-256, and sends it to `NEXT_REVALIDATE_URL`.
@@ -95,6 +95,9 @@ The main CMS flow is:
   `frontend/public/images`, and creates published demo records. The narrower
   `SEED_COMPANY_REGISTRATION_PAGES=true` backfill is also local-SQLite-only and
   adds missing approved registration slugs without overwriting editor records.
+  `SEED_LEAD_FORM_SETTINGS=true` is local-SQLite-only too; it fills an absent
+  Lead Form on a published Site Setting without overwriting editor content or
+  publishing pending draft changes.
 
 `cms/src/seed/content.ts`
 : The actual seed content: shared settings, page content, service categories, services, logos, testimonials, recognitions, FAQs, team members, jobs, gallery items, and related records.
@@ -270,6 +273,8 @@ Common local variables:
 - `DATABASE_CLIENT`
 - `DATABASE_FILENAME`
 - `SEED_DEMO_CONTENT`
+- `SEED_COMPANY_REGISTRATION_PAGES`
+- `SEED_LEAD_FORM_SETTINGS`
 - `NEXT_REVALIDATE_URL`
 - `STRAPI_REVALIDATE_SECRET`
 
@@ -282,6 +287,7 @@ Production PostgreSQL variables are defined in `cms/config/database.ts` and docu
 - Do not expose public read access broadly. The frontend should use a read-only server-side API token.
 - Do not put secrets in frontend `NEXT_PUBLIC_*` variables.
 - Keep REST population explicit in `frontend/lib/strapi.ts`; do not switch to `populate=deep`.
-- Do not seed production. The seed is only for a fresh local SQLite database.
+- Do not run seed or backfill flags in production. The full seed is only for a
+  fresh local SQLite database; narrow backfills are local-SQLite-only.
 - Do not rely on local `public/uploads` for production media durability.
 - When a schema changes, update `cms/CONTENT_MODEL.md`, the Strapi schema files, frontend types, frontend mapper, and fallback data together.
