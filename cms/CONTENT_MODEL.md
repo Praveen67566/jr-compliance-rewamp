@@ -1,8 +1,8 @@
 # Strapi v5 content model — homepage, editorial, and registration routes
 
 This is the CMS contract for the new Next.js homepage, the initial editorial
-routes (About Us, Careers, Contact Us), and the nineteen approved Company
-Registration routes. It preserves useful legacy content from the corresponding
+routes (About Us, Careers, Contact Us), the nineteen approved Company
+Registration routes, and the first approved MCA Services route. It preserves useful legacy content from the corresponding
 `site/*.html` and `site/corporate/*.html` files, but does **not** preserve
 Webflow UI. Layout, motion, colours, and responsive behaviour belong in
 Next.js; editors own copy, links, ordering, SEO, and approved media.
@@ -155,6 +155,32 @@ service-detail contract, not a generic page builder.
 | `seo` | `shared.seo` | Required |
 | `sortOrder` | Integer, minimum `0` | Required; route editorial order |
 
+### `mca-service-page` — API: `api::mca-service-page.mca-service-page`
+
+One published record per approved MCA Services `/corporate/[slug]` route. The
+first approved record is `dsc-certificate`. It uses the same fixed
+service-detail sequence as Company Registration while remaining a separate,
+MCA-specific collection rather than a generic page builder. Later approved MCA
+records can be published in Strapi and render on demand only when every
+required fixed field is complete.
+
+| Field | Strapi field | Rules |
+| --- | --- | --- |
+| `title` | Short text | Required; public H1 and CMS record name |
+| `menuLabel` | Short text | Required; matches the MCA Services navbar label |
+| `slug` | UID from `title` | Required; exact route segment and globally unique across both `/corporate/[slug]` collections |
+| `hero` | `registration.hero` | Required |
+| `overview` | `registration.overview` | Required |
+| `challenges` | `registration.card-section` | Required; ordered page-specific cards |
+| `advantages` | `registration.card-section` | Required; ordered page-specific cards |
+| `process` | `registration.card-section` | Required; ordered service process |
+| `whyChoose` | `registration.card-section` | Required; ordered JR Compliance reasons |
+| `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
+| `faqs` | `registration.faq-section` | Required |
+| `finalCta` | `home.cta-band` | Required |
+| `seo` | `shared.seo` | Required |
+| `sortOrder` | Integer, minimum `0` | Required; route editorial order |
+
 | Type (API) | Fields | Relations |
 | --- | --- | --- |
 | **Service Category** (`service-category`, `service-categories`) | `name` short text*, `slug` UID from `name`*, `description` long text, `sortOrder` integer* | `services`: **one-to-many** to Service (inverse of `serviceCategory`) |
@@ -279,6 +305,7 @@ invent claims or silently repair source inconsistencies.
 | `/careers` | `site/careers.html` | Hero, Vision/Mission, four values, culture gallery, five active openings, four benefits, six unique employee testimonials, four career FAQs, and final Contact Us CTA. Preserve job labels but have an editor validate legacy department/category inconsistencies before publishing. |
 | `/contact-us` | `site/contact-us.html` | “Let's Ensure Your Compliance Together”; phone, email, Bawana office address; direct-contact copy; final CTA anchored to the contact options. Centralized form copy comes from `site-setting.leadForm`; do not copy the commented legacy Bitrix webhook or its credential-like URL. |
 | `/corporate/[slug]` (nineteen Company Registration routes) | Matching approved files under `site/corporate/` | Page-specific SEO, hero, overview, four challenges, four advantages, six process steps, Why JR cards, Eligibility/Documents/Who Needs It breakdown, FAQs, and shared final CTA. Exclude the duplicated private-company challenge block, hidden placeholder processes/tabs/resources, copied testimonials, Webflow lead form, and all legacy UI/transport code. |
+| `/corporate/dsc-certificate` (MCA Services) | `site/corporate/dsc-certificate.html` | Page-specific SEO, DSC hero and overview, four DSC challenges, four advantages, six service steps, Why JR cards, Eligibility/Documents/Who Needs It breakdown, FAQs, and shared final CTA. Exclude the copied Private Limited Company blocks, hidden Products/Requirements/process templates/resources, Webflow lead form, and all legacy UI/transport code. |
 
 Copy the approved media into Strapi Media Library first. The local Next.js
 fallback copies are development safety nets only; a published Strapi record
@@ -310,7 +337,7 @@ attributes are flattened and documents use `documentId`; do not copy v4
 | Consumer | Allowed permissions |
 | --- | --- |
 | **Public role** | None for these content types or Upload. The browser never receives a Strapi token. |
-| **`next-site-reader` API token** | Custom, read-only: `find` for `site-setting`, `home-page`, `about-page`, `careers-page`, and `contact-page`; `find` and `findOne` for `company-registration-page` and every listed supporting collection type; Upload `find`. No create, update, delete, publish, or admin access. Store only as `STRAPI_API_TOKEN` on the Next server. |
+| **`next-site-reader` API token** | Custom, read-only: `find` for `site-setting`, `home-page`, `about-page`, `careers-page`, and `contact-page`; `find` and `findOne` for `company-registration-page`, `mca-service-page`, and every listed supporting collection type; Upload `find`. No create, update, delete, publish, or admin access. Store only as `STRAPI_API_TOKEN` on the Next server. |
 | **Content Editor admin role** | Content Manager create/read/update for the listed types and Media Library upload/edit. No schema access and no delete permission. |
 | **Publisher/Admin role** | Editor permissions plus publish. Content Type Builder remains development-only and developer-owned. |
 
@@ -323,6 +350,7 @@ GET /api/about-page?status=published
 GET /api/careers-page?status=published
 GET /api/contact-page?status=published
 GET /api/company-registration-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/mca-service-pages?filters[slug][$eq]=<slug>&status=published
 ```
 
 Strapi does not populate relations, components, or media by default. The Next
@@ -344,7 +372,7 @@ plugins or issue a browser request per card. The API token is sent as
 3. In local development, create the components above first, then the homepage
    and editorial collection types, then `site-setting`, `home-page`,
    `about-page`, `careers-page`, `contact-page`, and the dedicated
-   `company-registration-page` collection. Enable Draft & Publish on all of
+   `company-registration-page` and `mca-service-page` collections. Enable Draft & Publish on all of
    them. Commit Strapi’s generated schemas to git; do not create schema changes
    directly in production.
 4. Configure the media provider and migrate the approved legacy images/logos.
@@ -353,11 +381,13 @@ plugins or issue a browser request per card. The API token is sent as
    testimonials, recognitions, and optional insights. Set `sortOrder` values.
 6. Fill and publish `site-setting`, including the ordered Header Menu categories
    and their ordered links, then fill the four single-page records and one
-   Company Registration record for each approved slug. Select the intended
+   Company Registration record for each approved slug and the approved MCA
+   Services record. Select the intended
    ordered relations and verify every link and media item. An existing local
    SQLite CMS may use the one-time
-   `SEED_COMPANY_REGISTRATION_PAGES=true` backfill to create only missing
-   approved slugs. `SEED_LEAD_FORM_SETTINGS=true` can add the approved Lead
+   `SEED_COMPANY_REGISTRATION_PAGES=true` and
+   `SEED_MCA_SERVICE_PAGES=true` backfills to create only missing approved
+   records. `SEED_LEAD_FORM_SETTINGS=true` can add the approved Lead
    Form settings only when a published Site Setting lacks them. Both are
    refused in production and do not overwrite editor content; the Lead Form
    backfill also skips pending Site Setting draft changes.

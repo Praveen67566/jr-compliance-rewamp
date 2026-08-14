@@ -2,7 +2,7 @@
 
 The active frontend is a Next.js 16 App Router rebuild of the JR Compliance
 home page, `/about-us`, `/careers`, `/contact-us`, and nineteen Company
-Registration pages under `/corporate/[slug]`. It is intentionally separate
+Registration pages plus the DSC MCA Services page under `/corporate/[slug]`. It is intentionally separate
 from the legacy Webflow export in `../site`.
 
 ## Run locally
@@ -38,20 +38,24 @@ configuration or the Strapi token.
 ## Content architecture
 
 - `data/*-page-fallback.ts` and
-  `data/company-registration-pages-fallback.ts` are the safe, normalized
+  `data/company-registration-pages-fallback.ts` / `data/mca-service-pages-fallback.ts` are the safe, normalized
   legacy-content fallbacks while Strapi is not live.
 - `lib/types.ts` defines the shared shell and page UI contracts.
 - `lib/strapi.ts` is a server-only Strapi v5 adapter. It uses explicit REST
   population and maps `site-setting`, `home-page`, `about-page`,
   `careers-page`, `contact-page`, and exact-slug
-  `company-registration-page` collection entries into the UI contracts.
+  `company-registration-page` / `mca-service-page` collection entries into the UI contracts.
+- The DSC page has a typed local fallback; later fully populated MCA Services
+  records can be added in Strapi and are discovered for the shared route and
+  sitemap without borrowing DSC content.
 - CMS link targets, collection `sortOrder` values, shared footer groups, and
   shared SEO are carried through the typed adapter rather than hard-coded in
   individual routes.
 - `components/site-page-shell.tsx` centralizes the shared header/footer;
   `components/editorial/` centralizes the Compliance Network route primitives.
 - `components/company-registration/company-registration-page.tsx` is the
-  Tailwind-first fixed template shared by all nineteen registration routes.
+  Tailwind-first fixed template shared by the Company Registration routes and
+  the DSC MCA Services route.
 - `components/forms/consultation-form.tsx` owns the form UI, required-message
   validation, consent, honeypot, UTM capture, submission state, and redirect.
   `app/api/leads/route.ts` validates it again, rate-limits requests, derives the
@@ -63,7 +67,7 @@ configuration or the Strapi token.
 The global form copy is `site-setting.leadForm` in Strapi and
 `fallbackHomepage.site.leadForm` locally. Home, the shared editorial hero, and
 the shared Company Registration template render the same component in their
-hero visual slot, which covers every current content route without per-page
+hero visual slot, which covers every current Company Registration and MCA Services route without per-page
 form markup. Publishing Site Setting refreshes all page cache tags.
 
 For a future page whose content extends `PageChromeContent`, place the same form

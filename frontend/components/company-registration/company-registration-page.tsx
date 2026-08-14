@@ -4,11 +4,12 @@ import { SitePageShell } from "@/components/site-page-shell";
 import { linkTargetProps } from "@/lib/link-props";
 import type {
   CompanyRegistrationPageContent,
+  McaServicePageContent,
   RegistrationDetail,
 } from "@/lib/types";
 
 type CompanyRegistrationPageProps = {
-  content: CompanyRegistrationPageContent;
+  content: CompanyRegistrationPageContent | McaServicePageContent;
 };
 
 type SectionHeadingProps = {
@@ -103,7 +104,7 @@ export function CompanyRegistrationPage({ content }: CompanyRegistrationPageProp
                 className="rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky"
                 href="/#services"
               >
-                Company Registration
+                {content.hero.eyebrow}
               </a>
               <span aria-hidden="true">/</span>
               <span aria-current="page" className="min-w-0 break-words text-ice/75">

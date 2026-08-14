@@ -8,7 +8,8 @@ standalone, responsive Next.js application with a Strapi v5 content boundary.
 
 The completed scope is the new home page, the shared-chrome editorial routes
 (`/about-us`, `/careers`, `/contact-us`), and the first nineteen Company
-Registration detail routes under `/corporate/[slug]`. Other legacy routes stay
+Registration detail routes plus the DSC MCA Services route under
+`/corporate/[slug]`. Other legacy routes stay
 out of scope until their content models and destinations are validated.
 
 ## Non-negotiable rules
@@ -35,8 +36,8 @@ out of scope until their content models and destinations are validated.
 | --- | --- |
 | `site/` | 354-page legacy Webflow archive; matching legacy HTML files are content-only sources for the completed routes. |
 | `frontend/` | New Next.js 16 App Router application. This is the active frontend. |
-| `frontend/data/*-page-fallback.ts`, `frontend/data/company-registration-pages-fallback.ts` | Typed fallback content normalized from matching legacy pages. It keeps every completed route working before Strapi is deployed. |
-| `frontend/lib/types.ts` | Shared shell and rendering contracts, including the fixed `CompanyRegistrationPageContent` service-detail contract. |
+| `frontend/data/*-page-fallback.ts`, `frontend/data/company-registration-pages-fallback.ts`, `frontend/data/mca-service-pages-fallback.ts` | Typed fallback content normalized from matching legacy pages. It keeps every completed route working before Strapi is deployed. |
+| `frontend/lib/types.ts` | Shared shell and rendering contracts, including fixed Company Registration and MCA Services service-detail contracts. |
 | `frontend/lib/strapi.ts` | Server-only Strapi v5 REST client, explicit route-specific populate paths, media URL handling, and schema-to-UI mappers. |
 | `frontend/components/` | Reusable shell components; `site-page-shell.tsx` centralizes header/footer, `editorial/` centralizes the Compliance Network route primitives, and route folders compose their pages. |
 | `frontend/app/globals.css` | Tailwind v4 theme tokens, baseline reset, shared utility primitives, anchor offsets, and reduced-motion support only. |
@@ -46,7 +47,7 @@ out of scope until their content models and destinations are validated.
 | `frontend/postcss.config.mjs` | Tailwind v4 PostCSS integration. |
 | `frontend/public/images/` | Small selected copy of approved legacy logo/photo assets. `images/services/` preserves the 15 exact legacy service/flag SVGs; `images/services-blue/` holds their blue-theme derivatives used by the home fallback. Do not point new UI at `site/assets/`. |
 | `cms/` | Active Strapi v5 TypeScript project: schemas, core REST APIs, opt-in local seed, CMS-to-Next revalidation, editor setup, and PostgreSQL-capable configuration (`pg` is a production dependency). |
-| `cms/CONTENT_MODEL.md` | Definitive editorial contract: five single types, fifteen collections, and forty-four components. Change it deliberately alongside the schemas and Next mapper. |
+| `cms/CONTENT_MODEL.md` | Definitive editorial contract: five single types, sixteen collections, and forty-six components. Change it deliberately alongside the schemas and Next mapper. |
 | `cms/README.md` | CMS local workflow, editor permissions, REST contract, seed policy, and revalidation behavior. |
 | `ecosystem.config.js` | PM2 process definition for the 24/7 Linux/VPS deployment: one frontend and one CMS process, bound to loopback-only private ports with no secrets in source. |
 | `prod.md` | Required production deployment and launch runbook for the frontend, CMS, PM2, Nginx/TLS, database, media, migration, secrets, and cache invalidation. |
@@ -100,10 +101,15 @@ out of scope until their content models and destinations are validated.
   the matching Strapi collection. Repeated private-company blocks, hidden
   placeholder tabs/processes, Webflow forms, and copied resource sections were
   deliberately excluded.
+- The first MCA Services page, `/corporate/dsc-certificate`, uses the same
+  fixed Tailwind template with its own dedicated `mca-service-page` CMS
+  collection, typed fallback, seed record, cache tag, and legacy DSC content.
+  The other MCA links remain intentionally out of scope until their routes and
+  fixed content records are approved.
 - The Strapi v5 CMS is implemented in `cms/`: five single types (`site-setting`,
-  `home-page`, `about-page`, `careers-page`, `contact-page`), fifteen
+  `home-page`, `about-page`, `careers-page`, `contact-page`), sixteen
   collections, forty-six components, and core REST route/controller/service
-  files for all twenty types. All editorial content uses Draft & Publish;
+  files for all twenty-one types. All editorial content uses Draft & Publish;
   i18n is intentionally off.
 - Every active page and shared header/footer has a typed CMS mapping. CMS
   controls copy, links/targets, order, SEO, imagery/alt text, shared navigation,
@@ -113,12 +119,13 @@ out of scope until their content models and destinations are validated.
   media only for a fresh local SQLite database, creates it as **Published**, and
   refuses production/non-SQLite/existing editor content. An empty Draft tab is
   expected before seeding; use the Published tab after a successful seed. A
-  separate local-only `SEED_COMPANY_REGISTRATION_PAGES=true` backfill can add
-  missing approved registration slugs to an existing SQLite CMS without
-  overwriting editor records. `SEED_LEAD_FORM_SETTINGS=true` fills approved
+  separate local-only `SEED_COMPANY_REGISTRATION_PAGES=true` and
+  `SEED_MCA_SERVICE_PAGES=true` backfills can add missing approved service
+  records to an existing SQLite CMS without overwriting editor records.
+  `SEED_LEAD_FORM_SETTINGS=true` fills approved
   Lead Form settings only when a published Site Setting lacks them; it never
   overwrites editor content and skips pending Site Setting draft changes.
-- The frontend emits an app icon, `robots.txt`, and a sitemap for all twenty-three
+- The frontend emits an app icon, `robots.txt`, and a sitemap for all twenty-four
   active routes. It uses `SITE_URL` for the production origin and has baseline
   response hardening headers; the host still needs TLS-edge HSTS, rate limiting,
   and a tested CSP for the selected CMS/media origin.
@@ -160,6 +167,10 @@ to `/#services` until validated detail pages are migrated.
   advantages, six process steps, eligibility/documents/audience breakdown, and
   FAQs. These files are content-only sources; shared Webflow template artifacts
   and unverified duplicate sections are not migrated.
+- `site/corporate/dsc-certificate.html`: first approved MCA Services source for
+  DSC SEO, hero, overview, challenges, advantages, process, Why JR, breakdown,
+  FAQ, and closing CTA. The copied Private Limited Company blocks, hidden
+  placeholders, Webflow form, and legacy UI/transport are excluded.
 
 ## Strapi integration behavior
 
@@ -168,12 +179,15 @@ to `/#services` until validated detail pages are migrated.
 2. With `STRAPI_URL` and a server-only `STRAPI_API_TOKEN`, the app requests the
    published `site-setting` plus the matching `home-page`, `about-page`,
    `careers-page`, or `contact-page` single type, or filters the published
-   `company-registration-pages` collection by exact slug, every 60 seconds.
+   `company-registration-pages` or `mca-service-pages` collection by exact
+   slug, every 60 seconds.
 3. `frontend/lib/strapi.ts` explicitly populates only the nested relations and
    media each route requires. Do not replace this with `populate=deep`.
 4. The adapter maps the documented Strapi v5 fields to typed page contracts; it
    keeps fallback values for any unpublished or incomplete field so editors
-   cannot blank the live site accidentally.
+   cannot blank the live site accidentally. CMS-only MCA Services records are
+   instead strictly validated and return a 404 when a required fixed field is
+   missing, so they never borrow DSC copy.
 5. Strapi media URLs are converted to absolute CMS URLs. The current frontend
    uses standard image elements so local and CDN media both work without an
    image-domain configuration change.

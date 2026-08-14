@@ -122,6 +122,7 @@ DATABASE_POOL_MAX=10
 
 SEED_DEMO_CONTENT=false
 SEED_COMPANY_REGISTRATION_PAGES=false
+SEED_MCA_SERVICE_PAGES=false
 SEED_LEAD_FORM_SETTINGS=false
 
 # Same-VPS private publish notification; Nginx denies this endpoint publicly.
@@ -158,9 +159,9 @@ makes relative Strapi media URLs browser-visible using this origin, and visitors
 cannot load a loopback URL from their own devices.
 
 Create a Strapi Content API token with only the read operations required for
-the five published single types, the Company Registration Page collection, and
-their populated content/media. Do not grant the public role content or upload
-access, and never send this token to the browser.
+the five published single types, the Company Registration Page and MCA Service
+Page collections, and their populated content/media. Do not grant the public
+role content or upload access, and never send this token to the browser.
 
 ## 24/7 VPS process supervision (PM2)
 
@@ -361,9 +362,9 @@ the detailed procedure in
 Never enable any `SEED_*` flag in a deployed PostgreSQL environment.
 
 Do not add `--force` unless the target, backup, and recovery plan have been
-verified. Confirm all five single types and the nineteen Company Registration
-records are **Published**, media records point to durable storage, and the
-frontend token can read only published data.
+verified. Confirm all five single types, the nineteen Company Registration
+records, and the DSC MCA Services record are **Published**, media records point
+to durable storage, and the frontend token can read only published data.
 
 ### 4. Build the frontend
 

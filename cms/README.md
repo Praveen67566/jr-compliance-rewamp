@@ -7,7 +7,12 @@ This is the Strapi v5 TypeScript CMS for the active JR Compliance routes:
 - `/careers` — `careers-page`
 - `/contact-us` — `contact-page`
 - `/corporate/[slug]` — `company-registration-page` collection (nineteen approved slugs)
+- `/corporate/dsc-certificate` — `mca-service-page` collection (first approved MCA Services route)
 - shared header/footer and global consultation-form copy — `site-setting`
+
+Later approved MCA Services records use the same fixed `mca-service-page`
+contract and are rendered at their unique `/corporate/[slug]` routes when
+published.
 
 The exact editorial contract lives in [CONTENT_MODEL.md](./CONTENT_MODEL.md).
 Next.js owns the Compliance Network layout, interaction, and motion; Strapi owns
@@ -61,6 +66,7 @@ never updates an editor's existing record:
 # In cms/.env, for one local run only:
 SEED_DEMO_CONTENT=false
 SEED_COMPANY_REGISTRATION_PAGES=true
+SEED_MCA_SERVICE_PAGES=false
 SEED_LEAD_FORM_SETTINGS=false
 npm run develop
 ```
@@ -69,6 +75,22 @@ After the completion log, set `SEED_COMPANY_REGISTRATION_PAGES=false` and
 restart. The backfill refuses production and non-SQLite databases. Existing
 deployment content must be moved through the reviewed Strapi transfer/import
 workflow instead of an automatic production write.
+
+For the first approved MCA Services route in an existing local SQLite CMS, run
+the matching additive backfill. It creates only the missing DSC record and
+never updates editor content:
+
+```bash
+# In cms/.env, for one local run only:
+SEED_DEMO_CONTENT=false
+SEED_COMPANY_REGISTRATION_PAGES=false
+SEED_MCA_SERVICE_PAGES=true
+SEED_LEAD_FORM_SETTINGS=false
+npm run develop
+```
+
+After the completion log, set `SEED_MCA_SERVICE_PAGES=false` and restart. This
+backfill also refuses production and non-SQLite databases.
 
 For an existing local SQLite CMS whose published **Site Setting** predates the
 Lead Form component, run this one-time backfill instead. It adds the approved
@@ -79,6 +101,7 @@ form and skips a Site Setting with pending editor draft changes.
 # In cms/.env, for one local run only:
 SEED_DEMO_CONTENT=false
 SEED_COMPANY_REGISTRATION_PAGES=false
+SEED_MCA_SERVICE_PAGES=false
 SEED_LEAD_FORM_SETTINGS=true
 npm run develop
 ```
@@ -88,7 +111,7 @@ also refuses production and non-SQLite databases.
 
 ## Schema and editor policy
 
-The committed schemas define five single types, fifteen collection types, and
+The committed schemas define five single types, sixteen collection types, and
 forty-six components. All editorial types use Draft & Publish. Page-selected
 relations are intentionally unidirectional, ordered selections; the inverse
 pairs are only Service Category → Service and FAQ Category → FAQ.
@@ -107,7 +130,7 @@ required in frontend and server validation. Webhook configuration and form
 transport do not live in Strapi.
 
 The fresh local seed includes all currently approved navbar categories, links,
-and nineteen Company Registration records. On startup, the CMS also migrates
+nineteen Company Registration records, and the DSC MCA Services record. On startup, the CMS also migrates
 only an exact known demo-menu signature: either the original flat menu or the
 previous categorized seed whose Indian Subsidiary and Mutual Fund links still
 pointed to `/#services`. The check is idempotent and signature-based; any
@@ -124,7 +147,7 @@ Set permissions deliberately:
 
 - Public role: no reads for these content types and no Upload access.
 - `next-site-reader` API token: read-only access to the five single types,
-  the `company-registration-page` collection, listed supporting collections,
+  the `company-registration-page` and `mca-service-page` collections, listed supporting collections,
   and Upload `find` only.
 - Content Editor: create/read/update listed content and media, but no schema or
   delete access.
@@ -154,6 +177,7 @@ GET /api/about-page?status=published
 GET /api/careers-page?status=published
 GET /api/contact-page?status=published
 GET /api/company-registration-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/mca-service-pages?filters[slug][$eq]=<slug>&status=published
 ```
 
 Relations, media, and nested components are not populated by default. Keep the

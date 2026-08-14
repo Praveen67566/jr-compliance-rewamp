@@ -6,6 +6,7 @@ import type { Core } from "@strapi/strapi";
 import { withNextRevalidationSuppressed } from "../revalidation";
 
 import companyRegistrationPages from "./company-registration-pages.json";
+import mcaServicePages from "./mca-service-pages.json";
 import {
   achievements,
   blocks,
@@ -46,6 +47,7 @@ const CONTENT_TYPES = {
   careersPage: "api::careers-page.careers-page",
   contactPage: "api::contact-page.contact-page",
   companyRegistrationPage: "api::company-registration-page.company-registration-page",
+  mcaServicePage: "api::mca-service-page.mca-service-page",
   serviceCategory: "api::service-category.service-category",
   service: "api::service.service",
   brandLogo: "api::brand-logo.brand-logo",
@@ -272,9 +274,11 @@ async function createPublished(
 }
 
 type CompanyRegistrationSeedPage = (typeof companyRegistrationPages)[number];
+type McaServiceSeedPage = (typeof mcaServicePages)[number];
+type ServiceDetailSeedPage = CompanyRegistrationSeedPage | McaServiceSeedPage;
 
-function companyRegistrationPageData(
-  page: CompanyRegistrationSeedPage,
+function serviceDetailPageData(
+  page: ServiceDetailSeedPage,
   sortOrder: number,
 ): Record<string, unknown> {
   return {
@@ -338,7 +342,36 @@ async function createCompanyRegistrationPages(
     }
 
     await registrationPages.create({
-      data: companyRegistrationPageData(page, sortOrder),
+      data: serviceDetailPageData(page, sortOrder),
+      status: "published",
+    });
+    created += 1;
+  }
+
+  return created;
+}
+
+async function createMcaServicePages(
+  strapi: Core.Strapi,
+  options: { onlyMissing?: boolean } = {},
+): Promise<number> {
+  const mcaPages = documentService(strapi, CONTENT_TYPES.mcaServicePage);
+  let created = 0;
+
+  for (const [sortOrder, page] of mcaServicePages.entries()) {
+    if (options.onlyMissing) {
+      const filters = { slug: { $eq: page.slug } };
+      const [draft, published] = await Promise.all([
+        mcaPages.findFirst({ filters, status: "draft" }),
+        mcaPages.findFirst({ filters, status: "published" }),
+      ]);
+      if (draft || published) {
+        continue;
+      }
+    }
+
+    await mcaPages.create({
+      data: serviceDetailPageData(page, sortOrder),
       status: "published",
     });
     created += 1;
@@ -370,6 +403,33 @@ export async function seedMissingCompanyRegistrationPages(strapi: Core.Strapi): 
       created
         ? `Created ${created} missing Company Registration page record${created === 1 ? "" : "s"}.`
         : "Company Registration page backfill skipped: all approved slugs already exist.",
+    );
+  });
+}
+
+/**
+ * Explicit local-only backfill for the first approved MCA Services route. It
+ * creates only a missing DSC record and never updates existing editor content.
+ */
+export async function seedMissingMcaServicePages(strapi: Core.Strapi): Promise<void> {
+  if (process.env.SEED_MCA_SERVICE_PAGES !== "true") {
+    return;
+  }
+
+  const databaseClient = process.env.DATABASE_CLIENT ?? "sqlite";
+  if (process.env.NODE_ENV === "production" || databaseClient !== "sqlite") {
+    strapi.log.warn(
+      "JR MCA Services backfill refused: it is restricted to local SQLite and cannot run in production.",
+    );
+    return;
+  }
+
+  await withNextRevalidationSuppressed(strapi, async () => {
+    const created = await createMcaServicePages(strapi, { onlyMissing: true });
+    strapi.log.info(
+      created
+        ? `Created ${created} missing MCA Services page record${created === 1 ? "" : "s"}.`
+        : "MCA Services page backfill skipped: all approved slugs already exist.",
     );
   });
 }
@@ -632,6 +692,7 @@ export async function seedInitialContent(strapi: Core.Strapi): Promise<void> {
   }
 
   await createCompanyRegistrationPages(strapi);
+  await createMcaServicePages(strapi);
 
   const faqCategoryDocuments: SeedDocument[] = [];
   for (const category of homeFaqCategories) {

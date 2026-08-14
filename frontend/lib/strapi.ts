@@ -23,6 +23,7 @@ import type {
   Link,
   Logo,
   Metric,
+  McaServicePageContent,
   NavigationCategory,
   NavigationItem,
   PageChromeContent,
@@ -45,7 +46,10 @@ export type SingleTypeSlug =
   | "about-page"
   | "careers-page"
   | "contact-page";
-export type RevalidatableContentSlug = SingleTypeSlug | "company-registration-page";
+export type RevalidatableContentSlug =
+  | SingleTypeSlug
+  | "company-registration-page"
+  | "mca-service-page";
 type PopulateValue = true | PopulateTree;
 
 interface PopulateTree {
@@ -63,6 +67,7 @@ export const strapiCacheTagBySlug: Record<RevalidatableContentSlug, string> = {
   "careers-page": "jr-careers-page",
   "contact-page": "jr-contact-page",
   "company-registration-page": "jr-company-registration-pages",
+  "mca-service-page": "jr-mca-service-pages",
 };
 
 /**
@@ -158,6 +163,19 @@ const populateTrees: Record<SingleTypeSlug, PopulateTree> = {
 };
 
 const companyRegistrationPopulateTree: PopulateTree = {
+  hero: { cta: true },
+  overview: { paragraphs: true },
+  challenges: { items: true },
+  advantages: { items: true },
+  process: { items: true },
+  whyChoose: { items: true },
+  breakdown: { groups: { items: true } },
+  faqs: { items: true },
+  finalCta: { cta: true },
+  seo: { shareImage: true },
+};
+
+const mcaServicePopulateTree: PopulateTree = {
   hero: { cta: true },
   overview: { paragraphs: true },
   challenges: { items: true },
@@ -1453,11 +1471,191 @@ function mapRegistrationFaqSection(
   };
 }
 
-function mapCompanyRegistrationPage(
-  fallback: CompanyRegistrationPageContent,
+function strictLink(value: unknown): Link | null {
+  const source = record(value);
+  const label = text(source.label);
+  const href = text(source.href);
+  const target = targetFromStrapi(source);
+
+  return label && href ? { label, href, ...(target ? { target } : {}) } : null;
+}
+
+function strictTextList(value: unknown): string[] | null {
+  const source = orderedEntries(value);
+  const items = source.map(
+    (item) => text(record(item).label) ?? text(record(item).title) ?? text(record(item).text) ?? text(item),
+  );
+
+  return items.length && items.every((item): item is string => Boolean(item)) ? items : null;
+}
+
+function strictRegistrationDetails(value: unknown): RegistrationDetail[] | null {
+  const source = orderedEntries(value);
+  const items = source.map((entry) => {
+    const item = record(entry);
+    const title = text(item.title);
+    const description = text(item.description);
+    return title && description ? { title, description } : null;
+  });
+
+  return items.length && items.every((item): item is RegistrationDetail => Boolean(item)) ? items : null;
+}
+
+function strictMcaCardSection(
+  value: unknown,
+): McaServicePageContent["challenges"] | null {
+  const section = record(value);
+  const eyebrow = text(section.eyebrow);
+  const title = text(section.title);
+  const items = strictRegistrationDetails(section.items);
+
+  return eyebrow && title && items ? { eyebrow, title, items } : null;
+}
+
+function strictMcaBreakdown(
+  value: unknown,
+): McaServicePageContent["breakdown"] | null {
+  const section = record(value);
+  const eyebrow = text(section.eyebrow);
+  const title = text(section.title);
+  const source = orderedEntries(section.groups);
+  const groups = source.map((entry) => {
+    const group = record(entry);
+    const groupTitle = text(group.title);
+    const items = strictTextList(group.items);
+    return groupTitle && items ? { title: groupTitle, items } : null;
+  });
+
+  return eyebrow && title && groups.length && groups.every((group): group is RegistrationBreakdownGroup => Boolean(group))
+    ? { eyebrow, title, groups }
+    : null;
+}
+
+function strictMcaFaqSection(value: unknown): McaServicePageContent["faqs"] | null {
+  const section = record(value);
+  const eyebrow = text(section.eyebrow);
+  const title = text(section.title);
+  const source = orderedEntries(section.items);
+  const items = source.map((entry) => {
+    const faq = record(entry);
+    const question = text(faq.question);
+    const answer = richTextToPlainText(faq.answer);
+    return question && answer ? { question, answer } : null;
+  });
+
+  return eyebrow && title && items.length && items.every((item): item is Faq => Boolean(item))
+    ? { eyebrow, title, items }
+    : null;
+}
+
+function strictMcaSeo(value: unknown): Seo | null {
+  const seo = record(value);
+  const title = text(seo.metaTitle);
+  const description = text(seo.metaDescription);
+  const canonicalUrl = text(seo.canonicalUrl);
+  const noIndex = boolean(seo.noIndex);
+  const shareImage = mediaUrl(seo.shareImage);
+
+  return title && description
+    ? {
+        title,
+        description,
+        ...(canonicalUrl ? { canonicalUrl } : {}),
+        ...(noIndex !== undefined ? { noIndex } : {}),
+        ...(shareImage ? { shareImage } : {}),
+      }
+    : null;
+}
+
+function mapCmsOnlyMcaServicePage(
+  chromeFallback: PageChromeContent,
+  requestedSlug: string,
   rawPage: unknown,
   rawSettings: unknown,
-): CompanyRegistrationPageContent {
+): McaServicePageContent | null {
+  const page = record(rawPage);
+  const hero = record(page.hero);
+  const overview = record(page.overview);
+  const finalCta = record(page.finalCta);
+  const slug = text(page.slug);
+  const menuLabel = text(page.menuLabel);
+  const pageTitle = text(page.title);
+  const heroEyebrow = text(hero.eyebrow);
+  const heroDescription = text(hero.description);
+  const heroCta = strictLink(hero.cta);
+  const overviewEyebrow = text(overview.eyebrow);
+  const overviewTitle = text(overview.title);
+  const overviewParagraphs = strictTextList(overview.paragraphs);
+  const challenges = strictMcaCardSection(page.challenges);
+  const advantages = strictMcaCardSection(page.advantages);
+  const process = strictMcaCardSection(page.process);
+  const whyChoose = strictMcaCardSection(page.whyChoose);
+  const breakdown = strictMcaBreakdown(page.breakdown);
+  const faqs = strictMcaFaqSection(page.faqs);
+  const closingTitle = text(finalCta.title);
+  const closingDescription = text(finalCta.description) ?? "";
+  const closingCta = strictLink(finalCta.cta);
+  const seo = strictMcaSeo(page.seo);
+
+  if (
+    !slug ||
+    slug !== requestedSlug ||
+    !menuLabel ||
+    !pageTitle ||
+    !heroEyebrow ||
+    !heroDescription ||
+    !heroCta ||
+    !overviewEyebrow ||
+    !overviewTitle ||
+    !overviewParagraphs ||
+    !challenges ||
+    !advantages ||
+    !process ||
+    !whyChoose ||
+    !breakdown ||
+    !faqs ||
+    !closingTitle ||
+    !closingCta ||
+    !seo
+  ) {
+    return null;
+  }
+
+  return {
+    ...mapPageChrome(chromeFallback, rawSettings),
+    slug,
+    menuLabel,
+    seo,
+    hero: {
+      eyebrow: heroEyebrow,
+      title: pageTitle,
+      description: heroDescription,
+      cta: heroCta,
+    },
+    overview: {
+      eyebrow: overviewEyebrow,
+      title: overviewTitle,
+      paragraphs: overviewParagraphs,
+    },
+    challenges,
+    advantages,
+    process,
+    whyChoose,
+    breakdown,
+    faqs,
+    closingCta: {
+      title: closingTitle,
+      description: closingDescription,
+      cta: closingCta,
+    },
+  };
+}
+
+function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
+  fallback: T,
+  rawPage: unknown,
+  rawSettings: unknown,
+): T {
   const page = record(rawPage);
   const chrome = mapPageChrome(fallback, rawSettings);
   const hero = record(page.hero);
@@ -1492,7 +1690,27 @@ function mapCompanyRegistrationPage(
       description: text(finalCta.description) ?? fallback.closingCta.description,
       cta: link(finalCta.cta, fallback.closingCta.cta),
     },
-  };
+  } as T;
+}
+
+function mapCompanyRegistrationPage(
+  fallback: CompanyRegistrationPageContent,
+  rawPage: unknown,
+  rawSettings: unknown,
+): CompanyRegistrationPageContent {
+  return mapFixedServiceDetailPage(fallback, rawPage, rawSettings);
+}
+
+function mapMcaServicePage(
+  fallback: McaServicePageContent | null,
+  chromeFallback: PageChromeContent,
+  requestedSlug: string,
+  rawPage: unknown,
+  rawSettings: unknown,
+): McaServicePageContent | null {
+  return fallback
+    ? mapFixedServiceDetailPage(fallback, rawPage, rawSettings)
+    : mapCmsOnlyMcaServicePage(chromeFallback, requestedSlug, rawPage, rawSettings);
 }
 
 function addPopulateTree(params: URLSearchParams, tree: PopulateTree, prefix = "populate") {
@@ -1518,6 +1736,21 @@ function companyRegistrationQuery(slug: string): string {
   params.set("filters[slug][$eq]", slug);
   params.set("pagination[pageSize]", "1");
   addPopulateTree(params, companyRegistrationPopulateTree);
+  return params.toString();
+}
+
+function mcaServiceQuery(slug: string): string {
+  const params = new URLSearchParams({ status: "published" });
+  params.set("filters[slug][$eq]", slug);
+  params.set("pagination[pageSize]", "1");
+  addPopulateTree(params, mcaServicePopulateTree);
+  return params.toString();
+}
+
+function mcaServiceSlugsQuery(): string {
+  const params = new URLSearchParams({ status: "published" });
+  params.set("fields[0]", "slug");
+  params.set("pagination[pageSize]", "100");
   return params.toString();
 }
 
@@ -1561,6 +1794,61 @@ async function getCompanyRegistrationEntry(slug: string): Promise<unknown> {
 
   const body = (await response.json()) as { data?: unknown };
   return asArray(body.data)[0] ?? null;
+}
+
+async function getMcaServiceEntry(slug: string): Promise<unknown> {
+  if (!strapiUrl || !strapiApiToken) {
+    return null;
+  }
+
+  const response = await fetch(
+    `${strapiUrl}/api/mca-service-pages?${mcaServiceQuery(slug)}`,
+    {
+      headers: { Authorization: `Bearer ${strapiApiToken}` },
+      next: {
+        revalidate: 60,
+        tags: [strapiCacheTagBySlug["mca-service-page"]],
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error(`Strapi request for mca-service-page failed with ${response.status}`);
+  }
+
+  const body = (await response.json()) as { data?: unknown };
+  return asArray(body.data)[0] ?? null;
+}
+
+export async function getMcaServiceSlugsFromStrapi(): Promise<string[]> {
+  if (!strapiUrl || !strapiApiToken) {
+    return [];
+  }
+
+  try {
+    const response = await fetch(
+      `${strapiUrl}/api/mca-service-pages?${mcaServiceSlugsQuery()}`,
+      {
+        headers: { Authorization: `Bearer ${strapiApiToken}` },
+        next: {
+          revalidate: 60,
+          tags: [strapiCacheTagBySlug["mca-service-page"]],
+        },
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`Strapi request for mca-service-page slugs failed with ${response.status}`);
+    }
+
+    const body = (await response.json()) as { data?: unknown };
+    return asArray(body.data)
+      .map((entry) => text(record(entry).slug))
+      .filter((slug): slug is string => Boolean(slug));
+  } catch (error) {
+    console.warn("Unable to load MCA Services slugs from Strapi; using local route fallbacks.", error);
+    return [];
+  }
 }
 
 export async function getHomepageFromStrapi(
@@ -1665,6 +1953,28 @@ export async function getCompanyRegistrationPageFromStrapi(
       `Unable to load ${slug} from Strapi; using company-registration fallback content.`,
       error,
     );
+    return null;
+  }
+}
+
+export async function getMcaServicePageFromStrapi(
+  slug: string,
+  fallback: McaServicePageContent | null,
+  chromeFallback: PageChromeContent,
+): Promise<McaServicePageContent | null> {
+  if (!strapiUrl || !strapiApiToken) {
+    return null;
+  }
+
+  try {
+    const [page, settings] = await Promise.all([
+      getMcaServiceEntry(slug),
+      getSingleType("site-setting"),
+    ]);
+
+    return page ? mapMcaServicePage(fallback, chromeFallback, slug, page, settings) : null;
+  } catch (error) {
+    console.warn(`Unable to load ${slug} from Strapi; using MCA Services fallback content.`, error);
     return null;
   }
 }

@@ -18,7 +18,7 @@ The main CMS flow is:
 
 1. Editors update content in Strapi.
 2. Strapi stores records in SQLite locally or PostgreSQL in production.
-3. The frontend fetches published single types and related collections through REST, including one Company Registration entry filtered by exact slug.
+3. The frontend fetches published single types and related collections through REST, including Company Registration and MCA Services entries filtered by exact slug.
 4. `cms/src/revalidation.ts` can notify Next.js after publish changes.
 5. Next.js revalidates the affected cache tags and fetches fresh CMS content.
 
@@ -93,8 +93,9 @@ The main CMS flow is:
   `SEED_DEMO_CONTENT=true`, refuses production, refuses non-SQLite databases,
   refuses existing content, uploads approved media from
   `frontend/public/images`, and creates published demo records. The narrower
-  `SEED_COMPANY_REGISTRATION_PAGES=true` backfill is also local-SQLite-only and
-  adds missing approved registration slugs without overwriting editor records.
+  `SEED_COMPANY_REGISTRATION_PAGES=true` and
+  `SEED_MCA_SERVICE_PAGES=true` backfills are also local-SQLite-only and add
+  missing approved service records without overwriting editor records.
   `SEED_LEAD_FORM_SETTINGS=true` is local-SQLite-only too; it fills an absent
   Lead Form on a published Site Setting without overwriting editor content or
   publishing pending draft changes.
@@ -104,9 +105,14 @@ The main CMS flow is:
 
 `cms/src/seed/company-registration-pages.json`
 : A seed-time JSON mirror of the nineteen typed frontend registration
-  fallbacks. It contains editor data only and is converted to the dedicated
-  Strapi components by `seed/index.ts`; it contains no Webflow classes, scripts,
-  forms, or legacy asset URLs.
+fallbacks. It contains editor data only and is converted to the dedicated
+Strapi components by `seed/index.ts`; it contains no Webflow classes, scripts,
+forms, or legacy asset URLs.
+
+`cms/src/seed/mca-service-pages.json`
+: A seed-time JSON mirror of the approved DSC MCA Services fallback. It is
+converted to the same fixed service-detail components by `seed/index.ts` and
+contains no Webflow classes, scripts, forms, or legacy asset URLs.
 
 ## API content types
 
@@ -141,9 +147,15 @@ Each content type folder follows the Strapi pattern:
 
 `cms/src/api/company-registration-page/`
 : Dedicated detail-page records for the nineteen Company Registration slugs.
-  Each record uses the fixed hero, overview, challenges, advantages, process,
-  Why JR, breakdown, FAQ, closing CTA, and SEO fields; it is not a generic page
-  builder.
+Each record uses the fixed hero, overview, challenges, advantages, process,
+Why JR, breakdown, FAQ, closing CTA, and SEO fields; it is not a generic page
+builder.
+
+`cms/src/api/mca-service-page/`
+: Dedicated detail-page records for approved MCA Services slugs. The first DSC
+record uses the same fixed hero, overview, challenges, advantages, process,
+Why JR, breakdown, FAQ, closing CTA, and SEO fields without widening the
+Company Registration collection into a generic page builder.
 
 `cms/src/api/service-category/`
 : Service category records used by the home Service Stack. Categories group services.
@@ -274,6 +286,7 @@ Common local variables:
 - `DATABASE_FILENAME`
 - `SEED_DEMO_CONTENT`
 - `SEED_COMPANY_REGISTRATION_PAGES`
+- `SEED_MCA_SERVICE_PAGES`
 - `SEED_LEAD_FORM_SETTINGS`
 - `NEXT_REVALIDATE_URL`
 - `STRAPI_REVALIDATE_SECRET`

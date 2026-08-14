@@ -531,3 +531,12 @@ export type CompanyRegistrationPageData = {
 };
 
 export type CompanyRegistrationPageContent = PageChromeContent & CompanyRegistrationPageData;
+
+/**
+ * Editor-managed content for a fixed MCA Services detail route. It deliberately
+ * mirrors the established service-detail information architecture without
+ * widening the Company Registration collection into a generic page builder.
+ */
+export type McaServicePageData = CompanyRegistrationPageData;
+
+export type McaServicePageContent = PageChromeContent & McaServicePageData;

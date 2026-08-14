@@ -5,13 +5,14 @@ This file explains what each important file in `frontend/` does. The frontend is
 ## Big picture
 
 The frontend renders the shared routes plus nineteen Company Registration
-detail routes:
+detail routes and the first MCA Services detail route:
 
 - `/`
 - `/about-us`
 - `/careers`
 - `/contact-us`
-- `/corporate/[slug]` for the nineteen approved Company Registration slugs
+- `/corporate/[slug]` for the nineteen approved Company Registration slugs and
+  the DSC MCA Services slug
 
 Content comes from Strapi when `STRAPI_URL` and `STRAPI_API_TOKEN` are configured. If Strapi is unavailable or incomplete, the app falls back to typed local content in `frontend/data/*-fallback.ts`.
 
@@ -91,9 +92,10 @@ The main flow is:
 : Contact Us route. Loads Contact content, metadata, and renders the Contact page.
 
 `frontend/app/corporate/[slug]/page.tsx`
-: Shared dynamic route for the nineteen Company Registration pages. It awaits
-  Next.js 16 route params, generates static params and metadata from the typed
-  fallback slugs, and returns the framework 404 for an unknown slug.
+: Shared dynamic route for the nineteen Company Registration pages and the DSC
+  MCA Services page. It awaits Next.js 16 route params, generates static params
+  and metadata from the typed fallback slugs, and returns the framework 404 for
+  an unknown slug.
 
 `frontend/app/icon.tsx`
 : Generates the app icon/fav icon through Next.
@@ -187,9 +189,9 @@ The main flow is:
 
 `frontend/components/company-registration/company-registration-page.tsx`
 : One fixed Tailwind-first service template for every Company Registration
-  route. It renders the bluefield hero, overview, challenges, advantages,
-  process, Why JR, service breakdown, native-details FAQ, and shared closing
-  CTA without page-specific CSS or legacy markup.
+  route and the DSC MCA Services route. It renders the bluefield hero, overview,
+  challenges, advantages, process, Why JR, service breakdown, native-details
+  FAQ, and shared closing CTA without page-specific CSS or legacy markup.
 
 ## Data fallbacks
 
@@ -207,9 +209,14 @@ The main flow is:
 
 `frontend/data/company-registration-pages-fallback.ts`
 : The normalized content source for the nineteen approved legacy Company
-  Registration pages. It exports the exact route slugs and a fixed content
-  shape shared by routing, sitemap generation, Strapi fallback mapping, and the
-  local CMS seed mirror.
+Registration pages. It exports the exact route slugs and a fixed content
+shape shared by routing, sitemap generation, Strapi fallback mapping, and the
+local CMS seed mirror.
+
+`frontend/data/mca-service-pages-fallback.ts`
+: The normalized content source for the first approved MCA Services legacy
+route, DSC. It uses the same fixed service-detail shape while its dedicated
+Strapi collection remains separate from Company Registration.
 
 These files keep the site working when Strapi is offline. They also document the expected content shape for editors/developers.
 
@@ -218,19 +225,21 @@ These files keep the site working when Strapi is offline. They also document the
 `frontend/lib/types.ts`
 : The main TypeScript content contract. Defines shared link, navigation, site
   settings, footer, SEO, editorial pages, and the fixed
-  `CompanyRegistrationPageContent` service-detail model.
+  `CompanyRegistrationPageContent` and `McaServicePageContent` service-detail
+  models.
 
 `frontend/lib/strapi.ts`
 : Server-side Strapi v5 adapter. Builds explicit populate queries—including
   `headerMenu.categories.links` and every nested registration-page component—
-  fetches published single types or a registration collection entry filtered
-  by exact slug, converts media URLs, and safely falls back when CMS data is
-  missing.
+  fetches published single types or exact-slug Company Registration/MCA
+  Services collection entries, converts media URLs, and safely falls back when
+  known local fallback data is available. CMS-only MCA records are strictly
+  validated before rendering.
 
 `frontend/lib/content.ts`
 : Small route-facing content loader. Exposes functions used by pages to get
-  home/about/careers/contact content and a cached Company Registration page by
-  slug.
+home/about/careers/contact content plus cached Company Registration and MCA
+Services pages by slug.
 
 `frontend/lib/page-metadata.ts`
 : Converts page SEO data into Next metadata.
