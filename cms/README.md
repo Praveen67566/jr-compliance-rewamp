@@ -28,86 +28,42 @@ npm run develop
 ```
 
 Open `http://localhost:1337/admin` and create the first administrator. Local
-development uses SQLite at `.tmp/data.db`. Never commit `.env`, `.tmp`,
-`public/uploads`, or generated builds.
+development uses PostgreSQL. Set a local `DATABASE_URL`, keep
+`DATABASE_CLIENT=postgres`, and keep all `SEED_*` flags set to `false`. Never
+commit `.env`, `.tmp`, `public/uploads`, or generated builds.
 
-Use PostgreSQL in deployed environments. Set production values for `APP_KEYS`,
-`API_TOKEN_SALT`, `ADMIN_JWT_SECRET`, `TRANSFER_TOKEN_SALT`, `JWT_SECRET`, and
-`ENCRYPTION_KEY`; do not reuse local values. See `config/database.ts` for the
-supported PostgreSQL variables.
+`cms/.tmp/data.db` is retained only as an immutable SQLite rollback source from
+the completed migration. Strapi must not be configured to open it. Set separate
+production values for `APP_KEYS`, `API_TOKEN_SALT`, `ADMIN_JWT_SECRET`,
+`TRANSFER_TOKEN_SALT`, `JWT_SECRET`, and `ENCRYPTION_KEY`; do not reuse local
+values. See `config/database.ts` for PostgreSQL connection and pool variables.
 
 For the full deployment order, platform-neutral environment templates, content
 transfer procedure, media-storage requirement, and launch checks, use
 [../prod.md](../prod.md).
 
-## First-content seed
+## Content bootstrap and legacy seed files
 
-The opt-in seed creates all current page records, shared header/footer content,
-collections, relationships, and approved media from `../frontend/public/images`.
-It only runs against a fresh local SQLite database, refuses production and
-non-SQLite environments, and never overwrites existing editor content or media.
+The active local PostgreSQL database already contains the approved page
+records, relations, and media. Create another local or hosted CMS environment
+by importing a reviewed, encrypted Strapi archive containing only `content` and
+`files`; do not copy the SQLite rollback file and do not turn on a seed flag.
 
-```bash
-# In cms/.env, for one fresh local run only:
-SEED_DEMO_CONTENT=true
-npm run develop
-```
+`cms/src/seed/` remains as a historical content-source record for the approved
+fallback data. The normal CMS bootstrap no longer invokes its seed or backfill
+functions, and PostgreSQL-only configuration rejects SQLite. All four flags
+must remain `false` in local, staging, and production environments:
 
-After the log reports completion, set `SEED_DEMO_CONTENT=false` and restart.
-The seed uploads media with meaningful alternative text; editors should review
-each crop/caption before production publishing. It does not read from nor expose
-`site/assets` in the frontend.
-
-For an existing local SQLite CMS, use the narrower backfill once instead of the
-full demo seed. It creates only missing approved Company Registration slugs and
-never updates an editor's existing record:
-
-```bash
-# In cms/.env, for one local run only:
-SEED_DEMO_CONTENT=false
-SEED_COMPANY_REGISTRATION_PAGES=true
-SEED_MCA_SERVICE_PAGES=false
-SEED_LEAD_FORM_SETTINGS=false
-npm run develop
-```
-
-After the completion log, set `SEED_COMPANY_REGISTRATION_PAGES=false` and
-restart. The backfill refuses production and non-SQLite databases. Existing
-deployment content must be moved through the reviewed Strapi transfer/import
-workflow instead of an automatic production write.
-
-For the first approved MCA Services route in an existing local SQLite CMS, run
-the matching additive backfill. It creates only the missing DSC record and
-never updates editor content:
-
-```bash
-# In cms/.env, for one local run only:
-SEED_DEMO_CONTENT=false
-SEED_COMPANY_REGISTRATION_PAGES=false
-SEED_MCA_SERVICE_PAGES=true
-SEED_LEAD_FORM_SETTINGS=false
-npm run develop
-```
-
-After the completion log, set `SEED_MCA_SERVICE_PAGES=false` and restart. This
-backfill also refuses production and non-SQLite databases.
-
-For an existing local SQLite CMS whose published **Site Setting** predates the
-Lead Form component, run this one-time backfill instead. It adds the approved
-Lead Form settings only when they are absent; it never overwrites an existing
-form and skips a Site Setting with pending editor draft changes.
-
-```bash
-# In cms/.env, for one local run only:
+```dotenv
 SEED_DEMO_CONTENT=false
 SEED_COMPANY_REGISTRATION_PAGES=false
 SEED_MCA_SERVICE_PAGES=false
-SEED_LEAD_FORM_SETTINGS=true
-npm run develop
+SEED_LEAD_FORM_SETTINGS=false
 ```
 
-After the completion log, set `SEED_LEAD_FORM_SETTINGS=false` and restart. It
-also refuses production and non-SQLite databases.
+Before any Strapi import, take a verified PostgreSQL backup and an uploads
+backup. An import replaces selected target content and upload files; it does
+not merge editor records, administrator accounts, API tokens, or secrets.
 
 ## Schema and editor policy
 
@@ -129,14 +85,14 @@ message label and placeholder are editor-managed, but the message remains
 required in frontend and server validation. Webhook configuration and form
 transport do not live in Strapi.
 
-The fresh local seed includes all currently approved navbar categories, links,
-nineteen Company Registration records, and the DSC MCA Services record. On startup, the CMS also migrates
-only an exact known demo-menu signature: either the original flat menu or the
-previous categorized seed whose Indian Subsidiary and Mutual Fund links still
-pointed to `/#services`. The check is idempotent and signature-based; any
-customized menu or pending Site Setting draft is left untouched. Until an
-unmatched custom menu is completed and published, the frontend retains its
-matching typed fallback.
+The verified PostgreSQL content transfer includes all currently approved navbar
+categories, links, nineteen Company Registration records, and the DSC MCA
+Services record. On startup, the CMS also migrates only an exact known legacy
+demo-menu signature: either the original flat menu or the previous categorized
+menu whose Indian Subsidiary and Mutual Fund links still pointed to
+`/#services`. The check is idempotent and signature-based; any customized menu
+or pending Site Setting draft is left untouched. Until an unmatched custom menu
+is completed and published, the frontend retains its matching typed fallback.
 
 Do not create a generic `Page`, a dynamic-zone page builder, a navigation
 collection, CSS fields, animation settings, or public submission endpoints.

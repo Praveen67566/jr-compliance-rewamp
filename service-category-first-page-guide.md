@@ -8,7 +8,7 @@ reference implementation is **MCA Services** with **DSC** at
 The intended result is:
 
 - one dedicated Strapi collection for the category;
-- one first-page fallback and matching local seed record;
+- one first-page fallback and matching migration-ready CMS record;
 - one shared, fixed frontend template for every page in that category; and
 - later pages added through Strapi without requiring a new React page file.
 
@@ -54,7 +54,7 @@ Record these values before editing code:
 | Collection plural | `mca-service-pages` |
 | TypeScript prefix | `McaServicePage` |
 | Cache tag | `jr-mca-service-pages` |
-| Optional local seed flag | `SEED_MCA_SERVICE_PAGES` |
+| Content migration method | Reviewed encrypted Strapi `content,files` export/import |
 | First menu label | `DSC` |
 | First route slug | `dsc-certificate` |
 | First legacy source | `site/corporate/dsc-certificate.html` |
@@ -66,8 +66,8 @@ Confirm all of the following:
 2. The legacy source file is known and may be used for content reference.
 3. The page fits the existing fixed service-detail sequence.
 4. The category and first-page labels are approved for the header.
-5. The first page is the only page that needs an offline fallback and local
-   seed record.
+5. The first page is the only page that needs an offline fallback and an
+   initial CMS record for transfer into PostgreSQL.
 
 ## Fixed service-detail content contract
 
@@ -176,7 +176,7 @@ Strapi enforces a UID only inside one collection. Manually verify that the slug
 does not duplicate a Company Registration, MCA Services or other category slug
 using `/corporate/[slug]`.
 
-## Step 3: Add the first-page fallback and seed mirror
+## Step 3: Add the first-page fallback and CMS migration mirror
 
 Create a category-specific frontend fallback such as:
 
@@ -194,30 +194,26 @@ Give the category its own named TypeScript types in `frontend/lib/types.ts`.
 The type may reuse the fixed structural contract when it is identical, but it
 must remain clearly named for the new CMS collection.
 
-Create the matching seed mirror:
+Create the matching CMS migration mirror when the content needs to be
+transferred between environments:
 
 ```text
 cms/src/seed/<category>-pages.json
 ```
 
-The frontend fallback and seed JSON must contain the same editor-managed page
-data. The first page can safely render when Strapi is unavailable; later
+The frontend fallback and migration JSON must contain the same editor-managed
+page data. The first page can safely render when Strapi is unavailable; later
 CMS-only pages are expected to require Strapi.
 
-The current seed files intentionally use the frontend-shaped data. The shared
+The historical content-mirror files intentionally use the frontend-shaped data. The shared
 `serviceDetailPageData()` helper converts it to Strapi fields—for example,
 `hero.title` becomes top-level `title`, `closingCta` becomes `finalCta`, and SEO
 `title`/`description` become `metaTitle`/`metaDescription`.
 
-If local automatic seeding is required, update:
-
-- `cms/src/seed/index.ts` with the new content UID, seed import and create
-  function;
-- `cms/src/index.ts` to call an optional, narrowly scoped local backfill; and
-- `cms/.env.example` with a category-specific seed flag.
-
-The narrow backfill must be local-SQLite-only, create missing slugs only, and
-never overwrite editor records. Seed flags must remain disabled in production.
+Do not add a new automatic seed or backfill flag. The CMS now uses PostgreSQL
+locally and in deployed environments; keep every existing `SEED_*` flag false.
+For a new target, include the reviewed record in an encrypted Strapi
+`content,files` transfer after verifying that replacement is safe.
 
 ## Step 4: Connect Strapi to the frontend
 
@@ -311,8 +307,9 @@ For fallback/offline navigation, update the appropriate menu in
 - keep unimplemented page links at `/#services` until their records and slugs
   are approved and published.
 
-For a fresh local CMS seed, mirror the same header menu in
-`cms/src/seed/content.ts`.
+For a new PostgreSQL CMS target, include the same approved header menu in the
+reviewed content/files transfer. Do not enable a seed flag or modify an
+editor-managed header automatically.
 
 For an existing CMS, edit and publish the Header Menu in the Strapi Site
 Setting. Do not automatically overwrite an editor-managed header. Add a code
@@ -354,10 +351,10 @@ the same category:
 9. Publish the Site Setting.
 10. Verify the public route, metadata, navigation link and sitemap entry.
 
-No new page component, App Router file, fallback or seed entry is required for
+No new page component, App Router file, fallback or migration entry is required for
 a CMS-only page. If Strapi is unavailable, that page will return 404 because it
 has no local fallback; this is expected. If offline availability is later
-required, add an approved fallback and matching seed deliberately.
+required, add an approved fallback and matching migration record deliberately.
 
 An incomplete CMS-only record also returns 404. Complete all required fields
 instead of inserting copy from the first page.
@@ -384,7 +381,7 @@ npm run build
 
 Before handing off the category, also verify:
 
-- the first fallback and seed mirror contain the same content;
+- the first fallback and migration mirror contain the same content;
 - `git diff --check` passes;
 - the first route loads with Strapi unavailable;
 - the first route loads from its published Strapi record;
@@ -401,8 +398,8 @@ Use these existing files as the concrete reference implementation:
 
 ```text
 cms/src/api/mca-service-page/
-cms/src/seed/mca-service-pages.json
-cms/src/seed/index.ts
+cms/src/seed/mca-service-pages.json (historical content mirror)
+cms/src/seed/index.ts (not invoked by PostgreSQL bootstrap)
 cms/src/revalidation.ts
 frontend/data/mca-service-pages-fallback.ts
 frontend/lib/types.ts

@@ -273,7 +273,7 @@ settings, colour pickers, Webflow IDs, or public form endpoints.
 | `registration.faq-item` | `question` short text*, `answer` long text* |
 | `registration.faq-section` | `eyebrow` short text*, `title` short text*, `items` repeatable `registration.faq-item`* |
 
-## Legacy content to seed
+## Legacy content to migrate
 
 Migrate copy and approved assets from `site/index.html` into the model. The
 initial entries should include:
@@ -293,13 +293,13 @@ Correct legacy character-encoding artefacts and duplicated FAQ text during
 migration; do not bring over Webflow classes, inline styles, animation IDs, or
 legacy asset paths.
 
-### Editorial-route seed map
+### Editorial-route migration map
 
-Seed the route records from only their matching legacy page. Normalise mojibake
+Create the route records from only their matching legacy page. Normalise mojibake
 (`Letâs`, `360Â°`, em dashes, and non-breaking spaces), but do not editorially
 invent claims or silently repair source inconsistencies.
 
-| Route | Legacy source | Seed content |
+| Route | Legacy source | Imported content |
 | --- | --- | --- |
 | `/about-us` | `site/about-us.html` | Hero “Your #1 Partner for 360° Compliance Solutions”; 13+/100+/4.8 proof stats; the five Our Mantra cards; six dated timeline events (2013–14 through 2022); four “Why partner with us?” cards; Pioneers stats; 14 JRians; five achievement cards; final Contact Us CTA. |
 | `/careers` | `site/careers.html` | Hero, Vision/Mission, four values, culture gallery, five active openings, four benefits, six unique employee testimonials, four career FAQs, and final Contact Us CTA. Preserve job labels but have an editor validate legacy department/category inconsistencies before publishing. |
@@ -364,8 +364,9 @@ plugins or issue a browser request per card. The API token is sent as
 ## Onboarding checklist
 
 1. Create a Strapi v5 TypeScript project inside `cms/` (or point this folder to
-   the separately deployed CMS) and configure SQLite only for local development;
-   use PostgreSQL plus production secrets for deployment.
+   the separately deployed CMS) and configure PostgreSQL for local, staging,
+   and production environments. The retained SQLite file is an offline rollback
+   source only, not a runtime option.
 2. Set `APP_KEYS`, `API_TOKEN_SALT`, `ADMIN_JWT_SECRET`, `JWT_SECRET`,
    `ENCRYPTION_KEY`, database values, the upload-provider credentials, and the
    public CMS URL. Never commit them.
@@ -382,15 +383,12 @@ plugins or issue a browser request per card. The API token is sent as
 6. Fill and publish `site-setting`, including the ordered Header Menu categories
    and their ordered links, then fill the four single-page records and one
    Company Registration record for each approved slug and the approved MCA
-   Services record. Select the intended
-   ordered relations and verify every link and media item. An existing local
-   SQLite CMS may use the one-time
-   `SEED_COMPANY_REGISTRATION_PAGES=true` and
-   `SEED_MCA_SERVICE_PAGES=true` backfills to create only missing approved
-   records. `SEED_LEAD_FORM_SETTINGS=true` can add the approved Lead
-   Form settings only when a published Site Setting lacks them. Both are
-   refused in production and do not overwrite editor content; the Lead Form
-   backfill also skips pending Site Setting draft changes.
+   Services record. Select the intended ordered relations and verify every link
+   and media item. Keep all `SEED_*` flags false. To populate another PostgreSQL
+   target with the approved content, use a reviewed encrypted Strapi
+   `content,files` export/import after a verified database and media backup;
+   imports replace selected target content and upload files rather than merging
+   editor records.
 7. Create the `next-site-reader` custom API token and apply the permissions
    above. Put `STRAPI_URL` and `STRAPI_API_TOKEN` in the Next server environment
    (never `NEXT_PUBLIC_*`).

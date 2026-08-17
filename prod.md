@@ -40,8 +40,8 @@ closed before a production launch:
    in the release commit. Keep `.env`, `.tmp/`, `public/uploads/`, `dist/`,
    and `.strapi/` ignored.
 4. **Use an isolated production database and migrate content deliberately.**
-   Do not deploy the local SQLite database or enable the demo seed in
-   production. The CMS bootstrap can upgrade only an exact known demo
+   Do not deploy or configure the retained SQLite rollback source, and keep all
+   `SEED_*` flags false. The CMS bootstrap can upgrade only an exact known demo
    header-menu signature (the original flat menu or the previous categorized
    menu with two placeholder Company Registration links); it does not replace
    customized navigation records.
@@ -58,8 +58,9 @@ decisions and cannot be completed from this repository alone.
   needs ISR and `POST /api/revalidate`.
 - Run the CMS behind HTTPS and a reverse proxy/load balancer. Set
   `IS_PROXIED=true` only when that proxy is present.
-- Use managed PostgreSQL with TLS, automated backups, and restricted network
-  access. SQLite is local-development only.
+- Use PostgreSQL with TLS where applicable, automated backups, and restricted
+  network access for both local/staging migration work and deployed CMS
+  environments. The retained SQLite file is an offline rollback source only.
 - Put both public domains behind TLS. Enforce the canonical host and redirect
   the alternate host at the edge.
 - Start with one frontend instance or use platform-integrated caching. If the
@@ -80,8 +81,9 @@ git check-ignore -v cms/.env cms/.tmp/data.db cms/public/uploads
 ```
 
 Add and review the intended CMS source before committing; `git add cms` honors
-`cms/.gitignore`, so it does not add the local environment, database, generated
-build, or local uploads. Do not blindly stage unrelated user changes.
+`cms/.gitignore`, so it does not add the local environment, preserved rollback
+database, generated build, or local uploads. Do not blindly stage unrelated
+user changes.
 
 ## Production environment
 
@@ -339,27 +341,29 @@ admin login before moving data.
 
 ### 3. Move content and media
 
-The full local seed and narrow local backfills are for local SQLite only. All
-`SEED_*` flags must stay off in production.
+All `SEED_*` flags must stay off in local, staging, and production PostgreSQL
+environments. The retained seed files and SQLite rollback database are not a
+deployment source.
 
-For the current seeded/local content, first rehearse an encrypted Strapi export
-and import on staging. Take a PostgreSQL snapshot and media backup before every
-import. The CLI prompts for an export encryption key unless one is supplied:
+Use the populated local PostgreSQL CMS as the content source, first rehearsing
+an encrypted Strapi export and import on staging. Take a PostgreSQL snapshot
+and media backup before every import. If the source must remain immutable, make
+the export from a verified scratch copy rather than the running primary CMS.
+The CLI prompts for an export encryption key unless one is supplied:
 
 ```bash
-# In the populated source CMS environment
-npm run strapi -- export --file /secure-backups/jr-cms-YYYY-MM-DD
+# In the populated PostgreSQL source CMS environment, with every SEED_* flag false
+npm run strapi -- export --file /secure-backups/jr-cms-YYYY-MM-DD --only content,files
 
 # In the empty target CMS environment, after a verified backup
-npm run strapi -- import --file /secure-backups/jr-cms-YYYY-MM-DD
+npm run strapi -- import --file /secure-backups/jr-cms-YYYY-MM-DD.tar.gz.enc --only content,files
 ```
 
-To populate an empty test CMS with this repository's included starter content,
-run `SEED_DEMO_CONTENT=true` only in a fresh disposable **local SQLite** source,
-then export that source and import the archive into the empty test target. See
-the detailed procedure in
+Do not recreate the approved CMS content by setting a seed flag. Import the
+reviewed encrypted archive into an empty, backed-up target, or obtain explicit
+approval before replacing selected editor content and upload files. See the
+detailed procedure in
 [`initial_deployement_setup_steps.md`](./initial_deployement_setup_steps.md).
-Never enable any `SEED_*` flag in a deployed PostgreSQL environment.
 
 Do not add `--force` unless the target, backup, and recovery plan have been
 verified. Confirm all five single types, the nineteen Company Registration

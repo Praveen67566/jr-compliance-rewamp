@@ -17,7 +17,9 @@ The frontend reads published CMS content using a server-only API token. If Strap
 The main CMS flow is:
 
 1. Editors update content in Strapi.
-2. Strapi stores records in SQLite locally or PostgreSQL in production.
+2. Strapi stores records in PostgreSQL in both local and deployed environments.
+   The retained SQLite file is an offline rollback source only and is never a
+   running CMS database.
 3. The frontend fetches published single types and related collections through REST, including Company Registration and MCA Services entries filtered by exact slug.
 4. `cms/src/revalidation.ts` can notify Next.js after publish changes.
 5. Next.js revalidates the affected cache tags and fetches fresh CMS content.
@@ -31,7 +33,8 @@ The main CMS flow is:
 : Locks exact npm dependency versions for the CMS.
 
 `cms/README.md`
-: CMS setup guide. Covers local development, seed behavior, permissions, REST endpoints, signed revalidation, and validation commands.
+: CMS setup guide. Covers local PostgreSQL development, content transfer,
+  permissions, REST endpoints, signed revalidation, and validation commands.
 
 `cms/CONTENT_MODEL.md`
 : The main editorial contract. This is the best source for what editors can manage and how frontend fields map to CMS fields.
@@ -63,7 +66,9 @@ The main CMS flow is:
 : Strapi API settings, such as response behavior and REST API configuration.
 
 `cms/config/database.ts`
-: Database configuration. Uses SQLite for local development by default and supports PostgreSQL through environment variables for production.
+: Database configuration. PostgreSQL is the default connection for local and
+  deployed environments; `DATABASE_URL`, SSL, and pool values are environment
+  controlled.
 
 `cms/config/middlewares.ts`
 : Strapi middleware configuration.
@@ -80,39 +85,35 @@ The main CMS flow is:
 : Strapi lifecycle entry. On bootstrap it registers the Next.js revalidation
   hooks, safely upgrades only an exact known demo-header signature (including
   the two former Company Registration placeholder links), preserves any
-  pending Site Setting draft, and optionally runs the local seed or narrow
-  local backfills.
+  pending Site Setting draft, and does not invoke the historical seed or
+  backfill helpers.
 
 `cms/src/revalidation.ts`
 : Signed webhook sender for Next.js cache revalidation. It watches Strapi document and media lifecycle events, maps changed CMS models to frontend cache tags, signs the payload with HMAC SHA-256, and sends it to `NEXT_REVALIDATE_URL`.
 
-## Seed files
+## Historical content-source files
 
 `cms/src/seed/index.ts`
-: Opt-in local seed runner. The full seed only runs when
-  `SEED_DEMO_CONTENT=true`, refuses production, refuses non-SQLite databases,
-  refuses existing content, uploads approved media from
-  `frontend/public/images`, and creates published demo records. The narrower
-  `SEED_COMPANY_REGISTRATION_PAGES=true` and
-  `SEED_MCA_SERVICE_PAGES=true` backfills are also local-SQLite-only and add
-  missing approved service records without overwriting editor records.
-  `SEED_LEAD_FORM_SETTINGS=true` is local-SQLite-only too; it fills an absent
-  Lead Form on a published Site Setting without overwriting editor content or
-  publishing pending draft changes.
+: Historical content-source and guarded legacy seed runner. The normal CMS
+  bootstrap no longer invokes it, the active CMS uses PostgreSQL, and every
+  `SEED_*` flag must remain `false`; populate a new target with a reviewed
+  encrypted Strapi `content,files` import instead.
 
 `cms/src/seed/content.ts`
-: The actual seed content: shared settings, page content, service categories, services, logos, testimonials, recognitions, FAQs, team members, jobs, gallery items, and related records.
+: The approved historical content source: shared settings, page content, service
+  categories, services, logos, testimonials, recognitions, FAQs, team members,
+  jobs, gallery items, and related records.
 
 `cms/src/seed/company-registration-pages.json`
-: A seed-time JSON mirror of the nineteen typed frontend registration
-fallbacks. It contains editor data only and is converted to the dedicated
-Strapi components by `seed/index.ts`; it contains no Webflow classes, scripts,
-forms, or legacy asset URLs.
+: A historical JSON mirror of the nineteen typed frontend registration
+  fallbacks. It contains editor data only and is converted to the dedicated
+  Strapi components by `seed/index.ts`; it contains no Webflow classes, scripts,
+  forms, or legacy asset URLs.
 
 `cms/src/seed/mca-service-pages.json`
-: A seed-time JSON mirror of the approved DSC MCA Services fallback. It is
-converted to the same fixed service-detail components by `seed/index.ts` and
-contains no Webflow classes, scripts, forms, or legacy asset URLs.
+: A historical JSON mirror of the approved DSC MCA Services fallback. It is
+  converted to the same fixed service-detail components by `seed/index.ts` and
+  contains no Webflow classes, scripts, forms, or legacy asset URLs.
 
 ## API content types
 
@@ -265,7 +266,9 @@ Strapi components are reusable field groups stored as JSON schemas in `cms/src/c
 : Installed npm packages. Generated by `npm install` or `npm ci`; do not edit.
 
 `cms/.tmp/`
-: Local SQLite database and runtime files. Generated locally; do not commit.
+: Retained historical SQLite rollback database and runtime scratch files. Do
+  not commit, delete, rename, or configure Strapi to open them during normal
+  PostgreSQL development.
 
 `cms/dist/` and `cms/build/`
 : Strapi build output when generated; do not edit manually.
@@ -283,7 +286,10 @@ Common local variables:
 - `JWT_SECRET`
 - `ENCRYPTION_KEY`
 - `DATABASE_CLIENT`
-- `DATABASE_FILENAME`
+- `DATABASE_URL`
+- `DATABASE_SSL`
+- `DATABASE_POOL_MIN`
+- `DATABASE_POOL_MAX`
 - `SEED_DEMO_CONTENT`
 - `SEED_COMPANY_REGISTRATION_PAGES`
 - `SEED_MCA_SERVICE_PAGES`
@@ -291,7 +297,8 @@ Common local variables:
 - `NEXT_REVALIDATE_URL`
 - `STRAPI_REVALIDATE_SECRET`
 
-Production PostgreSQL variables are defined in `cms/config/database.ts` and documented in `prod.md`.
+PostgreSQL variables for local and deployed CMS environments are defined in
+`cms/config/database.ts` and documented in `cms/.env.example` and `prod.md`.
 
 ## Important rules for future CMS changes
 
@@ -300,7 +307,8 @@ Production PostgreSQL variables are defined in `cms/config/database.ts` and docu
 - Do not expose public read access broadly. The frontend should use a read-only server-side API token.
 - Do not put secrets in frontend `NEXT_PUBLIC_*` variables.
 - Keep REST population explicit in `frontend/lib/strapi.ts`; do not switch to `populate=deep`.
-- Do not run seed or backfill flags in production. The full seed is only for a
-  fresh local SQLite database; narrow backfills are local-SQLite-only.
+- Keep every `SEED_*` flag disabled. The current local PostgreSQL content came
+  from a verified transfer; use the reviewed export/import workflow for another
+  target rather than a seed or backfill.
 - Do not rely on local `public/uploads` for production media durability.
 - When a schema changes, update `cms/CONTENT_MODEL.md`, the Strapi schema files, frontend types, frontend mapper, and fallback data together.

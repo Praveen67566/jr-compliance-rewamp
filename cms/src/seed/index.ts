@@ -381,18 +381,18 @@ async function createMcaServicePages(
 }
 
 /**
- * Explicit local-only backfill for a CMS that already contains editor data.
- * It creates only missing approved slugs and never updates existing records.
+ * Historical backfill helper. The normal PostgreSQL CMS bootstrap does not
+ * invoke it; approved content moves through reviewed Strapi transfers.
  */
 export async function seedMissingCompanyRegistrationPages(strapi: Core.Strapi): Promise<void> {
   if (process.env.SEED_COMPANY_REGISTRATION_PAGES !== "true") {
     return;
   }
 
-  const databaseClient = process.env.DATABASE_CLIENT ?? "sqlite";
-  if (process.env.NODE_ENV === "production" || databaseClient !== "sqlite") {
+  const databaseClient = process.env.DATABASE_CLIENT ?? "postgres";
+  if (process.env.NODE_ENV === "production" || databaseClient === "postgres") {
     strapi.log.warn(
-      "JR Company Registration backfill refused: it is restricted to local SQLite and cannot run in production.",
+      "JR Company Registration backfill ignored: legacy seed/backfill helpers are disabled for the PostgreSQL CMS. Use a reviewed content/files transfer.",
     );
     return;
   }
@@ -408,18 +408,18 @@ export async function seedMissingCompanyRegistrationPages(strapi: Core.Strapi): 
 }
 
 /**
- * Explicit local-only backfill for the first approved MCA Services route. It
- * creates only a missing DSC record and never updates existing editor content.
+ * Historical MCA Services backfill helper. It is not part of the normal
+ * PostgreSQL startup path.
  */
 export async function seedMissingMcaServicePages(strapi: Core.Strapi): Promise<void> {
   if (process.env.SEED_MCA_SERVICE_PAGES !== "true") {
     return;
   }
 
-  const databaseClient = process.env.DATABASE_CLIENT ?? "sqlite";
-  if (process.env.NODE_ENV === "production" || databaseClient !== "sqlite") {
+  const databaseClient = process.env.DATABASE_CLIENT ?? "postgres";
+  if (process.env.NODE_ENV === "production" || databaseClient === "postgres") {
     strapi.log.warn(
-      "JR MCA Services backfill refused: it is restricted to local SQLite and cannot run in production.",
+      "JR MCA Services backfill ignored: legacy seed/backfill helpers are disabled for the PostgreSQL CMS. Use a reviewed content/files transfer.",
     );
     return;
   }
@@ -435,19 +435,18 @@ export async function seedMissingMcaServicePages(strapi: Core.Strapi): Promise<v
 }
 
 /**
- * Explicit local-only backfill for a Site Setting created before the Lead Form
- * component existed. It is intentionally additive: an editor-owned form or
- * any pending Site Setting draft is left untouched.
+ * Historical Lead Form backfill helper. It is not part of the normal
+ * PostgreSQL startup path.
  */
 export async function seedMissingLeadFormSettings(strapi: Core.Strapi): Promise<void> {
   if (process.env.SEED_LEAD_FORM_SETTINGS !== "true") {
     return;
   }
 
-  const databaseClient = process.env.DATABASE_CLIENT ?? "sqlite";
-  if (process.env.NODE_ENV === "production" || databaseClient !== "sqlite") {
+  const databaseClient = process.env.DATABASE_CLIENT ?? "postgres";
+  if (process.env.NODE_ENV === "production" || databaseClient === "postgres") {
     strapi.log.warn(
-      "JR Lead Form backfill refused: it is restricted to local SQLite and cannot run in production.",
+      "JR Lead Form backfill ignored: legacy seed/backfill helpers are disabled for the PostgreSQL CMS. Use a reviewed content/files transfer.",
     );
     return;
   }
@@ -617,19 +616,18 @@ async function hasExistingEditorContent(strapi: Core.Strapi): Promise<boolean> {
 }
 
 /**
- * Opt-in fresh-database seed. It uploads the approved local media copies and
- * creates published content for the complete current route scope, including
- * the approved Company Registration detail pages. It never overwrites editor data.
+ * Historical fresh-database seed helper. It is retained as an approved content
+ * source, but is not part of the normal PostgreSQL startup path.
  */
 export async function seedInitialContent(strapi: Core.Strapi): Promise<void> {
   if (process.env.SEED_DEMO_CONTENT !== "true") {
     return;
   }
 
-  const databaseClient = process.env.DATABASE_CLIENT ?? "sqlite";
-  if (process.env.NODE_ENV === "production" || databaseClient !== "sqlite") {
+  const databaseClient = process.env.DATABASE_CLIENT ?? "postgres";
+  if (process.env.NODE_ENV === "production" || databaseClient === "postgres") {
     strapi.log.warn(
-      "JR CMS seed refused: it is restricted to a fresh local SQLite database and cannot run in production.",
+      "JR CMS seed ignored: legacy seed/backfill helpers are disabled for the PostgreSQL CMS. Use a reviewed content/files transfer.",
     );
     return;
   }

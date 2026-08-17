@@ -1,13 +1,7 @@
 import type { Core } from "@strapi/strapi";
 
 import { registerNextRevalidation } from "./revalidation";
-import {
-  migrateLegacyHeaderMenu,
-  seedInitialContent,
-  seedMissingCompanyRegistrationPages,
-  seedMissingLeadFormSettings,
-  seedMissingMcaServicePages,
-} from "./seed";
+import { migrateLegacyHeaderMenu } from "./seed";
 
 export default {
   /**
@@ -28,9 +22,5 @@ export default {
   async bootstrap({ strapi }: { strapi: Core.Strapi }) {
     registerNextRevalidation(strapi);
     await migrateLegacyHeaderMenu(strapi);
-    await seedInitialContent(strapi);
-    await seedMissingCompanyRegistrationPages(strapi);
-    await seedMissingMcaServicePages(strapi);
-    await seedMissingLeadFormSettings(strapi);
   },
 };

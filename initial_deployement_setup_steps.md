@@ -67,9 +67,9 @@ before requesting TLS certificates.
 
 ## 2. Prepare PostgreSQL
 
-The CMS requires PostgreSQL in a deployed environment. The cloned
-`cms/.tmp/data.db` SQLite database is local-development data and must not be
-used on this server.
+The CMS requires PostgreSQL in every active environment. The retained
+`cms/.tmp/data.db` SQLite file is an offline rollback source from the local
+migration and must not be configured or copied to this server.
 
 First check the server and cluster:
 
@@ -162,6 +162,7 @@ DATABASE_POOL_MAX=10
 
 SEED_DEMO_CONTENT=false
 SEED_COMPANY_REGISTRATION_PAGES=false
+SEED_MCA_SERVICE_PAGES=false
 SEED_LEAD_FORM_SETTINGS=false
 
 NEXT_REVALIDATE_URL=http://127.0.0.1:8123/api/revalidate
@@ -273,16 +274,16 @@ records or uploaded media until they are created or imported.
   fallback data and the images already in `frontend/public/images`.
 - For editable CMS content, import a reviewed Strapi export or create records
   and publish them in Content Manager.
-- Do **not** enable any `SEED_*` setting on this PostgreSQL server. The seed
-  is intentionally limited to a fresh local SQLite development environment.
+- Keep every `SEED_*` setting `false` on this PostgreSQL server and in the
+  local PostgreSQL source CMS.
 
-### Populate this empty test CMS with the included starter data
+### Populate this empty test CMS from the approved PostgreSQL transfer
 
 The repository already includes starter data for the current routes, shared
-navigation/footer, collections, relationships, and approved local images. To
-make that data editable in this PostgreSQL test CMS, seed it in a **disposable
-local SQLite source** and transfer the resulting archive. Do not set
-`SEED_DEMO_CONTENT=true` on the VPS.
+navigation/footer, collections, relationships, and approved local images. The
+verified local PostgreSQL migration is the source of that content. Use its
+reviewed encrypted Strapi content/files archive; never configure the retained
+SQLite rollback database and never set `SEED_DEMO_CONTENT=true`.
 
 The import replaces the target's selected content and upload files, so do this
 only while `jr_compliance_test` is the new test database. If editors have
@@ -291,73 +292,47 @@ before continuing. Strapi does not transfer administrator accounts or API
 tokens, so the CMS administrator and `next-site-reader` token remain
 environment-specific.
 
-1. On your development computer, create a fresh temporary clone of this exact
-   repository revision. Do not reuse a CMS directory with an existing
-   `.tmp/data.db` or editor content.
-2. Create `cms/.env` from the local template, replace its placeholder secrets
-   with new local-only values, then use SQLite and set the seed flag to `true`:
-
-   ```dotenv
-   HOST=127.0.0.1
-   PORT=1338
-   DATABASE_CLIENT=sqlite
-   DATABASE_FILENAME=.tmp/seed-source.db
-   SEED_DEMO_CONTENT=true
-   SEED_COMPANY_REGISTRATION_PAGES=false
-   SEED_LEAD_FORM_SETTINGS=false
-   NEXT_REVALIDATE_URL=
-   STRAPI_REVALIDATE_SECRET=
-   ```
-
-   Use `cp .env.example .env` before editing it. Keep local Strapi secrets in
-   that file, but do not reuse the VPS secrets.
-3. Seed the disposable CMS locally:
+1. Use the approved encrypted archive from the verified local PostgreSQL
+   migration. If a replacement archive is ever needed, create it from a
+   verified scratch copy of the populated PostgreSQL source with every
+   `SEED_*` value `false`:
 
    ```bash
-   cd <local-seed-clone>/cms
-   npm ci
-   npm run develop
-   ```
-
-   Wait for this log line, then stop Strapi with `Ctrl+C`:
-
-   ```text
-   JR CMS seed completed. All current pages and shared chrome are published.
-   ```
-
-4. Set `SEED_DEMO_CONTENT=false` in the **local** source `.env`, then create an
-   encrypted archive containing only editable content and local upload files:
-
-   ```bash
-   mkdir -p "$HOME/jr-cms-transfer"
+   cd <scratch-postgres-cms>/cms
    npm run strapi -- export \
-     --file "$HOME/jr-cms-transfer/jr-cms-seed-YYYY-MM-DD" \
+     --file /secure-backups/jr-cms-YYYY-MM-DD \
      --only content,files
    ```
 
-   Let the CLI prompt for an encryption key; store that key securely and do not
-   place it in shell history or a Git-tracked file. Copy the encrypted archive
-   to a protected directory on the VPS outside the repository using your normal
-   secure transfer method.
+   Let the CLI prompt for an encryption key; store it separately from the
+   archive and never put it in shell history or Git.
+2. Copy the encrypted archive to a protected directory on the VPS outside the
+   repository. Verify its checksum before importing.
 
-5. On the VPS, back up the target before importing, then stop only this CMS:
+3. On the VPS, verify that target content/uploads are empty or that explicit
+   replacement approval exists. Back up the target before importing, verify the
+   backups, then stop only this CMS:
 
    ```bash
-   sudo install -d -m 0700 /var/backups/jr-compliance-test
+   sudo install -d -m 0700 -o postgres -g postgres /var/backups/jr-compliance-test
    sudo -u postgres pg_dump -Fc jr_compliance_test \
-     -f /var/backups/jr-compliance-test/before-seed-YYYY-MM-DD.dump
+     -f /var/backups/jr-compliance-test/before-import-YYYY-MM-DD.dump
    sudo tar -C "$PROJECT_DIR/cms/public" \
-     -czf /var/backups/jr-compliance-test/before-seed-uploads-YYYY-MM-DD.tar.gz uploads
+     -czf /var/backups/jr-compliance-test/before-import-uploads-YYYY-MM-DD.tar.gz uploads
+   sudo -u postgres pg_restore --list \
+     /var/backups/jr-compliance-test/before-import-YYYY-MM-DD.dump >/dev/null
+   sudo tar -tzf \
+     /var/backups/jr-compliance-test/before-import-uploads-YYYY-MM-DD.tar.gz >/dev/null
    pm2 stop jr-compliance-cms
    ```
 
-6. Import the archive interactively. Substitute the actual protected archive
+4. Import the archive interactively. Substitute the actual protected archive
    path; do not add `--force`:
 
    ```bash
    cd "$PROJECT_DIR/cms"
    npm run strapi -- import \
-     --file /secure-transfer/jr-cms-seed-YYYY-MM-DD.tar.gz.enc \
+     --file /secure-transfer/jr-cms-YYYY-MM-DD.tar.gz.enc \
      --only content,files
    ```
 
@@ -365,7 +340,7 @@ environment-specific.
    carefully. It is expected to replace the target's old content and upload
    files.
 
-7. Start the CMS after the successful import:
+5. Start the CMS after the successful import:
 
    ```bash
    cd "$PROJECT_DIR"
@@ -375,8 +350,8 @@ environment-specific.
 
    Open Content Manager and confirm that the five single types, the Company
    Registration Pages, supporting collections, and Media Library now contain
-   records. The seeded entries are published and can be edited normally: save
-   your change, then click **Publish** to make it live.
+   records. The imported entries are published and can be edited normally:
+   save your change, then click **Publish** to make it live.
 
    If the frontend was already deployed before the import, refresh its cached
    data after the CMS is online:
