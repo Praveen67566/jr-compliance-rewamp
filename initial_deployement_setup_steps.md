@@ -348,10 +348,11 @@ environment-specific.
    pm2 status
    ```
 
-   Open Content Manager and confirm that the five single types, the Company
-   Registration Pages, supporting collections, and Media Library now contain
-   records. The imported entries are published and can be edited normally:
-   save your change, then click **Publish** to make it live.
+   Open Content Manager and confirm that the five single types, Company
+   Registration Pages, MCA Service Pages, Import Export Service Pages,
+   Government License & Certification Pages, supporting collections, and Media
+   Library now contain records. The imported entries are published and can be
+   edited normally: save your change, then click **Publish** to make it live.
 
    If the frontend was already deployed before the import, refresh its cached
    data after the CMS is online:
@@ -367,9 +368,10 @@ Create a Strapi API token for the frontend:
 
 1. In the CMS, open **Settings → API Tokens → Create new API Token**.
 2. Name it `next-site-reader` and choose **Custom**.
-3. Grant only required read operations (`find`/`findOne`) to the five page
-   types, Company Registration Pages, their selected supporting collections,
-   and Upload `find`.
+3. Grant only required read operations (`find`/`findOne`) to the five single
+   types, Company Registration Pages, MCA Service Pages, Import Export Service
+   Pages, Government License & Certification Pages, their selected supporting
+   collections, and Upload `find`.
 4. Keep the Public role without content or Upload read access.
 5. Copy the token once and store it securely.
 

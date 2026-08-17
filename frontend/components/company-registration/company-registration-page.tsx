@@ -4,12 +4,18 @@ import { SitePageShell } from "@/components/site-page-shell";
 import { linkTargetProps } from "@/lib/link-props";
 import type {
   CompanyRegistrationPageContent,
+  GovernmentLicenseCertificationPageContent,
+  ImportExportServicePageContent,
   McaServicePageContent,
   RegistrationDetail,
 } from "@/lib/types";
 
 type CompanyRegistrationPageProps = {
-  content: CompanyRegistrationPageContent | McaServicePageContent;
+  content:
+    | CompanyRegistrationPageContent
+    | McaServicePageContent
+    | ImportExportServicePageContent
+    | GovernmentLicenseCertificationPageContent;
 };
 
 type SectionHeadingProps = {

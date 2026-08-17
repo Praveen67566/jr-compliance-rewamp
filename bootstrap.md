@@ -105,4 +105,13 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-now we have to create MCA Services categories pages and it follow the exact same pattern design everything like Company Registration and only create the first page else all the pages going to be added by strapi cms so also make sure that you can get the content from file:///Users/yalagalasrinivas/praveen-dev/jr-compliance-rewamp/site/corporate/dsc-certificate.html the dsc-certificate html file don't change struture follow the same design as Company Registration pages and get the content from /site and make sure this is the strapi cms based project so don't change anything else only add first page here
+Read the # Service category and first-page creation guide
+
+now we have to create Import Export Service categories pages and it follows the exact same pattern design everything like Company Registration and only create the first page else all the pages going to be added by
+strapi cms so also make sure that that get the complete content from file:///Users/yalagalasrinivas/praveen-dev/jr-compliance-rewamp/site/corporate/iec-registration.html and you have to create first page name IEC Code add this and copy content from file:///Users/yalagalasrinivas/praveen-dev/jr-compliance-rewamp/site/corporate/iec-registration.html and follow the exact struture of project dont change anything unnecessary.
+
+now after that in same flow Government License & Certification category create its first page Ayush License
+only first page and every other pages are going to be created by strapi cms and get the page content from
+file:///Users/yalagalasrinivas/praveen-dev/jr-compliance-rewamp/site/corporate/ayush-license.html now
+same don't change the struture and 
+after all this create both pages seed into postgres and test everything.

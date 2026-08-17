@@ -540,3 +540,14 @@ export type CompanyRegistrationPageContent = PageChromeContent & CompanyRegistra
 export type McaServicePageData = CompanyRegistrationPageData;
 
 export type McaServicePageContent = PageChromeContent & McaServicePageData;
+
+/** Editor-managed content for Import Export Service detail routes. */
+export type ImportExportServicePageData = CompanyRegistrationPageData;
+
+export type ImportExportServicePageContent = PageChromeContent & ImportExportServicePageData;
+
+/** Editor-managed content for Government License & Certification detail routes. */
+export type GovernmentLicenseCertificationPageData = CompanyRegistrationPageData;
+
+export type GovernmentLicenseCertificationPageContent =
+  PageChromeContent & GovernmentLicenseCertificationPageData;

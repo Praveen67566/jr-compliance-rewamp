@@ -8,11 +8,13 @@ This is the Strapi v5 TypeScript CMS for the active JR Compliance routes:
 - `/contact-us` — `contact-page`
 - `/corporate/[slug]` — `company-registration-page` collection (nineteen approved slugs)
 - `/corporate/dsc-certificate` — `mca-service-page` collection (first approved MCA Services route)
+- `/corporate/iec-registration` — `import-export-service-page` collection (first approved Import Export Service route)
+- `/corporate/ayush-license` — `government-license-certification-page` collection (first approved Government License & Certification route)
 - shared header/footer and global consultation-form copy — `site-setting`
 
-Later approved MCA Services records use the same fixed `mca-service-page`
-contract and are rendered at their unique `/corporate/[slug]` routes when
-published.
+Later approved records in any of those three service categories use their
+dedicated fixed collection contract and are rendered at their globally unique
+`/corporate/[slug]` routes when published.
 
 The exact editorial contract lives in [CONTENT_MODEL.md](./CONTENT_MODEL.md).
 Next.js owns the Compliance Network layout, interaction, and motion; Strapi owns
@@ -67,7 +69,7 @@ not merge editor records, administrator accounts, API tokens, or secrets.
 
 ## Schema and editor policy
 
-The committed schemas define five single types, sixteen collection types, and
+The committed schemas define five single types, eighteen collection types, and
 forty-six components. All editorial types use Draft & Publish. Page-selected
 relations are intentionally unidirectional, ordered selections; the inverse
 pairs are only Service Category → Service and FAQ Category → FAQ.
@@ -85,14 +87,16 @@ message label and placeholder are editor-managed, but the message remains
 required in frontend and server validation. Webhook configuration and form
 transport do not live in Strapi.
 
-The verified PostgreSQL content transfer includes all currently approved navbar
-categories, links, nineteen Company Registration records, and the DSC MCA
-Services record. On startup, the CMS also migrates only an exact known legacy
-demo-menu signature: either the original flat menu or the previous categorized
-menu whose Indian Subsidiary and Mutual Fund links still pointed to
-`/#services`. The check is idempotent and signature-based; any customized menu
-or pending Site Setting draft is left untouched. Until an unmatched custom menu
-is completed and published, the frontend retains its matching typed fallback.
+The populated local PostgreSQL CMS includes all currently approved navbar
+categories and links, nineteen Company Registration records, and the first
+approved records for MCA Services, Import Export Service, and Government
+License & Certification. On startup, the CMS also migrates only an exact known
+legacy demo-menu signature: either the original flat menu or the previous
+categorized menu whose Indian Subsidiary and Mutual Fund links still pointed
+to `/#services`. The check is idempotent and signature-based; any customized
+menu or pending Site Setting draft is left untouched. Until an unmatched custom
+menu is completed and published, the frontend retains its matching typed
+fallback.
 
 Do not create a generic `Page`, a dynamic-zone page builder, a navigation
 collection, CSS fields, animation settings, or public submission endpoints.
@@ -103,7 +107,9 @@ Set permissions deliberately:
 
 - Public role: no reads for these content types and no Upload access.
 - `next-site-reader` API token: read-only access to the five single types,
-  the `company-registration-page` and `mca-service-page` collections, listed supporting collections,
+  the `company-registration-page`, `mca-service-page`,
+  `import-export-service-page`, and `government-license-certification-page`
+  collections, listed supporting collections,
   and Upload `find` only.
 - Content Editor: create/read/update listed content and media, but no schema or
   delete access.
@@ -134,6 +140,8 @@ GET /api/careers-page?status=published
 GET /api/contact-page?status=published
 GET /api/company-registration-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/mca-service-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/import-export-service-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/government-license-certification-pages?filters[slug][$eq]=<slug>&status=published
 ```
 
 Relations, media, and nested components are not populated by default. Keep the

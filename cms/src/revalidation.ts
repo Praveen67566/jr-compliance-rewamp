@@ -16,6 +16,8 @@ const ALL_PAGE_TAGS = [
   "jr-contact-page",
   "jr-company-registration-pages",
   "jr-mca-service-pages",
+  "jr-import-export-service-pages",
+  "jr-government-license-certification-pages",
 ] as const;
 
 /**
@@ -33,6 +35,12 @@ const cacheTagsByUid: Record<string, readonly string[]> = {
     "jr-company-registration-pages",
   ],
   "api::mca-service-page.mca-service-page": ["jr-mca-service-pages"],
+  "api::import-export-service-page.import-export-service-page": [
+    "jr-import-export-service-pages",
+  ],
+  "api::government-license-certification-page.government-license-certification-page": [
+    "jr-government-license-certification-pages",
+  ],
   "api::service-category.service-category": ["jr-homepage"],
   "api::service.service": ["jr-homepage"],
   "api::brand-logo.brand-logo": ["jr-homepage"],

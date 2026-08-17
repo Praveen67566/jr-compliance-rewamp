@@ -2,7 +2,8 @@
 
 This is the CMS contract for the new Next.js homepage, the initial editorial
 routes (About Us, Careers, Contact Us), the nineteen approved Company
-Registration routes, and the first approved MCA Services route. It preserves useful legacy content from the corresponding
+Registration routes, and the first approved routes for MCA Services, Import
+Export Service, and Government License & Certification. It preserves useful legacy content from the corresponding
 `site/*.html` and `site/corporate/*.html` files, but does **not** preserve
 Webflow UI. Layout, motion, colours, and responsive behaviour belong in
 Next.js; editors own copy, links, ordering, SEO, and approved media.
@@ -168,7 +169,55 @@ required fixed field is complete.
 | --- | --- | --- |
 | `title` | Short text | Required; public H1 and CMS record name |
 | `menuLabel` | Short text | Required; matches the MCA Services navbar label |
-| `slug` | UID from `title` | Required; exact route segment and globally unique across both `/corporate/[slug]` collections |
+| `slug` | UID from `title` | Required; exact route segment and globally unique across every `/corporate/[slug]` collection |
+| `hero` | `registration.hero` | Required |
+| `overview` | `registration.overview` | Required |
+| `challenges` | `registration.card-section` | Required; ordered page-specific cards |
+| `advantages` | `registration.card-section` | Required; ordered page-specific cards |
+| `process` | `registration.card-section` | Required; ordered service process |
+| `whyChoose` | `registration.card-section` | Required; ordered JR Compliance reasons |
+| `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
+| `faqs` | `registration.faq-section` | Required |
+| `finalCta` | `home.cta-band` | Required |
+| `seo` | `shared.seo` | Required |
+| `sortOrder` | Integer, minimum `0` | Required; route editorial order |
+
+### `import-export-service-page` — API: `api::import-export-service-page.import-export-service-page`
+
+One published record per approved Import Export Service `/corporate/[slug]`
+route. The first approved record is `iec-registration`. Later complete records
+can be created and published only in Strapi; they render through the same fixed
+service-detail template without a new React route or local fallback.
+
+| Field | Strapi field | Rules |
+| --- | --- | --- |
+| `title` | Short text | Required; public H1 and CMS record name |
+| `menuLabel` | Short text | Required; matches the Import Export Service navbar label |
+| `slug` | UID from `title` | Required; exact route segment and globally unique across every `/corporate/[slug]` collection |
+| `hero` | `registration.hero` | Required |
+| `overview` | `registration.overview` | Required |
+| `challenges` | `registration.card-section` | Required; ordered page-specific cards |
+| `advantages` | `registration.card-section` | Required; ordered page-specific cards |
+| `process` | `registration.card-section` | Required; ordered service process |
+| `whyChoose` | `registration.card-section` | Required; ordered JR Compliance reasons |
+| `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
+| `faqs` | `registration.faq-section` | Required |
+| `finalCta` | `home.cta-band` | Required |
+| `seo` | `shared.seo` | Required |
+| `sortOrder` | Integer, minimum `0` | Required; route editorial order |
+
+### `government-license-certification-page` — API: `api::government-license-certification-page.government-license-certification-page`
+
+One published record per approved Government License & Certification
+`/corporate/[slug]` route. The first approved record is `ayush-license`.
+Later complete records can be created and published only in Strapi; they use
+the same fixed service-detail template without borrowing Ayush content.
+
+| Field | Strapi field | Rules |
+| --- | --- | --- |
+| `title` | Short text | Required; public H1 and CMS record name |
+| `menuLabel` | Short text | Required; matches the Government License & Certification navbar label |
+| `slug` | UID from `title` | Required; exact route segment and globally unique across every `/corporate/[slug]` collection |
 | `hero` | `registration.hero` | Required |
 | `overview` | `registration.overview` | Required |
 | `challenges` | `registration.card-section` | Required; ordered page-specific cards |
@@ -306,6 +355,8 @@ invent claims or silently repair source inconsistencies.
 | `/contact-us` | `site/contact-us.html` | “Let's Ensure Your Compliance Together”; phone, email, Bawana office address; direct-contact copy; final CTA anchored to the contact options. Centralized form copy comes from `site-setting.leadForm`; do not copy the commented legacy Bitrix webhook or its credential-like URL. |
 | `/corporate/[slug]` (nineteen Company Registration routes) | Matching approved files under `site/corporate/` | Page-specific SEO, hero, overview, four challenges, four advantages, six process steps, Why JR cards, Eligibility/Documents/Who Needs It breakdown, FAQs, and shared final CTA. Exclude the duplicated private-company challenge block, hidden placeholder processes/tabs/resources, copied testimonials, Webflow lead form, and all legacy UI/transport code. |
 | `/corporate/dsc-certificate` (MCA Services) | `site/corporate/dsc-certificate.html` | Page-specific SEO, DSC hero and overview, four DSC challenges, four advantages, six service steps, Why JR cards, Eligibility/Documents/Who Needs It breakdown, FAQs, and shared final CTA. Exclude the copied Private Limited Company blocks, hidden Products/Requirements/process templates/resources, Webflow lead form, and all legacy UI/transport code. |
+| `/corporate/iec-registration` (Import Export Service) | `site/corporate/iec-registration.html` | Page-specific IEC SEO, hero and overview, four IEC challenges, four advantages, six service steps, Why JR cards, Eligibility/Documents/Who Needs It breakdown, five FAQs, and shared final CTA. Exclude copied Private Limited Company challenges, hidden Products/process/templates/resources, unrelated testimonials, the Webflow form, and all legacy UI/transport code. |
+| `/corporate/ayush-license` (Government License & Certification) | `site/corporate/ayush-license.html` | Page-specific Ayush SEO, hero and overview, four Ayush challenges, four advantages, six service steps, Why JR cards, Eligibility/Documents/Who Needs It breakdown, five FAQs, and shared final CTA. Exclude copied Private Limited Company challenges, hidden Products/process/templates/resources, unrelated testimonials, the Webflow form, and all legacy UI/transport code. |
 
 Copy the approved media into Strapi Media Library first. The local Next.js
 fallback copies are development safety nets only; a published Strapi record
@@ -337,7 +388,7 @@ attributes are flattened and documents use `documentId`; do not copy v4
 | Consumer | Allowed permissions |
 | --- | --- |
 | **Public role** | None for these content types or Upload. The browser never receives a Strapi token. |
-| **`next-site-reader` API token** | Custom, read-only: `find` for `site-setting`, `home-page`, `about-page`, `careers-page`, and `contact-page`; `find` and `findOne` for `company-registration-page`, `mca-service-page`, and every listed supporting collection type; Upload `find`. No create, update, delete, publish, or admin access. Store only as `STRAPI_API_TOKEN` on the Next server. |
+| **`next-site-reader` API token** | Custom, read-only: `find` for `site-setting`, `home-page`, `about-page`, `careers-page`, and `contact-page`; `find` and `findOne` for `company-registration-page`, `mca-service-page`, `import-export-service-page`, `government-license-certification-page`, and every listed supporting collection type; Upload `find`. No create, update, delete, publish, or admin access. Store only as `STRAPI_API_TOKEN` on the Next server. |
 | **Content Editor admin role** | Content Manager create/read/update for the listed types and Media Library upload/edit. No schema access and no delete permission. |
 | **Publisher/Admin role** | Editor permissions plus publish. Content Type Builder remains development-only and developer-owned. |
 
@@ -351,6 +402,8 @@ GET /api/careers-page?status=published
 GET /api/contact-page?status=published
 GET /api/company-registration-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/mca-service-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/import-export-service-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/government-license-certification-pages?filters[slug][$eq]=<slug>&status=published
 ```
 
 Strapi does not populate relations, components, or media by default. The Next
@@ -373,7 +426,8 @@ plugins or issue a browser request per card. The API token is sent as
 3. In local development, create the components above first, then the homepage
    and editorial collection types, then `site-setting`, `home-page`,
    `about-page`, `careers-page`, `contact-page`, and the dedicated
-   `company-registration-page` and `mca-service-page` collections. Enable Draft & Publish on all of
+   `company-registration-page`, `mca-service-page`, `import-export-service-page`,
+   and `government-license-certification-page` collections. Enable Draft & Publish on all of
    them. Commit Strapi’s generated schemas to git; do not create schema changes
    directly in production.
 4. Configure the media provider and migrate the approved legacy images/logos.
@@ -382,8 +436,9 @@ plugins or issue a browser request per card. The API token is sent as
    testimonials, recognitions, and optional insights. Set `sortOrder` values.
 6. Fill and publish `site-setting`, including the ordered Header Menu categories
    and their ordered links, then fill the four single-page records and one
-   Company Registration record for each approved slug and the approved MCA
-   Services record. Select the intended ordered relations and verify every link
+   Company Registration record for each approved slug and the approved first
+   records for MCA Services, Import Export Service, and Government License &
+   Certification. Select the intended ordered relations and verify every link
    and media item. Keep all `SEED_*` flags false. To populate another PostgreSQL
    target with the approved content, use a reviewed encrypted Strapi
    `content,files` export/import after a verified database and media backup;
@@ -392,8 +447,8 @@ plugins or issue a browser request per card. The API token is sent as
 7. Create the `next-site-reader` custom API token and apply the permissions
    above. Put `STRAPI_URL` and `STRAPI_API_TOKEN` in the Next server environment
    (never `NEXT_PUBLIC_*`).
-8. Wire the typed route fetchers to the five single-type endpoints and the
-   exact-slug registration collection query with explicit populate contracts,
+8. Wire the typed route fetchers to the five single-type endpoints and all
+   exact-slug service-detail collection queries with explicit populate contracts,
    render only published data, and add signed Strapi publish webhooks to
    invalidate the matching Next cache tags.
 9. Test with an editor: change home or route hero copy, reorder a service/team

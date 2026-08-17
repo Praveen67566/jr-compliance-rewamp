@@ -10,6 +10,10 @@ The CMS provides content for:
 - `/about-us` through the `about-page` single type
 - `/careers` through the `careers-page` single type
 - `/contact-us` through the `contact-page` single type
+- the nineteen Company Registration routes through `company-registration-page`
+- `/corporate/dsc-certificate` through `mca-service-page`
+- `/corporate/iec-registration` through `import-export-service-page`
+- `/corporate/ayush-license` through `government-license-certification-page`
 - shared header/footer and global consultation-form copy through the `site-setting` single type
 
 The frontend reads published CMS content using a server-only API token. If Strapi is unavailable, the frontend uses local fallback data from `frontend/data/*-fallback.ts`.
@@ -20,7 +24,7 @@ The main CMS flow is:
 2. Strapi stores records in PostgreSQL in both local and deployed environments.
    The retained SQLite file is an offline rollback source only and is never a
    running CMS database.
-3. The frontend fetches published single types and related collections through REST, including Company Registration and MCA Services entries filtered by exact slug.
+3. The frontend fetches published single types and related collections through REST, including all four fixed service-detail collections filtered by exact slug.
 4. `cms/src/revalidation.ts` can notify Next.js after publish changes.
 5. Next.js revalidates the affected cache tags and fetches fresh CMS content.
 
@@ -115,6 +119,14 @@ The main CMS flow is:
   converted to the same fixed service-detail components by `seed/index.ts` and
   contains no Webflow classes, scripts, forms, or legacy asset URLs.
 
+`cms/src/seed/import-export-service-pages.json`
+: A historical JSON mirror of the approved IEC Code fallback for migration and
+  content parity checks.
+
+`cms/src/seed/government-license-certification-pages.json`
+: A historical JSON mirror of the approved Ayush License fallback for
+  migration and content parity checks.
+
 ## API content types
 
 Each content type folder follows the Strapi pattern:
@@ -157,6 +169,16 @@ builder.
 record uses the same fixed hero, overview, challenges, advantages, process,
 Why JR, breakdown, FAQ, closing CTA, and SEO fields without widening the
 Company Registration collection into a generic page builder.
+
+`cms/src/api/import-export-service-page/`
+: Dedicated fixed detail-page records for Import Export Service. IEC Code is
+the first approved record; later complete records are added and published in
+Strapi without a new frontend route.
+
+`cms/src/api/government-license-certification-page/`
+: Dedicated fixed detail-page records for Government License & Certification.
+Ayush License is the first approved record; later complete records are added
+and published in Strapi without a new frontend route.
 
 `cms/src/api/service-category/`
 : Service category records used by the home Service Stack. Categories group services.

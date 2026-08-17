@@ -5,6 +5,10 @@ import { CompanyRegistrationPage } from "@/components/company-registration/compa
 import { companyRegistrationSlugs } from "@/data/company-registration-pages-fallback";
 import {
   getCompanyRegistrationPage,
+  getGovernmentLicenseCertificationPage,
+  getGovernmentLicenseCertificationSlugs,
+  getImportExportServicePage,
+  getImportExportServiceSlugs,
   getMcaServicePage,
   getMcaServiceSlugs,
 } from "@/lib/content";
@@ -18,12 +22,30 @@ export const revalidate = 60;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
-  const mcaServiceSlugs = await getMcaServiceSlugs();
-  return [...new Set([...companyRegistrationSlugs, ...mcaServiceSlugs])].map((slug) => ({ slug }));
+  const [mcaServiceSlugs, importExportServiceSlugs, governmentLicenseCertificationSlugs] =
+    await Promise.all([
+      getMcaServiceSlugs(),
+      getImportExportServiceSlugs(),
+      getGovernmentLicenseCertificationSlugs(),
+    ]);
+
+  return [
+    ...new Set([
+      ...companyRegistrationSlugs,
+      ...mcaServiceSlugs,
+      ...importExportServiceSlugs,
+      ...governmentLicenseCertificationSlugs,
+    ]),
+  ].map((slug) => ({ slug }));
 }
 
 async function getCorporateServicePage(slug: string) {
-  return (await getCompanyRegistrationPage(slug)) ?? getMcaServicePage(slug);
+  return (
+    (await getCompanyRegistrationPage(slug)) ??
+    (await getMcaServicePage(slug)) ??
+    (await getImportExportServicePage(slug)) ??
+    getGovernmentLicenseCertificationPage(slug)
+  );
 }
 
 export async function generateMetadata({ params }: CompanyRegistrationRouteProps): Promise<Metadata> {

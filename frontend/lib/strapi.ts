@@ -15,7 +15,9 @@ import type {
   FaqCategory,
   FooterContent,
   FooterLinkGroup,
+  GovernmentLicenseCertificationPageContent,
   HomepageContent,
+  ImportExportServicePageContent,
   Insight,
   LegalNotice,
   LeadFormSettings,
@@ -49,7 +51,9 @@ export type SingleTypeSlug =
 export type RevalidatableContentSlug =
   | SingleTypeSlug
   | "company-registration-page"
-  | "mca-service-page";
+  | "mca-service-page"
+  | "import-export-service-page"
+  | "government-license-certification-page";
 type PopulateValue = true | PopulateTree;
 
 interface PopulateTree {
@@ -68,6 +72,8 @@ export const strapiCacheTagBySlug: Record<RevalidatableContentSlug, string> = {
   "contact-page": "jr-contact-page",
   "company-registration-page": "jr-company-registration-pages",
   "mca-service-page": "jr-mca-service-pages",
+  "import-export-service-page": "jr-import-export-service-pages",
+  "government-license-certification-page": "jr-government-license-certification-pages",
 };
 
 /**
@@ -162,20 +168,7 @@ const populateTrees: Record<SingleTypeSlug, PopulateTree> = {
   },
 };
 
-const companyRegistrationPopulateTree: PopulateTree = {
-  hero: { cta: true },
-  overview: { paragraphs: true },
-  challenges: { items: true },
-  advantages: { items: true },
-  process: { items: true },
-  whyChoose: { items: true },
-  breakdown: { groups: { items: true } },
-  faqs: { items: true },
-  finalCta: { cta: true },
-  seo: { shareImage: true },
-};
-
-const mcaServicePopulateTree: PopulateTree = {
+const fixedServiceDetailPopulateTree: PopulateTree = {
   hero: { cta: true },
   overview: { paragraphs: true },
   challenges: { items: true },
@@ -1501,9 +1494,9 @@ function strictRegistrationDetails(value: unknown): RegistrationDetail[] | null 
   return items.length && items.every((item): item is RegistrationDetail => Boolean(item)) ? items : null;
 }
 
-function strictMcaCardSection(
+function strictFixedServiceCardSection(
   value: unknown,
-): McaServicePageContent["challenges"] | null {
+): CompanyRegistrationPageContent["challenges"] | null {
   const section = record(value);
   const eyebrow = text(section.eyebrow);
   const title = text(section.title);
@@ -1512,9 +1505,9 @@ function strictMcaCardSection(
   return eyebrow && title && items ? { eyebrow, title, items } : null;
 }
 
-function strictMcaBreakdown(
+function strictFixedServiceBreakdown(
   value: unknown,
-): McaServicePageContent["breakdown"] | null {
+): CompanyRegistrationPageContent["breakdown"] | null {
   const section = record(value);
   const eyebrow = text(section.eyebrow);
   const title = text(section.title);
@@ -1531,7 +1524,9 @@ function strictMcaBreakdown(
     : null;
 }
 
-function strictMcaFaqSection(value: unknown): McaServicePageContent["faqs"] | null {
+function strictFixedServiceFaqSection(
+  value: unknown,
+): CompanyRegistrationPageContent["faqs"] | null {
   const section = record(value);
   const eyebrow = text(section.eyebrow);
   const title = text(section.title);
@@ -1548,7 +1543,7 @@ function strictMcaFaqSection(value: unknown): McaServicePageContent["faqs"] | nu
     : null;
 }
 
-function strictMcaSeo(value: unknown): Seo | null {
+function strictFixedServiceSeo(value: unknown): Seo | null {
   const seo = record(value);
   const title = text(seo.metaTitle);
   const description = text(seo.metaDescription);
@@ -1567,12 +1562,12 @@ function strictMcaSeo(value: unknown): Seo | null {
     : null;
 }
 
-function mapCmsOnlyMcaServicePage(
+function mapCmsOnlyFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
   chromeFallback: PageChromeContent,
   requestedSlug: string,
   rawPage: unknown,
   rawSettings: unknown,
-): McaServicePageContent | null {
+): T | null {
   const page = record(rawPage);
   const hero = record(page.hero);
   const overview = record(page.overview);
@@ -1586,16 +1581,16 @@ function mapCmsOnlyMcaServicePage(
   const overviewEyebrow = text(overview.eyebrow);
   const overviewTitle = text(overview.title);
   const overviewParagraphs = strictTextList(overview.paragraphs);
-  const challenges = strictMcaCardSection(page.challenges);
-  const advantages = strictMcaCardSection(page.advantages);
-  const process = strictMcaCardSection(page.process);
-  const whyChoose = strictMcaCardSection(page.whyChoose);
-  const breakdown = strictMcaBreakdown(page.breakdown);
-  const faqs = strictMcaFaqSection(page.faqs);
+  const challenges = strictFixedServiceCardSection(page.challenges);
+  const advantages = strictFixedServiceCardSection(page.advantages);
+  const process = strictFixedServiceCardSection(page.process);
+  const whyChoose = strictFixedServiceCardSection(page.whyChoose);
+  const breakdown = strictFixedServiceBreakdown(page.breakdown);
+  const faqs = strictFixedServiceFaqSection(page.faqs);
   const closingTitle = text(finalCta.title);
   const closingDescription = text(finalCta.description) ?? "";
   const closingCta = strictLink(finalCta.cta);
-  const seo = strictMcaSeo(page.seo);
+  const seo = strictFixedServiceSeo(page.seo);
 
   if (
     !slug ||
@@ -1648,7 +1643,7 @@ function mapCmsOnlyMcaServicePage(
       description: closingDescription,
       cta: closingCta,
     },
-  };
+  } as T;
 }
 
 function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
@@ -1701,16 +1696,21 @@ function mapCompanyRegistrationPage(
   return mapFixedServiceDetailPage(fallback, rawPage, rawSettings);
 }
 
-function mapMcaServicePage(
-  fallback: McaServicePageContent | null,
+function mapFixedServiceCategoryPage<T extends CompanyRegistrationPageContent>(
+  fallback: T | null,
   chromeFallback: PageChromeContent,
   requestedSlug: string,
   rawPage: unknown,
   rawSettings: unknown,
-): McaServicePageContent | null {
+): T | null {
   return fallback
     ? mapFixedServiceDetailPage(fallback, rawPage, rawSettings)
-    : mapCmsOnlyMcaServicePage(chromeFallback, requestedSlug, rawPage, rawSettings);
+    : mapCmsOnlyFixedServiceDetailPage<T>(
+        chromeFallback,
+        requestedSlug,
+        rawPage,
+        rawSettings,
+      );
 }
 
 function addPopulateTree(params: URLSearchParams, tree: PopulateTree, prefix = "populate") {
@@ -1731,23 +1731,51 @@ function queryFor(slug: SingleTypeSlug): string {
   return params.toString();
 }
 
-function companyRegistrationQuery(slug: string): string {
+type FixedServiceContentSlug =
+  | "company-registration-page"
+  | "mca-service-page"
+  | "import-export-service-page"
+  | "government-license-certification-page";
+
+type FixedServiceCollectionConfig = {
+  collectionPath: string;
+  contentSlug: FixedServiceContentSlug;
+  label: string;
+};
+
+const companyRegistrationCollection = {
+  collectionPath: "company-registration-pages",
+  contentSlug: "company-registration-page",
+  label: "Company Registration",
+} as const satisfies FixedServiceCollectionConfig;
+
+const mcaServiceCollection = {
+  collectionPath: "mca-service-pages",
+  contentSlug: "mca-service-page",
+  label: "MCA Services",
+} as const satisfies FixedServiceCollectionConfig;
+
+const importExportServiceCollection = {
+  collectionPath: "import-export-service-pages",
+  contentSlug: "import-export-service-page",
+  label: "Import Export Service",
+} as const satisfies FixedServiceCollectionConfig;
+
+const governmentLicenseCertificationCollection = {
+  collectionPath: "government-license-certification-pages",
+  contentSlug: "government-license-certification-page",
+  label: "Government License & Certification",
+} as const satisfies FixedServiceCollectionConfig;
+
+function fixedServiceDetailQuery(slug: string): string {
   const params = new URLSearchParams({ status: "published" });
   params.set("filters[slug][$eq]", slug);
   params.set("pagination[pageSize]", "1");
-  addPopulateTree(params, companyRegistrationPopulateTree);
+  addPopulateTree(params, fixedServiceDetailPopulateTree);
   return params.toString();
 }
 
-function mcaServiceQuery(slug: string): string {
-  const params = new URLSearchParams({ status: "published" });
-  params.set("filters[slug][$eq]", slug);
-  params.set("pagination[pageSize]", "1");
-  addPopulateTree(params, mcaServicePopulateTree);
-  return params.toString();
-}
-
-function mcaServiceSlugsQuery(): string {
+function fixedServiceSlugsQuery(): string {
   const params = new URLSearchParams({ status: "published" });
   params.set("fields[0]", "slug");
   params.set("pagination[pageSize]", "100");
@@ -1772,73 +1800,56 @@ async function getSingleType(slug: SingleTypeSlug): Promise<unknown> {
   return body.data;
 }
 
-async function getCompanyRegistrationEntry(slug: string): Promise<unknown> {
+async function getFixedServiceEntry(
+  collection: FixedServiceCollectionConfig,
+  slug: string,
+): Promise<unknown> {
   if (!strapiUrl || !strapiApiToken) {
     return null;
   }
 
   const response = await fetch(
-    `${strapiUrl}/api/company-registration-pages?${companyRegistrationQuery(slug)}`,
+    `${strapiUrl}/api/${collection.collectionPath}?${fixedServiceDetailQuery(slug)}`,
     {
       headers: { Authorization: `Bearer ${strapiApiToken}` },
       next: {
         revalidate: 60,
-        tags: [strapiCacheTagBySlug["company-registration-page"]],
+        tags: [strapiCacheTagBySlug[collection.contentSlug]],
       },
     },
   );
 
   if (!response.ok) {
-    throw new Error(`Strapi request for company-registration-page failed with ${response.status}`);
+    throw new Error(`Strapi request for ${collection.contentSlug} failed with ${response.status}`);
   }
 
   const body = (await response.json()) as { data?: unknown };
   return asArray(body.data)[0] ?? null;
 }
 
-async function getMcaServiceEntry(slug: string): Promise<unknown> {
-  if (!strapiUrl || !strapiApiToken) {
-    return null;
-  }
-
-  const response = await fetch(
-    `${strapiUrl}/api/mca-service-pages?${mcaServiceQuery(slug)}`,
-    {
-      headers: { Authorization: `Bearer ${strapiApiToken}` },
-      next: {
-        revalidate: 60,
-        tags: [strapiCacheTagBySlug["mca-service-page"]],
-      },
-    },
-  );
-
-  if (!response.ok) {
-    throw new Error(`Strapi request for mca-service-page failed with ${response.status}`);
-  }
-
-  const body = (await response.json()) as { data?: unknown };
-  return asArray(body.data)[0] ?? null;
-}
-
-export async function getMcaServiceSlugsFromStrapi(): Promise<string[]> {
+async function getFixedServiceSlugsFromStrapi(
+  collection: FixedServiceCollectionConfig,
+): Promise<string[]> {
   if (!strapiUrl || !strapiApiToken) {
     return [];
   }
 
   try {
     const response = await fetch(
-      `${strapiUrl}/api/mca-service-pages?${mcaServiceSlugsQuery()}`,
+      `${strapiUrl}/api/${collection.collectionPath}?${fixedServiceSlugsQuery()}`,
       {
         headers: { Authorization: `Bearer ${strapiApiToken}` },
         next: {
           revalidate: 60,
-          tags: [strapiCacheTagBySlug["mca-service-page"]],
+          tags: [strapiCacheTagBySlug[collection.contentSlug]],
         },
       },
     );
 
     if (!response.ok) {
-      throw new Error(`Strapi request for mca-service-page slugs failed with ${response.status}`);
+      throw new Error(
+        `Strapi request for ${collection.contentSlug} slugs failed with ${response.status}`,
+      );
     }
 
     const body = (await response.json()) as { data?: unknown };
@@ -1846,9 +1857,24 @@ export async function getMcaServiceSlugsFromStrapi(): Promise<string[]> {
       .map((entry) => text(record(entry).slug))
       .filter((slug): slug is string => Boolean(slug));
   } catch (error) {
-    console.warn("Unable to load MCA Services slugs from Strapi; using local route fallbacks.", error);
+    console.warn(
+      `Unable to load ${collection.label} slugs from Strapi; using local route fallbacks.`,
+      error,
+    );
     return [];
   }
+}
+
+export function getMcaServiceSlugsFromStrapi(): Promise<string[]> {
+  return getFixedServiceSlugsFromStrapi(mcaServiceCollection);
+}
+
+export function getImportExportServiceSlugsFromStrapi(): Promise<string[]> {
+  return getFixedServiceSlugsFromStrapi(importExportServiceCollection);
+}
+
+export function getGovernmentLicenseCertificationSlugsFromStrapi(): Promise<string[]> {
+  return getFixedServiceSlugsFromStrapi(governmentLicenseCertificationCollection);
 }
 
 export async function getHomepageFromStrapi(
@@ -1943,7 +1969,7 @@ export async function getCompanyRegistrationPageFromStrapi(
 
   try {
     const [page, settings] = await Promise.all([
-      getCompanyRegistrationEntry(slug),
+      getFixedServiceEntry(companyRegistrationCollection, slug),
       getSingleType("site-setting"),
     ]);
 
@@ -1957,24 +1983,69 @@ export async function getCompanyRegistrationPageFromStrapi(
   }
 }
 
-export async function getMcaServicePageFromStrapi(
+async function getFixedServiceCategoryPageFromStrapi<T extends CompanyRegistrationPageContent>(
   slug: string,
-  fallback: McaServicePageContent | null,
+  fallback: T | null,
   chromeFallback: PageChromeContent,
-): Promise<McaServicePageContent | null> {
+  collection: FixedServiceCollectionConfig,
+): Promise<T | null> {
   if (!strapiUrl || !strapiApiToken) {
     return null;
   }
 
   try {
     const [page, settings] = await Promise.all([
-      getMcaServiceEntry(slug),
+      getFixedServiceEntry(collection, slug),
       getSingleType("site-setting"),
     ]);
 
-    return page ? mapMcaServicePage(fallback, chromeFallback, slug, page, settings) : null;
+    return page
+      ? mapFixedServiceCategoryPage(fallback, chromeFallback, slug, page, settings)
+      : null;
   } catch (error) {
-    console.warn(`Unable to load ${slug} from Strapi; using MCA Services fallback content.`, error);
+    console.warn(
+      `Unable to load ${slug} from Strapi; using ${collection.label} fallback content.`,
+      error,
+    );
     return null;
   }
+}
+
+export function getMcaServicePageFromStrapi(
+  slug: string,
+  fallback: McaServicePageContent | null,
+  chromeFallback: PageChromeContent,
+): Promise<McaServicePageContent | null> {
+  return getFixedServiceCategoryPageFromStrapi(
+    slug,
+    fallback,
+    chromeFallback,
+    mcaServiceCollection,
+  );
+}
+
+export function getImportExportServicePageFromStrapi(
+  slug: string,
+  fallback: ImportExportServicePageContent | null,
+  chromeFallback: PageChromeContent,
+): Promise<ImportExportServicePageContent | null> {
+  return getFixedServiceCategoryPageFromStrapi(
+    slug,
+    fallback,
+    chromeFallback,
+    importExportServiceCollection,
+  );
+}
+
+export function getGovernmentLicenseCertificationPageFromStrapi(
+  slug: string,
+  fallback: GovernmentLicenseCertificationPageContent | null,
+  chromeFallback: PageChromeContent,
+): Promise<GovernmentLicenseCertificationPageContent | null> {
+  return getFixedServiceCategoryPageFromStrapi(
+    slug,
+    fallback,
+    chromeFallback,
+    governmentLicenseCertificationCollection,
+  );
 }

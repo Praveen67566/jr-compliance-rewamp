@@ -6,6 +6,8 @@ import type { Core } from "@strapi/strapi";
 import { withNextRevalidationSuppressed } from "../revalidation";
 
 import companyRegistrationPages from "./company-registration-pages.json";
+import governmentLicenseCertificationPages from "./government-license-certification-pages.json";
+import importExportServicePages from "./import-export-service-pages.json";
 import mcaServicePages from "./mca-service-pages.json";
 import {
   achievements,
@@ -47,6 +49,9 @@ const CONTENT_TYPES = {
   careersPage: "api::careers-page.careers-page",
   contactPage: "api::contact-page.contact-page",
   companyRegistrationPage: "api::company-registration-page.company-registration-page",
+  governmentLicenseCertificationPage:
+    "api::government-license-certification-page.government-license-certification-page",
+  importExportServicePage: "api::import-export-service-page.import-export-service-page",
   mcaServicePage: "api::mca-service-page.mca-service-page",
   serviceCategory: "api::service-category.service-category",
   service: "api::service.service",
@@ -274,8 +279,15 @@ async function createPublished(
 }
 
 type CompanyRegistrationSeedPage = (typeof companyRegistrationPages)[number];
+type GovernmentLicenseCertificationSeedPage =
+  (typeof governmentLicenseCertificationPages)[number];
+type ImportExportServiceSeedPage = (typeof importExportServicePages)[number];
 type McaServiceSeedPage = (typeof mcaServicePages)[number];
-type ServiceDetailSeedPage = CompanyRegistrationSeedPage | McaServiceSeedPage;
+type ServiceDetailSeedPage =
+  | CompanyRegistrationSeedPage
+  | GovernmentLicenseCertificationSeedPage
+  | ImportExportServiceSeedPage
+  | McaServiceSeedPage;
 
 function serviceDetailPageData(
   page: ServiceDetailSeedPage,
@@ -371,6 +383,67 @@ async function createMcaServicePages(
     }
 
     await mcaPages.create({
+      data: serviceDetailPageData(page, sortOrder),
+      status: "published",
+    });
+    created += 1;
+  }
+
+  return created;
+}
+
+async function createImportExportServicePages(
+  strapi: Core.Strapi,
+  options: { onlyMissing?: boolean } = {},
+): Promise<number> {
+  const importExportPages = documentService(strapi, CONTENT_TYPES.importExportServicePage);
+  let created = 0;
+
+  for (const [sortOrder, page] of importExportServicePages.entries()) {
+    if (options.onlyMissing) {
+      const filters = { slug: { $eq: page.slug } };
+      const [draft, published] = await Promise.all([
+        importExportPages.findFirst({ filters, status: "draft" }),
+        importExportPages.findFirst({ filters, status: "published" }),
+      ]);
+      if (draft || published) {
+        continue;
+      }
+    }
+
+    await importExportPages.create({
+      data: serviceDetailPageData(page, sortOrder),
+      status: "published",
+    });
+    created += 1;
+  }
+
+  return created;
+}
+
+async function createGovernmentLicenseCertificationPages(
+  strapi: Core.Strapi,
+  options: { onlyMissing?: boolean } = {},
+): Promise<number> {
+  const governmentPages = documentService(
+    strapi,
+    CONTENT_TYPES.governmentLicenseCertificationPage,
+  );
+  let created = 0;
+
+  for (const [sortOrder, page] of governmentLicenseCertificationPages.entries()) {
+    if (options.onlyMissing) {
+      const filters = { slug: { $eq: page.slug } };
+      const [draft, published] = await Promise.all([
+        governmentPages.findFirst({ filters, status: "draft" }),
+        governmentPages.findFirst({ filters, status: "published" }),
+      ]);
+      if (draft || published) {
+        continue;
+      }
+    }
+
+    await governmentPages.create({
       data: serviceDetailPageData(page, sortOrder),
       status: "published",
     });
@@ -691,6 +764,8 @@ export async function seedInitialContent(strapi: Core.Strapi): Promise<void> {
 
   await createCompanyRegistrationPages(strapi);
   await createMcaServicePages(strapi);
+  await createImportExportServicePages(strapi);
+  await createGovernmentLicenseCertificationPages(strapi);
 
   const faqCategoryDocuments: SeedDocument[] = [];
   for (const category of homeFaqCategories) {
