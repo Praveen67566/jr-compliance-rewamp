@@ -1,0 +1,4 @@
+[2026-08-17 12:12:56.528] info: [transfer] Diagnostic log file: /Users/yalagalasrinivas/praveen-dev/jr-compliance-rewamp/cms/transfer_1786948976525.log (info-level messages are written here even without --verbose)
+[2026-08-17 12:12:56.529] info: [remote-destination-provider] establishing websocket connection
+
+[2026-08-17 12:12:56.596] error: [FATAL] Failed to initialize the connection: Unexpected server response 200
