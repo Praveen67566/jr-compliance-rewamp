@@ -15,10 +15,12 @@ import type {
   FaqCategory,
   FooterContent,
   FooterLinkGroup,
+  FssaiServicePageContent,
   GovernmentLicenseCertificationPageContent,
   HomepageContent,
   ImportExportServicePageContent,
   Insight,
+  IprServicePageContent,
   LegalNotice,
   LeadFormSettings,
   LeadFormTrustItem,
@@ -32,6 +34,7 @@ import type {
   Recognition,
   RegistrationBreakdownGroup,
   RegistrationDetail,
+  SebiBusinessRegistrationPageContent,
   Service,
   ServiceCategory,
   Seo,
@@ -53,7 +56,10 @@ export type RevalidatableContentSlug =
   | "company-registration-page"
   | "mca-service-page"
   | "import-export-service-page"
-  | "government-license-certification-page";
+  | "government-license-certification-page"
+  | "ipr-service-page"
+  | "fssai-service-page"
+  | "sebi-business-registration-page";
 type PopulateValue = true | PopulateTree;
 
 interface PopulateTree {
@@ -74,6 +80,9 @@ export const strapiCacheTagBySlug: Record<RevalidatableContentSlug, string> = {
   "mca-service-page": "jr-mca-service-pages",
   "import-export-service-page": "jr-import-export-service-pages",
   "government-license-certification-page": "jr-government-license-certification-pages",
+  "ipr-service-page": "jr-ipr-service-pages",
+  "fssai-service-page": "jr-fssai-service-pages",
+  "sebi-business-registration-page": "jr-sebi-business-registration-pages",
 };
 
 /**
@@ -1735,7 +1744,10 @@ type FixedServiceContentSlug =
   | "company-registration-page"
   | "mca-service-page"
   | "import-export-service-page"
-  | "government-license-certification-page";
+  | "government-license-certification-page"
+  | "ipr-service-page"
+  | "fssai-service-page"
+  | "sebi-business-registration-page";
 
 type FixedServiceCollectionConfig = {
   collectionPath: string;
@@ -1765,6 +1777,24 @@ const governmentLicenseCertificationCollection = {
   collectionPath: "government-license-certification-pages",
   contentSlug: "government-license-certification-page",
   label: "Government License & Certification",
+} as const satisfies FixedServiceCollectionConfig;
+
+const iprServiceCollection = {
+  collectionPath: "ipr-service-pages",
+  contentSlug: "ipr-service-page",
+  label: "IPR Services",
+} as const satisfies FixedServiceCollectionConfig;
+
+const fssaiServiceCollection = {
+  collectionPath: "fssai-service-pages",
+  contentSlug: "fssai-service-page",
+  label: "FSSAI",
+} as const satisfies FixedServiceCollectionConfig;
+
+const sebiBusinessRegistrationCollection = {
+  collectionPath: "sebi-business-registration-pages",
+  contentSlug: "sebi-business-registration-page",
+  label: "SEBI Business Registration",
 } as const satisfies FixedServiceCollectionConfig;
 
 function fixedServiceDetailQuery(slug: string): string {
@@ -1875,6 +1905,18 @@ export function getImportExportServiceSlugsFromStrapi(): Promise<string[]> {
 
 export function getGovernmentLicenseCertificationSlugsFromStrapi(): Promise<string[]> {
   return getFixedServiceSlugsFromStrapi(governmentLicenseCertificationCollection);
+}
+
+export function getIprServiceSlugsFromStrapi(): Promise<string[]> {
+  return getFixedServiceSlugsFromStrapi(iprServiceCollection);
+}
+
+export function getFssaiServiceSlugsFromStrapi(): Promise<string[]> {
+  return getFixedServiceSlugsFromStrapi(fssaiServiceCollection);
+}
+
+export function getSebiBusinessRegistrationSlugsFromStrapi(): Promise<string[]> {
+  return getFixedServiceSlugsFromStrapi(sebiBusinessRegistrationCollection);
 }
 
 export async function getHomepageFromStrapi(
@@ -2047,5 +2089,44 @@ export function getGovernmentLicenseCertificationPageFromStrapi(
     fallback,
     chromeFallback,
     governmentLicenseCertificationCollection,
+  );
+}
+
+export function getIprServicePageFromStrapi(
+  slug: string,
+  fallback: IprServicePageContent | null,
+  chromeFallback: PageChromeContent,
+): Promise<IprServicePageContent | null> {
+  return getFixedServiceCategoryPageFromStrapi(
+    slug,
+    fallback,
+    chromeFallback,
+    iprServiceCollection,
+  );
+}
+
+export function getFssaiServicePageFromStrapi(
+  slug: string,
+  fallback: FssaiServicePageContent | null,
+  chromeFallback: PageChromeContent,
+): Promise<FssaiServicePageContent | null> {
+  return getFixedServiceCategoryPageFromStrapi(
+    slug,
+    fallback,
+    chromeFallback,
+    fssaiServiceCollection,
+  );
+}
+
+export function getSebiBusinessRegistrationPageFromStrapi(
+  slug: string,
+  fallback: SebiBusinessRegistrationPageContent | null,
+  chromeFallback: PageChromeContent,
+): Promise<SebiBusinessRegistrationPageContent | null> {
+  return getFixedServiceCategoryPageFromStrapi(
+    slug,
+    fallback,
+    chromeFallback,
+    sebiBusinessRegistrationCollection,
   );
 }

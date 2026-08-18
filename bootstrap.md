@@ -115,3 +115,16 @@ only first page and every other pages are going to be created by strapi cms and 
 file:///Users/yalagalasrinivas/praveen-dev/jr-compliance-rewamp/site/corporate/ayush-license.html now
 same don't change the struture and 
 after all this create both pages seed into postgres and test everything.
+
+we have to create IPR Services category and its first page TRADEMARK REGISTRATION only and all the other pages is going to be created by strapi cms and follows the exact same pattern design everything like 
+Company Registration category and its pages  and get the content from file:///Users/yalagalasrinivas/Downloads/Webflowwebsite%20%7C%20JR%20Compliance%20/site/corporate/trademark-registration.html and take only content from here and follow the Company Registration design and exact pattern and follow the 
+existing jr-compliance-rewamp structure exactly don't change anything unneccessary and after that in same 
+flow create FSSAI category and its first page Fssai Basic Registration and get the content from 
+file:///Users/yalagalasrinivas/Downloads/Webflowwebsite%20%7C%20JR%20Compliance%20/site/approval/wpc-certification.html this and follow the exact same design pattern as Company Registration category pages
+then SEBI Business Registration category and its first page PORTFOLIO MANAGER REGISTRATION get the content 
+from file:///Users/yalagalasrinivas/Downloads/Webflowwebsite%20%7C%20JR%20Compliance%20/site/corporate/portfolio-manager-registration.html.
+
+follow the already exist consistent page design you can check Company Registration pages 
+don't change anything unneccessary 
+add the seed data in postgres database also 
+test the code

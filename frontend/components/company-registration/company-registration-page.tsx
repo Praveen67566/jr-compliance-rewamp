@@ -4,10 +4,13 @@ import { SitePageShell } from "@/components/site-page-shell";
 import { linkTargetProps } from "@/lib/link-props";
 import type {
   CompanyRegistrationPageContent,
+  FssaiServicePageContent,
   GovernmentLicenseCertificationPageContent,
   ImportExportServicePageContent,
+  IprServicePageContent,
   McaServicePageContent,
   RegistrationDetail,
+  SebiBusinessRegistrationPageContent,
 } from "@/lib/types";
 
 type CompanyRegistrationPageProps = {
@@ -15,7 +18,10 @@ type CompanyRegistrationPageProps = {
     | CompanyRegistrationPageContent
     | McaServicePageContent
     | ImportExportServicePageContent
-    | GovernmentLicenseCertificationPageContent;
+    | GovernmentLicenseCertificationPageContent
+    | IprServicePageContent
+    | FssaiServicePageContent
+    | SebiBusinessRegistrationPageContent;
 };
 
 type SectionHeadingProps = {

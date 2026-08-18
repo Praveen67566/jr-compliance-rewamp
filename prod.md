@@ -42,9 +42,10 @@ closed before a production launch:
 4. **Use an isolated production database and migrate content deliberately.**
    Do not deploy or configure the retained SQLite rollback source, and keep all
    `SEED_*` flags false. The CMS bootstrap can upgrade only an exact known demo
-   header-menu signature (the original flat menu or the previous categorized
-   menu with two placeholder Company Registration links); it does not replace
-   customized navigation records.
+   header-menu signature (the original flat menu or one of the two preceding
+   categorized menus with former IPR/FSSAI URLs and the optional two Company
+   Registration placeholders); it does not replace customized navigation
+   records.
 
 The PostgreSQL driver (`pg@8.22.0`) is included in the CMS lockfile. The
 remaining database, media, and audit gates require deployment-environment
@@ -162,7 +163,8 @@ cannot load a loopback URL from their own devices.
 
 Create a Strapi Content API token with only the read operations required for
 the five published single types, the Company Registration Page, MCA Service
-Page, Import Export Service Page, and Government License & Certification Page
+Page, Import Export Service Page, Government License & Certification Page, IPR
+Service Page, FSSAI Service Page, and SEBI Business Registration Page
 collections, and their populated content/media. Do not grant the public role
 content or upload access, and never send this token to the browser.
 
@@ -368,10 +370,12 @@ detailed procedure in
 
 Do not add `--force` unless the target, backup, and recovery plan have been
 verified. Confirm all five single types, the nineteen Company Registration
-records, the DSC MCA Services record, the IEC Code Import Export Service record,
-and the Ayush License Government License & Certification record are
-**Published**, media records point to durable storage, and the frontend token
-can read only published data.
+records, the DSC record in MCA Services, the IEC Code record in Import Export
+Service, the Ayush License record in Government License & Certification, the
+Trademark Registration record in IPR Services, the FSSAI Basic Registration
+record in FSSAI, and the Portfolio Manager Registration record in SEBI Business
+Registration are **Published**, media records point to durable storage, and the
+frontend token can read only published data.
 
 ### 4. Build the frontend
 
@@ -542,8 +546,9 @@ Run these checks against the production domains after DNS and TLS are live:
    in application logs. Confirm the sixth rapid request is rejected and Nginx
    returns `429` under the configured edge limit; do not run this against live
    lead intake without coordinating the test record.
-6. With the frontend token, verify all five published CMS endpoints return
-   expected content. Confirm the anonymous CMS request is denied.
+6. With the frontend token, verify all five published single-type endpoints and
+   all seven fixed service collection endpoints return expected content.
+   Confirm the anonymous CMS request is denied.
 7. Change a harmless CMS field, save a draft, publish it, and verify the
    matching page updates through the signed webhook (or within 60 seconds if
    the webhook is intentionally unavailable).

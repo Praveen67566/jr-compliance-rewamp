@@ -6,9 +6,12 @@ import type { Core } from "@strapi/strapi";
 import { withNextRevalidationSuppressed } from "../revalidation";
 
 import companyRegistrationPages from "./company-registration-pages.json";
+import fssaiServicePages from "./fssai-service-pages.json";
 import governmentLicenseCertificationPages from "./government-license-certification-pages.json";
 import importExportServicePages from "./import-export-service-pages.json";
+import iprServicePages from "./ipr-service-pages.json";
 import mcaServicePages from "./mca-service-pages.json";
+import sebiBusinessRegistrationPages from "./sebi-business-registration-pages.json";
 import {
   achievements,
   blocks,
@@ -52,7 +55,11 @@ const CONTENT_TYPES = {
   governmentLicenseCertificationPage:
     "api::government-license-certification-page.government-license-certification-page",
   importExportServicePage: "api::import-export-service-page.import-export-service-page",
+  iprServicePage: "api::ipr-service-page.ipr-service-page",
+  fssaiServicePage: "api::fssai-service-page.fssai-service-page",
   mcaServicePage: "api::mca-service-page.mca-service-page",
+  sebiBusinessRegistrationPage:
+    "api::sebi-business-registration-page.sebi-business-registration-page",
   serviceCategory: "api::service-category.service-category",
   service: "api::service.service",
   brandLogo: "api::brand-logo.brand-logo",
@@ -183,7 +190,30 @@ function comparableHeaderMenu(value: unknown): ComparableHeaderItem[] | null {
   });
 }
 
-function previousCategorizedHeaderMenu(): ComparableHeaderItem[] {
+const previousServiceHrefByLabel: Record<string, string> = {
+  "TM Search": "/corporate/trademark-registration/trademark-search",
+  "TM Application Filing": "/corporate/trademark-registration/trademark-application-filing",
+  "Formality Check Fail": "/corporate/trademark-registration/trademark-formality-check-fail",
+  "TM Modification": "/corporate/trademark-registration/trademark-modification",
+  "TM Objection": "/corporate/trademark-registration/trademark-objection",
+  "TM Hearing": "/corporate/trademark-registration/trademark-hearing",
+  "TM Opposition": "/corporate/trademark-registration/trademark-opposition",
+  "Trademark Evidence Filing": "/corporate/trademark-registration/trademark-evidence-filing",
+  "Trademark Renewal": "/corporate/trademark-registration/trademark-renewal",
+  LPC: "/corporate/trademark-registration/legal-proceedings-certificate",
+  "Copyright Registration": "/corporate/copyright-registration",
+  "Copyright Objection": "/corporate/copyright-objection",
+  "Design Registration": "/corporate/design-registration",
+  "Patent Registration": "/corporate/patent-registration-consultant",
+  "Fssai State": "/corporate/fssai/fssai-state-license",
+  "Fssai Central": "/corporate/fssai/fssai-central-license",
+  "Fssai Return": "/corporate/fssai/fssai-return-filing",
+  "Water Report": "/corporate/water-report",
+};
+
+function previousCategorizedHeaderMenu(
+  companyRegistrationLinksWerePlaceholders: boolean,
+): ComparableHeaderItem[] {
   const menu = comparableHeaderMenu(initialSite.headerMenu) ?? [];
 
   return menu.map((item) => ({
@@ -192,12 +222,18 @@ function previousCategorizedHeaderMenu(): ComparableHeaderItem[] {
       ? {
           categories: item.categories.map((category) => ({
             ...category,
-            links: category.links.map((link) =>
-              link.label === "Indian Subsidiary" ||
-              link.label === "RBI Mutual Fund Company Registration"
-                ? { ...link, href: "/#services" }
-                : link,
-            ),
+            links: category.links.map((link) => {
+              if (
+                companyRegistrationLinksWerePlaceholders &&
+                (link.label === "Indian Subsidiary" ||
+                  link.label === "RBI Mutual Fund Company Registration")
+              ) {
+                return { ...link, href: "/#services" };
+              }
+
+              const previousHref = link.label ? previousServiceHrefByLabel[link.label] : undefined;
+              return previousHref ? { ...link, href: previousHref } : link;
+            }),
           })),
         }
       : {}),
@@ -247,8 +283,11 @@ export async function migrateLegacyHeaderMenu(strapi: Core.Strapi): Promise<void
   }
 
   const isOriginalFlatMenu = JSON.stringify(currentMenu) === JSON.stringify(legacyHeaderMenu);
-  const isPreviousCategorizedMenu =
-    JSON.stringify(currentMenu) === JSON.stringify(previousCategorizedHeaderMenu());
+  const isPreviousCategorizedMenu = [false, true].some(
+    (companyRegistrationLinksWerePlaceholders) =>
+      JSON.stringify(currentMenu) ===
+      JSON.stringify(previousCategorizedHeaderMenu(companyRegistrationLinksWerePlaceholders)),
+  );
 
   if (!isOriginalFlatMenu && !isPreviousCategorizedMenu) {
     return;
@@ -260,7 +299,7 @@ export async function migrateLegacyHeaderMenu(strapi: Core.Strapi): Promise<void
     status: "published",
   });
   strapi.log.info(
-    "Migrated the exact demo header menu to the current categorized Company Registration navigation.",
+    "Migrated the exact demo header menu to the current categorized service navigation.",
   );
 }
 
@@ -282,12 +321,18 @@ type CompanyRegistrationSeedPage = (typeof companyRegistrationPages)[number];
 type GovernmentLicenseCertificationSeedPage =
   (typeof governmentLicenseCertificationPages)[number];
 type ImportExportServiceSeedPage = (typeof importExportServicePages)[number];
+type IprServiceSeedPage = (typeof iprServicePages)[number];
+type FssaiServiceSeedPage = (typeof fssaiServicePages)[number];
 type McaServiceSeedPage = (typeof mcaServicePages)[number];
+type SebiBusinessRegistrationSeedPage = (typeof sebiBusinessRegistrationPages)[number];
 type ServiceDetailSeedPage =
   | CompanyRegistrationSeedPage
   | GovernmentLicenseCertificationSeedPage
   | ImportExportServiceSeedPage
-  | McaServiceSeedPage;
+  | IprServiceSeedPage
+  | FssaiServiceSeedPage
+  | McaServiceSeedPage
+  | SebiBusinessRegistrationSeedPage;
 
 function serviceDetailPageData(
   page: ServiceDetailSeedPage,
@@ -444,6 +489,93 @@ async function createGovernmentLicenseCertificationPages(
     }
 
     await governmentPages.create({
+      data: serviceDetailPageData(page, sortOrder),
+      status: "published",
+    });
+    created += 1;
+  }
+
+  return created;
+}
+
+async function createIprServicePages(
+  strapi: Core.Strapi,
+  options: { onlyMissing?: boolean } = {},
+): Promise<number> {
+  const pages = documentService(strapi, CONTENT_TYPES.iprServicePage);
+  let created = 0;
+
+  for (const [sortOrder, page] of iprServicePages.entries()) {
+    if (options.onlyMissing) {
+      const filters = { slug: { $eq: page.slug } };
+      const [draft, published] = await Promise.all([
+        pages.findFirst({ filters, status: "draft" }),
+        pages.findFirst({ filters, status: "published" }),
+      ]);
+      if (draft || published) {
+        continue;
+      }
+    }
+
+    await pages.create({
+      data: serviceDetailPageData(page, sortOrder),
+      status: "published",
+    });
+    created += 1;
+  }
+
+  return created;
+}
+
+async function createFssaiServicePages(
+  strapi: Core.Strapi,
+  options: { onlyMissing?: boolean } = {},
+): Promise<number> {
+  const pages = documentService(strapi, CONTENT_TYPES.fssaiServicePage);
+  let created = 0;
+
+  for (const [sortOrder, page] of fssaiServicePages.entries()) {
+    if (options.onlyMissing) {
+      const filters = { slug: { $eq: page.slug } };
+      const [draft, published] = await Promise.all([
+        pages.findFirst({ filters, status: "draft" }),
+        pages.findFirst({ filters, status: "published" }),
+      ]);
+      if (draft || published) {
+        continue;
+      }
+    }
+
+    await pages.create({
+      data: serviceDetailPageData(page, sortOrder),
+      status: "published",
+    });
+    created += 1;
+  }
+
+  return created;
+}
+
+async function createSebiBusinessRegistrationPages(
+  strapi: Core.Strapi,
+  options: { onlyMissing?: boolean } = {},
+): Promise<number> {
+  const pages = documentService(strapi, CONTENT_TYPES.sebiBusinessRegistrationPage);
+  let created = 0;
+
+  for (const [sortOrder, page] of sebiBusinessRegistrationPages.entries()) {
+    if (options.onlyMissing) {
+      const filters = { slug: { $eq: page.slug } };
+      const [draft, published] = await Promise.all([
+        pages.findFirst({ filters, status: "draft" }),
+        pages.findFirst({ filters, status: "published" }),
+      ]);
+      if (draft || published) {
+        continue;
+      }
+    }
+
+    await pages.create({
       data: serviceDetailPageData(page, sortOrder),
       status: "published",
     });
@@ -766,6 +898,9 @@ export async function seedInitialContent(strapi: Core.Strapi): Promise<void> {
   await createMcaServicePages(strapi);
   await createImportExportServicePages(strapi);
   await createGovernmentLicenseCertificationPages(strapi);
+  await createIprServicePages(strapi);
+  await createFssaiServicePages(strapi);
+  await createSebiBusinessRegistrationPages(strapi);
 
   const faqCategoryDocuments: SeedDocument[] = [];
   for (const category of homeFaqCategories) {

@@ -10,9 +10,12 @@ This is the Strapi v5 TypeScript CMS for the active JR Compliance routes:
 - `/corporate/dsc-certificate` — `mca-service-page` collection (first approved MCA Services route)
 - `/corporate/iec-registration` — `import-export-service-page` collection (first approved Import Export Service route)
 - `/corporate/ayush-license` — `government-license-certification-page` collection (first approved Government License & Certification route)
+- `/corporate/trademark-registration` — `ipr-service-page` collection (first approved IPR Services route)
+- `/corporate/fssai-certificate` — `fssai-service-page` collection (first approved FSSAI route)
+- `/corporate/portfolio-manager-registration` — `sebi-business-registration-page` collection (first approved SEBI Business Registration route)
 - shared header/footer and global consultation-form copy — `site-setting`
 
-Later approved records in any of those three service categories use their
+Later approved records in any of those six service categories use their
 dedicated fixed collection contract and are rendered at their globally unique
 `/corporate/[slug]` routes when published.
 
@@ -69,7 +72,7 @@ not merge editor records, administrator accounts, API tokens, or secrets.
 
 ## Schema and editor policy
 
-The committed schemas define five single types, eighteen collection types, and
+The committed schemas define five single types, twenty-one collection types, and
 forty-six components. All editorial types use Draft & Publish. Page-selected
 relations are intentionally unidirectional, ordered selections; the inverse
 pairs are only Service Category → Service and FAQ Category → FAQ.
@@ -89,14 +92,15 @@ transport do not live in Strapi.
 
 The populated local PostgreSQL CMS includes all currently approved navbar
 categories and links, nineteen Company Registration records, and the first
-approved records for MCA Services, Import Export Service, and Government
-License & Certification. On startup, the CMS also migrates only an exact known
-legacy demo-menu signature: either the original flat menu or the previous
-categorized menu whose Indian Subsidiary and Mutual Fund links still pointed
-to `/#services`. The check is idempotent and signature-based; any customized
-menu or pending Site Setting draft is left untouched. Until an unmatched custom
-menu is completed and published, the frontend retains its matching typed
-fallback.
+approved records for MCA Services, Import Export Service, Government License &
+Certification, IPR Services, FSSAI, and SEBI Business Registration. On startup,
+the CMS also migrates only an exact known legacy demo-menu signature: either
+the original flat menu or one of the two preceding categorized menus. Those
+known signatures retain the former IPR/FSSAI later-page URLs and may also retain
+the older Indian Subsidiary and Mutual Fund placeholders. The check is
+idempotent and signature-based; any customized menu or pending Site Setting
+draft is left untouched. Until an unmatched custom menu is completed and
+published, the frontend retains its matching typed fallback.
 
 Do not create a generic `Page`, a dynamic-zone page builder, a navigation
 collection, CSS fields, animation settings, or public submission endpoints.
@@ -108,8 +112,9 @@ Set permissions deliberately:
 - Public role: no reads for these content types and no Upload access.
 - `next-site-reader` API token: read-only access to the five single types,
   the `company-registration-page`, `mca-service-page`,
-  `import-export-service-page`, and `government-license-certification-page`
-  collections, listed supporting collections,
+  `import-export-service-page`, `government-license-certification-page`,
+  `ipr-service-page`, `fssai-service-page`, and
+  `sebi-business-registration-page` collections, listed supporting collections,
   and Upload `find` only.
 - Content Editor: create/read/update listed content and media, but no schema or
   delete access.
@@ -130,7 +135,7 @@ when either value is absent.
 ## REST endpoints
 
 Core routers/controllers/services are committed for every defined content type.
-The frontend uses these published single-type endpoints:
+The frontend uses these published single-type and fixed service endpoints:
 
 ```text
 GET /api/site-setting?status=published
@@ -142,6 +147,9 @@ GET /api/company-registration-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/mca-service-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/import-export-service-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/government-license-certification-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/ipr-service-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/fssai-service-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/sebi-business-registration-pages?filters[slug][$eq]=<slug>&status=published
 ```
 
 Relations, media, and nested components are not populated by default. Keep the

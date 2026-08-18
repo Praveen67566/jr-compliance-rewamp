@@ -14,6 +14,9 @@ The CMS provides content for:
 - `/corporate/dsc-certificate` through `mca-service-page`
 - `/corporate/iec-registration` through `import-export-service-page`
 - `/corporate/ayush-license` through `government-license-certification-page`
+- `/corporate/trademark-registration` through `ipr-service-page`
+- `/corporate/fssai-certificate` through `fssai-service-page`
+- `/corporate/portfolio-manager-registration` through `sebi-business-registration-page`
 - shared header/footer and global consultation-form copy through the `site-setting` single type
 
 The frontend reads published CMS content using a server-only API token. If Strapi is unavailable, the frontend uses local fallback data from `frontend/data/*-fallback.ts`.
@@ -24,7 +27,7 @@ The main CMS flow is:
 2. Strapi stores records in PostgreSQL in both local and deployed environments.
    The retained SQLite file is an offline rollback source only and is never a
    running CMS database.
-3. The frontend fetches published single types and related collections through REST, including all four fixed service-detail collections filtered by exact slug.
+3. The frontend fetches published single types and related collections through REST, including all seven fixed service-detail collections filtered by exact slug.
 4. `cms/src/revalidation.ts` can notify Next.js after publish changes.
 5. Next.js revalidates the affected cache tags and fetches fresh CMS content.
 
@@ -88,7 +91,8 @@ The main CMS flow is:
 `cms/src/index.ts`
 : Strapi lifecycle entry. On bootstrap it registers the Next.js revalidation
   hooks, safely upgrades only an exact known demo-header signature (including
-  the two former Company Registration placeholder links), preserves any
+  the preceding categorized IPR/FSSAI links and former Company Registration
+  placeholder variant), preserves any
   pending Site Setting draft, and does not invoke the historical seed or
   backfill helpers.
 
@@ -126,6 +130,19 @@ The main CMS flow is:
 `cms/src/seed/government-license-certification-pages.json`
 : A historical JSON mirror of the approved Ayush License fallback for
   migration and content parity checks.
+
+`cms/src/seed/ipr-service-pages.json`
+: A historical JSON mirror of the approved Trademark Registration fallback for
+  migration and content parity checks.
+
+`cms/src/seed/fssai-service-pages.json`
+: A historical JSON mirror of the approved FSSAI Basic Registration fallback.
+  It uses the matching FSSAI corporate source rather than the unrelated legacy
+  WPC certification destination.
+
+`cms/src/seed/sebi-business-registration-pages.json`
+: A historical JSON mirror of the approved Portfolio Manager Registration
+  fallback for migration and content parity checks.
 
 ## API content types
 
@@ -179,6 +196,21 @@ Strapi without a new frontend route.
 : Dedicated fixed detail-page records for Government License & Certification.
 Ayush License is the first approved record; later complete records are added
 and published in Strapi without a new frontend route.
+
+`cms/src/api/ipr-service-page/`
+: Dedicated fixed detail-page records for IPR Services. Trademark Registration
+is the first approved record; later complete records are added and published in
+Strapi without a new frontend route.
+
+`cms/src/api/fssai-service-page/`
+: Dedicated fixed detail-page records for FSSAI. FSSAI Basic Registration is
+the first approved record; later complete records are added and published in
+Strapi without a new frontend route.
+
+`cms/src/api/sebi-business-registration-page/`
+: Dedicated fixed detail-page records for SEBI Business Registration. Portfolio
+Manager Registration is the first approved record; later complete records are
+added and published in Strapi without a new frontend route.
 
 `cms/src/api/service-category/`
 : Service category records used by the home Service Stack. Categories group services.

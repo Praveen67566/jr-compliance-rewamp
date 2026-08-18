@@ -18,6 +18,9 @@ const ALL_PAGE_TAGS = [
   "jr-mca-service-pages",
   "jr-import-export-service-pages",
   "jr-government-license-certification-pages",
+  "jr-ipr-service-pages",
+  "jr-fssai-service-pages",
+  "jr-sebi-business-registration-pages",
 ] as const;
 
 /**
@@ -40,6 +43,11 @@ const cacheTagsByUid: Record<string, readonly string[]> = {
   ],
   "api::government-license-certification-page.government-license-certification-page": [
     "jr-government-license-certification-pages",
+  ],
+  "api::ipr-service-page.ipr-service-page": ["jr-ipr-service-pages"],
+  "api::fssai-service-page.fssai-service-page": ["jr-fssai-service-pages"],
+  "api::sebi-business-registration-page.sebi-business-registration-page": [
+    "jr-sebi-business-registration-pages",
   ],
   "api::service-category.service-category": ["jr-homepage"],
   "api::service.service": ["jr-homepage"],

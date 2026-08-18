@@ -5,12 +5,18 @@ import { CompanyRegistrationPage } from "@/components/company-registration/compa
 import { companyRegistrationSlugs } from "@/data/company-registration-pages-fallback";
 import {
   getCompanyRegistrationPage,
+  getFssaiServicePage,
+  getFssaiServiceSlugs,
   getGovernmentLicenseCertificationPage,
   getGovernmentLicenseCertificationSlugs,
+  getIprServicePage,
+  getIprServiceSlugs,
   getImportExportServicePage,
   getImportExportServiceSlugs,
   getMcaServicePage,
   getMcaServiceSlugs,
+  getSebiBusinessRegistrationPage,
+  getSebiBusinessRegistrationSlugs,
 } from "@/lib/content";
 import { pageMetadata } from "@/lib/page-metadata";
 
@@ -22,12 +28,21 @@ export const revalidate = 60;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
-  const [mcaServiceSlugs, importExportServiceSlugs, governmentLicenseCertificationSlugs] =
-    await Promise.all([
-      getMcaServiceSlugs(),
-      getImportExportServiceSlugs(),
-      getGovernmentLicenseCertificationSlugs(),
-    ]);
+  const [
+    mcaServiceSlugs,
+    importExportServiceSlugs,
+    governmentLicenseCertificationSlugs,
+    iprServiceSlugs,
+    fssaiServiceSlugs,
+    sebiBusinessRegistrationSlugs,
+  ] = await Promise.all([
+    getMcaServiceSlugs(),
+    getImportExportServiceSlugs(),
+    getGovernmentLicenseCertificationSlugs(),
+    getIprServiceSlugs(),
+    getFssaiServiceSlugs(),
+    getSebiBusinessRegistrationSlugs(),
+  ]);
 
   return [
     ...new Set([
@@ -35,6 +50,9 @@ export async function generateStaticParams() {
       ...mcaServiceSlugs,
       ...importExportServiceSlugs,
       ...governmentLicenseCertificationSlugs,
+      ...iprServiceSlugs,
+      ...fssaiServiceSlugs,
+      ...sebiBusinessRegistrationSlugs,
     ]),
   ].map((slug) => ({ slug }));
 }
@@ -44,7 +62,10 @@ async function getCorporateServicePage(slug: string) {
     (await getCompanyRegistrationPage(slug)) ??
     (await getMcaServicePage(slug)) ??
     (await getImportExportServicePage(slug)) ??
-    getGovernmentLicenseCertificationPage(slug)
+    (await getGovernmentLicenseCertificationPage(slug)) ??
+    (await getIprServicePage(slug)) ??
+    (await getFssaiServicePage(slug)) ??
+    getSebiBusinessRegistrationPage(slug)
   );
 }
 

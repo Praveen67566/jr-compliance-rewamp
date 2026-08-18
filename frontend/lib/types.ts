@@ -551,3 +551,19 @@ export type GovernmentLicenseCertificationPageData = CompanyRegistrationPageData
 
 export type GovernmentLicenseCertificationPageContent =
   PageChromeContent & GovernmentLicenseCertificationPageData;
+
+/** Editor-managed content for IPR Services detail routes. */
+export type IprServicePageData = CompanyRegistrationPageData;
+
+export type IprServicePageContent = PageChromeContent & IprServicePageData;
+
+/** Editor-managed content for FSSAI detail routes. */
+export type FssaiServicePageData = CompanyRegistrationPageData;
+
+export type FssaiServicePageContent = PageChromeContent & FssaiServicePageData;
+
+/** Editor-managed content for SEBI Business Registration detail routes. */
+export type SebiBusinessRegistrationPageData = CompanyRegistrationPageData;
+
+export type SebiBusinessRegistrationPageContent =
+  PageChromeContent & SebiBusinessRegistrationPageData;

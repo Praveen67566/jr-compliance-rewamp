@@ -7,11 +7,11 @@ kept only as a **content and approved-media reference**. The new frontend is a
 standalone, responsive Next.js application with a Strapi v5 content boundary.
 
 The completed scope is the new home page, the shared-chrome editorial routes
-(`/about-us`, `/careers`, `/contact-us`), and the first nineteen Company
-Registration detail routes plus the first MCA Services, Import Export Service,
-and Government License & Certification routes under
-`/corporate/[slug]`. Other legacy routes stay
-out of scope until their content models and destinations are validated.
+(`/about-us`, `/careers`, `/contact-us`), and the nineteen Company Registration
+detail routes plus the first MCA Services, Import Export Service, Government
+License & Certification, IPR Services, FSSAI, and SEBI Business Registration
+routes under `/corporate/[slug]`. Other legacy routes stay out of scope until
+their content models and destinations are validated.
 
 ## Non-negotiable rules
 
@@ -38,7 +38,7 @@ out of scope until their content models and destinations are validated.
 | `site/` | 354-page legacy Webflow archive; matching legacy HTML files are content-only sources for the completed routes. |
 | `frontend/` | New Next.js 16 App Router application. This is the active frontend. |
 | `frontend/data/*-page-fallback.ts` and category-specific `frontend/data/*-pages-fallback.ts` | Typed fallback content normalized from matching legacy pages. It keeps every completed route working before Strapi is deployed. |
-| `frontend/lib/types.ts` | Shared shell and rendering contracts, including named fixed contracts for all four service-detail collections. |
+| `frontend/lib/types.ts` | Shared shell and rendering contracts, including named fixed contracts for all seven service-detail collections. |
 | `frontend/lib/strapi.ts` | Server-only Strapi v5 REST client, explicit route-specific populate paths, media URL handling, and schema-to-UI mappers. |
 | `frontend/components/` | Reusable shell components; `site-page-shell.tsx` centralizes header/footer, `editorial/` centralizes the Compliance Network route primitives, and route folders compose their pages. |
 | `frontend/app/globals.css` | Tailwind v4 theme tokens, baseline reset, shared utility primitives, anchor offsets, and reduced-motion support only. |
@@ -48,7 +48,7 @@ out of scope until their content models and destinations are validated.
 | `frontend/postcss.config.mjs` | Tailwind v4 PostCSS integration. |
 | `frontend/public/images/` | Small selected copy of approved legacy logo/photo assets. `images/services/` preserves the 15 exact legacy service/flag SVGs; `images/services-blue/` holds their blue-theme derivatives used by the home fallback. Do not point new UI at `site/assets/`. |
 | `cms/` | Active Strapi v5 TypeScript project: schemas, core REST APIs, CMS-to-Next revalidation, editor setup, and PostgreSQL configuration for local and deployed environments. |
-| `cms/CONTENT_MODEL.md` | Definitive editorial contract: five single types, eighteen collections, and forty-six components. Change it deliberately alongside the schemas and Next mapper. |
+| `cms/CONTENT_MODEL.md` | Definitive editorial contract: five single types, twenty-one collections, and forty-six components. Change it deliberately alongside the schemas and Next mapper. |
 | `cms/README.md` | CMS local PostgreSQL workflow, editor permissions, REST contract, transfer policy, and revalidation behavior. |
 | `ecosystem.config.js` | PM2 process definition for the 24/7 Linux/VPS deployment: one frontend and one CMS process, bound to loopback-only private ports with no secrets in source. |
 | `prod.md` | Required production deployment and launch runbook for the frontend, CMS, PM2, Nginx/TLS, database, media, migration, secrets, and cache invalidation. |
@@ -112,12 +112,18 @@ out of scope until their content models and destinations are validated.
   first Government License & Certification page, `/corporate/ayush-license`,
   use that same fixed template with separate dedicated CMS collections, typed
   fallbacks, migration mirrors, cache tags, and complete approved legacy
-  content. Other links in those categories remain placeholders until complete
-  records are created and published in Strapi.
+  content.
+- The first IPR Services page, `/corporate/trademark-registration`, first FSSAI
+  page, `/corporate/fssai-certificate`, and first SEBI Business Registration
+  page, `/corporate/portfolio-manager-registration`, follow the same pattern
+  through their own dedicated collections, typed fallbacks, migration mirrors,
+  and cache tags. Other links in all six extensible service categories remain
+  `/#services` placeholders until complete records are created and published in
+  Strapi.
 - The Strapi v5 CMS is implemented in `cms/`: five single types (`site-setting`,
-  `home-page`, `about-page`, `careers-page`, `contact-page`), eighteen
+  `home-page`, `about-page`, `careers-page`, `contact-page`), twenty-one
   collections, forty-six components, and core REST route/controller/service
-  files for all twenty-three types. All editorial content uses Draft & Publish;
+  files for all twenty-six types. All editorial content uses Draft & Publish;
   i18n is intentionally off.
 - Every active page and shared header/footer has a typed CMS mapping. CMS
   controls copy, links/targets, order, SEO, imagery/alt text, shared navigation,
@@ -129,7 +135,7 @@ out of scope until their content models and destinations are validated.
   never be selected as the running database. All `SEED_*` flags remain false.
   Use a reviewed encrypted Strapi content/files export and import when another
   PostgreSQL target needs the same content and media.
-- The frontend emits an app icon, `robots.txt`, and a sitemap for all twenty-six
+- The frontend emits an app icon, `robots.txt`, and a sitemap for all twenty-nine
   active routes. It uses `SITE_URL` for the production origin and has baseline
   response hardening headers; the host still needs TLS-edge HSTS, rate limiting,
   and a tested CSP for the selected CMS/media origin.
@@ -181,6 +187,14 @@ to `/#services` until validated detail pages are migrated.
   sections are included; copied Private Limited Company challenges, hidden
   placeholders, unrelated testimonials/resources, forms, and legacy UI are
   excluded.
+- `site/corporate/trademark-registration.html`,
+  `site/corporate/fssai-certificate.html`, and
+  `site/corporate/portfolio-manager-registration.html`: first approved sources
+  for IPR Services, FSSAI, and SEBI Business Registration. The legacy
+  `site/approval/wpc-certification.html` link is a WPC ETA page, not an FSSAI
+  source, so it is deliberately excluded. Only page-specific service content is
+  retained; duplicated private-company sections, placeholders, unrelated
+  resources/testimonials, Webflow forms, and legacy UI are excluded.
 
 ## Strapi integration behavior
 
@@ -195,7 +209,7 @@ to `/#services` until validated detail pages are migrated.
 4. The adapter maps the documented Strapi v5 fields to typed page contracts; it
    keeps fallback values for any unpublished or incomplete field so editors
    cannot blank the live site accidentally. Later CMS-only records in the
-   three extensible service categories are strictly validated and return a 404
+   six extensible service categories are strictly validated and return a 404
    when a required fixed field is missing, so they never borrow their
    category’s first-page copy.
 5. Strapi media URLs are converted to absolute CMS URLs. The current frontend
@@ -209,12 +223,12 @@ stay `STRAPI_API_TOKEN` (not `NEXT_PUBLIC_*` and not the old `STRAPI_TOKEN`).
 
 The CMS is implemented, not a blueprint. The original local PostgreSQL
 migration was verified for exact content and media parity with the preserved
-SQLite source. The database now also contains published IEC Code and Ayush
-License documents in their dedicated collections. Strapi starts against
-PostgreSQL, anonymous reads are denied, and the configured server-only,
-read-only frontend API token has been verified against both new collection
-endpoints. Frontend fallback and CMS-backed rendering, typed validation, and
-production builds have passed.
+SQLite source. The database now also contains published first-page documents
+for MCA Services, Import Export Service, Government License & Certification,
+IPR Services, FSSAI, and SEBI Business Registration in their dedicated
+collections. Strapi starts against PostgreSQL, anonymous reads are denied, and
+the frontend uses its configured server-only, read-only API token for published
+collection reads.
 
 The deployed integration still requires durable object/media storage,
 production secrets, a production read-only frontend token, and an explicitly
@@ -261,7 +275,7 @@ The frontend dev script uses port **8123** to avoid the existing service on
 port 3000. Its production start script uses `$PORT` when the host provides it,
 then falls back to `8123` locally.
 
-Validation on 2026-08-17 passed: frontend tests, typecheck, production build,
+Validation on 2026-08-18 passed: frontend tests, typecheck, production build,
 fallback and PostgreSQL-backed page rendering, metadata and sitemap checks, and
 known/unknown corporate-route smoke checks; CMS TypeScript and production
 builds, schema checks, authenticated REST reads, anonymous-access denial, and

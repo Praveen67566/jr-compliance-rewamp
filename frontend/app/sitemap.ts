@@ -2,20 +2,32 @@ import type { MetadataRoute } from "next";
 
 import { companyRegistrationSlugs } from "@/data/company-registration-pages-fallback";
 import {
+  getFssaiServiceSlugs,
   getGovernmentLicenseCertificationSlugs,
+  getIprServiceSlugs,
   getImportExportServiceSlugs,
   getMcaServiceSlugs,
+  getSebiBusinessRegistrationSlugs,
 } from "@/lib/content";
 import { publicSiteUrl } from "@/lib/site-url";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = publicSiteUrl();
-  const [mcaServiceSlugs, importExportServiceSlugs, governmentLicenseCertificationSlugs] =
-    await Promise.all([
-      getMcaServiceSlugs(),
-      getImportExportServiceSlugs(),
-      getGovernmentLicenseCertificationSlugs(),
-    ]);
+  const [
+    mcaServiceSlugs,
+    importExportServiceSlugs,
+    governmentLicenseCertificationSlugs,
+    iprServiceSlugs,
+    fssaiServiceSlugs,
+    sebiBusinessRegistrationSlugs,
+  ] = await Promise.all([
+    getMcaServiceSlugs(),
+    getImportExportServiceSlugs(),
+    getGovernmentLicenseCertificationSlugs(),
+    getIprServiceSlugs(),
+    getFssaiServiceSlugs(),
+    getSebiBusinessRegistrationSlugs(),
+  ]);
 
   return [
     {
@@ -44,6 +56,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         ...mcaServiceSlugs,
         ...importExportServiceSlugs,
         ...governmentLicenseCertificationSlugs,
+        ...iprServiceSlugs,
+        ...fssaiServiceSlugs,
+        ...sebiBusinessRegistrationSlugs,
       ]),
     ].map((slug) => ({
       url: new URL(`/corporate/${slug}`, siteUrl).toString(),
