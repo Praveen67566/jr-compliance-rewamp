@@ -4,10 +4,13 @@ import type {
   AboutPageContent,
   AboutValue,
   Achievement,
+  AerbApprovalPageContent,
+  BureauEnergyEfficiencyPageContent,
   CareerGalleryItem,
   CareerRole,
   CareerTestimonial,
   CareersPageContent,
+  CdscoRegistrationPageContent,
   CompanyRegistrationPageContent,
   BureauIndianStandardsPageContent,
   ContactPageContent,
@@ -29,6 +32,7 @@ import type {
   LeadFormSettings,
   LeadFormTrustItem,
   Link,
+  LmpcCertificationPageContent,
   Logo,
   Metric,
   McaServicePageContent,
@@ -43,10 +47,13 @@ import type {
   ServiceCategory,
   Seo,
   SocialLink,
+  StqcPageContent,
   TaxAccountingPageContent,
   TeamMember,
+  TelecommunicationEngineeringCentrePageContent,
   Testimonial,
   TimelineEvent,
+  WirelessPlanningCoordinationPageContent,
 } from "@/lib/types";
 
 type UnknownRecord = Record<string, unknown>;
@@ -69,7 +76,14 @@ export type RevalidatableContentSlug =
   | "labour-compliance-page"
   | "fund-raising-page"
   | "bureau-indian-standards-page"
-  | "pollution-advisory-page";
+  | "pollution-advisory-page"
+  | "telecommunication-engineering-centre-page"
+  | "wireless-planning-coordination-page"
+  | "bureau-energy-efficiency-page"
+  | "cdsco-registration-page"
+  | "aerb-approval-page"
+  | "lmpc-certification-page"
+  | "stqc-page";
 type PopulateValue = true | PopulateTree;
 
 interface PopulateTree {
@@ -98,6 +112,14 @@ export const strapiCacheTagBySlug: Record<RevalidatableContentSlug, string> = {
   "fund-raising-page": "jr-fund-raising-pages",
   "bureau-indian-standards-page": "jr-bureau-indian-standards-pages",
   "pollution-advisory-page": "jr-pollution-advisory-pages",
+  "telecommunication-engineering-centre-page":
+    "jr-telecommunication-engineering-centre-pages",
+  "wireless-planning-coordination-page": "jr-wireless-planning-coordination-pages",
+  "bureau-energy-efficiency-page": "jr-bureau-energy-efficiency-pages",
+  "cdsco-registration-page": "jr-cdsco-registration-pages",
+  "aerb-approval-page": "jr-aerb-approval-pages",
+  "lmpc-certification-page": "jr-lmpc-certification-pages",
+  "stqc-page": "jr-stqc-pages",
 };
 
 /**
@@ -1767,7 +1789,14 @@ type FixedServiceContentSlug =
   | "labour-compliance-page"
   | "fund-raising-page"
   | "bureau-indian-standards-page"
-  | "pollution-advisory-page";
+  | "pollution-advisory-page"
+  | "telecommunication-engineering-centre-page"
+  | "wireless-planning-coordination-page"
+  | "bureau-energy-efficiency-page"
+  | "cdsco-registration-page"
+  | "aerb-approval-page"
+  | "lmpc-certification-page"
+  | "stqc-page";
 
 type FixedServiceCollectionConfig = {
   collectionPath: string;
@@ -1845,6 +1874,48 @@ const pollutionAdvisoryCollection = {
   collectionPath: "pollution-advisory-pages",
   contentSlug: "pollution-advisory-page",
   label: "Pollution Advisory",
+} as const satisfies FixedServiceCollectionConfig;
+
+const telecommunicationEngineeringCentreCollection = {
+  collectionPath: "telecommunication-engineering-centre-pages",
+  contentSlug: "telecommunication-engineering-centre-page",
+  label: "Telecommunication Engineering Centre (TEC)",
+} as const satisfies FixedServiceCollectionConfig;
+
+const wirelessPlanningCoordinationCollection = {
+  collectionPath: "wireless-planning-coordination-pages",
+  contentSlug: "wireless-planning-coordination-page",
+  label: "Wireless Planning and Coordination (WPC)",
+} as const satisfies FixedServiceCollectionConfig;
+
+const bureauEnergyEfficiencyCollection = {
+  collectionPath: "bureau-energy-efficiency-pages",
+  contentSlug: "bureau-energy-efficiency-page",
+  label: "Bureau of Energy Efficiency (BEE)",
+} as const satisfies FixedServiceCollectionConfig;
+
+const cdscoRegistrationCollection = {
+  collectionPath: "cdsco-registration-pages",
+  contentSlug: "cdsco-registration-page",
+  label: "CDSCO Registration",
+} as const satisfies FixedServiceCollectionConfig;
+
+const aerbApprovalCollection = {
+  collectionPath: "aerb-approval-pages",
+  contentSlug: "aerb-approval-page",
+  label: "AERB Approval",
+} as const satisfies FixedServiceCollectionConfig;
+
+const lmpcCertificationCollection = {
+  collectionPath: "lmpc-certification-pages",
+  contentSlug: "lmpc-certification-page",
+  label: "LMPC Certification",
+} as const satisfies FixedServiceCollectionConfig;
+
+const stqcCollection = {
+  collectionPath: "stqc-pages",
+  contentSlug: "stqc-page",
+  label: "STQC",
 } as const satisfies FixedServiceCollectionConfig;
 
 function fixedServiceDetailQuery(slug: string): string {
@@ -1987,6 +2058,34 @@ export function getBureauIndianStandardsSlugsFromStrapi(): Promise<string[]> {
 
 export function getPollutionAdvisorySlugsFromStrapi(): Promise<string[]> {
   return getFixedServiceSlugsFromStrapi(pollutionAdvisoryCollection);
+}
+
+export function getTelecommunicationEngineeringCentreSlugsFromStrapi(): Promise<string[]> {
+  return getFixedServiceSlugsFromStrapi(telecommunicationEngineeringCentreCollection);
+}
+
+export function getWirelessPlanningCoordinationSlugsFromStrapi(): Promise<string[]> {
+  return getFixedServiceSlugsFromStrapi(wirelessPlanningCoordinationCollection);
+}
+
+export function getBureauEnergyEfficiencySlugsFromStrapi(): Promise<string[]> {
+  return getFixedServiceSlugsFromStrapi(bureauEnergyEfficiencyCollection);
+}
+
+export function getCdscoRegistrationSlugsFromStrapi(): Promise<string[]> {
+  return getFixedServiceSlugsFromStrapi(cdscoRegistrationCollection);
+}
+
+export function getAerbApprovalSlugsFromStrapi(): Promise<string[]> {
+  return getFixedServiceSlugsFromStrapi(aerbApprovalCollection);
+}
+
+export function getLmpcCertificationSlugsFromStrapi(): Promise<string[]> {
+  return getFixedServiceSlugsFromStrapi(lmpcCertificationCollection);
+}
+
+export function getStqcSlugsFromStrapi(): Promise<string[]> {
+  return getFixedServiceSlugsFromStrapi(stqcCollection);
 }
 
 export async function getHomepageFromStrapi(
@@ -2263,5 +2362,96 @@ export function getPollutionAdvisoryPageFromStrapi(
     fallback,
     chromeFallback,
     pollutionAdvisoryCollection,
+  );
+}
+
+export function getTelecommunicationEngineeringCentrePageFromStrapi(
+  slug: string,
+  fallback: TelecommunicationEngineeringCentrePageContent | null,
+  chromeFallback: PageChromeContent,
+): Promise<TelecommunicationEngineeringCentrePageContent | null> {
+  return getFixedServiceCategoryPageFromStrapi(
+    slug,
+    fallback,
+    chromeFallback,
+    telecommunicationEngineeringCentreCollection,
+  );
+}
+
+export function getWirelessPlanningCoordinationPageFromStrapi(
+  slug: string,
+  fallback: WirelessPlanningCoordinationPageContent | null,
+  chromeFallback: PageChromeContent,
+): Promise<WirelessPlanningCoordinationPageContent | null> {
+  return getFixedServiceCategoryPageFromStrapi(
+    slug,
+    fallback,
+    chromeFallback,
+    wirelessPlanningCoordinationCollection,
+  );
+}
+
+export function getBureauEnergyEfficiencyPageFromStrapi(
+  slug: string,
+  fallback: BureauEnergyEfficiencyPageContent | null,
+  chromeFallback: PageChromeContent,
+): Promise<BureauEnergyEfficiencyPageContent | null> {
+  return getFixedServiceCategoryPageFromStrapi(
+    slug,
+    fallback,
+    chromeFallback,
+    bureauEnergyEfficiencyCollection,
+  );
+}
+
+export function getCdscoRegistrationPageFromStrapi(
+  slug: string,
+  fallback: CdscoRegistrationPageContent | null,
+  chromeFallback: PageChromeContent,
+): Promise<CdscoRegistrationPageContent | null> {
+  return getFixedServiceCategoryPageFromStrapi(
+    slug,
+    fallback,
+    chromeFallback,
+    cdscoRegistrationCollection,
+  );
+}
+
+export function getAerbApprovalPageFromStrapi(
+  slug: string,
+  fallback: AerbApprovalPageContent | null,
+  chromeFallback: PageChromeContent,
+): Promise<AerbApprovalPageContent | null> {
+  return getFixedServiceCategoryPageFromStrapi(
+    slug,
+    fallback,
+    chromeFallback,
+    aerbApprovalCollection,
+  );
+}
+
+export function getLmpcCertificationPageFromStrapi(
+  slug: string,
+  fallback: LmpcCertificationPageContent | null,
+  chromeFallback: PageChromeContent,
+): Promise<LmpcCertificationPageContent | null> {
+  return getFixedServiceCategoryPageFromStrapi(
+    slug,
+    fallback,
+    chromeFallback,
+    lmpcCertificationCollection,
+  );
+}
+
+export function getStqcPageFromStrapi(
+  slug: string,
+  fallback: StqcPageContent | null,
+  chromeFallback: PageChromeContent,
+): Promise<StqcPageContent | null> {
+  return getFixedServiceCategoryPageFromStrapi(
+    slug,
+    fallback,
+    chromeFallback,
+    stqcCollection,
   );
 }

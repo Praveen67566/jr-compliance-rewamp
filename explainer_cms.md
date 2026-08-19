@@ -22,9 +22,27 @@ The CMS provides content for:
 - `/corporate/msme-registration` through `fund-raising-page`
 - `/approval/isi-certificate` through `bureau-indian-standards-page`
 - `/approval/epr-certification` through `pollution-advisory-page`
+- future CMS-only Telecommunication Engineering Centre paths through
+  `telecommunication-engineering-centre-page`
+- future CMS-only Wireless Planning and Coordination paths through
+  `wireless-planning-coordination-page`
+- future CMS-only Bureau of Energy Efficiency paths through
+  `bureau-energy-efficiency-page`
+- future CMS-only CDSCO Registration paths through `cdsco-registration-page`
+- future CMS-only AERB Approval paths through `aerb-approval-page`
+- future CMS-only LMPC Certification paths through `lmpc-certification-page`
+- future CMS-only STQC paths through `stqc-page`
 - shared header/footer and global consultation-form copy through the `site-setting` single type
 
-The frontend reads published CMS content using a server-only API token. If Strapi is unavailable, the frontend uses local fallback data from `frontend/data/*-fallback.ts`.
+The committed model contains five single types, thirty-three collection types,
+and forty-six components: thirty-eight content types in total, including
+nineteen fixed service-detail collections. The seven new Approval collections
+are schema integrations only and contain no bundled records.
+
+The frontend reads published CMS content using a server-only API token. If
+Strapi is unavailable, fallback-backed routes use local data from
+`frontend/data/*-fallback.ts`; the seven empty Approval families have no local
+page and return 404.
 
 The main CMS flow is:
 
@@ -32,7 +50,9 @@ The main CMS flow is:
 2. Strapi stores records in PostgreSQL in both local and deployed environments.
    The retained SQLite file is an offline rollback source only and is never a
    running CMS database.
-3. The frontend fetches published single types and related collections through REST, including all twelve fixed service-detail collections filtered by exact slug or Approval path.
+3. The frontend fetches published single types and related collections through
+   REST, including all nineteen fixed service-detail collections filtered by
+   exact slug or Approval path.
 4. `cms/src/revalidation.ts` can notify Next.js after publish changes.
 5. Next.js revalidates the affected cache tags and fetches fresh CMS content.
 
@@ -170,6 +190,12 @@ The main CMS flow is:
   `site/approval/epr-certification.html` for migration and content parity
   checks.
 
+There are no seed JSON files for Telecommunication Engineering Centre,
+Wireless Planning and Coordination, Bureau of Energy Efficiency, CDSCO
+Registration, AERB Approval, LMPC Certification, or STQC. Their collections
+are intentionally empty and their first records are created directly in
+Strapi Content Manager.
+
 ## API content types
 
 Each content type folder follows the Strapi pattern:
@@ -264,6 +290,32 @@ code.
 Certification is the first approved record; later complete records are added
 and published in Strapi through the shared Approval route without new frontend
 code.
+
+`cms/src/api/telecommunication-engineering-centre-page/`
+: Empty dedicated fixed detail-page collection for Telecommunication
+Engineering Centre. Every record is created and published directly in Strapi
+and renders through the shared Approval route.
+
+`cms/src/api/wireless-planning-coordination-page/`
+: Empty dedicated fixed detail-page collection for Wireless Planning and
+Coordination. It has no bundled first record, fallback, or seed mirror.
+
+`cms/src/api/bureau-energy-efficiency-page/`
+: Empty dedicated fixed detail-page collection for Bureau of Energy
+Efficiency. Complete published records render through the shared Approval
+route.
+
+`cms/src/api/cdsco-registration-page/`
+: Empty dedicated fixed detail-page collection for CDSCO Registration.
+
+`cms/src/api/aerb-approval-page/`
+: Empty dedicated fixed detail-page collection for AERB Approval.
+
+`cms/src/api/lmpc-certification-page/`
+: Empty dedicated fixed detail-page collection for LMPC Certification.
+
+`cms/src/api/stqc-page/`
+: Empty dedicated fixed detail-page collection for STQC.
 
 `cms/src/api/service-category/`
 : Service category records used by the home Service Stack. Categories group services.
@@ -418,4 +470,7 @@ PostgreSQL variables for local and deployed CMS environments are defined in
   from a verified transfer; use the reviewed export/import workflow for another
   target rather than a seed or backfill.
 - Do not rely on local `public/uploads` for production media durability.
-- When a schema changes, update `cms/CONTENT_MODEL.md`, the Strapi schema files, frontend types, frontend mapper, and fallback data together.
+- When a schema changes, update `cms/CONTENT_MODEL.md`, the Strapi schema files,
+  frontend types, frontend mapper, and any applicable fallback data together.
+  CMS-only collections with no local record do not require an empty fallback
+  module.

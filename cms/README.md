@@ -18,16 +18,25 @@ This is the Strapi v5 TypeScript CMS for the active JR Compliance routes:
 - `/corporate/msme-registration` — `fund-raising-page` collection (first approved Fund Raising route)
 - `/approval/isi-certificate` — `bureau-indian-standards-page` collection (first approved Bureau of Indian Standards route)
 - `/approval/epr-certification` — `pollution-advisory-page` collection (first approved Pollution Advisory route)
+- future `/approval/[...slug]` records — empty CMS-only
+  `telecommunication-engineering-centre-page`,
+  `wireless-planning-coordination-page`, `bureau-energy-efficiency-page`,
+  `cdsco-registration-page`, `aerb-approval-page`,
+  `lmpc-certification-page`, and `stqc-page` collections
 - shared header/footer and global consultation-form copy — `site-setting`
 
-Later approved records in any of those eleven service categories use their
-dedicated fixed collection contract. Corporate records render at globally
-unique `/corporate/[slug]` routes, while Bureau of Indian Standards and
-Pollution Advisory records render through `/approval/[...slug]` when published.
-For either Approval collection, enter `slug` as a relative path without a
-leading slash. Flat values such as `isi-certificate` and slash-separated nested
-values such as `bis-certification/fmcs-bis-certification` are accepted; each
-segment may contain only letters, numbers, `-`, `_`, `.`, and `~`.
+Later approved records in any of the eighteen extensible service families use
+their dedicated fixed collection contract. Corporate records render at
+globally unique `/corporate/[slug]` routes. All nine Approval families—Bureau
+of Indian Standards, Pollution Advisory, Telecommunication Engineering Centre,
+Wireless Planning and Coordination, Bureau of Energy Efficiency, CDSCO
+Registration, AERB Approval, LMPC Certification, and STQC—render through
+`/approval/[...slug]` when published. Enter an Approval `slug` as a relative
+path without a leading slash. Flat values such as `isi-certificate` and
+slash-separated nested values such as
+`bis-certification/fmcs-bis-certification` are accepted; each segment may
+contain only letters, numbers, `-`, `_`, `.`, and `~`. Manually keep the full
+route path unique across all nine Approval collections.
 
 The exact editorial contract lives in [CONTENT_MODEL.md](./CONTENT_MODEL.md).
 Next.js owns the Compliance Network layout, interaction, and motion; Strapi owns
@@ -82,8 +91,8 @@ not merge editor records, administrator accounts, API tokens, or secrets.
 
 ## Schema and editor policy
 
-The committed schemas define five single types, twenty-six collection types,
-and forty-six components (thirty-one content types total), including twelve
+The committed schemas define five single types, thirty-three collection types,
+and forty-six components (thirty-eight content types total), including nineteen
 fixed service-detail collections. All editorial types use Draft & Publish.
 Page-selected relations are intentionally unidirectional, ordered selections; the inverse
 pairs are only Service Category → Service and FAQ Category → FAQ.
@@ -96,6 +105,16 @@ The shared navbar is edited under **Site Setting → Header Menu**:
 - `children` remains available for a small single-level submenu, but should not
   be combined with `categories` on the same menu item.
 
+To publish the first page in one of the seven empty Approval collections, open
+that collection in Content Manager, create a record, and complete every fixed
+section, `menuLabel`, SEO field, `sortOrder`, and route-safe `slug`. Verify that
+the full slug is unique across all nine Approval collections, then save and
+publish the record. Update the matching **Site Setting → Header Menu** link to
+`/approval/<slug>` and publish Site Setting. The shared route and sitemap
+discover the record automatically; no fallback, seed file, React page, or code
+deployment is required for the new content record. An incomplete or unpublished
+CMS-only record returns 404 by design.
+
 The centralized form copy is edited under **Site Setting → Lead Form**. Its
 message label and placeholder are editor-managed, but the message remains
 required in frontend and server validation. Webhook configuration and form
@@ -106,7 +125,11 @@ categories and links, nineteen Company Registration records, and the first
 approved records for MCA Services, Import Export Service, Government License &
 Certification, IPR Services, FSSAI, SEBI Business Registration, Tax and
 Accounting, Labour Compliance, Fund Raising, Bureau of Indian Standards, and
-Pollution Advisory. On startup, the CMS also
+Pollution Advisory. The Telecommunication Engineering Centre, Wireless
+Planning and Coordination, Bureau of Energy Efficiency, CDSCO Registration,
+AERB Approval, LMPC Certification, and STQC collections are present but begin
+empty: they have no bundled first records, fallback modules, or seed JSON. On
+startup, the CMS also
 migrates only an exact known legacy demo-menu signature: either
 the original flat menu or one of the two preceding categorized menus. Those
 known signatures retain the former IPR/FSSAI later-page URLs and may also retain
@@ -123,17 +146,25 @@ production-only Content-Type Builder session.
 Set permissions deliberately:
 
 - Public role: no reads for these content types and no Upload access.
-- `next-site-reader` API token: read-only access to the five single types,
-  the `company-registration-page`, `mca-service-page`,
+- `next-site-reader` API token: `find` for the five single types and `find` plus
+  `findOne` for the `company-registration-page`, `mca-service-page`,
   `import-export-service-page`, `government-license-certification-page`,
   `ipr-service-page`, `fssai-service-page`, and
   `sebi-business-registration-page`, `tax-accounting-page`,
   `labour-compliance-page`, `fund-raising-page`,
-  `bureau-indian-standards-page`, and `pollution-advisory-page` collections,
-  listed supporting collections, and Upload `find` only.
+  `bureau-indian-standards-page`, `pollution-advisory-page`,
+  `telecommunication-engineering-centre-page`,
+  `wireless-planning-coordination-page`, `bureau-energy-efficiency-page`,
+  `cdsco-registration-page`, `aerb-approval-page`,
+  `lmpc-certification-page`, and `stqc-page` collections, listed supporting
+  collections, and Upload `find` only.
 - Content Editor: create/read/update listed content and media, but no schema or
   delete access.
 - Publisher/Admin: editor access plus publish.
+
+After deploying the seven schemas, update every existing `next-site-reader`
+token policy to include their `find` and `findOne` actions before relying on a
+CMS-only page.
 
 The frontend receives only these server-side environment variables:
 
@@ -170,6 +201,13 @@ GET /api/labour-compliance-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/fund-raising-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/bureau-indian-standards-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/pollution-advisory-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/telecommunication-engineering-centre-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/wireless-planning-coordination-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/bureau-energy-efficiency-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/cdsco-registration-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/aerb-approval-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/lmpc-certification-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/stqc-pages?filters[slug][$eq]=<slug>&status=published
 ```
 
 Relations, media, and nested components are not populated by default. Keep the

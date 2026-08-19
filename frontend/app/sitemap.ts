@@ -2,17 +2,24 @@ import type { MetadataRoute } from "next";
 
 import { companyRegistrationSlugs } from "@/data/company-registration-pages-fallback";
 import {
+  getAerbApprovalSlugs,
+  getBureauEnergyEfficiencySlugs,
   getFssaiServiceSlugs,
   getBureauIndianStandardsSlugs,
+  getCdscoRegistrationSlugs,
   getFundRaisingSlugs,
   getGovernmentLicenseCertificationSlugs,
   getIprServiceSlugs,
   getImportExportServiceSlugs,
   getLabourComplianceSlugs,
+  getLmpcCertificationSlugs,
   getMcaServiceSlugs,
   getSebiBusinessRegistrationSlugs,
   getTaxAccountingSlugs,
   getPollutionAdvisorySlugs,
+  getStqcSlugs,
+  getTelecommunicationEngineeringCentreSlugs,
+  getWirelessPlanningCoordinationSlugs,
 } from "@/lib/content";
 import { publicSiteUrl } from "@/lib/site-url";
 
@@ -30,6 +37,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     fundRaisingSlugs,
     bureauIndianStandardsSlugs,
     pollutionAdvisorySlugs,
+    telecommunicationEngineeringCentreSlugs,
+    wirelessPlanningCoordinationSlugs,
+    bureauEnergyEfficiencySlugs,
+    cdscoRegistrationSlugs,
+    aerbApprovalSlugs,
+    lmpcCertificationSlugs,
+    stqcSlugs,
   ] = await Promise.all([
     getMcaServiceSlugs(),
     getImportExportServiceSlugs(),
@@ -42,6 +56,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getFundRaisingSlugs(),
     getBureauIndianStandardsSlugs(),
     getPollutionAdvisorySlugs(),
+    getTelecommunicationEngineeringCentreSlugs(),
+    getWirelessPlanningCoordinationSlugs(),
+    getBureauEnergyEfficiencySlugs(),
+    getCdscoRegistrationSlugs(),
+    getAerbApprovalSlugs(),
+    getLmpcCertificationSlugs(),
+    getStqcSlugs(),
   ]);
 
   return [
@@ -83,12 +104,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly" as const,
       priority: 0.75,
     })),
-    ...[...new Set([...bureauIndianStandardsSlugs, ...pollutionAdvisorySlugs])].map(
-      (routePath) => ({
-        url: new URL(`/approval/${routePath}`, siteUrl).toString(),
-        changeFrequency: "monthly" as const,
-        priority: 0.75,
-      }),
-    ),
+    ...[
+      ...new Set([
+        ...bureauIndianStandardsSlugs,
+        ...pollutionAdvisorySlugs,
+        ...telecommunicationEngineeringCentreSlugs,
+        ...wirelessPlanningCoordinationSlugs,
+        ...bureauEnergyEfficiencySlugs,
+        ...cdscoRegistrationSlugs,
+        ...aerbApprovalSlugs,
+        ...lmpcCertificationSlugs,
+        ...stqcSlugs,
+      ]),
+    ].map((routePath) => ({
+      url: new URL(`/approval/${routePath}`, siteUrl).toString(),
+      changeFrequency: "monthly" as const,
+      priority: 0.75,
+    })),
   ];
 }

@@ -105,20 +105,34 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-This is Only UI Improvement No need to change any strapi cms config or code and if needed then dont do anything.
+In `/approval/[slug]` two categories added
 
-Service Page UI & UX Improvement:-
-* it should cover the all service pages and only service pages
-1. in hero section content have too much margin from top this needs to be change also add any good moving animation in background not the simple one also which match the theme.
-2. Service Overview this section ui looks so much outdated like header somewhere else content some where else make a good design for this section.
-3. What to plan for this section card ui is so simple that can be inhanced make it looks 
-good.
-4. Business advantages this section ui also not good inhance that also and card design and add morden animation.
-5. Service Breakdown improve this section design also card looks so bad and add a good background.
+1. Bureau of Indian Standards (BIS)
+2. Pollution Advisory
 
-Dont't change anything else.
-this frontend is based on strapi cms keep that in mind only improve the design here nothing else.
-a morden clean and inhanced page i want
+and there first pages also added 
+ISI Certification and Extended Producer's Responsibility (EPR)
+
+now for next i dont want to add there first pages i want the content mannager or user 
+add pages from directly strapi cms only create the categories and by adding slug i can 
+add the pages.
+
+categories to add are :-
+
+3. Telecommunication Engineering Centre (TEC)
+4. Wireless Planning and Coordination (WPC)
+5. Bureau of Energy Efficiency (BEE)
+6. CDSCO Registration
+7. AERB Approval
+8. LMPC Certification
+9. STQC
+
+*. follow the jr-compliance-rewamp structure.
+*. follow the company registration design and structure.
+*. read service-category-first-page-guide.md but we dont need first page it is going to be added from strapi cms directly
+*. now here dont change anything unneccary.
+*. dont change anything in already structured code.
+
 
 
 

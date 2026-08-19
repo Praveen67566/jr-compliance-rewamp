@@ -47,10 +47,16 @@ import {
   taxAccountingSlugs,
 } from "@/data/tax-accounting-pages-fallback";
 import {
+  getAerbApprovalPageFromStrapi,
+  getAerbApprovalSlugsFromStrapi,
   getAboutPageFromStrapi,
   getCareersPageFromStrapi,
+  getBureauEnergyEfficiencyPageFromStrapi,
+  getBureauEnergyEfficiencySlugsFromStrapi,
   getBureauIndianStandardsPageFromStrapi,
   getBureauIndianStandardsSlugsFromStrapi,
+  getCdscoRegistrationPageFromStrapi,
+  getCdscoRegistrationSlugsFromStrapi,
   getCompanyRegistrationPageFromStrapi,
   getContactPageFromStrapi,
   getFssaiServicePageFromStrapi,
@@ -66,19 +72,30 @@ import {
   getImportExportServiceSlugsFromStrapi,
   getLabourCompliancePageFromStrapi,
   getLabourComplianceSlugsFromStrapi,
+  getLmpcCertificationPageFromStrapi,
+  getLmpcCertificationSlugsFromStrapi,
   getPollutionAdvisoryPageFromStrapi,
   getPollutionAdvisorySlugsFromStrapi,
   getMcaServicePageFromStrapi,
   getMcaServiceSlugsFromStrapi,
   getSebiBusinessRegistrationPageFromStrapi,
   getSebiBusinessRegistrationSlugsFromStrapi,
+  getStqcPageFromStrapi,
+  getStqcSlugsFromStrapi,
   getTaxAccountingPageFromStrapi,
   getTaxAccountingSlugsFromStrapi,
+  getTelecommunicationEngineeringCentrePageFromStrapi,
+  getTelecommunicationEngineeringCentreSlugsFromStrapi,
+  getWirelessPlanningCoordinationPageFromStrapi,
+  getWirelessPlanningCoordinationSlugsFromStrapi,
 } from "@/lib/strapi";
 import type {
   AboutPageContent,
+  AerbApprovalPageContent,
+  BureauEnergyEfficiencyPageContent,
   CareersPageContent,
   BureauIndianStandardsPageContent,
+  CdscoRegistrationPageContent,
   CompanyRegistrationPageContent,
   ContactPageContent,
   FssaiServicePageContent,
@@ -88,10 +105,14 @@ import type {
   ImportExportServicePageContent,
   IprServicePageContent,
   LabourCompliancePageContent,
+  LmpcCertificationPageContent,
   PollutionAdvisoryPageContent,
   McaServicePageContent,
   SebiBusinessRegistrationPageContent,
+  StqcPageContent,
   TaxAccountingPageContent,
+  TelecommunicationEngineeringCentrePageContent,
+  WirelessPlanningCoordinationPageContent,
 } from "@/lib/types";
 
 export const getHomepage = cache(async function getHomepage(): Promise<HomepageContent> {
@@ -401,3 +422,111 @@ export const getPollutionAdvisorySlugs = cache(
     return [...new Set([...pollutionAdvisorySlugs, ...strapiSlugs])];
   },
 );
+
+const cmsOnlyApprovalChromeFallback = {
+  site: fallbackHomepage.site,
+  navigation: fallbackHomepage.navigation,
+  footer: fallbackHomepage.footer,
+};
+
+export const getTelecommunicationEngineeringCentrePage = cache(
+  async function getTelecommunicationEngineeringCentrePage(
+    slug: string,
+  ): Promise<TelecommunicationEngineeringCentrePageContent | null> {
+    return getTelecommunicationEngineeringCentrePageFromStrapi(
+      slug,
+      null,
+      cmsOnlyApprovalChromeFallback,
+    );
+  },
+);
+
+export const getTelecommunicationEngineeringCentreSlugs = cache(
+  async function getTelecommunicationEngineeringCentreSlugs(): Promise<string[]> {
+    return getTelecommunicationEngineeringCentreSlugsFromStrapi();
+  },
+);
+
+export const getWirelessPlanningCoordinationPage = cache(
+  async function getWirelessPlanningCoordinationPage(
+    slug: string,
+  ): Promise<WirelessPlanningCoordinationPageContent | null> {
+    return getWirelessPlanningCoordinationPageFromStrapi(
+      slug,
+      null,
+      cmsOnlyApprovalChromeFallback,
+    );
+  },
+);
+
+export const getWirelessPlanningCoordinationSlugs = cache(
+  async function getWirelessPlanningCoordinationSlugs(): Promise<string[]> {
+    return getWirelessPlanningCoordinationSlugsFromStrapi();
+  },
+);
+
+export const getBureauEnergyEfficiencyPage = cache(
+  async function getBureauEnergyEfficiencyPage(
+    slug: string,
+  ): Promise<BureauEnergyEfficiencyPageContent | null> {
+    return getBureauEnergyEfficiencyPageFromStrapi(
+      slug,
+      null,
+      cmsOnlyApprovalChromeFallback,
+    );
+  },
+);
+
+export const getBureauEnergyEfficiencySlugs = cache(
+  async function getBureauEnergyEfficiencySlugs(): Promise<string[]> {
+    return getBureauEnergyEfficiencySlugsFromStrapi();
+  },
+);
+
+export const getCdscoRegistrationPage = cache(
+  async function getCdscoRegistrationPage(
+    slug: string,
+  ): Promise<CdscoRegistrationPageContent | null> {
+    return getCdscoRegistrationPageFromStrapi(slug, null, cmsOnlyApprovalChromeFallback);
+  },
+);
+
+export const getCdscoRegistrationSlugs = cache(
+  async function getCdscoRegistrationSlugs(): Promise<string[]> {
+    return getCdscoRegistrationSlugsFromStrapi();
+  },
+);
+
+export const getAerbApprovalPage = cache(async function getAerbApprovalPage(
+  slug: string,
+): Promise<AerbApprovalPageContent | null> {
+  return getAerbApprovalPageFromStrapi(slug, null, cmsOnlyApprovalChromeFallback);
+});
+
+export const getAerbApprovalSlugs = cache(
+  async function getAerbApprovalSlugs(): Promise<string[]> {
+    return getAerbApprovalSlugsFromStrapi();
+  },
+);
+
+export const getLmpcCertificationPage = cache(async function getLmpcCertificationPage(
+  slug: string,
+): Promise<LmpcCertificationPageContent | null> {
+  return getLmpcCertificationPageFromStrapi(slug, null, cmsOnlyApprovalChromeFallback);
+});
+
+export const getLmpcCertificationSlugs = cache(
+  async function getLmpcCertificationSlugs(): Promise<string[]> {
+    return getLmpcCertificationSlugsFromStrapi();
+  },
+);
+
+export const getStqcPage = cache(async function getStqcPage(
+  slug: string,
+): Promise<StqcPageContent | null> {
+  return getStqcPageFromStrapi(slug, null, cmsOnlyApprovalChromeFallback);
+});
+
+export const getStqcSlugs = cache(async function getStqcSlugs(): Promise<string[]> {
+  return getStqcSlugsFromStrapi();
+});

@@ -26,6 +26,13 @@ const ALL_PAGE_TAGS = [
   "jr-fund-raising-pages",
   "jr-bureau-indian-standards-pages",
   "jr-pollution-advisory-pages",
+  "jr-telecommunication-engineering-centre-pages",
+  "jr-wireless-planning-coordination-pages",
+  "jr-bureau-energy-efficiency-pages",
+  "jr-cdsco-registration-pages",
+  "jr-aerb-approval-pages",
+  "jr-lmpc-certification-pages",
+  "jr-stqc-pages",
 ] as const;
 
 /**
@@ -65,6 +72,23 @@ const cacheTagsByUid: Record<string, readonly string[]> = {
   "api::pollution-advisory-page.pollution-advisory-page": [
     "jr-pollution-advisory-pages",
   ],
+  "api::telecommunication-engineering-centre-page.telecommunication-engineering-centre-page": [
+    "jr-telecommunication-engineering-centre-pages",
+  ],
+  "api::wireless-planning-coordination-page.wireless-planning-coordination-page": [
+    "jr-wireless-planning-coordination-pages",
+  ],
+  "api::bureau-energy-efficiency-page.bureau-energy-efficiency-page": [
+    "jr-bureau-energy-efficiency-pages",
+  ],
+  "api::cdsco-registration-page.cdsco-registration-page": [
+    "jr-cdsco-registration-pages",
+  ],
+  "api::aerb-approval-page.aerb-approval-page": ["jr-aerb-approval-pages"],
+  "api::lmpc-certification-page.lmpc-certification-page": [
+    "jr-lmpc-certification-pages",
+  ],
+  "api::stqc-page.stqc-page": ["jr-stqc-pages"],
   "api::service-category.service-category": ["jr-homepage"],
   "api::service.service": ["jr-homepage"],
   "api::brand-logo.brand-logo": ["jr-homepage"],

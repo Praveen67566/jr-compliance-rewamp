@@ -20,16 +20,28 @@ routes:
   Registration, Portfolio Manager Registration, GST Registration, Shop &
   Establishment Registration, and MSME Registration
 - `/approval/[...slug]` for ISI Certification, EPR Certification, and later
-  complete CMS-only records in those two Approval categories
+  complete CMS-only records across all nine Approval families: Bureau of Indian
+  Standards, Pollution Advisory, Telecommunication Engineering Centre,
+  Wireless Planning and Coordination, Bureau of Energy Efficiency, CDSCO
+  Registration, AERB Approval, LMPC Certification, and STQC
 
-Content comes from Strapi when `STRAPI_URL` and `STRAPI_API_TOKEN` are configured. If Strapi is unavailable or incomplete, the app falls back to typed local content in `frontend/data/*-fallback.ts`.
+The seven new Approval integrations add no local pages, so the current sitemap
+still contains thirty-four active routes. Their first routes appear only after
+complete records are published in Strapi.
+
+Content comes from Strapi when `STRAPI_URL` and `STRAPI_API_TOKEN` are configured.
+Implemented routes fall back to typed local content in
+`frontend/data/*-fallback.ts` when Strapi is unavailable or incomplete. The
+seven empty CMS-only Approval families have no fallback or first page, so their
+routes exist only after an editor publishes a complete Strapi record.
 
 The main flow is:
 
 1. `app/*/page.tsx` asks `lib/content.ts` for page data.
 2. `lib/content.ts` calls `lib/strapi.ts`.
 3. `lib/strapi.ts` maps Strapi records into types from `lib/types.ts`.
-4. If Strapi is missing or fails, local fallback data is used.
+4. If Strapi is missing or fails, local fallback data is used when available;
+   CMS-only pages without a fallback return 404.
 5. Page components render inside `components/site-page-shell.tsx`, which adds the shared header and footer.
 
 ## Root files
@@ -108,11 +120,11 @@ The main flow is:
   and returns the framework 404 for an unknown or incomplete slug.
 
 `frontend/app/approval/[...slug]/page.tsx`
-: Shared catch-all route for the Bureau of Indian Standards and Pollution
-  Advisory collections. It renders ISI Certification and EPR Certification,
-  supports later flat or nested CMS-only Approval paths, generates static
-  params and metadata, and returns the framework 404 for an unknown or
-  incomplete path.
+: Shared catch-all route for all nine Approval collections. It renders the
+  fallback-backed ISI Certification and EPR Certification pages and discovers
+  complete flat or nested CMS-only paths from every Approval family. It
+  generates static params and metadata and returns the framework 404 for an
+  unknown or incomplete path.
 
 `frontend/app/icon.tsx`
 : Generates the app icon/fav icon through Next.
@@ -288,7 +300,14 @@ collection; later records are CMS-only by default.
   for the dedicated Pollution Advisory collection; later records are CMS-only
   by default.
 
-These files keep the site working when Strapi is offline. They also document the expected content shape for editors/developers.
+There are deliberately no fallback modules for Telecommunication Engineering
+Centre, Wireless Planning and Coordination, Bureau of Energy Efficiency,
+CDSCO Registration, AERB Approval, LMPC Certification, or STQC. Those seven
+families begin empty in Strapi and every page in them is CMS-only.
+
+The existing fallback files keep their implemented routes working when Strapi
+is offline. They also document the expected content shape for
+editors/developers.
 
 ## Library files
 
@@ -298,12 +317,15 @@ These files keep the site working when Strapi is offline. They also document the
   named Company Registration, MCA Services, Import Export Service, and
   Government License & Certification, IPR Services, FSSAI, and SEBI Business
   Registration, Tax and Accounting, Labour Compliance, Fund Raising, Bureau of
-  Indian Standards, and Pollution Advisory service-detail models.
+  Indian Standards, Pollution Advisory, Telecommunication Engineering Centre,
+  Wireless Planning and Coordination, Bureau of Energy Efficiency, CDSCO
+  Registration, AERB Approval, LMPC Certification, and STQC service-detail
+  models.
 
 `frontend/lib/strapi.ts`
 : Server-side Strapi v5 adapter. Builds explicit populate queries—including
   `headerMenu.categories.links` and every nested registration-page component—
-  fetches published single types or exact-slug entries from all twelve fixed
+  fetches published single types or exact-slug entries from all nineteen fixed
   service-detail collections, converts media URLs, and safely falls back when
   known local fallback data is available. Later CMS-only category records are
   strictly validated before rendering.
@@ -311,7 +333,8 @@ These files keep the site working when Strapi is offline. They also document the
 `frontend/lib/content.ts`
 : Small route-facing content loader. Exposes functions used by pages to get
 home/about/careers/contact content plus cached pages and slug discovery for all
-twelve fixed service-detail collections.
+nineteen fixed service-detail collections. The seven empty Approval families
+pass no page fallback to the Strapi adapter.
 
 `frontend/lib/page-metadata.ts`
 : Converts page SEO data into Next metadata.

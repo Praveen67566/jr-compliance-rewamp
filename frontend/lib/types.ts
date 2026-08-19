@@ -593,3 +593,41 @@ export type BureauIndianStandardsPageContent =
 export type PollutionAdvisoryPageData = CompanyRegistrationPageData;
 
 export type PollutionAdvisoryPageContent = PageChromeContent & PollutionAdvisoryPageData;
+
+/** Editor-managed content for Telecommunication Engineering Centre detail routes. */
+export type TelecommunicationEngineeringCentrePageData = CompanyRegistrationPageData;
+
+export type TelecommunicationEngineeringCentrePageContent =
+  PageChromeContent & TelecommunicationEngineeringCentrePageData;
+
+/** Editor-managed content for Wireless Planning and Coordination detail routes. */
+export type WirelessPlanningCoordinationPageData = CompanyRegistrationPageData;
+
+export type WirelessPlanningCoordinationPageContent =
+  PageChromeContent & WirelessPlanningCoordinationPageData;
+
+/** Editor-managed content for Bureau of Energy Efficiency detail routes. */
+export type BureauEnergyEfficiencyPageData = CompanyRegistrationPageData;
+
+export type BureauEnergyEfficiencyPageContent =
+  PageChromeContent & BureauEnergyEfficiencyPageData;
+
+/** Editor-managed content for CDSCO Registration detail routes. */
+export type CdscoRegistrationPageData = CompanyRegistrationPageData;
+
+export type CdscoRegistrationPageContent = PageChromeContent & CdscoRegistrationPageData;
+
+/** Editor-managed content for AERB Approval detail routes. */
+export type AerbApprovalPageData = CompanyRegistrationPageData;
+
+export type AerbApprovalPageContent = PageChromeContent & AerbApprovalPageData;
+
+/** Editor-managed content for LMPC Certification detail routes. */
+export type LmpcCertificationPageData = CompanyRegistrationPageData;
+
+export type LmpcCertificationPageContent = PageChromeContent & LmpcCertificationPageData;
+
+/** Editor-managed content for STQC detail routes. */
+export type StqcPageData = CompanyRegistrationPageData;
+
+export type StqcPageContent = PageChromeContent & StqcPageData;

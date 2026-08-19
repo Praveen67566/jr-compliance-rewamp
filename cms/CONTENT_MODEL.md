@@ -6,14 +6,19 @@ Registration routes, the first approved routes for MCA Services, Import Export
 Service, Government License & Certification, IPR Services, FSSAI, SEBI
 Business Registration, Tax and Accounting, Labour Compliance, and Fund Raising,
 and the first approved Approval routes for Bureau of Indian Standards and
-Pollution Advisory. It preserves useful legacy content from the corresponding
-`site/*.html`, `site/corporate/*.html`, and `site/approval/*.html` files, but does
-not preserve
-Webflow UI. Layout, motion, colours, and responsive behaviour belong in Next.js;
-editors own copy, links, ordering, SEO, and approved media.
+Pollution Advisory. Seven additional Approval families—Telecommunication
+Engineering Centre, Wireless Planning and Coordination, Bureau of Energy
+Efficiency, CDSCO Registration, AERB Approval, LMPC Certification, and STQC—
+have empty CMS-only collections with no bundled first pages, fallbacks, seed
+mirrors, or initial records. The model preserves useful legacy content from the
+corresponding `site/*.html`, `site/corporate/*.html`, and
+`site/approval/*.html` files, but does not preserve Webflow UI. Layout, motion,
+colours, and responsive behaviour belong in Next.js; editors own copy, links,
+ordering, SEO, and approved media.
 
-The committed schema contains five single types, twenty-six collection types,
-and forty-six components: thirty-one content types in total.
+The committed schema contains five single types, thirty-three collection types,
+and forty-six components: thirty-eight content types in total. Nineteen of the
+collections use the fixed service-detail contract.
 
 Use named fields rather than a page-builder dynamic zone for these initial routes.
 That makes the front-end contract stable and easy for non-technical editors to
@@ -342,7 +347,7 @@ Later complete records can be published only in Strapi and use the same fixed
 required fields and validation rules as `mca-service-page`, with `menuLabel`
 matching the Bureau of Indian Standards navbar label. The stored `slug` may be
 a flat route segment or a slash-separated nested Approval path and must be
-globally unique across both Approval service collections.
+globally unique across all nine Approval service collections.
 
 The Approval `slug` UID uses the route-safe pattern
 `^[A-Za-z0-9-_.~]+(?:/[A-Za-z0-9-_.~]+)*$`, so editors may enter nested paths
@@ -356,15 +361,53 @@ path. The first approved record is `epr-certification`. Later complete records
 can be published only in Strapi and use the same fixed required fields and
 validation rules as `mca-service-page`, with `menuLabel` matching the Pollution
 Advisory navbar label. The stored `slug` may be a flat route segment or a
-slash-separated nested Approval path and must be globally unique across both
-Approval service collections.
+slash-separated nested Approval path and must be globally unique across all
+nine Approval service collections.
 
-Both Approval collections use the same fixed fields as the other service-detail
-collections: required `title`, `menuLabel`, route-safe `slug`, `hero`,
-`overview`, `challenges`, `advantages`, `process`, `whyChoose`, `breakdown`,
-`faqs`, `finalCta`, `seo`, and `sortOrder`. Later records must complete every
-required field before publication; the frontend never copies first-page content
-into an incomplete record.
+### Empty CMS-only Approval collections
+
+These seven collections start with no content record. Their singular API keys
+and generated plural REST paths are fixed as follows:
+
+| Approval family | Singular API key | REST collection path |
+| --- | --- | --- |
+| Telecommunication Engineering Centre (TEC) | `telecommunication-engineering-centre-page` | `telecommunication-engineering-centre-pages` |
+| Wireless Planning and Coordination (WPC) | `wireless-planning-coordination-page` | `wireless-planning-coordination-pages` |
+| Bureau of Energy Efficiency (BEE) | `bureau-energy-efficiency-page` | `bureau-energy-efficiency-pages` |
+| CDSCO Registration | `cdsco-registration-page` | `cdsco-registration-pages` |
+| AERB Approval | `aerb-approval-page` | `aerb-approval-pages` |
+| LMPC Certification | `lmpc-certification-page` | `lmpc-certification-pages` |
+| STQC | `stqc-page` | `stqc-pages` |
+
+There is no category-level public slug. Each record stores its own flat or
+slash-separated relative path in `slug` and renders at `/approval/<slug>`.
+These collections have no local fallback modules or historical seed JSON; if
+Strapi is unavailable, their paths return 404 by design. They are fixed
+detail-page families, not records in the separate Home Service Stack
+`service-category` collection.
+
+All nine Approval collections use the same fixed fields as the other
+service-detail collections: required `title`, `menuLabel`, route-safe `slug`,
+`hero`, `overview`, `challenges`, `advantages`, `process`, `whyChoose`,
+`breakdown`, `faqs`, `finalCta`, `seo`, and `sortOrder`. Every CMS-only record
+must complete all required nested content before publication; the frontend
+returns 404 for an incomplete record and never copies content from another page
+or category.
+
+#### Editor workflow for a CMS-only Approval page
+
+1. Open the intended family collection in Strapi Content Manager.
+2. Create a record and complete `title`, `menuLabel`, every fixed content
+   section, SEO, and `sortOrder`.
+3. Enter a route-safe relative `slug` with no leading slash. Manually verify
+   that the full path is unique across all nine Approval collections because a
+   Strapi UID is unique only within its own collection.
+4. Save and publish the complete record.
+5. Open **Site Setting → Header Menu**, point the matching navigation link to
+   `/approval/<slug>`, and publish Site Setting.
+6. Verify the public page, metadata, navigation link, and sitemap entry. No
+   React route, fallback file, seed mirror, or deployment is required for that
+   content record.
 
 | Type (API) | Fields | Relations |
 | --- | --- | --- |
@@ -532,9 +575,13 @@ attributes are flattened and documents use `documentId`; do not copy v4
 | Consumer | Allowed permissions |
 | --- | --- |
 | **Public role** | None for these content types or Upload. The browser never receives a Strapi token. |
-| **`next-site-reader` API token** | Custom, read-only: `find` for `site-setting`, `home-page`, `about-page`, `careers-page`, and `contact-page`; `find` and `findOne` for `company-registration-page`, `mca-service-page`, `import-export-service-page`, `government-license-certification-page`, `ipr-service-page`, `fssai-service-page`, `sebi-business-registration-page`, `tax-accounting-page`, `labour-compliance-page`, `fund-raising-page`, `bureau-indian-standards-page`, `pollution-advisory-page`, and every listed supporting collection type; Upload `find`. No create, update, delete, publish, or admin access. Store only as `STRAPI_API_TOKEN` on the Next server. |
+| **`next-site-reader` API token** | Custom, read-only: `find` for `site-setting`, `home-page`, `about-page`, `careers-page`, and `contact-page`; `find` and `findOne` for all nineteen fixed service-detail collections, including `bureau-indian-standards-page`, `pollution-advisory-page`, `telecommunication-engineering-centre-page`, `wireless-planning-coordination-page`, `bureau-energy-efficiency-page`, `cdsco-registration-page`, `aerb-approval-page`, `lmpc-certification-page`, and `stqc-page`, plus every listed supporting collection type; Upload `find`. No create, update, delete, publish, or admin access. Store only as `STRAPI_API_TOKEN` on the Next server. |
 | **Content Editor admin role** | Content Manager create/read/update for the listed types and Media Library upload/edit. No schema access and no delete permission. |
 | **Publisher/Admin role** | Editor permissions plus publish. Content Type Builder remains development-only and developer-owned. |
+
+Deploying a schema does not extend an existing custom API token automatically.
+Grant `find` and `findOne` for each of the seven new collection APIs before an
+editor expects its published records to render.
 
 Use these generated endpoints:
 
@@ -556,6 +603,13 @@ GET /api/labour-compliance-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/fund-raising-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/bureau-indian-standards-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/pollution-advisory-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/telecommunication-engineering-centre-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/wireless-planning-coordination-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/bureau-energy-efficiency-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/cdsco-registration-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/aerb-approval-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/lmpc-certification-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/stqc-pages?filters[slug][$eq]=<slug>&status=published
 ```
 
 Strapi does not populate relations, components, or media by default. The Next
@@ -582,9 +636,13 @@ plugins or issue a browser request per card. The API token is sent as
    `government-license-certification-page`, `ipr-service-page`,
    `fssai-service-page`, `sebi-business-registration-page`,
    `tax-accounting-page`, `labour-compliance-page`, `fund-raising-page`,
-   `bureau-indian-standards-page`, and `pollution-advisory-page` collections.
-   Enable Draft & Publish on all of them. Commit Strapi’s generated
-   schemas to git; do not create schema changes directly in production.
+   `bureau-indian-standards-page`, `pollution-advisory-page`,
+   `telecommunication-engineering-centre-page`,
+   `wireless-planning-coordination-page`, `bureau-energy-efficiency-page`,
+   `cdsco-registration-page`, `aerb-approval-page`,
+   `lmpc-certification-page`, and `stqc-page` collections. Enable Draft &
+   Publish on all of them. Commit Strapi’s generated schemas to git; do not
+   create schema changes directly in production.
 4. Configure the media provider and migrate the approved legacy images/logos.
    Add filename, alt text, and captions before selecting them in content.
 5. Create the service categories/services, logos, FAQ categories/FAQs,
@@ -596,7 +654,9 @@ plugins or issue a browser request per card. The API token is sent as
    Certification, IPR Services, FSSAI, SEBI Business Registration, Tax and
    Accounting, Labour Compliance, Fund Raising, Bureau of Indian Standards, and
    Pollution Advisory. Select the intended ordered relations and verify every
-   link and media item. Keep all `SEED_*` flags false.
+   link and media item. Leave the seven new CMS-only Approval collections empty
+   until an editor creates the first complete approved record through the
+   workflow above. Keep all `SEED_*` flags false.
    To populate another PostgreSQL
    target with the approved content, use a reviewed encrypted Strapi
    `content,files` export/import after a verified database and media backup;

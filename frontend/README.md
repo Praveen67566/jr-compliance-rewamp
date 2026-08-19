@@ -7,17 +7,24 @@ Government License & Certification, IPR Services, FSSAI, and SEBI Business
 Registration, Tax and Accounting, Labour Compliance, and Fund Raising pages
 under `/corporate/[slug]`, plus ISI Certification and EPR Certification under
 `/approval/[...slug]`. It is intentionally separate from the legacy Webflow
-export in `../site`.
+export in `../site`. That Approval catch-all is also connected to seven empty
+CMS-only collections for Telecommunication Engineering Centre, Wireless
+Planning and Coordination, Bureau of Energy Efficiency, CDSCO Registration,
+AERB Approval, LMPC Certification, and STQC.
 
 Approval slugs are stored as relative route paths: flat values such as
 `isi-certificate` and nested values such as
 `bis-certification/fmcs-bis-certification` are both supported by the catch-all
 route. Future Approval pages are published from Strapi without adding a new
-frontend page file.
+frontend page file. Their full relative paths must be unique across all nine
+Approval collections.
 
 The current sitemap contains thirty-four active routes, including eleven
-category-first service routes (nine Corporate and two Approval). Later pages in
-those eleven categories are CMS-only until a complete record is published.
+category-first service routes (nine Corporate and two Approval). Seven further
+Approval families have collection wiring only, with no first page, local
+fallback, seed mirror, or initial record, so they do not increase that
+thirty-four-route count. Additional pages in all eighteen extensible service
+families are CMS-only whenever no local fallback exists.
 
 ## Run locally
 
@@ -36,8 +43,9 @@ that port locally and honors a host-provided `PORT` in production.
 For a production deployment, see [../prod.md](../prod.md).
 
 Copy `.env.example` to `.env.local` only when a Strapi instance is available.
-Without `STRAPI_URL`, each route renders its typed local content in
-`data/*-page-fallback.ts`.
+Without `STRAPI_URL`, implemented routes render their typed local content in
+`data/*-page-fallback.ts`; the seven empty CMS-only Approval families have no
+offline page and return 404 until Strapi supplies a complete published record.
 
 Set `SITE_URL` to the deployed public origin. It keeps any site-relative CMS
 canonical URL absolute in generated metadata and is the strict origin allow-list
@@ -62,14 +70,22 @@ configuration or the Strapi token.
   `government-license-certification-page`, `ipr-service-page`,
   `fssai-service-page`, `sebi-business-registration-page`,
   `tax-accounting-page`, `labour-compliance-page`, `fund-raising-page`,
-  `bureau-indian-standards-page`, and `pollution-advisory-page` collection
-  entries into the UI contracts.
+  `bureau-indian-standards-page`, `pollution-advisory-page`,
+  `telecommunication-engineering-centre-page`,
+  `wireless-planning-coordination-page`, `bureau-energy-efficiency-page`,
+  `cdsco-registration-page`, `aerb-approval-page`,
+  `lmpc-certification-page`, and `stqc-page` collection entries into the UI
+  contracts.
 - DSC, IEC Code, Ayush License, Trademark Registration, FSSAI Basic
   Registration, Portfolio Manager Registration, GST Registration, Shop &
   Establishment Registration, MSME Registration, ISI Certification, and EPR
   Certification have typed local fallbacks. Later fully populated records in
   their dedicated category collections are discovered for the shared route and
   sitemap without borrowing the first page’s content.
+- Telecommunication Engineering Centre, Wireless Planning and Coordination,
+  Bureau of Energy Efficiency, CDSCO Registration, AERB Approval, LMPC
+  Certification, and STQC deliberately have no local fallback modules. Their
+  first and later pages are all complete CMS-only records.
 - CMS link targets, collection `sortOrder` values, shared footer groups, and
   shared SEO are carried through the typed adapter rather than hard-coded in
   individual routes.
@@ -77,7 +93,8 @@ configuration or the Strapi token.
   `components/editorial/` centralizes the Compliance Network route primitives.
 - `components/company-registration/company-registration-page.tsx` is the
   Tailwind-first fixed template shared by the Company Registration routes and
-  all eleven category-first routes, including the two Approval first pages.
+  all nineteen fixed service-detail collections, including the seven empty
+  CMS-only Approval families once records are published.
 - `components/forms/consultation-form.tsx` owns the form UI, required-message
   validation, consent, honeypot, UTM capture, submission state, and redirect.
   `app/api/leads/route.ts` validates it again, rate-limits requests, derives the
