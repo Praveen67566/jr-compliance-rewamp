@@ -1,0 +1,219 @@
+import type { BureauIndianStandardsPageData } from "@/lib/types";
+
+/** The first approved Bureau of Indian Standards route. Later records are CMS-only. */
+export const fallbackBureauIndianStandardsPages: BureauIndianStandardsPageData[] = [
+  {
+    slug: "isi-certificate",
+    menuLabel: "ISI Certification",
+    seo: {
+      title: "ISI Certification Online | ISI Certification Consultant in India",
+      description:
+        "JR Compliance guarantees to provide you with complete support in acquiring the ISI mark-a mark for safety. Click to learn more about ISI Certification Online, ISI Certification Consultant in India",
+    },
+    hero: {
+      eyebrow: "Bureau of Indian Standards (BIS)",
+      title: "ISI (INDIAN STANDARDS INSTITUTE) CERTIFICATION",
+      description:
+        "Ensure that your products are made in conformity with the tough safety and quality specifications in India with ISI certification. With ISI certification comes not only compliance with the Bureau of Indian Standards (BIS) but also consumer confidence. Be it an electrical appliance, a building material, or any other goods whatsoever, ISI certification speaks credibility, safety, and dependability. Make your mark with a recognized seal of excellence.",
+      cta: { label: "Get Free Expert Consultation!", href: "/contact-us" },
+    },
+    overview: {
+      eyebrow: "Service Overview",
+      title: "Service Overview",
+      paragraphs: [
+        "Managed by the Bureau of Indian Standards (BIS), Indian Standards Institute (ISI) certification is a hallmark of safety and quality in products within an Indian Standard. It assures that your product complies to robust Indian standards and establishes the psyche of consumers regarding these goods. In a world where to have an edge is much important, the idea of ISI certification, enhances its brand value, credibility, and compliance in marketing.",
+      ],
+    },
+    challenges: {
+      eyebrow: "What to plan for",
+      title: "Challenges of Filing ISI Registration",
+      items: [
+        {
+          title: "Complex Documentation and Compliance Procedures",
+          description:
+            "Navigating the extensive documentation and stringent compliance requirements of ISI certification can be challenging. Businesses must meet detailed technical specifications and complete exhaustive paperwork to ensure a successful certification process.",
+        },
+        {
+          title: "Frequent Rejections Due to Non-Compliance",
+          description:
+            "Non-adherence to technical standards often leads to application rejections. This increases processing time and expenses, making it essential to thoroughly understand and meet the prescribed standards.",
+        },
+        {
+          title: "Testing Facility and Coordination Hurdles",
+          description:
+            "Coordinating with authorized laboratories for product testing can be daunting. Delays in testing or mismatched specifications often complicate and prolong the certification process.",
+        },
+        {
+          title: "Updates and Changes in Regulations",
+          description:
+            "Frequent variations within the sets of regulation or standards pose difficulties within the performance of businesses. It is also important to keep oneself updated on the latest scenario in compliance, in order to avoid penalties.",
+        },
+      ],
+    },
+    advantages: {
+      eyebrow: "Business advantages",
+      title: "Advantages of ISI Certification",
+      items: [
+        {
+          title: "Enhances Product Credibility and Trust",
+          description:
+            "An ISI-certified product assures customers of safety and quality, building brand credibility and fostering trust among consumers. It also establishes your commitment to providing reliable goods.",
+        },
+        {
+          title: "Increases Market Competitiveness",
+          description:
+            "Having the ISI mark distinguishes your product in the market, giving it a competitive edge. This recognition attracts more customers and helps your business stand out.",
+        },
+        {
+          title: "Mandatory for Certain Products",
+          description:
+            "For several categories, ISI certification is mandatory for market entry. It ensures compliance with legal standards, preventing fines or business restrictions.",
+        },
+        {
+          title: "Promoting consumer protection",
+          description:
+            "ISI mark reduces the risk in products. By meeting the above standards, business aids customers in terms of ensuring safety while fostering long lasting relationships with clients due to their wellbeing and satisfaction.",
+        },
+      ],
+    },
+    process: {
+      eyebrow: "Service Process",
+      title: "Service Process",
+      items: [
+        {
+          title: "Receive Application",
+          description:
+            "The initiation of the application process constitues of submission of complete application with all supporting documents to Bureau of Indian Standards (BIS).",
+        },
+        {
+          title: "Product Code Identification",
+          description:
+            "We identify the applicable ISI standard and product code to ensure accurate documentation and test parameters are followed.",
+        },
+        {
+          title: "Testing of Product Sample",
+          description:
+            "Provided by an examination of product sample in a BIS-approved lab for mandatory compliance with Indian Standards.",
+        },
+        {
+          title: "Inspection by Authority",
+          description:
+            "Inspection and evaluation of the manufacturing process, infrastructure, and quality-management systems of the factory by a BIS official.",
+        },
+        {
+          title: "Report Analysis and Compliance Check",
+          description:
+            "Electrical Manufacturers: For ensuring product safety and market entry compliance.",
+        },
+        {
+          title: "Certification Grant and Mark Use",
+          description:
+            "Once approved, receive your ISI certification. Begin marking your products with the ISI label to signify compliance.",
+        },
+      ],
+    },
+    whyChoose: {
+      eyebrow: "Why JR Compliance",
+      title: "Why Choose JR Compliance?",
+      items: [
+        {
+          title: "Streamlined Certification Process",
+          description: "Ensuring Timely Completion Without Hassles",
+        },
+        {
+          title: "Expert Guidance on Standards",
+          description: "Ensuring Accurate Documentation and Compliance",
+        },
+        {
+          title: "End-to-End Support",
+          description: "for Testing, Inspections, and BIS Coordination",
+        },
+        {
+          title: "Proven Track Record",
+          description: "with Successful Certifications Across Diverse Industries",
+        },
+      ],
+    },
+    breakdown: {
+      eyebrow: "Service Breakdown",
+      title: "Service Breakdown",
+      groups: [
+        {
+          title: "Eligibility",
+          items: [
+            "Legally Registered Businesses: Ensures authenticity in the certification process.",
+            "Manufacturers with Standardized Operations: Requires adherence to BIS guidelines.",
+            "Applicable Product Categories: Covers items specified by BIS regulations.",
+            "Compliance with BIS Testing Requirements: Mandates product testing in authorized labs.",
+          ],
+        },
+        {
+          title: "Documents",
+          items: [
+            "Company Registration Documents: Ensures the applicant is a registered entity complying with Indian regulations.",
+            "Factory License or Trade License: Required to confirm the manufacturing unit's legitimacy.",
+            "Product Test Reports from BIS-Approved Labs: Proof of compliance with Indian Standards.",
+            "Process Flowchart and Quality Control Documents: Showcases the manufacturing process and quality assurance measures.",
+            "Authorized Signatory Details: Aadhaar, PAN, and other identity documents for verification.",
+          ],
+        },
+        {
+          title: "Who Needs",
+          items: [
+            "Electrical Manufacturers: For ensuring product safety and market entry compliance.",
+            "Construction Material Producers: To meet durability and safety standards.",
+            "Consumer Goods Companies: To gain customer trust through certified quality.",
+            "Automotive Component Makers: For safety and regulatory compliance.",
+          ],
+        },
+      ],
+    },
+    faqs: {
+      eyebrow: "FAQ",
+      title: "FAQ",
+      items: [
+        {
+          question: "What is ISI certification, and why is it important?",
+          answer:
+            "ISI certification ensures that products meet Indian safety and quality standards. It enhances customer trust and is mandatory for various categories, protecting businesses from penalties and improving marketability.",
+        },
+        {
+          question: "What is the duration of the ISI certification to be approved?",
+          answer:
+            "Depending on the accuracy of the documentation, testing, inspection of the factory and other compliances. The process might take 30 to 60 days but it depends on the regulatory requirements.",
+        },
+        {
+          question: "What are the costs involved in ISI certification?",
+          answer:
+            "Costs include application fees, product testing charges, and inspection fees. The exact cost varies depending on the product and other factors.",
+        },
+        {
+          question: "Can small businesses apply for ISI certification?",
+          answer:
+            "Yes, ISI certification is accessible to all businesses that meet eligibility and compliance criteria, regardless of size or scale.",
+        },
+        {
+          question: "Is the ISI mark mandatory for all products?",
+          answer:
+            "No, it is mandatory only for specific product categories as defined by BIS. However, obtaining the certification is beneficial for market credibility.",
+        },
+      ],
+    },
+    closingCta: {
+      title: "Take the next step towards success",
+      description:
+        "Partner with Compliance Experts—Secure Your Business with Proven Solutions. Get in Touch Today!",
+      cta: { label: "Contact Us", href: "/contact-us" },
+    },
+  },
+];
+
+export const bureauIndianStandardsSlugs = fallbackBureauIndianStandardsPages.map(
+  (page) => page.slug,
+);
+
+export function bureauIndianStandardsFallback(
+  slug: string,
+): BureauIndianStandardsPageData | undefined {
+  return fallbackBureauIndianStandardsPages.find((page) => page.slug === slug);
+}

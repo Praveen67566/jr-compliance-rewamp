@@ -20,6 +20,8 @@ The CMS provides content for:
 - `/corporate/gst-registration` through `tax-accounting-page`
 - `/corporate/shop-and-establishment-act-registration` through `labour-compliance-page`
 - `/corporate/msme-registration` through `fund-raising-page`
+- `/approval/isi-certificate` through `bureau-indian-standards-page`
+- `/approval/epr-certification` through `pollution-advisory-page`
 - shared header/footer and global consultation-form copy through the `site-setting` single type
 
 The frontend reads published CMS content using a server-only API token. If Strapi is unavailable, the frontend uses local fallback data from `frontend/data/*-fallback.ts`.
@@ -30,7 +32,7 @@ The main CMS flow is:
 2. Strapi stores records in PostgreSQL in both local and deployed environments.
    The retained SQLite file is an offline rollback source only and is never a
    running CMS database.
-3. The frontend fetches published single types and related collections through REST, including all ten fixed service-detail collections filtered by exact slug.
+3. The frontend fetches published single types and related collections through REST, including all twelve fixed service-detail collections filtered by exact slug or Approval path.
 4. `cms/src/revalidation.ts` can notify Next.js after publish changes.
 5. Next.js revalidates the affected cache tags and fetches fresh CMS content.
 
@@ -159,6 +161,15 @@ The main CMS flow is:
 : A historical JSON mirror of the approved MSME Registration fallback for
   migration and content parity checks.
 
+`cms/src/seed/bureau-indian-standards-pages.json`
+: A historical JSON mirror of the approved ISI Certification fallback from
+  `site/approval/isi-certificate.html` for migration and content parity checks.
+
+`cms/src/seed/pollution-advisory-pages.json`
+: A historical JSON mirror of the approved EPR Certification fallback from
+  `site/approval/epr-certification.html` for migration and content parity
+  checks.
+
 ## API content types
 
 Each content type folder follows the Strapi pattern:
@@ -241,6 +252,18 @@ are added and published in Strapi without a new frontend route.
 : Dedicated fixed detail-page records for Fund Raising. MSME Registration is
 the first approved record; later complete records are added and published in
 Strapi without a new frontend route.
+
+`cms/src/api/bureau-indian-standards-page/`
+: Dedicated fixed detail-page records for Bureau of Indian Standards. ISI
+Certification is the first approved record; later complete records are added
+and published in Strapi through the shared Approval route without new frontend
+code.
+
+`cms/src/api/pollution-advisory-page/`
+: Dedicated fixed detail-page records for Pollution Advisory. EPR
+Certification is the first approved record; later complete records are added
+and published in Strapi through the shared Approval route without new frontend
+code.
 
 `cms/src/api/service-category/`
 : Service category records used by the home Service Stack. Categories group services.

@@ -582,3 +582,14 @@ export type LabourCompliancePageContent = PageChromeContent & LabourCompliancePa
 export type FundRaisingPageData = CompanyRegistrationPageData;
 
 export type FundRaisingPageContent = PageChromeContent & FundRaisingPageData;
+
+/** Editor-managed content for Bureau of Indian Standards detail routes. */
+export type BureauIndianStandardsPageData = CompanyRegistrationPageData;
+
+export type BureauIndianStandardsPageContent =
+  PageChromeContent & BureauIndianStandardsPageData;
+
+/** Editor-managed content for Pollution Advisory detail routes. */
+export type PollutionAdvisoryPageData = CompanyRegistrationPageData;
+
+export type PollutionAdvisoryPageContent = PageChromeContent & PollutionAdvisoryPageData;

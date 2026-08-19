@@ -2,16 +2,18 @@
 
 This is the CMS contract for the new Next.js homepage, the initial editorial
 routes (About Us, Careers, Contact Us), the nineteen approved Company
-Registration routes, and the first approved routes for MCA Services, Import
-Export Service, Government License & Certification, IPR Services, FSSAI, and
-SEBI Business Registration, Tax and Accounting, Labour Compliance, and Fund
-Raising. It preserves useful legacy content from the corresponding
-`site/*.html` and `site/corporate/*.html` files, but does **not** preserve
+Registration routes, the first approved routes for MCA Services, Import Export
+Service, Government License & Certification, IPR Services, FSSAI, SEBI
+Business Registration, Tax and Accounting, Labour Compliance, and Fund Raising,
+and the first approved Approval routes for Bureau of Indian Standards and
+Pollution Advisory. It preserves useful legacy content from the corresponding
+`site/*.html`, `site/corporate/*.html`, and `site/approval/*.html` files, but does
+not preserve
 Webflow UI. Layout, motion, colours, and responsive behaviour belong in Next.js;
 editors own copy, links, ordering, SEO, and approved media.
 
-The committed schema contains five single types, twenty-four collection types,
-and forty-six components: twenty-nine content types in total.
+The committed schema contains five single types, twenty-six collection types,
+and forty-six components: thirty-one content types in total.
 
 Use named fields rather than a page-builder dynamic zone for these initial routes.
 That makes the front-end contract stable and easy for non-technical editors to
@@ -332,6 +334,38 @@ published only in Strapi and use the same fixed required fields and validation
 rules as `mca-service-page`, with `menuLabel` matching the Fund Raising navbar
 label.
 
+### `bureau-indian-standards-page` — API: `api::bureau-indian-standards-page.bureau-indian-standards-page`
+
+One published record per approved Bureau of Indian Standards
+`/approval/[...slug]` path. The first approved record is `isi-certificate`.
+Later complete records can be published only in Strapi and use the same fixed
+required fields and validation rules as `mca-service-page`, with `menuLabel`
+matching the Bureau of Indian Standards navbar label. The stored `slug` may be
+a flat route segment or a slash-separated nested Approval path and must be
+globally unique across both Approval service collections.
+
+The Approval `slug` UID uses the route-safe pattern
+`^[A-Za-z0-9-_.~]+(?:/[A-Za-z0-9-_.~]+)*$`, so editors may enter nested paths
+such as `bis-certification/fmcs-bis-certification` without spaces or query
+characters.
+
+### `pollution-advisory-page` — API: `api::pollution-advisory-page.pollution-advisory-page`
+
+One published record per approved Pollution Advisory `/approval/[...slug]`
+path. The first approved record is `epr-certification`. Later complete records
+can be published only in Strapi and use the same fixed required fields and
+validation rules as `mca-service-page`, with `menuLabel` matching the Pollution
+Advisory navbar label. The stored `slug` may be a flat route segment or a
+slash-separated nested Approval path and must be globally unique across both
+Approval service collections.
+
+Both Approval collections use the same fixed fields as the other service-detail
+collections: required `title`, `menuLabel`, route-safe `slug`, `hero`,
+`overview`, `challenges`, `advantages`, `process`, `whyChoose`, `breakdown`,
+`faqs`, `finalCta`, `seo`, and `sortOrder`. Later records must complete every
+required field before publication; the frontend never copies first-page content
+into an incomplete record.
+
 | Type (API) | Fields | Relations |
 | --- | --- | --- |
 | **Service Category** (`service-category`, `service-categories`) | `name` short text*, `slug` UID from `name`*, `description` long text, `sortOrder` integer* | `services`: **one-to-many** to Service (inverse of `serviceCategory`) |
@@ -465,6 +499,8 @@ invent claims or silently repair source inconsistencies.
 | `/corporate/gst-registration` (Tax and Accounting) | `site/corporate/gst-registration.html` | Page-specific GST SEO, hero and overview, four challenges, three advantages, six service steps, four Why JR cards, Who Needs/Eligibility/Documents breakdown, five FAQs, and shared final CTA. Exclude copied company-registration sections, hidden placeholders, unrelated resources/testimonials, Webflow forms, and all legacy UI/transport code. |
 | `/corporate/shop-and-establishment-act-registration` (Labour Compliance) | `site/corporate/shop-and-establishment-act-registration.html` | Page-specific Shop & Establishment SEO, hero and overview, four challenges, four advantages, six service steps, four source support statements carried in the fixed `whyChoose` slot, Eligibility/Documents/Who Needs breakdown, five FAQs, and shared final CTA. Exclude copied company-registration sections, hidden placeholders, unrelated resources/testimonials, Webflow forms, and all legacy UI/transport code. |
 | `/corporate/msme-registration` (Fund Raising) | `site/corporate/msme-registration.html` | Page-specific MSME SEO, hero and overview, four challenges, four advantages, six service steps, four Why JR cards, Eligibility/Documents/Who Needs It breakdown, five FAQs, and shared final CTA. Exclude copied company-registration sections, hidden placeholders, unrelated resources/testimonials, Webflow forms, and all legacy UI/transport code. |
+| `/approval/isi-certificate` (Bureau of Indian Standards) | `site/approval/isi-certificate.html` | Page-specific ISI Certification SEO, hero and overview, four challenges, four advantages, six service steps, four Why JR cards, Eligibility/Documents/Who Needs It breakdown, five FAQs, and shared final CTA. Exclude duplicated template sections, hidden placeholders, unrelated testimonials/resources, Webflow forms, and all legacy UI/transport code. |
+| `/approval/epr-certification` (Pollution Advisory) | `site/approval/epr-certification.html` | Page-specific EPR SEO, hero and overview, five service-scope items, four benefits, four service steps, three Why JR cards, Documents Required breakdown, five FAQs, and shared final CTA. Exclude duplicated template sections, hidden placeholders, unrelated testimonials/resources, Webflow forms, and all legacy UI/transport code. |
 
 Copy the approved media into Strapi Media Library first. The local Next.js
 fallback copies are development safety nets only; a published Strapi record
@@ -496,7 +532,7 @@ attributes are flattened and documents use `documentId`; do not copy v4
 | Consumer | Allowed permissions |
 | --- | --- |
 | **Public role** | None for these content types or Upload. The browser never receives a Strapi token. |
-| **`next-site-reader` API token** | Custom, read-only: `find` for `site-setting`, `home-page`, `about-page`, `careers-page`, and `contact-page`; `find` and `findOne` for `company-registration-page`, `mca-service-page`, `import-export-service-page`, `government-license-certification-page`, `ipr-service-page`, `fssai-service-page`, `sebi-business-registration-page`, `tax-accounting-page`, `labour-compliance-page`, `fund-raising-page`, and every listed supporting collection type; Upload `find`. No create, update, delete, publish, or admin access. Store only as `STRAPI_API_TOKEN` on the Next server. |
+| **`next-site-reader` API token** | Custom, read-only: `find` for `site-setting`, `home-page`, `about-page`, `careers-page`, and `contact-page`; `find` and `findOne` for `company-registration-page`, `mca-service-page`, `import-export-service-page`, `government-license-certification-page`, `ipr-service-page`, `fssai-service-page`, `sebi-business-registration-page`, `tax-accounting-page`, `labour-compliance-page`, `fund-raising-page`, `bureau-indian-standards-page`, `pollution-advisory-page`, and every listed supporting collection type; Upload `find`. No create, update, delete, publish, or admin access. Store only as `STRAPI_API_TOKEN` on the Next server. |
 | **Content Editor admin role** | Content Manager create/read/update for the listed types and Media Library upload/edit. No schema access and no delete permission. |
 | **Publisher/Admin role** | Editor permissions plus publish. Content Type Builder remains development-only and developer-owned. |
 
@@ -518,6 +554,8 @@ GET /api/sebi-business-registration-pages?filters[slug][$eq]=<slug>&status=publi
 GET /api/tax-accounting-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/labour-compliance-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/fund-raising-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/bureau-indian-standards-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/pollution-advisory-pages?filters[slug][$eq]=<slug>&status=published
 ```
 
 Strapi does not populate relations, components, or media by default. The Next
@@ -543,8 +581,9 @@ plugins or issue a browser request per card. The API token is sent as
    `company-registration-page`, `mca-service-page`, `import-export-service-page`,
    `government-license-certification-page`, `ipr-service-page`,
    `fssai-service-page`, `sebi-business-registration-page`,
-   `tax-accounting-page`, `labour-compliance-page`, and `fund-raising-page`
-   collections. Enable Draft & Publish on all of them. Commit Strapi’s generated
+   `tax-accounting-page`, `labour-compliance-page`, `fund-raising-page`,
+   `bureau-indian-standards-page`, and `pollution-advisory-page` collections.
+   Enable Draft & Publish on all of them. Commit Strapi’s generated
    schemas to git; do not create schema changes directly in production.
 4. Configure the media provider and migrate the approved legacy images/logos.
    Add filename, alt text, and captions before selecting them in content.
@@ -555,8 +594,9 @@ plugins or issue a browser request per card. The API token is sent as
    Company Registration record for each approved slug and the approved first
    records for MCA Services, Import Export Service, Government License &
    Certification, IPR Services, FSSAI, SEBI Business Registration, Tax and
-   Accounting, Labour Compliance, and Fund Raising. Select the intended ordered
-   relations and verify every link and media item. Keep all `SEED_*` flags false.
+   Accounting, Labour Compliance, Fund Raising, Bureau of Indian Standards, and
+   Pollution Advisory. Select the intended ordered relations and verify every
+   link and media item. Keep all `SEED_*` flags false.
    To populate another PostgreSQL
    target with the approved content, use a reviewed encrypted Strapi
    `content,files` export/import after a verified database and media backup;
@@ -566,8 +606,9 @@ plugins or issue a browser request per card. The API token is sent as
    above. Put `STRAPI_URL` and `STRAPI_API_TOKEN` in the Next server environment
    (never `NEXT_PUBLIC_*`).
 8. Wire the typed route fetchers to the five single-type endpoints and all
-   exact-slug service-detail collection queries with explicit populate contracts,
-   render only published data, and add signed Strapi publish webhooks to
+   exact-slug service-detail collection queries and Approval path queries with
+   explicit populate contracts, render only published data, and add signed
+   Strapi publish webhooks to
    invalidate the matching Next cache tags.
 9. Test with an editor: change home or route hero copy, reorder a service/team
    member/opening, replace media, save a draft, publish it, and confirm the

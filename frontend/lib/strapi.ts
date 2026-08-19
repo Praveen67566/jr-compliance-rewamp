@@ -9,6 +9,7 @@ import type {
   CareerTestimonial,
   CareersPageContent,
   CompanyRegistrationPageContent,
+  BureauIndianStandardsPageContent,
   ContactPageContent,
   ContactPoint,
   Faq,
@@ -23,6 +24,7 @@ import type {
   Insight,
   IprServicePageContent,
   LabourCompliancePageContent,
+  PollutionAdvisoryPageContent,
   LegalNotice,
   LeadFormSettings,
   LeadFormTrustItem,
@@ -65,7 +67,9 @@ export type RevalidatableContentSlug =
   | "sebi-business-registration-page"
   | "tax-accounting-page"
   | "labour-compliance-page"
-  | "fund-raising-page";
+  | "fund-raising-page"
+  | "bureau-indian-standards-page"
+  | "pollution-advisory-page";
 type PopulateValue = true | PopulateTree;
 
 interface PopulateTree {
@@ -92,6 +96,8 @@ export const strapiCacheTagBySlug: Record<RevalidatableContentSlug, string> = {
   "tax-accounting-page": "jr-tax-accounting-pages",
   "labour-compliance-page": "jr-labour-compliance-pages",
   "fund-raising-page": "jr-fund-raising-pages",
+  "bureau-indian-standards-page": "jr-bureau-indian-standards-pages",
+  "pollution-advisory-page": "jr-pollution-advisory-pages",
 };
 
 /**
@@ -1759,7 +1765,9 @@ type FixedServiceContentSlug =
   | "sebi-business-registration-page"
   | "tax-accounting-page"
   | "labour-compliance-page"
-  | "fund-raising-page";
+  | "fund-raising-page"
+  | "bureau-indian-standards-page"
+  | "pollution-advisory-page";
 
 type FixedServiceCollectionConfig = {
   collectionPath: string;
@@ -1825,6 +1833,18 @@ const fundRaisingCollection = {
   collectionPath: "fund-raising-pages",
   contentSlug: "fund-raising-page",
   label: "Fund Raising",
+} as const satisfies FixedServiceCollectionConfig;
+
+const bureauIndianStandardsCollection = {
+  collectionPath: "bureau-indian-standards-pages",
+  contentSlug: "bureau-indian-standards-page",
+  label: "Bureau of Indian Standards (BIS)",
+} as const satisfies FixedServiceCollectionConfig;
+
+const pollutionAdvisoryCollection = {
+  collectionPath: "pollution-advisory-pages",
+  contentSlug: "pollution-advisory-page",
+  label: "Pollution Advisory",
 } as const satisfies FixedServiceCollectionConfig;
 
 function fixedServiceDetailQuery(slug: string): string {
@@ -1959,6 +1979,14 @@ export function getLabourComplianceSlugsFromStrapi(): Promise<string[]> {
 
 export function getFundRaisingSlugsFromStrapi(): Promise<string[]> {
   return getFixedServiceSlugsFromStrapi(fundRaisingCollection);
+}
+
+export function getBureauIndianStandardsSlugsFromStrapi(): Promise<string[]> {
+  return getFixedServiceSlugsFromStrapi(bureauIndianStandardsCollection);
+}
+
+export function getPollutionAdvisorySlugsFromStrapi(): Promise<string[]> {
+  return getFixedServiceSlugsFromStrapi(pollutionAdvisoryCollection);
 }
 
 export async function getHomepageFromStrapi(
@@ -2209,5 +2237,31 @@ export function getFundRaisingPageFromStrapi(
     fallback,
     chromeFallback,
     fundRaisingCollection,
+  );
+}
+
+export function getBureauIndianStandardsPageFromStrapi(
+  slug: string,
+  fallback: BureauIndianStandardsPageContent | null,
+  chromeFallback: PageChromeContent,
+): Promise<BureauIndianStandardsPageContent | null> {
+  return getFixedServiceCategoryPageFromStrapi(
+    slug,
+    fallback,
+    chromeFallback,
+    bureauIndianStandardsCollection,
+  );
+}
+
+export function getPollutionAdvisoryPageFromStrapi(
+  slug: string,
+  fallback: PollutionAdvisoryPageContent | null,
+  chromeFallback: PageChromeContent,
+): Promise<PollutionAdvisoryPageContent | null> {
+  return getFixedServiceCategoryPageFromStrapi(
+    slug,
+    fallback,
+    chromeFallback,
+    pollutionAdvisoryCollection,
   );
 }

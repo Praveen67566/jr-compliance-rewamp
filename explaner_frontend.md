@@ -8,7 +8,8 @@ The frontend renders the shared routes plus nineteen Company Registration
 detail routes and the first detail route for each of MCA Services, Import
 Export Service, Government License & Certification, IPR Services, FSSAI, and
 SEBI Business Registration, Tax and Accounting, Labour Compliance, and Fund
-Raising:
+Raising, plus the first Bureau of Indian Standards and Pollution Advisory
+routes:
 
 - `/`
 - `/about-us`
@@ -18,6 +19,8 @@ Raising:
   DSC, IEC Code, Ayush License, Trademark Registration, FSSAI Basic
   Registration, Portfolio Manager Registration, GST Registration, Shop &
   Establishment Registration, and MSME Registration
+- `/approval/[...slug]` for ISI Certification, EPR Certification, and later
+  complete CMS-only records in those two Approval categories
 
 Content comes from Strapi when `STRAPI_URL` and `STRAPI_API_TOKEN` are configured. If Strapi is unavailable or incomplete, the app falls back to typed local content in `frontend/data/*-fallback.ts`.
 
@@ -103,6 +106,13 @@ The main flow is:
   Registration, and MSME Registration. It awaits Next.js 16 route params,
   discovers published CMS-only slugs, generates static params and metadata,
   and returns the framework 404 for an unknown or incomplete slug.
+
+`frontend/app/approval/[...slug]/page.tsx`
+: Shared catch-all route for the Bureau of Indian Standards and Pollution
+  Advisory collections. It renders ISI Certification and EPR Certification,
+  supports later flat or nested CMS-only Approval paths, generates static
+  params and metadata, and returns the framework 404 for an unknown or
+  incomplete path.
 
 `frontend/app/icon.tsx`
 : Generates the app icon/fav icon through Next.
@@ -266,6 +276,18 @@ Labour Compliance collection; later records are CMS-only by default.
 source. It is the first offline-safe record for the dedicated Fund Raising
 collection; later records are CMS-only by default.
 
+`frontend/data/bureau-indian-standards-pages-fallback.ts`
+: The complete normalized ISI Certification content from
+  `site/approval/isi-certificate.html`. It is the first offline-safe record for
+  the dedicated Bureau of Indian Standards collection; later records are
+  CMS-only by default.
+
+`frontend/data/pollution-advisory-pages-fallback.ts`
+: The complete normalized EPR Certification content from
+  `site/approval/epr-certification.html`. It is the first offline-safe record
+  for the dedicated Pollution Advisory collection; later records are CMS-only
+  by default.
+
 These files keep the site working when Strapi is offline. They also document the expected content shape for editors/developers.
 
 ## Library files
@@ -275,13 +297,13 @@ These files keep the site working when Strapi is offline. They also document the
   settings, footer, SEO, editorial pages, and the fixed
   named Company Registration, MCA Services, Import Export Service, and
   Government License & Certification, IPR Services, FSSAI, and SEBI Business
-  Registration, Tax and Accounting, Labour Compliance, and Fund Raising
-  service-detail models.
+  Registration, Tax and Accounting, Labour Compliance, Fund Raising, Bureau of
+  Indian Standards, and Pollution Advisory service-detail models.
 
 `frontend/lib/strapi.ts`
 : Server-side Strapi v5 adapter. Builds explicit populate queries—including
   `headerMenu.categories.links` and every nested registration-page component—
-  fetches published single types or exact-slug entries from all ten fixed
+  fetches published single types or exact-slug entries from all twelve fixed
   service-detail collections, converts media URLs, and safely falls back when
   known local fallback data is available. Later CMS-only category records are
   strictly validated before rendering.
@@ -289,7 +311,7 @@ These files keep the site working when Strapi is offline. They also document the
 `frontend/lib/content.ts`
 : Small route-facing content loader. Exposes functions used by pages to get
 home/about/careers/contact content plus cached pages and slug discovery for all
-ten fixed service-detail collections.
+twelve fixed service-detail collections.
 
 `frontend/lib/page-metadata.ts`
 : Converts page SEO data into Next metadata.

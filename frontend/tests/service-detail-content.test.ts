@@ -1,15 +1,22 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
+import bureauIndianStandardsSeedPages from "../../cms/src/seed/bureau-indian-standards-pages.json";
 import governmentLicenseCertificationSeedPages from "../../cms/src/seed/government-license-certification-pages.json";
 import fssaiServiceSeedPages from "../../cms/src/seed/fssai-service-pages.json";
 import fundRaisingSeedPages from "../../cms/src/seed/fund-raising-pages.json";
 import importExportServiceSeedPages from "../../cms/src/seed/import-export-service-pages.json";
 import iprServiceSeedPages from "../../cms/src/seed/ipr-service-pages.json";
 import labourComplianceSeedPages from "../../cms/src/seed/labour-compliance-pages.json";
+import pollutionAdvisorySeedPages from "../../cms/src/seed/pollution-advisory-pages.json";
 import sebiBusinessRegistrationSeedPages from "../../cms/src/seed/sebi-business-registration-pages.json";
 import taxAccountingSeedPages from "../../cms/src/seed/tax-accounting-pages.json";
 import { companyRegistrationSlugs } from "@/data/company-registration-pages-fallback";
+import {
+  bureauIndianStandardsFallback,
+  bureauIndianStandardsSlugs,
+  fallbackBureauIndianStandardsPages,
+} from "@/data/bureau-indian-standards-pages-fallback";
 import {
   fallbackGovernmentLicenseCertificationPages,
   governmentLicenseCertificationFallback,
@@ -37,6 +44,11 @@ import {
   labourComplianceSlugs,
 } from "@/data/labour-compliance-pages-fallback";
 import { mcaServiceSlugs } from "@/data/mca-service-pages-fallback";
+import {
+  fallbackPollutionAdvisoryPages,
+  pollutionAdvisoryFallback,
+  pollutionAdvisorySlugs,
+} from "@/data/pollution-advisory-pages-fallback";
 import {
   fallbackIprServicePages,
   iprServiceFallback,
@@ -75,6 +87,11 @@ describe("service-detail content mirrors", () => {
     assert.deepEqual(fallbackTaxAccountingPages, taxAccountingSeedPages);
     assert.deepEqual(fallbackLabourCompliancePages, labourComplianceSeedPages);
     assert.deepEqual(fallbackFundRaisingPages, fundRaisingSeedPages);
+  });
+
+  it("keeps the BIS and Pollution Advisory fallbacks identical to their CMS mirrors", () => {
+    assert.deepEqual(fallbackBureauIndianStandardsPages, bureauIndianStandardsSeedPages);
+    assert.deepEqual(fallbackPollutionAdvisoryPages, pollutionAdvisorySeedPages);
   });
 
   it("retains every approved fixed section from both legacy sources", () => {
@@ -125,6 +142,11 @@ describe("service-detail content mirrors", () => {
     assert.equal(new Set(slugs).size, slugs.length);
   });
 
+  it("keeps every local Approval route path unique", () => {
+    const routePaths = [...bureauIndianStandardsSlugs, ...pollutionAdvisorySlugs];
+    assert.equal(new Set(routePaths).size, routePaths.length);
+  });
+
   it("resolves only the approved first-page fallbacks", () => {
     assert.equal(importExportServiceFallback("iec-registration")?.menuLabel, "IEC Code");
     assert.equal(governmentLicenseCertificationFallback("ayush-license")?.menuLabel, "Ayush License");
@@ -148,6 +170,31 @@ describe("service-detail content mirrors", () => {
     assert.equal(taxAccountingFallback("gst-return"), undefined);
     assert.equal(labourComplianceFallback("esic-registration"), undefined);
     assert.equal(fundRaisingFallback("startup-india-registration"), undefined);
+    assert.equal(
+      bureauIndianStandardsFallback("isi-certificate")?.menuLabel,
+      "ISI Certification",
+    );
+    assert.equal(
+      pollutionAdvisoryFallback("epr-certification")?.menuLabel,
+      "Extended Producer's Responsibility (EPR)",
+    );
+    assert.equal(bureauIndianStandardsFallback("bis-certification/fmcs-bis-certification"), undefined);
+    assert.equal(pollutionAdvisoryFallback("epr-certification/e-waste-compliance"), undefined);
+  });
+
+  it("keeps later BIS and Pollution Advisory links on the services placeholder", () => {
+    const approval = fallbackHomepage.navigation.find((item) => item.label === "Approval");
+    const bis = approval?.categories?.find(
+      (category) => category.title === "Bureau of Indian Standards (BIS)",
+    );
+    const pollution = approval?.categories?.find(
+      (category) => category.title === "Pollution Advisory",
+    );
+
+    assert.equal(bis?.links[0]?.href, "/approval/isi-certificate");
+    assert.ok(bis?.links.slice(1).every((link) => link.href === "/#services"));
+    assert.equal(pollution?.links[0]?.href, "/approval/epr-certification");
+    assert.ok(pollution?.links.slice(1).every((link) => link.href === "/#services"));
   });
 
   it("keeps unimplemented links in both new categories on the services placeholder", () => {

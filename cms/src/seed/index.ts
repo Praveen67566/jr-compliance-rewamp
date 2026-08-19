@@ -6,6 +6,7 @@ import type { Core } from "@strapi/strapi";
 import { withNextRevalidationSuppressed } from "../revalidation";
 
 import companyRegistrationPages from "./company-registration-pages.json";
+import bureauIndianStandardsPages from "./bureau-indian-standards-pages.json";
 import fssaiServicePages from "./fssai-service-pages.json";
 import fundRaisingPages from "./fund-raising-pages.json";
 import governmentLicenseCertificationPages from "./government-license-certification-pages.json";
@@ -15,6 +16,7 @@ import labourCompliancePages from "./labour-compliance-pages.json";
 import mcaServicePages from "./mca-service-pages.json";
 import sebiBusinessRegistrationPages from "./sebi-business-registration-pages.json";
 import taxAccountingPages from "./tax-accounting-pages.json";
+import pollutionAdvisoryPages from "./pollution-advisory-pages.json";
 import {
   achievements,
   blocks,
@@ -66,6 +68,9 @@ const CONTENT_TYPES = {
   taxAccountingPage: "api::tax-accounting-page.tax-accounting-page",
   labourCompliancePage: "api::labour-compliance-page.labour-compliance-page",
   fundRaisingPage: "api::fund-raising-page.fund-raising-page",
+  bureauIndianStandardsPage:
+    "api::bureau-indian-standards-page.bureau-indian-standards-page",
+  pollutionAdvisoryPage: "api::pollution-advisory-page.pollution-advisory-page",
   serviceCategory: "api::service-category.service-category",
   service: "api::service.service",
   brandLogo: "api::brand-logo.brand-logo",
@@ -330,10 +335,12 @@ type ImportExportServiceSeedPage = (typeof importExportServicePages)[number];
 type IprServiceSeedPage = (typeof iprServicePages)[number];
 type FssaiServiceSeedPage = (typeof fssaiServicePages)[number];
 type FundRaisingSeedPage = (typeof fundRaisingPages)[number];
+type BureauIndianStandardsSeedPage = (typeof bureauIndianStandardsPages)[number];
 type LabourComplianceSeedPage = (typeof labourCompliancePages)[number];
 type McaServiceSeedPage = (typeof mcaServicePages)[number];
 type SebiBusinessRegistrationSeedPage = (typeof sebiBusinessRegistrationPages)[number];
 type TaxAccountingSeedPage = (typeof taxAccountingPages)[number];
+type PollutionAdvisorySeedPage = (typeof pollutionAdvisoryPages)[number];
 type ServiceDetailSeedPage =
   | CompanyRegistrationSeedPage
   | GovernmentLicenseCertificationSeedPage
@@ -344,7 +351,9 @@ type ServiceDetailSeedPage =
   | LabourComplianceSeedPage
   | McaServiceSeedPage
   | SebiBusinessRegistrationSeedPage
-  | TaxAccountingSeedPage;
+  | TaxAccountingSeedPage
+  | BureauIndianStandardsSeedPage
+  | PollutionAdvisorySeedPage;
 
 function serviceDetailPageData(
   page: ServiceDetailSeedPage,
@@ -684,6 +693,50 @@ async function createFundRaisingPages(
   return created;
 }
 
+async function createBureauIndianStandardsPages(
+  strapi: Core.Strapi,
+  options: { onlyMissing?: boolean } = {},
+): Promise<number> {
+  const pages = documentService(strapi, CONTENT_TYPES.bureauIndianStandardsPage);
+  let created = 0;
+
+  for (const [sortOrder, page] of bureauIndianStandardsPages.entries()) {
+    if (options.onlyMissing) {
+      const filters = { slug: { $eq: page.slug } };
+      const [draft, published] = await Promise.all([
+        pages.findFirst({ filters, status: "draft" }),
+        pages.findFirst({ filters, status: "published" }),
+      ]);
+      if (draft || published) continue;
+    }
+    await pages.create({ data: serviceDetailPageData(page, sortOrder), status: "published" });
+    created += 1;
+  }
+  return created;
+}
+
+async function createPollutionAdvisoryPages(
+  strapi: Core.Strapi,
+  options: { onlyMissing?: boolean } = {},
+): Promise<number> {
+  const pages = documentService(strapi, CONTENT_TYPES.pollutionAdvisoryPage);
+  let created = 0;
+
+  for (const [sortOrder, page] of pollutionAdvisoryPages.entries()) {
+    if (options.onlyMissing) {
+      const filters = { slug: { $eq: page.slug } };
+      const [draft, published] = await Promise.all([
+        pages.findFirst({ filters, status: "draft" }),
+        pages.findFirst({ filters, status: "published" }),
+      ]);
+      if (draft || published) continue;
+    }
+    await pages.create({ data: serviceDetailPageData(page, sortOrder), status: "published" });
+    created += 1;
+  }
+  return created;
+}
+
 /**
  * Historical backfill helper. The normal PostgreSQL CMS bootstrap does not
  * invoke it; approved content moves through reviewed Strapi transfers.
@@ -1003,6 +1056,8 @@ export async function seedInitialContent(strapi: Core.Strapi): Promise<void> {
   await createTaxAccountingPages(strapi);
   await createLabourCompliancePages(strapi);
   await createFundRaisingPages(strapi);
+  await createBureauIndianStandardsPages(strapi);
+  await createPollutionAdvisoryPages(strapi);
 
   const faqCategoryDocuments: SeedDocument[] = [];
   for (const category of homeFaqCategories) {

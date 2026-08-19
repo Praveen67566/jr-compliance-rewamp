@@ -3,6 +3,7 @@ import type { MetadataRoute } from "next";
 import { companyRegistrationSlugs } from "@/data/company-registration-pages-fallback";
 import {
   getFssaiServiceSlugs,
+  getBureauIndianStandardsSlugs,
   getFundRaisingSlugs,
   getGovernmentLicenseCertificationSlugs,
   getIprServiceSlugs,
@@ -11,6 +12,7 @@ import {
   getMcaServiceSlugs,
   getSebiBusinessRegistrationSlugs,
   getTaxAccountingSlugs,
+  getPollutionAdvisorySlugs,
 } from "@/lib/content";
 import { publicSiteUrl } from "@/lib/site-url";
 
@@ -26,6 +28,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     taxAccountingSlugs,
     labourComplianceSlugs,
     fundRaisingSlugs,
+    bureauIndianStandardsSlugs,
+    pollutionAdvisorySlugs,
   ] = await Promise.all([
     getMcaServiceSlugs(),
     getImportExportServiceSlugs(),
@@ -36,6 +40,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getTaxAccountingSlugs(),
     getLabourComplianceSlugs(),
     getFundRaisingSlugs(),
+    getBureauIndianStandardsSlugs(),
+    getPollutionAdvisorySlugs(),
   ]);
 
   return [
@@ -77,5 +83,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly" as const,
       priority: 0.75,
     })),
+    ...[...new Set([...bureauIndianStandardsSlugs, ...pollutionAdvisorySlugs])].map(
+      (routePath) => ({
+        url: new URL(`/approval/${routePath}`, siteUrl).toString(),
+        changeFrequency: "monthly" as const,
+        priority: 0.75,
+      }),
+    ),
   ];
 }

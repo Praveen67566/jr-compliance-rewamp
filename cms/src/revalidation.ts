@@ -24,6 +24,8 @@ const ALL_PAGE_TAGS = [
   "jr-tax-accounting-pages",
   "jr-labour-compliance-pages",
   "jr-fund-raising-pages",
+  "jr-bureau-indian-standards-pages",
+  "jr-pollution-advisory-pages",
 ] as const;
 
 /**
@@ -57,6 +59,12 @@ const cacheTagsByUid: Record<string, readonly string[]> = {
     "jr-labour-compliance-pages",
   ],
   "api::fund-raising-page.fund-raising-page": ["jr-fund-raising-pages"],
+  "api::bureau-indian-standards-page.bureau-indian-standards-page": [
+    "jr-bureau-indian-standards-pages",
+  ],
+  "api::pollution-advisory-page.pollution-advisory-page": [
+    "jr-pollution-advisory-pages",
+  ],
   "api::service-category.service-category": ["jr-homepage"],
   "api::service.service": ["jr-homepage"],
   "api::brand-logo.brand-logo": ["jr-homepage"],

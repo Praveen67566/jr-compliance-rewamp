@@ -2,6 +2,10 @@ import { cache } from "react";
 
 import { fallbackAboutPage } from "@/data/about-page-fallback";
 import { fallbackCareersPage } from "@/data/careers-page-fallback";
+import {
+  bureauIndianStandardsFallback,
+  bureauIndianStandardsSlugs,
+} from "@/data/bureau-indian-standards-pages-fallback";
 import { companyRegistrationFallback } from "@/data/company-registration-pages-fallback";
 import { fallbackContactPage } from "@/data/contact-page-fallback";
 import {
@@ -29,6 +33,10 @@ import {
   labourComplianceFallback,
   labourComplianceSlugs,
 } from "@/data/labour-compliance-pages-fallback";
+import {
+  pollutionAdvisoryFallback,
+  pollutionAdvisorySlugs,
+} from "@/data/pollution-advisory-pages-fallback";
 import { mcaServiceFallback, mcaServiceSlugs } from "@/data/mca-service-pages-fallback";
 import {
   sebiBusinessRegistrationFallback,
@@ -41,6 +49,8 @@ import {
 import {
   getAboutPageFromStrapi,
   getCareersPageFromStrapi,
+  getBureauIndianStandardsPageFromStrapi,
+  getBureauIndianStandardsSlugsFromStrapi,
   getCompanyRegistrationPageFromStrapi,
   getContactPageFromStrapi,
   getFssaiServicePageFromStrapi,
@@ -56,6 +66,8 @@ import {
   getImportExportServiceSlugsFromStrapi,
   getLabourCompliancePageFromStrapi,
   getLabourComplianceSlugsFromStrapi,
+  getPollutionAdvisoryPageFromStrapi,
+  getPollutionAdvisorySlugsFromStrapi,
   getMcaServicePageFromStrapi,
   getMcaServiceSlugsFromStrapi,
   getSebiBusinessRegistrationPageFromStrapi,
@@ -66,6 +78,7 @@ import {
 import type {
   AboutPageContent,
   CareersPageContent,
+  BureauIndianStandardsPageContent,
   CompanyRegistrationPageContent,
   ContactPageContent,
   FssaiServicePageContent,
@@ -75,6 +88,7 @@ import type {
   ImportExportServicePageContent,
   IprServicePageContent,
   LabourCompliancePageContent,
+  PollutionAdvisoryPageContent,
   McaServicePageContent,
   SebiBusinessRegistrationPageContent,
   TaxAccountingPageContent,
@@ -335,5 +349,55 @@ export const getFundRaisingSlugs = cache(
   async function getFundRaisingSlugs(): Promise<string[]> {
     const strapiSlugs = await getFundRaisingSlugsFromStrapi();
     return [...new Set([...fundRaisingSlugs, ...strapiSlugs])];
+  },
+);
+
+export const getBureauIndianStandardsPage = cache(
+  async function getBureauIndianStandardsPage(
+    slug: string,
+  ): Promise<BureauIndianStandardsPageContent | null> {
+    const page = bureauIndianStandardsFallback(slug);
+    const chromeFallback = {
+      site: fallbackHomepage.site,
+      navigation: fallbackHomepage.navigation,
+      footer: fallbackHomepage.footer,
+    };
+    const fallback: BureauIndianStandardsPageContent | null = page
+      ? { ...page, ...chromeFallback }
+      : null;
+
+    return (
+      (await getBureauIndianStandardsPageFromStrapi(slug, fallback, chromeFallback)) ?? fallback
+    );
+  },
+);
+
+export const getBureauIndianStandardsSlugs = cache(
+  async function getBureauIndianStandardsSlugs(): Promise<string[]> {
+    const strapiSlugs = await getBureauIndianStandardsSlugsFromStrapi();
+    return [...new Set([...bureauIndianStandardsSlugs, ...strapiSlugs])];
+  },
+);
+
+export const getPollutionAdvisoryPage = cache(async function getPollutionAdvisoryPage(
+  slug: string,
+): Promise<PollutionAdvisoryPageContent | null> {
+  const page = pollutionAdvisoryFallback(slug);
+  const chromeFallback = {
+    site: fallbackHomepage.site,
+    navigation: fallbackHomepage.navigation,
+    footer: fallbackHomepage.footer,
+  };
+  const fallback: PollutionAdvisoryPageContent | null = page
+    ? { ...page, ...chromeFallback }
+    : null;
+
+  return (await getPollutionAdvisoryPageFromStrapi(slug, fallback, chromeFallback)) ?? fallback;
+});
+
+export const getPollutionAdvisorySlugs = cache(
+  async function getPollutionAdvisorySlugs(): Promise<string[]> {
+    const strapiSlugs = await getPollutionAdvisorySlugsFromStrapi();
+    return [...new Set([...pollutionAdvisorySlugs, ...strapiSlugs])];
   },
 );

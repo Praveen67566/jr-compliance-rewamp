@@ -144,16 +144,16 @@ export const initialSite = {
       href: "/#services",
       categories: [
         menuCategory("Bureau of Indian Standards (BIS)", [
-          ["ISI Certification", "/approval/isi-certificate"], ["FMCS Certification", "/approval/bis-certification/fmcs-bis-certification"],
-          ["CRS Certification", "/approval/bis-certification/crs-certification"], ["Scheme-X", "/approval/bis-certification/scheme-x"],
+          ["ISI Certification", "/approval/isi-certificate"], ["FMCS Certification", "/#services"],
+          ["CRS Certification", "/#services"], ["Scheme-X", "/#services"],
         ]),
         menuCategory("Pollution Advisory", [
           ["Extended Producer's Responsibility (EPR)", "/approval/epr-certification"],
-          ["EPR- E waste", "/approval/epr-certification/e-waste-compliance"], ["EPR- Battery waste", "/approval/epr-certification/battery-waste-compliance"],
-          ["EPR- Plastic waste", "/approval/epr-certification/plastic-waste-compliance"], ["EPR- Tyre waste", "/approval/epr-certification/tyre-waste"],
-          ["EPR- Used oil waste", "/approval/epr-certification/used-oil"], ["CPCB Guidelines", "/approval/cpcb-registration"],
-          ["Delhi Pollution Control Committee", "/approval/state-pollution-board/dspcc"],
-          ["State Pollution Board / Pollution Control Committee", "/approval/state-pollution-board"],
+          ["EPR- E waste", "/#services"], ["EPR- Battery waste", "/#services"],
+          ["EPR- Plastic waste", "/#services"], ["EPR- Tyre waste", "/#services"],
+          ["EPR- Used oil waste", "/#services"], ["CPCB Guidelines", "/#services"],
+          ["Delhi Pollution Control Committee", "/#services"],
+          ["State Pollution Board / Pollution Control Committee", "/#services"],
         ]),
         menuCategory("Telecommunication Engineering Centre (TEC)", [
           ["MTCTE", "/approval/wpc-certification"], ["Voluntary", "/#services"],

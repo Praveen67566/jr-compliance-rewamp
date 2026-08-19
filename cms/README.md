@@ -16,11 +16,18 @@ This is the Strapi v5 TypeScript CMS for the active JR Compliance routes:
 - `/corporate/gst-registration` — `tax-accounting-page` collection (first approved Tax and Accounting route)
 - `/corporate/shop-and-establishment-act-registration` — `labour-compliance-page` collection (first approved Labour Compliance route)
 - `/corporate/msme-registration` — `fund-raising-page` collection (first approved Fund Raising route)
+- `/approval/isi-certificate` — `bureau-indian-standards-page` collection (first approved Bureau of Indian Standards route)
+- `/approval/epr-certification` — `pollution-advisory-page` collection (first approved Pollution Advisory route)
 - shared header/footer and global consultation-form copy — `site-setting`
 
-Later approved records in any of those nine service categories use their
-dedicated fixed collection contract and are rendered at their globally unique
-`/corporate/[slug]` routes when published.
+Later approved records in any of those eleven service categories use their
+dedicated fixed collection contract. Corporate records render at globally
+unique `/corporate/[slug]` routes, while Bureau of Indian Standards and
+Pollution Advisory records render through `/approval/[...slug]` when published.
+For either Approval collection, enter `slug` as a relative path without a
+leading slash. Flat values such as `isi-certificate` and slash-separated nested
+values such as `bis-certification/fmcs-bis-certification` are accepted; each
+segment may contain only letters, numbers, `-`, `_`, `.`, and `~`.
 
 The exact editorial contract lives in [CONTENT_MODEL.md](./CONTENT_MODEL.md).
 Next.js owns the Compliance Network layout, interaction, and motion; Strapi owns
@@ -75,9 +82,10 @@ not merge editor records, administrator accounts, API tokens, or secrets.
 
 ## Schema and editor policy
 
-The committed schemas define five single types, twenty-four collection types, and
-forty-six components. All editorial types use Draft & Publish. Page-selected
-relations are intentionally unidirectional, ordered selections; the inverse
+The committed schemas define five single types, twenty-six collection types,
+and forty-six components (thirty-one content types total), including twelve
+fixed service-detail collections. All editorial types use Draft & Publish.
+Page-selected relations are intentionally unidirectional, ordered selections; the inverse
 pairs are only Service Category → Service and FAQ Category → FAQ.
 
 The shared navbar is edited under **Site Setting → Header Menu**:
@@ -97,7 +105,8 @@ The populated local PostgreSQL CMS includes all currently approved navbar
 categories and links, nineteen Company Registration records, and the first
 approved records for MCA Services, Import Export Service, Government License &
 Certification, IPR Services, FSSAI, SEBI Business Registration, Tax and
-Accounting, Labour Compliance, and Fund Raising. On startup, the CMS also
+Accounting, Labour Compliance, Fund Raising, Bureau of Indian Standards, and
+Pollution Advisory. On startup, the CMS also
 migrates only an exact known legacy demo-menu signature: either
 the original flat menu or one of the two preceding categorized menus. Those
 known signatures retain the former IPR/FSSAI later-page URLs and may also retain
@@ -119,8 +128,9 @@ Set permissions deliberately:
   `import-export-service-page`, `government-license-certification-page`,
   `ipr-service-page`, `fssai-service-page`, and
   `sebi-business-registration-page`, `tax-accounting-page`,
-  `labour-compliance-page`, and `fund-raising-page` collections, listed
-  supporting collections, and Upload `find` only.
+  `labour-compliance-page`, `fund-raising-page`,
+  `bureau-indian-standards-page`, and `pollution-advisory-page` collections,
+  listed supporting collections, and Upload `find` only.
 - Content Editor: create/read/update listed content and media, but no schema or
   delete access.
 - Publisher/Admin: editor access plus publish.
@@ -158,6 +168,8 @@ GET /api/sebi-business-registration-pages?filters[slug][$eq]=<slug>&status=publi
 GET /api/tax-accounting-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/labour-compliance-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/fund-raising-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/bureau-indian-standards-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/pollution-advisory-pages?filters[slug][$eq]=<slug>&status=published
 ```
 
 Relations, media, and nested components are not populated by default. Keep the

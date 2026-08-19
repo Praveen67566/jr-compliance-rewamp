@@ -104,10 +104,10 @@ If a command cannot be run, clearly explain why.
 - Tell me what validation passed or failed.
 
 ## Prompt:-
+In Approval
 
-Tax and Accounting category and first page GST Registration get content from file:///Users/yalagalasrinivas/Downloads/Webflowwebsite%20%7C%20JR%20Compliance%20/site/corporate/gst-registration.html
-Labour Compliance category and first page Shop & Establishment Registration get content from file:///Users/yalagalasrinivas/Downloads/Webflowwebsite%20%7C%20JR%20Compliance%20/site/corporate/shop-and-establishment-act-registration.html
-Fund Raising category and first page MSME get content from file:///Users/yalagalasrinivas/Downloads/Webflowwebsite%20%7C%20JR%20Compliance%20/site/corporate/msme-registration.html
+Bureau of Indian Standards (BIS) category and first page ISI Certification get content from file:///Users/yalagalasrinivas/Downloads/Webflowwebsite%20%7C%20JR%20Compliance%20/site/approval/isi-certificate.html
+Pollution Advisory category and first page Extended Producer's Responsibility (EPR) get content from file:///Users/yalagalasrinivas/Downloads/Webflowwebsite%20%7C%20JR%20Compliance%20/site/approval/epr-certification.html
 
 * service-category-first-page-guide.md read this page 
 * from htmls copy only content.
