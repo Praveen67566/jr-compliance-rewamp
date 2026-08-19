@@ -104,19 +104,23 @@ If a command cannot be run, clearly explain why.
 - Tell me what validation passed or failed.
 
 ## Prompt:-
-In Approval
 
-Bureau of Indian Standards (BIS) category and first page ISI Certification get content from file:///Users/yalagalasrinivas/Downloads/Webflowwebsite%20%7C%20JR%20Compliance%20/site/approval/isi-certificate.html
-Pollution Advisory category and first page Extended Producer's Responsibility (EPR) get content from file:///Users/yalagalasrinivas/Downloads/Webflowwebsite%20%7C%20JR%20Compliance%20/site/approval/epr-certification.html
+This is Only UI Improvement No need to change any strapi cms config or code and if needed then dont do anything.
 
-* service-category-first-page-guide.md read this page 
-* from htmls copy only content.
-* dont change anything unneccessary.
+Service Page UI & UX Improvement:-
+* it should cover the all service pages and only service pages
+1. in hero section content have too much margin from top this needs to be change also add any good moving animation in background not the simple one also which match the theme.
+2. Service Overview this section ui looks so much outdated like header somewhere else content some where else make a good design for this section.
+3. What to plan for this section card ui is so simple that can be inhanced make it looks 
+good.
+4. Business advantages this section ui also not good inhance that also and card design and add morden animation.
+5. Service Breakdown improve this section design also card looks so bad and add a good background.
 
-1. follow the Company Registration pages design exactly and follow the jr-compliance-rewamp code structure.
-2. Only Add first page all the other pages are going to be added from the strapi cms.
-3. add seed data in postgres database also.
-4. do a quick testing.
+Dont't change anything else.
+this frontend is based on strapi cms keep that in mind only improve the design here nothing else.
+a morden clean and inhanced page i want
+
+
 
 
 
