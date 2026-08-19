@@ -567,3 +567,18 @@ export type SebiBusinessRegistrationPageData = CompanyRegistrationPageData;
 
 export type SebiBusinessRegistrationPageContent =
   PageChromeContent & SebiBusinessRegistrationPageData;
+
+/** Editor-managed content for Tax and Accounting detail routes. */
+export type TaxAccountingPageData = CompanyRegistrationPageData;
+
+export type TaxAccountingPageContent = PageChromeContent & TaxAccountingPageData;
+
+/** Editor-managed content for Labour Compliance detail routes. */
+export type LabourCompliancePageData = CompanyRegistrationPageData;
+
+export type LabourCompliancePageContent = PageChromeContent & LabourCompliancePageData;
+
+/** Editor-managed content for Fund Raising detail routes. */
+export type FundRaisingPageData = CompanyRegistrationPageData;
+
+export type FundRaisingPageContent = PageChromeContent & FundRaisingPageData;

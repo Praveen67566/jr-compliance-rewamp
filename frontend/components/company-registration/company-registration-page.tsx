@@ -5,12 +5,15 @@ import { linkTargetProps } from "@/lib/link-props";
 import type {
   CompanyRegistrationPageContent,
   FssaiServicePageContent,
+  FundRaisingPageContent,
   GovernmentLicenseCertificationPageContent,
   ImportExportServicePageContent,
   IprServicePageContent,
+  LabourCompliancePageContent,
   McaServicePageContent,
   RegistrationDetail,
   SebiBusinessRegistrationPageContent,
+  TaxAccountingPageContent,
 } from "@/lib/types";
 
 type CompanyRegistrationPageProps = {
@@ -21,7 +24,10 @@ type CompanyRegistrationPageProps = {
     | GovernmentLicenseCertificationPageContent
     | IprServicePageContent
     | FssaiServicePageContent
-    | SebiBusinessRegistrationPageContent;
+    | SebiBusinessRegistrationPageContent
+    | TaxAccountingPageContent
+    | LabourCompliancePageContent
+    | FundRaisingPageContent;
 };
 
 type SectionHeadingProps = {

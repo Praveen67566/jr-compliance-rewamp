@@ -351,7 +351,8 @@ environment-specific.
    Open Content Manager and confirm that the five single types, Company
    Registration Pages, MCA Service Pages, Import Export Service Pages,
    Government License & Certification Pages, IPR Service Pages, FSSAI Service
-   Pages, SEBI Business Registration Pages, supporting collections, and Media
+   Pages, SEBI Business Registration Pages, Tax and Accounting Pages, Labour
+   Compliance Pages, Fund Raising Pages, supporting collections, and Media
    Library now contain records. The imported entries are published and can be
    edited normally: save your change, then click **Publish** to make it live.
 
@@ -372,7 +373,8 @@ Create a Strapi API token for the frontend:
 3. Grant only required read operations (`find`/`findOne`) to the five single
    types, Company Registration Pages, MCA Service Pages, Import Export Service
    Pages, Government License & Certification Pages, IPR Service Pages, FSSAI
-   Service Pages, SEBI Business Registration Pages, their selected supporting
+   Service Pages, SEBI Business Registration Pages, Tax and Accounting Pages,
+   Labour Compliance Pages, Fund Raising Pages, their selected supporting
    collections, and Upload `find`.
 4. Keep the Public role without content or Upload read access.
 5. Copy the token once and store it securely.

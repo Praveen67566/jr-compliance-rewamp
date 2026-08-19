@@ -13,9 +13,12 @@ This is the Strapi v5 TypeScript CMS for the active JR Compliance routes:
 - `/corporate/trademark-registration` — `ipr-service-page` collection (first approved IPR Services route)
 - `/corporate/fssai-certificate` — `fssai-service-page` collection (first approved FSSAI route)
 - `/corporate/portfolio-manager-registration` — `sebi-business-registration-page` collection (first approved SEBI Business Registration route)
+- `/corporate/gst-registration` — `tax-accounting-page` collection (first approved Tax and Accounting route)
+- `/corporate/shop-and-establishment-act-registration` — `labour-compliance-page` collection (first approved Labour Compliance route)
+- `/corporate/msme-registration` — `fund-raising-page` collection (first approved Fund Raising route)
 - shared header/footer and global consultation-form copy — `site-setting`
 
-Later approved records in any of those six service categories use their
+Later approved records in any of those nine service categories use their
 dedicated fixed collection contract and are rendered at their globally unique
 `/corporate/[slug]` routes when published.
 
@@ -72,7 +75,7 @@ not merge editor records, administrator accounts, API tokens, or secrets.
 
 ## Schema and editor policy
 
-The committed schemas define five single types, twenty-one collection types, and
+The committed schemas define five single types, twenty-four collection types, and
 forty-six components. All editorial types use Draft & Publish. Page-selected
 relations are intentionally unidirectional, ordered selections; the inverse
 pairs are only Service Category → Service and FAQ Category → FAQ.
@@ -93,8 +96,9 @@ transport do not live in Strapi.
 The populated local PostgreSQL CMS includes all currently approved navbar
 categories and links, nineteen Company Registration records, and the first
 approved records for MCA Services, Import Export Service, Government License &
-Certification, IPR Services, FSSAI, and SEBI Business Registration. On startup,
-the CMS also migrates only an exact known legacy demo-menu signature: either
+Certification, IPR Services, FSSAI, SEBI Business Registration, Tax and
+Accounting, Labour Compliance, and Fund Raising. On startup, the CMS also
+migrates only an exact known legacy demo-menu signature: either
 the original flat menu or one of the two preceding categorized menus. Those
 known signatures retain the former IPR/FSSAI later-page URLs and may also retain
 the older Indian Subsidiary and Mutual Fund placeholders. The check is
@@ -114,8 +118,9 @@ Set permissions deliberately:
   the `company-registration-page`, `mca-service-page`,
   `import-export-service-page`, `government-license-certification-page`,
   `ipr-service-page`, `fssai-service-page`, and
-  `sebi-business-registration-page` collections, listed supporting collections,
-  and Upload `find` only.
+  `sebi-business-registration-page`, `tax-accounting-page`,
+  `labour-compliance-page`, and `fund-raising-page` collections, listed
+  supporting collections, and Upload `find` only.
 - Content Editor: create/read/update listed content and media, but no schema or
   delete access.
 - Publisher/Admin: editor access plus publish.
@@ -150,6 +155,9 @@ GET /api/government-license-certification-pages?filters[slug][$eq]=<slug>&status
 GET /api/ipr-service-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/fssai-service-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/sebi-business-registration-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/tax-accounting-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/labour-compliance-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/fund-raising-pages?filters[slug][$eq]=<slug>&status=published
 ```
 
 Relations, media, and nested components are not populated by default. Keep the

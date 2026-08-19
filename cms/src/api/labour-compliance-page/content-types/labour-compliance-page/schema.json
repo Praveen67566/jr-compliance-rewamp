@@ -1,0 +1,94 @@
+{
+  "kind": "collectionType",
+  "collectionName": "labour_compliance_pages",
+  "info": {
+    "singularName": "labour-compliance-page",
+    "pluralName": "labour-compliance-pages",
+    "displayName": "Labour Compliance Page",
+    "description": "A fixed, CMS-managed Labour Compliance detail page."
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "menuLabel": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "hero": {
+      "type": "component",
+      "component": "registration.hero",
+      "repeatable": false,
+      "required": true
+    },
+    "overview": {
+      "type": "component",
+      "component": "registration.overview",
+      "repeatable": false,
+      "required": true
+    },
+    "challenges": {
+      "type": "component",
+      "component": "registration.card-section",
+      "repeatable": false,
+      "required": true
+    },
+    "advantages": {
+      "type": "component",
+      "component": "registration.card-section",
+      "repeatable": false,
+      "required": true
+    },
+    "process": {
+      "type": "component",
+      "component": "registration.card-section",
+      "repeatable": false,
+      "required": true
+    },
+    "whyChoose": {
+      "type": "component",
+      "component": "registration.card-section",
+      "repeatable": false,
+      "required": true
+    },
+    "breakdown": {
+      "type": "component",
+      "component": "registration.breakdown-section",
+      "repeatable": false,
+      "required": true
+    },
+    "faqs": {
+      "type": "component",
+      "component": "registration.faq-section",
+      "repeatable": false,
+      "required": true
+    },
+    "finalCta": {
+      "type": "component",
+      "component": "home.cta-band",
+      "repeatable": false,
+      "required": true
+    },
+    "seo": {
+      "type": "component",
+      "component": "shared.seo",
+      "repeatable": false,
+      "required": true
+    },
+    "sortOrder": {
+      "type": "integer",
+      "min": 0,
+      "required": true
+    }
+  }
+}

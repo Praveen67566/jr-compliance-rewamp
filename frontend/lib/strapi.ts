@@ -16,11 +16,13 @@ import type {
   FooterContent,
   FooterLinkGroup,
   FssaiServicePageContent,
+  FundRaisingPageContent,
   GovernmentLicenseCertificationPageContent,
   HomepageContent,
   ImportExportServicePageContent,
   Insight,
   IprServicePageContent,
+  LabourCompliancePageContent,
   LegalNotice,
   LeadFormSettings,
   LeadFormTrustItem,
@@ -39,6 +41,7 @@ import type {
   ServiceCategory,
   Seo,
   SocialLink,
+  TaxAccountingPageContent,
   TeamMember,
   Testimonial,
   TimelineEvent,
@@ -59,7 +62,10 @@ export type RevalidatableContentSlug =
   | "government-license-certification-page"
   | "ipr-service-page"
   | "fssai-service-page"
-  | "sebi-business-registration-page";
+  | "sebi-business-registration-page"
+  | "tax-accounting-page"
+  | "labour-compliance-page"
+  | "fund-raising-page";
 type PopulateValue = true | PopulateTree;
 
 interface PopulateTree {
@@ -83,6 +89,9 @@ export const strapiCacheTagBySlug: Record<RevalidatableContentSlug, string> = {
   "ipr-service-page": "jr-ipr-service-pages",
   "fssai-service-page": "jr-fssai-service-pages",
   "sebi-business-registration-page": "jr-sebi-business-registration-pages",
+  "tax-accounting-page": "jr-tax-accounting-pages",
+  "labour-compliance-page": "jr-labour-compliance-pages",
+  "fund-raising-page": "jr-fund-raising-pages",
 };
 
 /**
@@ -1747,7 +1756,10 @@ type FixedServiceContentSlug =
   | "government-license-certification-page"
   | "ipr-service-page"
   | "fssai-service-page"
-  | "sebi-business-registration-page";
+  | "sebi-business-registration-page"
+  | "tax-accounting-page"
+  | "labour-compliance-page"
+  | "fund-raising-page";
 
 type FixedServiceCollectionConfig = {
   collectionPath: string;
@@ -1795,6 +1807,24 @@ const sebiBusinessRegistrationCollection = {
   collectionPath: "sebi-business-registration-pages",
   contentSlug: "sebi-business-registration-page",
   label: "SEBI Business Registration",
+} as const satisfies FixedServiceCollectionConfig;
+
+const taxAccountingCollection = {
+  collectionPath: "tax-accounting-pages",
+  contentSlug: "tax-accounting-page",
+  label: "Tax and Accounting",
+} as const satisfies FixedServiceCollectionConfig;
+
+const labourComplianceCollection = {
+  collectionPath: "labour-compliance-pages",
+  contentSlug: "labour-compliance-page",
+  label: "Labour Compliance",
+} as const satisfies FixedServiceCollectionConfig;
+
+const fundRaisingCollection = {
+  collectionPath: "fund-raising-pages",
+  contentSlug: "fund-raising-page",
+  label: "Fund Raising",
 } as const satisfies FixedServiceCollectionConfig;
 
 function fixedServiceDetailQuery(slug: string): string {
@@ -1917,6 +1947,18 @@ export function getFssaiServiceSlugsFromStrapi(): Promise<string[]> {
 
 export function getSebiBusinessRegistrationSlugsFromStrapi(): Promise<string[]> {
   return getFixedServiceSlugsFromStrapi(sebiBusinessRegistrationCollection);
+}
+
+export function getTaxAccountingSlugsFromStrapi(): Promise<string[]> {
+  return getFixedServiceSlugsFromStrapi(taxAccountingCollection);
+}
+
+export function getLabourComplianceSlugsFromStrapi(): Promise<string[]> {
+  return getFixedServiceSlugsFromStrapi(labourComplianceCollection);
+}
+
+export function getFundRaisingSlugsFromStrapi(): Promise<string[]> {
+  return getFixedServiceSlugsFromStrapi(fundRaisingCollection);
 }
 
 export async function getHomepageFromStrapi(
@@ -2128,5 +2170,44 @@ export function getSebiBusinessRegistrationPageFromStrapi(
     fallback,
     chromeFallback,
     sebiBusinessRegistrationCollection,
+  );
+}
+
+export function getTaxAccountingPageFromStrapi(
+  slug: string,
+  fallback: TaxAccountingPageContent | null,
+  chromeFallback: PageChromeContent,
+): Promise<TaxAccountingPageContent | null> {
+  return getFixedServiceCategoryPageFromStrapi(
+    slug,
+    fallback,
+    chromeFallback,
+    taxAccountingCollection,
+  );
+}
+
+export function getLabourCompliancePageFromStrapi(
+  slug: string,
+  fallback: LabourCompliancePageContent | null,
+  chromeFallback: PageChromeContent,
+): Promise<LabourCompliancePageContent | null> {
+  return getFixedServiceCategoryPageFromStrapi(
+    slug,
+    fallback,
+    chromeFallback,
+    labourComplianceCollection,
+  );
+}
+
+export function getFundRaisingPageFromStrapi(
+  slug: string,
+  fallback: FundRaisingPageContent | null,
+  chromeFallback: PageChromeContent,
+): Promise<FundRaisingPageContent | null> {
+  return getFixedServiceCategoryPageFromStrapi(
+    slug,
+    fallback,
+    chromeFallback,
+    fundRaisingCollection,
   );
 }

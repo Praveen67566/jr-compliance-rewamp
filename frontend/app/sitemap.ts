@@ -3,11 +3,14 @@ import type { MetadataRoute } from "next";
 import { companyRegistrationSlugs } from "@/data/company-registration-pages-fallback";
 import {
   getFssaiServiceSlugs,
+  getFundRaisingSlugs,
   getGovernmentLicenseCertificationSlugs,
   getIprServiceSlugs,
   getImportExportServiceSlugs,
+  getLabourComplianceSlugs,
   getMcaServiceSlugs,
   getSebiBusinessRegistrationSlugs,
+  getTaxAccountingSlugs,
 } from "@/lib/content";
 import { publicSiteUrl } from "@/lib/site-url";
 
@@ -20,6 +23,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     iprServiceSlugs,
     fssaiServiceSlugs,
     sebiBusinessRegistrationSlugs,
+    taxAccountingSlugs,
+    labourComplianceSlugs,
+    fundRaisingSlugs,
   ] = await Promise.all([
     getMcaServiceSlugs(),
     getImportExportServiceSlugs(),
@@ -27,6 +33,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getIprServiceSlugs(),
     getFssaiServiceSlugs(),
     getSebiBusinessRegistrationSlugs(),
+    getTaxAccountingSlugs(),
+    getLabourComplianceSlugs(),
+    getFundRaisingSlugs(),
   ]);
 
   return [
@@ -59,6 +68,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         ...iprServiceSlugs,
         ...fssaiServiceSlugs,
         ...sebiBusinessRegistrationSlugs,
+        ...taxAccountingSlugs,
+        ...labourComplianceSlugs,
+        ...fundRaisingSlugs,
       ]),
     ].map((slug) => ({
       url: new URL(`/corporate/${slug}`, siteUrl).toString(),

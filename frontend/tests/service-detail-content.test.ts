@@ -3,9 +3,12 @@ import { describe, it } from "node:test";
 
 import governmentLicenseCertificationSeedPages from "../../cms/src/seed/government-license-certification-pages.json";
 import fssaiServiceSeedPages from "../../cms/src/seed/fssai-service-pages.json";
+import fundRaisingSeedPages from "../../cms/src/seed/fund-raising-pages.json";
 import importExportServiceSeedPages from "../../cms/src/seed/import-export-service-pages.json";
 import iprServiceSeedPages from "../../cms/src/seed/ipr-service-pages.json";
+import labourComplianceSeedPages from "../../cms/src/seed/labour-compliance-pages.json";
 import sebiBusinessRegistrationSeedPages from "../../cms/src/seed/sebi-business-registration-pages.json";
+import taxAccountingSeedPages from "../../cms/src/seed/tax-accounting-pages.json";
 import { companyRegistrationSlugs } from "@/data/company-registration-pages-fallback";
 import {
   fallbackGovernmentLicenseCertificationPages,
@@ -19,10 +22,20 @@ import {
   fssaiServiceSlugs,
 } from "@/data/fssai-service-pages-fallback";
 import {
+  fallbackFundRaisingPages,
+  fundRaisingFallback,
+  fundRaisingSlugs,
+} from "@/data/fund-raising-pages-fallback";
+import {
   fallbackImportExportServicePages,
   importExportServiceFallback,
   importExportServiceSlugs,
 } from "@/data/import-export-service-pages-fallback";
+import {
+  fallbackLabourCompliancePages,
+  labourComplianceFallback,
+  labourComplianceSlugs,
+} from "@/data/labour-compliance-pages-fallback";
 import { mcaServiceSlugs } from "@/data/mca-service-pages-fallback";
 import {
   fallbackIprServicePages,
@@ -34,6 +47,11 @@ import {
   sebiBusinessRegistrationFallback,
   sebiBusinessRegistrationSlugs,
 } from "@/data/sebi-business-registration-pages-fallback";
+import {
+  fallbackTaxAccountingPages,
+  taxAccountingFallback,
+  taxAccountingSlugs,
+} from "@/data/tax-accounting-pages-fallback";
 
 describe("service-detail content mirrors", () => {
   it("keeps IEC Code fallback content identical to its CMS migration mirror", () => {
@@ -53,6 +71,12 @@ describe("service-detail content mirrors", () => {
     assert.deepEqual(fallbackSebiBusinessRegistrationPages, sebiBusinessRegistrationSeedPages);
   });
 
+  it("keeps the Tax, Labour, and Fund Raising fallbacks identical to their CMS mirrors", () => {
+    assert.deepEqual(fallbackTaxAccountingPages, taxAccountingSeedPages);
+    assert.deepEqual(fallbackLabourCompliancePages, labourComplianceSeedPages);
+    assert.deepEqual(fallbackFundRaisingPages, fundRaisingSeedPages);
+  });
+
   it("retains every approved fixed section from both legacy sources", () => {
     for (const [page, expectedWhyChooseItems] of [
       [fallbackImportExportServicePages[0], 4],
@@ -60,6 +84,8 @@ describe("service-detail content mirrors", () => {
       [fallbackIprServicePages[0], 6],
       [fallbackFssaiServicePages[0], 3],
       [fallbackSebiBusinessRegistrationPages[0], 4],
+      [fallbackLabourCompliancePages[0], 4],
+      [fallbackFundRaisingPages[0], 4],
     ] as const) {
       assert.ok(page);
       assert.ok(page.overview.paragraphs.length >= 1);
@@ -70,6 +96,16 @@ describe("service-detail content mirrors", () => {
       assert.equal(page.breakdown.groups.length, 3);
       assert.equal(page.faqs.items.length, 5);
     }
+
+    const gst = fallbackTaxAccountingPages[0];
+    assert.ok(gst);
+    assert.ok(gst.overview.paragraphs.length >= 1);
+    assert.equal(gst.challenges.items.length, 4);
+    assert.equal(gst.advantages.items.length, 3);
+    assert.equal(gst.process.items.length, 6);
+    assert.equal(gst.whyChoose.items.length, 4);
+    assert.equal(gst.breakdown.groups.length, 3);
+    assert.equal(gst.faqs.items.length, 5);
   });
 
   it("keeps every local corporate route slug globally unique", () => {
@@ -81,6 +117,9 @@ describe("service-detail content mirrors", () => {
       ...iprServiceSlugs,
       ...fssaiServiceSlugs,
       ...sebiBusinessRegistrationSlugs,
+      ...taxAccountingSlugs,
+      ...labourComplianceSlugs,
+      ...fundRaisingSlugs,
     ];
 
     assert.equal(new Set(slugs).size, slugs.length);
@@ -100,6 +139,15 @@ describe("service-detail content mirrors", () => {
     assert.equal(iprServiceFallback("trademark-search"), undefined);
     assert.equal(fssaiServiceFallback("fssai-state-license"), undefined);
     assert.equal(sebiBusinessRegistrationFallback("sebi-mutual-fund"), undefined);
+    assert.equal(taxAccountingFallback("gst-registration")?.menuLabel, "GST Registration");
+    assert.equal(
+      labourComplianceFallback("shop-and-establishment-act-registration")?.menuLabel,
+      "Shop & Establishment Registration",
+    );
+    assert.equal(fundRaisingFallback("msme-registration")?.menuLabel, "MSME");
+    assert.equal(taxAccountingFallback("gst-return"), undefined);
+    assert.equal(labourComplianceFallback("esic-registration"), undefined);
+    assert.equal(fundRaisingFallback("startup-india-registration"), undefined);
   });
 
   it("keeps unimplemented links in both new categories on the services placeholder", () => {
@@ -115,6 +163,15 @@ describe("service-detail content mirrors", () => {
     const sebi = corporate?.categories?.find(
       (category) => category.title === "SEBI Business Registration",
     );
+    const taxAccounting = corporate?.categories?.find(
+      (category) => category.title === "Tax and Accounting",
+    );
+    const labourCompliance = corporate?.categories?.find(
+      (category) => category.title === "Labour Compliance",
+    );
+    const fundRaising = corporate?.categories?.find(
+      (category) => category.title === "Fund Raising",
+    );
 
     assert.equal(importExport?.links[0]?.href, "/corporate/iec-registration");
     assert.ok(importExport?.links.slice(1).every((link) => link.href === "/#services"));
@@ -126,5 +183,14 @@ describe("service-detail content mirrors", () => {
     assert.ok(fssai?.links.slice(1).every((link) => link.href === "/#services"));
     assert.equal(sebi?.links[0]?.href, "/corporate/portfolio-manager-registration");
     assert.ok(sebi?.links.slice(1).every((link) => link.href === "/#services"));
+    assert.equal(taxAccounting?.links[0]?.href, "/corporate/gst-registration");
+    assert.ok(taxAccounting?.links.slice(1).every((link) => link.href === "/#services"));
+    assert.equal(
+      labourCompliance?.links[0]?.href,
+      "/corporate/shop-and-establishment-act-registration",
+    );
+    assert.ok(labourCompliance?.links.slice(1).every((link) => link.href === "/#services"));
+    assert.equal(fundRaising?.links[0]?.href, "/corporate/msme-registration");
+    assert.ok(fundRaising?.links.slice(1).every((link) => link.href === "/#services"));
   });
 });

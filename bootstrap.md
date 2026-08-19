@@ -105,26 +105,18 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Read the # Service category and first-page creation guide
+Tax and Accounting category and first page GST Registration get content from file:///Users/yalagalasrinivas/Downloads/Webflowwebsite%20%7C%20JR%20Compliance%20/site/corporate/gst-registration.html
+Labour Compliance category and first page Shop & Establishment Registration get content from file:///Users/yalagalasrinivas/Downloads/Webflowwebsite%20%7C%20JR%20Compliance%20/site/corporate/shop-and-establishment-act-registration.html
+Fund Raising category and first page MSME get content from file:///Users/yalagalasrinivas/Downloads/Webflowwebsite%20%7C%20JR%20Compliance%20/site/corporate/msme-registration.html
 
-now we have to create Import Export Service categories pages and it follows the exact same pattern design everything like Company Registration and only create the first page else all the pages going to be added by
-strapi cms so also make sure that that get the complete content from file:///Users/yalagalasrinivas/praveen-dev/jr-compliance-rewamp/site/corporate/iec-registration.html and you have to create first page name IEC Code add this and copy content from file:///Users/yalagalasrinivas/praveen-dev/jr-compliance-rewamp/site/corporate/iec-registration.html and follow the exact struture of project dont change anything unnecessary.
+* service-category-first-page-guide.md read this page 
+* from htmls copy only content.
+* dont change anything unneccessary.
 
-now after that in same flow Government License & Certification category create its first page Ayush License
-only first page and every other pages are going to be created by strapi cms and get the page content from
-file:///Users/yalagalasrinivas/praveen-dev/jr-compliance-rewamp/site/corporate/ayush-license.html now
-same don't change the struture and 
-after all this create both pages seed into postgres and test everything.
+1. follow the Company Registration pages design exactly and follow the jr-compliance-rewamp code structure.
+2. Only Add first page all the other pages are going to be added from the strapi cms.
+3. add seed data in postgres database also.
+4. do a quick testing.
 
-we have to create IPR Services category and its first page TRADEMARK REGISTRATION only and all the other pages is going to be created by strapi cms and follows the exact same pattern design everything like 
-Company Registration category and its pages  and get the content from file:///Users/yalagalasrinivas/Downloads/Webflowwebsite%20%7C%20JR%20Compliance%20/site/corporate/trademark-registration.html and take only content from here and follow the Company Registration design and exact pattern and follow the 
-existing jr-compliance-rewamp structure exactly don't change anything unneccessary and after that in same 
-flow create FSSAI category and its first page Fssai Basic Registration and get the content from 
-file:///Users/yalagalasrinivas/Downloads/Webflowwebsite%20%7C%20JR%20Compliance%20/site/approval/wpc-certification.html this and follow the exact same design pattern as Company Registration category pages
-then SEBI Business Registration category and its first page PORTFOLIO MANAGER REGISTRATION get the content 
-from file:///Users/yalagalasrinivas/Downloads/Webflowwebsite%20%7C%20JR%20Compliance%20/site/corporate/portfolio-manager-registration.html.
 
-follow the already exist consistent page design you can check Company Registration pages 
-don't change anything unneccessary 
-add the seed data in postgres database also 
-test the code
+

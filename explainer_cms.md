@@ -17,6 +17,9 @@ The CMS provides content for:
 - `/corporate/trademark-registration` through `ipr-service-page`
 - `/corporate/fssai-certificate` through `fssai-service-page`
 - `/corporate/portfolio-manager-registration` through `sebi-business-registration-page`
+- `/corporate/gst-registration` through `tax-accounting-page`
+- `/corporate/shop-and-establishment-act-registration` through `labour-compliance-page`
+- `/corporate/msme-registration` through `fund-raising-page`
 - shared header/footer and global consultation-form copy through the `site-setting` single type
 
 The frontend reads published CMS content using a server-only API token. If Strapi is unavailable, the frontend uses local fallback data from `frontend/data/*-fallback.ts`.
@@ -27,7 +30,7 @@ The main CMS flow is:
 2. Strapi stores records in PostgreSQL in both local and deployed environments.
    The retained SQLite file is an offline rollback source only and is never a
    running CMS database.
-3. The frontend fetches published single types and related collections through REST, including all seven fixed service-detail collections filtered by exact slug.
+3. The frontend fetches published single types and related collections through REST, including all ten fixed service-detail collections filtered by exact slug.
 4. `cms/src/revalidation.ts` can notify Next.js after publish changes.
 5. Next.js revalidates the affected cache tags and fetches fresh CMS content.
 
@@ -144,6 +147,18 @@ The main CMS flow is:
 : A historical JSON mirror of the approved Portfolio Manager Registration
   fallback for migration and content parity checks.
 
+`cms/src/seed/tax-accounting-pages.json`
+: A historical JSON mirror of the approved GST Registration fallback for
+  migration and content parity checks.
+
+`cms/src/seed/labour-compliance-pages.json`
+: A historical JSON mirror of the approved Shop & Establishment Registration
+  fallback for migration and content parity checks.
+
+`cms/src/seed/fund-raising-pages.json`
+: A historical JSON mirror of the approved MSME Registration fallback for
+  migration and content parity checks.
+
 ## API content types
 
 Each content type folder follows the Strapi pattern:
@@ -211,6 +226,21 @@ Strapi without a new frontend route.
 : Dedicated fixed detail-page records for SEBI Business Registration. Portfolio
 Manager Registration is the first approved record; later complete records are
 added and published in Strapi without a new frontend route.
+
+`cms/src/api/tax-accounting-page/`
+: Dedicated fixed detail-page records for Tax and Accounting. GST Registration
+is the first approved record; later complete records are added and published in
+Strapi without a new frontend route.
+
+`cms/src/api/labour-compliance-page/`
+: Dedicated fixed detail-page records for Labour Compliance. Shop &
+Establishment Registration is the first approved record; later complete records
+are added and published in Strapi without a new frontend route.
+
+`cms/src/api/fund-raising-page/`
+: Dedicated fixed detail-page records for Fund Raising. MSME Registration is
+the first approved record; later complete records are added and published in
+Strapi without a new frontend route.
 
 `cms/src/api/service-category/`
 : Service category records used by the home Service Stack. Categories group services.

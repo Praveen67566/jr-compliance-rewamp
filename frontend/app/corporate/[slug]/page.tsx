@@ -7,16 +7,22 @@ import {
   getCompanyRegistrationPage,
   getFssaiServicePage,
   getFssaiServiceSlugs,
+  getFundRaisingPage,
+  getFundRaisingSlugs,
   getGovernmentLicenseCertificationPage,
   getGovernmentLicenseCertificationSlugs,
   getIprServicePage,
   getIprServiceSlugs,
   getImportExportServicePage,
   getImportExportServiceSlugs,
+  getLabourCompliancePage,
+  getLabourComplianceSlugs,
   getMcaServicePage,
   getMcaServiceSlugs,
   getSebiBusinessRegistrationPage,
   getSebiBusinessRegistrationSlugs,
+  getTaxAccountingPage,
+  getTaxAccountingSlugs,
 } from "@/lib/content";
 import { pageMetadata } from "@/lib/page-metadata";
 
@@ -35,6 +41,9 @@ export async function generateStaticParams() {
     iprServiceSlugs,
     fssaiServiceSlugs,
     sebiBusinessRegistrationSlugs,
+    taxAccountingSlugs,
+    labourComplianceSlugs,
+    fundRaisingSlugs,
   ] = await Promise.all([
     getMcaServiceSlugs(),
     getImportExportServiceSlugs(),
@@ -42,6 +51,9 @@ export async function generateStaticParams() {
     getIprServiceSlugs(),
     getFssaiServiceSlugs(),
     getSebiBusinessRegistrationSlugs(),
+    getTaxAccountingSlugs(),
+    getLabourComplianceSlugs(),
+    getFundRaisingSlugs(),
   ]);
 
   return [
@@ -53,6 +65,9 @@ export async function generateStaticParams() {
       ...iprServiceSlugs,
       ...fssaiServiceSlugs,
       ...sebiBusinessRegistrationSlugs,
+      ...taxAccountingSlugs,
+      ...labourComplianceSlugs,
+      ...fundRaisingSlugs,
     ]),
   ].map((slug) => ({ slug }));
 }
@@ -65,7 +80,10 @@ async function getCorporateServicePage(slug: string) {
     (await getGovernmentLicenseCertificationPage(slug)) ??
     (await getIprServicePage(slug)) ??
     (await getFssaiServicePage(slug)) ??
-    getSebiBusinessRegistrationPage(slug)
+    (await getSebiBusinessRegistrationPage(slug)) ??
+    (await getTaxAccountingPage(slug)) ??
+    (await getLabourCompliancePage(slug)) ??
+    getFundRaisingPage(slug)
   );
 }
 

@@ -9,6 +9,10 @@ import {
   fssaiServiceSlugs,
 } from "@/data/fssai-service-pages-fallback";
 import {
+  fundRaisingFallback,
+  fundRaisingSlugs,
+} from "@/data/fund-raising-pages-fallback";
+import {
   governmentLicenseCertificationFallback,
   governmentLicenseCertificationSlugs,
 } from "@/data/government-license-certification-pages-fallback";
@@ -21,11 +25,19 @@ import {
   importExportServiceFallback,
   importExportServiceSlugs,
 } from "@/data/import-export-service-pages-fallback";
+import {
+  labourComplianceFallback,
+  labourComplianceSlugs,
+} from "@/data/labour-compliance-pages-fallback";
 import { mcaServiceFallback, mcaServiceSlugs } from "@/data/mca-service-pages-fallback";
 import {
   sebiBusinessRegistrationFallback,
   sebiBusinessRegistrationSlugs,
 } from "@/data/sebi-business-registration-pages-fallback";
+import {
+  taxAccountingFallback,
+  taxAccountingSlugs,
+} from "@/data/tax-accounting-pages-fallback";
 import {
   getAboutPageFromStrapi,
   getCareersPageFromStrapi,
@@ -33,6 +45,8 @@ import {
   getContactPageFromStrapi,
   getFssaiServicePageFromStrapi,
   getFssaiServiceSlugsFromStrapi,
+  getFundRaisingPageFromStrapi,
+  getFundRaisingSlugsFromStrapi,
   getGovernmentLicenseCertificationPageFromStrapi,
   getGovernmentLicenseCertificationSlugsFromStrapi,
   getHomepageFromStrapi,
@@ -40,10 +54,14 @@ import {
   getIprServiceSlugsFromStrapi,
   getImportExportServicePageFromStrapi,
   getImportExportServiceSlugsFromStrapi,
+  getLabourCompliancePageFromStrapi,
+  getLabourComplianceSlugsFromStrapi,
   getMcaServicePageFromStrapi,
   getMcaServiceSlugsFromStrapi,
   getSebiBusinessRegistrationPageFromStrapi,
   getSebiBusinessRegistrationSlugsFromStrapi,
+  getTaxAccountingPageFromStrapi,
+  getTaxAccountingSlugsFromStrapi,
 } from "@/lib/strapi";
 import type {
   AboutPageContent,
@@ -51,12 +69,15 @@ import type {
   CompanyRegistrationPageContent,
   ContactPageContent,
   FssaiServicePageContent,
+  FundRaisingPageContent,
   GovernmentLicenseCertificationPageContent,
   HomepageContent,
   ImportExportServicePageContent,
   IprServicePageContent,
+  LabourCompliancePageContent,
   McaServicePageContent,
   SebiBusinessRegistrationPageContent,
+  TaxAccountingPageContent,
 } from "@/lib/types";
 
 export const getHomepage = cache(async function getHomepage(): Promise<HomepageContent> {
@@ -245,5 +266,74 @@ export const getSebiBusinessRegistrationSlugs = cache(
   async function getSebiBusinessRegistrationSlugs(): Promise<string[]> {
     const strapiSlugs = await getSebiBusinessRegistrationSlugsFromStrapi();
     return [...new Set([...sebiBusinessRegistrationSlugs, ...strapiSlugs])];
+  },
+);
+
+export const getTaxAccountingPage = cache(async function getTaxAccountingPage(
+  slug: string,
+): Promise<TaxAccountingPageContent | null> {
+  const page = taxAccountingFallback(slug);
+  const chromeFallback = {
+    site: fallbackHomepage.site,
+    navigation: fallbackHomepage.navigation,
+    footer: fallbackHomepage.footer,
+  };
+  const fallback: TaxAccountingPageContent | null = page
+    ? { ...page, ...chromeFallback }
+    : null;
+
+  return (await getTaxAccountingPageFromStrapi(slug, fallback, chromeFallback)) ?? fallback;
+});
+
+export const getTaxAccountingSlugs = cache(
+  async function getTaxAccountingSlugs(): Promise<string[]> {
+    const strapiSlugs = await getTaxAccountingSlugsFromStrapi();
+    return [...new Set([...taxAccountingSlugs, ...strapiSlugs])];
+  },
+);
+
+export const getLabourCompliancePage = cache(async function getLabourCompliancePage(
+  slug: string,
+): Promise<LabourCompliancePageContent | null> {
+  const page = labourComplianceFallback(slug);
+  const chromeFallback = {
+    site: fallbackHomepage.site,
+    navigation: fallbackHomepage.navigation,
+    footer: fallbackHomepage.footer,
+  };
+  const fallback: LabourCompliancePageContent | null = page
+    ? { ...page, ...chromeFallback }
+    : null;
+
+  return (await getLabourCompliancePageFromStrapi(slug, fallback, chromeFallback)) ?? fallback;
+});
+
+export const getLabourComplianceSlugs = cache(
+  async function getLabourComplianceSlugs(): Promise<string[]> {
+    const strapiSlugs = await getLabourComplianceSlugsFromStrapi();
+    return [...new Set([...labourComplianceSlugs, ...strapiSlugs])];
+  },
+);
+
+export const getFundRaisingPage = cache(async function getFundRaisingPage(
+  slug: string,
+): Promise<FundRaisingPageContent | null> {
+  const page = fundRaisingFallback(slug);
+  const chromeFallback = {
+    site: fallbackHomepage.site,
+    navigation: fallbackHomepage.navigation,
+    footer: fallbackHomepage.footer,
+  };
+  const fallback: FundRaisingPageContent | null = page
+    ? { ...page, ...chromeFallback }
+    : null;
+
+  return (await getFundRaisingPageFromStrapi(slug, fallback, chromeFallback)) ?? fallback;
+});
+
+export const getFundRaisingSlugs = cache(
+  async function getFundRaisingSlugs(): Promise<string[]> {
+    const strapiSlugs = await getFundRaisingSlugsFromStrapi();
+    return [...new Set([...fundRaisingSlugs, ...strapiSlugs])];
   },
 );

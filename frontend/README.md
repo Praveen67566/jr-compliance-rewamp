@@ -4,8 +4,9 @@ The active frontend is a Next.js 16 App Router rebuild of the JR Compliance
 home page, `/about-us`, `/careers`, `/contact-us`, and nineteen Company
 Registration pages plus the first MCA Services, Import Export Service,
 Government License & Certification, IPR Services, FSSAI, and SEBI Business
-Registration pages under `/corporate/[slug]`. It is intentionally separate from
-the legacy Webflow export in `../site`.
+Registration, Tax and Accounting, Labour Compliance, and Fund Raising pages
+under `/corporate/[slug]`. It is intentionally separate from the legacy Webflow
+export in `../site`.
 
 ## Run locally
 
@@ -48,10 +49,12 @@ configuration or the Strapi token.
   `careers-page`, `contact-page`, and exact-slug
   `company-registration-page`, `mca-service-page`, `import-export-service-page`,
   `government-license-certification-page`, `ipr-service-page`,
-  `fssai-service-page`, and `sebi-business-registration-page` collection entries
-  into the UI contracts.
+  `fssai-service-page`, `sebi-business-registration-page`,
+  `tax-accounting-page`, `labour-compliance-page`, and `fund-raising-page`
+  collection entries into the UI contracts.
 - DSC, IEC Code, Ayush License, Trademark Registration, FSSAI Basic
-  Registration, and Portfolio Manager Registration have typed local fallbacks.
+  Registration, Portfolio Manager Registration, GST Registration, Shop &
+  Establishment Registration, and MSME Registration have typed local fallbacks.
   Later fully populated records in their dedicated category collections are
   discovered for the shared route and sitemap without borrowing the first
   page’s content.
@@ -62,7 +65,7 @@ configuration or the Strapi token.
   `components/editorial/` centralizes the Compliance Network route primitives.
 - `components/company-registration/company-registration-page.tsx` is the
   Tailwind-first fixed template shared by the Company Registration routes and
-  all six first-page category routes.
+  all nine first-page category routes.
 - `components/forms/consultation-form.tsx` owns the form UI, required-message
   validation, consent, honeypot, UTM capture, submission state, and redirect.
   `app/api/leads/route.ts` validates it again, rate-limits requests, derives the
@@ -75,7 +78,7 @@ The global form copy is `site-setting.leadForm` in Strapi and
 `fallbackHomepage.site.leadForm` locally. Home, the shared editorial hero, and
 the shared Company Registration template render the same component in their
 hero visual slot, which covers every current fixed service-detail route without
-per-page form markup, including all six category-first pages. Publishing Site
+per-page form markup, including all nine category-first pages. Publishing Site
 Setting refreshes all page cache tags.
 
 For a future page whose content extends `PageChromeContent`, place the same form

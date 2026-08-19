@@ -21,6 +21,9 @@ const ALL_PAGE_TAGS = [
   "jr-ipr-service-pages",
   "jr-fssai-service-pages",
   "jr-sebi-business-registration-pages",
+  "jr-tax-accounting-pages",
+  "jr-labour-compliance-pages",
+  "jr-fund-raising-pages",
 ] as const;
 
 /**
@@ -49,6 +52,11 @@ const cacheTagsByUid: Record<string, readonly string[]> = {
   "api::sebi-business-registration-page.sebi-business-registration-page": [
     "jr-sebi-business-registration-pages",
   ],
+  "api::tax-accounting-page.tax-accounting-page": ["jr-tax-accounting-pages"],
+  "api::labour-compliance-page.labour-compliance-page": [
+    "jr-labour-compliance-pages",
+  ],
+  "api::fund-raising-page.fund-raising-page": ["jr-fund-raising-pages"],
   "api::service-category.service-category": ["jr-homepage"],
   "api::service.service": ["jr-homepage"],
   "api::brand-logo.brand-logo": ["jr-homepage"],

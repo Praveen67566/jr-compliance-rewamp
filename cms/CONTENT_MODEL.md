@@ -4,13 +4,14 @@ This is the CMS contract for the new Next.js homepage, the initial editorial
 routes (About Us, Careers, Contact Us), the nineteen approved Company
 Registration routes, and the first approved routes for MCA Services, Import
 Export Service, Government License & Certification, IPR Services, FSSAI, and
-SEBI Business Registration. It preserves useful legacy content from the
-corresponding `site/*.html` and `site/corporate/*.html` files, but does **not**
-preserve Webflow UI. Layout, motion, colours, and responsive behaviour belong
-in Next.js; editors own copy, links, ordering, SEO, and approved media.
+SEBI Business Registration, Tax and Accounting, Labour Compliance, and Fund
+Raising. It preserves useful legacy content from the corresponding
+`site/*.html` and `site/corporate/*.html` files, but does **not** preserve
+Webflow UI. Layout, motion, colours, and responsive behaviour belong in Next.js;
+editors own copy, links, ordering, SEO, and approved media.
 
-The committed schema contains five single types, twenty-one collection types,
-and forty-six components: twenty-six content types in total.
+The committed schema contains five single types, twenty-four collection types,
+and forty-six components: twenty-nine content types in total.
 
 Use named fields rather than a page-builder dynamic zone for these initial routes.
 That makes the front-end contract stable and easy for non-technical editors to
@@ -307,6 +308,30 @@ without borrowing Portfolio Manager Registration content.
 | `seo` | `shared.seo` | Required |
 | `sortOrder` | Integer, minimum `0` | Required; route editorial order |
 
+### `tax-accounting-page` — API: `api::tax-accounting-page.tax-accounting-page`
+
+One published record per approved Tax and Accounting `/corporate/[slug]`
+route. The first approved record is `gst-registration`. Later complete records
+can be published only in Strapi and use the same fixed required fields and
+validation rules as `mca-service-page`, with `menuLabel` matching the Tax and
+Accounting navbar label.
+
+### `labour-compliance-page` — API: `api::labour-compliance-page.labour-compliance-page`
+
+One published record per approved Labour Compliance `/corporate/[slug]` route.
+The first approved record is `shop-and-establishment-act-registration`. Later
+complete records can be published only in Strapi and use the same fixed required
+fields and validation rules as `mca-service-page`, with `menuLabel` matching the
+Labour Compliance navbar label.
+
+### `fund-raising-page` — API: `api::fund-raising-page.fund-raising-page`
+
+One published record per approved Fund Raising `/corporate/[slug]` route. The
+first approved record is `msme-registration`. Later complete records can be
+published only in Strapi and use the same fixed required fields and validation
+rules as `mca-service-page`, with `menuLabel` matching the Fund Raising navbar
+label.
+
 | Type (API) | Fields | Relations |
 | --- | --- | --- |
 | **Service Category** (`service-category`, `service-categories`) | `name` short text*, `slug` UID from `name`*, `description` long text, `sortOrder` integer* | `services`: **one-to-many** to Service (inverse of `serviceCategory`) |
@@ -437,6 +462,9 @@ invent claims or silently repair source inconsistencies.
 | `/corporate/trademark-registration` (IPR Services) | `site/corporate/trademark-registration.html` | Page-specific Trademark SEO, hero and overview, six post-application/legal consideration cards, five benefits, six service steps, six Pricing package cards carried in the fixed `whyChoose` slot, Eligibility/Documents/Who Needs It breakdown, five FAQs, and shared final CTA. Exclude duplicated Private Limited Company sections, placeholders, unrelated resources/testimonials, Webflow forms, and all legacy UI/transport code. |
 | `/corporate/fssai-certificate` (FSSAI) | `site/corporate/fssai-certificate.html` | Page-specific FSSAI SEO, hero and overview, four service-scope cards, four benefits, six service steps, three Why JR cards, Who Needs It/Eligibility/Documents breakdown, five FAQs, and shared final CTA. Do not use `site/approval/wpc-certification.html`: that legacy destination contains WPC ETA content rather than FSSAI content. Exclude placeholders, unrelated resources/testimonials, Webflow forms, and all legacy UI/transport code. |
 | `/corporate/portfolio-manager-registration` (SEBI Business Registration) | `site/corporate/portfolio-manager-registration.html` | Page-specific Portfolio Manager Registration SEO, hero and overview, four challenges, four advantages, six service steps, four Why Choose JR Compliance cards, Eligibility/Documents/Who Needs It breakdown, five FAQs, and shared final CTA. Use the documented and FAQ-consistent `₹5 crore` net-worth requirement throughout rather than the source's isolated conflicting `₹2 crore` statement. Exclude duplicated Private Limited Company sections, placeholders, unrelated resources/testimonials, Webflow forms, and all legacy UI/transport code. |
+| `/corporate/gst-registration` (Tax and Accounting) | `site/corporate/gst-registration.html` | Page-specific GST SEO, hero and overview, four challenges, three advantages, six service steps, four Why JR cards, Who Needs/Eligibility/Documents breakdown, five FAQs, and shared final CTA. Exclude copied company-registration sections, hidden placeholders, unrelated resources/testimonials, Webflow forms, and all legacy UI/transport code. |
+| `/corporate/shop-and-establishment-act-registration` (Labour Compliance) | `site/corporate/shop-and-establishment-act-registration.html` | Page-specific Shop & Establishment SEO, hero and overview, four challenges, four advantages, six service steps, four source support statements carried in the fixed `whyChoose` slot, Eligibility/Documents/Who Needs breakdown, five FAQs, and shared final CTA. Exclude copied company-registration sections, hidden placeholders, unrelated resources/testimonials, Webflow forms, and all legacy UI/transport code. |
+| `/corporate/msme-registration` (Fund Raising) | `site/corporate/msme-registration.html` | Page-specific MSME SEO, hero and overview, four challenges, four advantages, six service steps, four Why JR cards, Eligibility/Documents/Who Needs It breakdown, five FAQs, and shared final CTA. Exclude copied company-registration sections, hidden placeholders, unrelated resources/testimonials, Webflow forms, and all legacy UI/transport code. |
 
 Copy the approved media into Strapi Media Library first. The local Next.js
 fallback copies are development safety nets only; a published Strapi record
@@ -468,7 +496,7 @@ attributes are flattened and documents use `documentId`; do not copy v4
 | Consumer | Allowed permissions |
 | --- | --- |
 | **Public role** | None for these content types or Upload. The browser never receives a Strapi token. |
-| **`next-site-reader` API token** | Custom, read-only: `find` for `site-setting`, `home-page`, `about-page`, `careers-page`, and `contact-page`; `find` and `findOne` for `company-registration-page`, `mca-service-page`, `import-export-service-page`, `government-license-certification-page`, `ipr-service-page`, `fssai-service-page`, `sebi-business-registration-page`, and every listed supporting collection type; Upload `find`. No create, update, delete, publish, or admin access. Store only as `STRAPI_API_TOKEN` on the Next server. |
+| **`next-site-reader` API token** | Custom, read-only: `find` for `site-setting`, `home-page`, `about-page`, `careers-page`, and `contact-page`; `find` and `findOne` for `company-registration-page`, `mca-service-page`, `import-export-service-page`, `government-license-certification-page`, `ipr-service-page`, `fssai-service-page`, `sebi-business-registration-page`, `tax-accounting-page`, `labour-compliance-page`, `fund-raising-page`, and every listed supporting collection type; Upload `find`. No create, update, delete, publish, or admin access. Store only as `STRAPI_API_TOKEN` on the Next server. |
 | **Content Editor admin role** | Content Manager create/read/update for the listed types and Media Library upload/edit. No schema access and no delete permission. |
 | **Publisher/Admin role** | Editor permissions plus publish. Content Type Builder remains development-only and developer-owned. |
 
@@ -487,6 +515,9 @@ GET /api/government-license-certification-pages?filters[slug][$eq]=<slug>&status
 GET /api/ipr-service-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/fssai-service-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/sebi-business-registration-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/tax-accounting-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/labour-compliance-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/fund-raising-pages?filters[slug][$eq]=<slug>&status=published
 ```
 
 Strapi does not populate relations, components, or media by default. The Next
@@ -511,9 +542,10 @@ plugins or issue a browser request per card. The API token is sent as
    `about-page`, `careers-page`, `contact-page`, and the dedicated
    `company-registration-page`, `mca-service-page`, `import-export-service-page`,
    `government-license-certification-page`, `ipr-service-page`,
-   `fssai-service-page`, and `sebi-business-registration-page` collections.
-   Enable Draft & Publish on all of them. Commit Strapi’s generated schemas to
-   git; do not create schema changes directly in production.
+   `fssai-service-page`, `sebi-business-registration-page`,
+   `tax-accounting-page`, `labour-compliance-page`, and `fund-raising-page`
+   collections. Enable Draft & Publish on all of them. Commit Strapi’s generated
+   schemas to git; do not create schema changes directly in production.
 4. Configure the media provider and migrate the approved legacy images/logos.
    Add filename, alt text, and captions before selecting them in content.
 5. Create the service categories/services, logos, FAQ categories/FAQs,
@@ -522,9 +554,10 @@ plugins or issue a browser request per card. The API token is sent as
    and their ordered links, then fill the four single-page records and one
    Company Registration record for each approved slug and the approved first
    records for MCA Services, Import Export Service, Government License &
-   Certification, IPR Services, FSSAI, and SEBI Business Registration. Select
-   the intended ordered relations and verify every link and media item. Keep all
-   `SEED_*` flags false. To populate another PostgreSQL
+   Certification, IPR Services, FSSAI, SEBI Business Registration, Tax and
+   Accounting, Labour Compliance, and Fund Raising. Select the intended ordered
+   relations and verify every link and media item. Keep all `SEED_*` flags false.
+   To populate another PostgreSQL
    target with the approved content, use a reviewed encrypted Strapi
    `content,files` export/import after a verified database and media backup;
    imports replace selected target content and upload files rather than merging

@@ -7,7 +7,8 @@ This file explains what each important file in `frontend/` does. The frontend is
 The frontend renders the shared routes plus nineteen Company Registration
 detail routes and the first detail route for each of MCA Services, Import
 Export Service, Government License & Certification, IPR Services, FSSAI, and
-SEBI Business Registration:
+SEBI Business Registration, Tax and Accounting, Labour Compliance, and Fund
+Raising:
 
 - `/`
 - `/about-us`
@@ -15,7 +16,8 @@ SEBI Business Registration:
 - `/contact-us`
 - `/corporate/[slug]` for the nineteen approved Company Registration slugs,
   DSC, IEC Code, Ayush License, Trademark Registration, FSSAI Basic
-  Registration, and Portfolio Manager Registration
+  Registration, Portfolio Manager Registration, GST Registration, Shop &
+  Establishment Registration, and MSME Registration
 
 Content comes from Strapi when `STRAPI_URL` and `STRAPI_API_TOKEN` are configured. If Strapi is unavailable or incomplete, the app falls back to typed local content in `frontend/data/*-fallback.ts`.
 
@@ -97,9 +99,10 @@ The main flow is:
 `frontend/app/corporate/[slug]/page.tsx`
 : Shared dynamic route for the nineteen Company Registration pages plus DSC,
   IEC Code, Ayush License, Trademark Registration, FSSAI Basic Registration,
-  and Portfolio Manager Registration. It awaits Next.js 16 route params,
-  discovers published CMS-only slugs, generates static params and metadata, and
-  returns the framework 404 for an unknown or incomplete slug.
+  Portfolio Manager Registration, GST Registration, Shop & Establishment
+  Registration, and MSME Registration. It awaits Next.js 16 route params,
+  discovers published CMS-only slugs, generates static params and metadata,
+  and returns the framework 404 for an unknown or incomplete slug.
 
 `frontend/app/icon.tsx`
 : Generates the app icon/fav icon through Next.
@@ -248,6 +251,21 @@ CMS-only by default.
 approved legacy source. It is the first offline-safe record for the dedicated
 SEBI Business Registration collection; later records are CMS-only by default.
 
+`frontend/data/tax-accounting-pages-fallback.ts`
+: The complete normalized GST Registration content from the approved legacy
+source. It is the first offline-safe record for the dedicated Tax and
+Accounting collection; later records are CMS-only by default.
+
+`frontend/data/labour-compliance-pages-fallback.ts`
+: The complete normalized Shop & Establishment Registration content from the
+approved legacy source. It is the first offline-safe record for the dedicated
+Labour Compliance collection; later records are CMS-only by default.
+
+`frontend/data/fund-raising-pages-fallback.ts`
+: The complete normalized MSME Registration content from the approved legacy
+source. It is the first offline-safe record for the dedicated Fund Raising
+collection; later records are CMS-only by default.
+
 These files keep the site working when Strapi is offline. They also document the expected content shape for editors/developers.
 
 ## Library files
@@ -257,12 +275,13 @@ These files keep the site working when Strapi is offline. They also document the
   settings, footer, SEO, editorial pages, and the fixed
   named Company Registration, MCA Services, Import Export Service, and
   Government License & Certification, IPR Services, FSSAI, and SEBI Business
-  Registration service-detail models.
+  Registration, Tax and Accounting, Labour Compliance, and Fund Raising
+  service-detail models.
 
 `frontend/lib/strapi.ts`
 : Server-side Strapi v5 adapter. Builds explicit populate queries—including
   `headerMenu.categories.links` and every nested registration-page component—
-  fetches published single types or exact-slug entries from all seven fixed
+  fetches published single types or exact-slug entries from all ten fixed
   service-detail collections, converts media URLs, and safely falls back when
   known local fallback data is available. Later CMS-only category records are
   strictly validated before rendering.
@@ -270,7 +289,7 @@ These files keep the site working when Strapi is offline. They also document the
 `frontend/lib/content.ts`
 : Small route-facing content loader. Exposes functions used by pages to get
 home/about/careers/contact content plus cached pages and slug discovery for all
-seven fixed service-detail collections.
+ten fixed service-detail collections.
 
 `frontend/lib/page-metadata.ts`
 : Converts page SEO data into Next metadata.

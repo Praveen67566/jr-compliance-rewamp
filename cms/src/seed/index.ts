@@ -7,11 +7,14 @@ import { withNextRevalidationSuppressed } from "../revalidation";
 
 import companyRegistrationPages from "./company-registration-pages.json";
 import fssaiServicePages from "./fssai-service-pages.json";
+import fundRaisingPages from "./fund-raising-pages.json";
 import governmentLicenseCertificationPages from "./government-license-certification-pages.json";
 import importExportServicePages from "./import-export-service-pages.json";
 import iprServicePages from "./ipr-service-pages.json";
+import labourCompliancePages from "./labour-compliance-pages.json";
 import mcaServicePages from "./mca-service-pages.json";
 import sebiBusinessRegistrationPages from "./sebi-business-registration-pages.json";
+import taxAccountingPages from "./tax-accounting-pages.json";
 import {
   achievements,
   blocks,
@@ -60,6 +63,9 @@ const CONTENT_TYPES = {
   mcaServicePage: "api::mca-service-page.mca-service-page",
   sebiBusinessRegistrationPage:
     "api::sebi-business-registration-page.sebi-business-registration-page",
+  taxAccountingPage: "api::tax-accounting-page.tax-accounting-page",
+  labourCompliancePage: "api::labour-compliance-page.labour-compliance-page",
+  fundRaisingPage: "api::fund-raising-page.fund-raising-page",
   serviceCategory: "api::service-category.service-category",
   service: "api::service.service",
   brandLogo: "api::brand-logo.brand-logo",
@@ -323,16 +329,22 @@ type GovernmentLicenseCertificationSeedPage =
 type ImportExportServiceSeedPage = (typeof importExportServicePages)[number];
 type IprServiceSeedPage = (typeof iprServicePages)[number];
 type FssaiServiceSeedPage = (typeof fssaiServicePages)[number];
+type FundRaisingSeedPage = (typeof fundRaisingPages)[number];
+type LabourComplianceSeedPage = (typeof labourCompliancePages)[number];
 type McaServiceSeedPage = (typeof mcaServicePages)[number];
 type SebiBusinessRegistrationSeedPage = (typeof sebiBusinessRegistrationPages)[number];
+type TaxAccountingSeedPage = (typeof taxAccountingPages)[number];
 type ServiceDetailSeedPage =
   | CompanyRegistrationSeedPage
   | GovernmentLicenseCertificationSeedPage
   | ImportExportServiceSeedPage
   | IprServiceSeedPage
   | FssaiServiceSeedPage
+  | FundRaisingSeedPage
+  | LabourComplianceSeedPage
   | McaServiceSeedPage
-  | SebiBusinessRegistrationSeedPage;
+  | SebiBusinessRegistrationSeedPage
+  | TaxAccountingSeedPage;
 
 function serviceDetailPageData(
   page: ServiceDetailSeedPage,
@@ -564,6 +576,93 @@ async function createSebiBusinessRegistrationPages(
   let created = 0;
 
   for (const [sortOrder, page] of sebiBusinessRegistrationPages.entries()) {
+    if (options.onlyMissing) {
+      const filters = { slug: { $eq: page.slug } };
+      const [draft, published] = await Promise.all([
+        pages.findFirst({ filters, status: "draft" }),
+        pages.findFirst({ filters, status: "published" }),
+      ]);
+      if (draft || published) {
+        continue;
+      }
+    }
+
+    await pages.create({
+      data: serviceDetailPageData(page, sortOrder),
+      status: "published",
+    });
+    created += 1;
+  }
+
+  return created;
+}
+
+async function createTaxAccountingPages(
+  strapi: Core.Strapi,
+  options: { onlyMissing?: boolean } = {},
+): Promise<number> {
+  const pages = documentService(strapi, CONTENT_TYPES.taxAccountingPage);
+  let created = 0;
+
+  for (const [sortOrder, page] of taxAccountingPages.entries()) {
+    if (options.onlyMissing) {
+      const filters = { slug: { $eq: page.slug } };
+      const [draft, published] = await Promise.all([
+        pages.findFirst({ filters, status: "draft" }),
+        pages.findFirst({ filters, status: "published" }),
+      ]);
+      if (draft || published) {
+        continue;
+      }
+    }
+
+    await pages.create({
+      data: serviceDetailPageData(page, sortOrder),
+      status: "published",
+    });
+    created += 1;
+  }
+
+  return created;
+}
+
+async function createLabourCompliancePages(
+  strapi: Core.Strapi,
+  options: { onlyMissing?: boolean } = {},
+): Promise<number> {
+  const pages = documentService(strapi, CONTENT_TYPES.labourCompliancePage);
+  let created = 0;
+
+  for (const [sortOrder, page] of labourCompliancePages.entries()) {
+    if (options.onlyMissing) {
+      const filters = { slug: { $eq: page.slug } };
+      const [draft, published] = await Promise.all([
+        pages.findFirst({ filters, status: "draft" }),
+        pages.findFirst({ filters, status: "published" }),
+      ]);
+      if (draft || published) {
+        continue;
+      }
+    }
+
+    await pages.create({
+      data: serviceDetailPageData(page, sortOrder),
+      status: "published",
+    });
+    created += 1;
+  }
+
+  return created;
+}
+
+async function createFundRaisingPages(
+  strapi: Core.Strapi,
+  options: { onlyMissing?: boolean } = {},
+): Promise<number> {
+  const pages = documentService(strapi, CONTENT_TYPES.fundRaisingPage);
+  let created = 0;
+
+  for (const [sortOrder, page] of fundRaisingPages.entries()) {
     if (options.onlyMissing) {
       const filters = { slug: { $eq: page.slug } };
       const [draft, published] = await Promise.all([
@@ -901,6 +1000,9 @@ export async function seedInitialContent(strapi: Core.Strapi): Promise<void> {
   await createIprServicePages(strapi);
   await createFssaiServicePages(strapi);
   await createSebiBusinessRegistrationPages(strapi);
+  await createTaxAccountingPages(strapi);
+  await createLabourCompliancePages(strapi);
+  await createFundRaisingPages(strapi);
 
   const faqCategoryDocuments: SeedDocument[] = [];
   for (const category of homeFaqCategories) {
