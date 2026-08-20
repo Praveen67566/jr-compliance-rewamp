@@ -143,8 +143,10 @@ those shared components before adding route-specific CSS.
 
 - All `/corporate/[slug]` Company Registration pages share one fixed visual and
   content sequence: bluefield hero, ice overview, dark challenges, ice
-  advantages, numbered process, cobalt Why JR field, ice breakdown, FAQ, and
-  the shared closing CTA/footer.
+  advantages, numbered process, cobalt Why JR field, optional navy YouTube video
+  grid, ice breakdown, optional ticker CTA, FAQ, and the shared closing
+  CTA/footer. The video grid renders immediately after Why JR; the ticker
+  renders immediately before FAQ.
 - Use Tailwind utilities for the complete detail-page composition. The network
   grid and orbit treatment may also use Tailwind arbitrary gradients; do not
   add a page stylesheet when utilities remain readable.
@@ -163,6 +165,7 @@ those shared components before adding route-specific CSS.
 | Trusted brands | Navy network rail with visible approved logo artwork, sky-blue label, quiet marquee, and blue hover elevation. |
 | Service Stack | Canonical reference: navy grid, cobalt cards, orbit icons, route line, status dots, and electric tab control. |
 | Ticker | Cobalt/electric-blue system alert with cool-white text and sky separators; never a warm accent. |
+| YouTube videos | Navy section with a responsive one-column/two-column grid, visible titles, and 16:9 privacy-enhanced embeds. |
 | Why JR and recognition | Bluefields with network routes and dark blue-glass cards. |
 | Metrics and testimonials | Dark cobalt data cards and pale-blue type; vary opacity/elevation, not colour families. |
 | FAQ | Ice-blue reading surface with cobalt category and accordion states. |

@@ -309,7 +309,9 @@ sudo certbot renew --dry-run
 
 After HTTPS works for every required subdomain, add HSTS to the generated TLS
 server blocks. Keep a tested Content-Security-Policy at the edge that permits
-the selected CMS/media origin. The loopback webhook configuration above means
+the selected CMS/media origin. When any service record includes YouTube videos,
+the policy must also include `frame-src https://www.youtube-nocookie.com` for
+the privacy-enhanced embeds. The loopback webhook configuration above means
 external `POST /api/revalidate` requests are denied by Nginx; if the CMS moves
 off-host, remove that denial only after adding strict edge rate limiting.
 The `/api/leads` edge limit is required in production. Its application-level
@@ -401,7 +403,8 @@ The frontend already emits baseline `nosniff`, frame, referrer, permissions,
 and opener-policy headers and suppresses `X-Powered-By`. At the TLS edge also
 enable HSTS once the canonical HTTPS domain is confirmed, keep `/api/revalidate`
 private, rate-limit `/api/leads`, and add a tested Content-Security-Policy that permits the
-chosen CMS/media origin.
+chosen CMS/media origin and, for populated service video sections,
+`frame-src https://www.youtube-nocookie.com`.
 
 ### 5. Start or reload both services with PM2
 

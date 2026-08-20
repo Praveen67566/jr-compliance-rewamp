@@ -30,7 +30,7 @@ typed frontend fallback data and a historical CMS JSON source, and do not widen
 the model into a generic page builder.
 
 The committed schema contains five single types, thirty-six collection types,
-and fifty-seven components: forty-one content types in total. Nineteen of the
+and fifty-nine components: forty-one content types in total. Nineteen of the
 collections use the fixed service-detail contract; that count does not include
 the legal collection or the two Global collections.
 
@@ -196,6 +196,12 @@ customized or partially migrated legal-link list is preserved.
 One published record per approved `/corporate/[slug]` route. This is a fixed
 service-detail contract, not a generic page builder.
 
+Across all nineteen fixed service-detail collections, the two additions are
+optional for backwards-compatible rollout. `youtubeVideos` renders immediately
+after `whyChoose`; `tickerCta` renders after `breakdown` and immediately before
+`faqs`. Neither field changes the existing required sections, and no seed,
+fallback, or database backfill populates them.
+
 | Field | Strapi field | Rules |
 | --- | --- | --- |
 | `title` | Short text | Required; public H1 and CMS record name |
@@ -207,7 +213,9 @@ service-detail contract, not a generic page builder.
 | `advantages` | `registration.card-section` | Required; ordered page-specific cards |
 | `process` | `registration.card-section` | Required; ordered six-step process |
 | `whyChoose` | `registration.card-section` | Required; ordered JR Compliance reasons |
+| `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
+| `tickerCta` | `home.cta-band` | Optional; “Let’s Talk Compliance”-style ticker content |
 | `faqs` | `registration.faq-section` | Required |
 | `finalCta` | `home.cta-band` | Required |
 | `seo` | `shared.seo` | Required |
@@ -233,7 +241,9 @@ required fixed field is complete.
 | `advantages` | `registration.card-section` | Required; ordered page-specific cards |
 | `process` | `registration.card-section` | Required; ordered service process |
 | `whyChoose` | `registration.card-section` | Required; ordered JR Compliance reasons |
+| `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
+| `tickerCta` | `home.cta-band` | Optional; “Let’s Talk Compliance”-style ticker content |
 | `faqs` | `registration.faq-section` | Required |
 | `finalCta` | `home.cta-band` | Required |
 | `seo` | `shared.seo` | Required |
@@ -257,7 +267,9 @@ service-detail template without a new React route or local fallback.
 | `advantages` | `registration.card-section` | Required; ordered page-specific cards |
 | `process` | `registration.card-section` | Required; ordered service process |
 | `whyChoose` | `registration.card-section` | Required; ordered JR Compliance reasons |
+| `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
+| `tickerCta` | `home.cta-band` | Optional; “Let’s Talk Compliance”-style ticker content |
 | `faqs` | `registration.faq-section` | Required |
 | `finalCta` | `home.cta-band` | Required |
 | `seo` | `shared.seo` | Required |
@@ -281,7 +293,9 @@ the same fixed service-detail template without borrowing Ayush content.
 | `advantages` | `registration.card-section` | Required; ordered page-specific cards |
 | `process` | `registration.card-section` | Required; ordered service process |
 | `whyChoose` | `registration.card-section` | Required; ordered JR Compliance reasons |
+| `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
+| `tickerCta` | `home.cta-band` | Optional; “Let’s Talk Compliance”-style ticker content |
 | `faqs` | `registration.faq-section` | Required |
 | `finalCta` | `home.cta-band` | Required |
 | `seo` | `shared.seo` | Required |
@@ -305,7 +319,9 @@ template without borrowing Trademark Registration content.
 | `advantages` | `registration.card-section` | Required; ordered page-specific cards |
 | `process` | `registration.card-section` | Required; ordered service process |
 | `whyChoose` | `registration.card-section` | Required; ordered fixed-slot cards (Trademark currently uses its six source pricing packages) |
+| `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
+| `tickerCta` | `home.cta-band` | Optional; “Let’s Talk Compliance”-style ticker content |
 | `faqs` | `registration.faq-section` | Required |
 | `finalCta` | `home.cta-band` | Required |
 | `seo` | `shared.seo` | Required |
@@ -329,7 +345,9 @@ without borrowing FSSAI Basic Registration content.
 | `advantages` | `registration.card-section` | Required; ordered page-specific cards |
 | `process` | `registration.card-section` | Required; ordered service process |
 | `whyChoose` | `registration.card-section` | Required; ordered JR Compliance reasons |
+| `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
+| `tickerCta` | `home.cta-band` | Optional; “Let’s Talk Compliance”-style ticker content |
 | `faqs` | `registration.faq-section` | Required |
 | `finalCta` | `home.cta-band` | Required |
 | `seo` | `shared.seo` | Required |
@@ -354,7 +372,9 @@ without borrowing Portfolio Manager Registration content.
 | `advantages` | `registration.card-section` | Required; ordered page-specific cards |
 | `process` | `registration.card-section` | Required; ordered service process |
 | `whyChoose` | `registration.card-section` | Required; ordered JR Compliance reasons |
+| `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
+| `tickerCta` | `home.cta-band` | Optional; “Let’s Talk Compliance”-style ticker content |
 | `faqs` | `registration.faq-section` | Required |
 | `finalCta` | `home.cta-band` | Required |
 | `seo` | `shared.seo` | Required |
@@ -434,16 +454,23 @@ detail-page families, not records in the separate Home Service Stack
 All nine Approval collections use the same fixed fields as the other
 service-detail collections: required `title`, `menuLabel`, route-safe `slug`,
 `hero`, `overview`, `challenges`, `advantages`, `process`, `whyChoose`,
-`breakdown`, `faqs`, `finalCta`, `seo`, and `sortOrder`. Every CMS-only record
-must complete all required nested content before publication; the frontend
-returns 404 for an incomplete record and never copies content from another page
-or category.
+optional `youtubeVideos`, `breakdown`, optional `tickerCta`, `faqs`, `finalCta`,
+`seo`, and `sortOrder`. Every CMS-only record must complete all required nested
+content before publication; the frontend returns 404 for an incomplete record
+and never copies content from another page or category.
+
+For each optional video item, enter a visible title and an HTTPS single-video
+URL using `youtube.com/watch`, `/shorts`, `/embed`, or `/live`, `youtu.be`, or
+`youtube-nocookie.com/embed`. The frontend rejects unsupported hosts, malformed
+URLs, playlist-only links, and invalid video IDs; invalid optional video data
+is omitted without invalidating the rest of the service record.
 
 #### Editor workflow for a CMS-only Approval page
 
 1. Open the intended family collection in Strapi Content Manager.
-2. Create a record and complete `title`, `menuLabel`, every fixed content
-   section, SEO, and `sortOrder`.
+2. Create a record and complete `title`, `menuLabel`, every required fixed
+   content section, SEO, and `sortOrder`. Add **YouTube Videos** and **Ticker
+   CTA** only when approved content is available.
 3. Enter a route-safe relative `slug` with no leading slash. Manually verify
    that the full path is unique across all nine Approval collections because a
    Strapi UID is unique only within its own collection.
@@ -616,6 +643,8 @@ settings, colour pickers, Webflow IDs, or public form endpoints.
 | `registration.hero` | `eyebrow` short text*, `description` long text*, `cta` `shared.cta`*; page H1 comes from the parent `title` |
 | `registration.overview` | `eyebrow` short text*, `title` short text*, `paragraphs` repeatable `registration.text-item`* |
 | `registration.card-section` | `eyebrow` short text*, `title` short text*, `items` repeatable `registration.detail-item`* |
+| `registration.youtube-video` | `title` short text*, `youtubeUrl` short text* |
+| `registration.youtube-video-section` | `eyebrow` short text*, `title` short text*, `description` long text, `videos` repeatable `registration.youtube-video`* (minimum 1) |
 | `registration.breakdown-group` | `title` short text*, `items` repeatable `registration.text-item`* |
 | `registration.breakdown-section` | `eyebrow` short text*, `title` short text*, `groups` repeatable `registration.breakdown-group`* |
 | `registration.faq-item` | `question` short text*, `answer` long text* |
@@ -687,6 +716,11 @@ invent claims or silently repair source inconsistencies.
 | `/approval/isi-certificate` (Bureau of Indian Standards) | `site/approval/isi-certificate.html` | Page-specific ISI Certification SEO, hero and overview, four challenges, four advantages, six service steps, four Why JR cards, Eligibility/Documents/Who Needs It breakdown, five FAQs, and shared final CTA. Exclude duplicated template sections, hidden placeholders, unrelated testimonials/resources, Webflow forms, and all legacy UI/transport code. |
 | `/approval/epr-certification` (Pollution Advisory) | `site/approval/epr-certification.html` | Page-specific EPR SEO, hero and overview, five service-scope items, four benefits, four service steps, three Why JR cards, Documents Required breakdown, five FAQs, and shared final CTA. Exclude duplicated template sections, hidden placeholders, unrelated testimonials/resources, Webflow forms, and all legacy UI/transport code. |
 
+The optional service-page YouTube and ticker sections are not sourced from
+these legacy pages and are not added to frontend fallbacks or historical seed
+JSON. Deploying the schema performs no record backfill; editors populate the
+sections selectively after review.
+
 Copy the approved media into Strapi Media Library first. The local Next.js
 fallback copies are development safety nets only; a published Strapi record
 should use its own approved media relation and alternative text.
@@ -699,7 +733,9 @@ should use its own approved media relation and alternative text.
   accessibility substitute.
 - Image-only media fields accept SVG, WebP, PNG, or JPG. Prefer SVG for logos,
   WebP/JPG for photography, and preserve transparent logos. Do not upload video
-  for the current homepage; video CTAs use a vetted external URL in `href`.
+  files for service embeds; use a vetted HTTPS single-video YouTube URL in
+  `youtubeVideos.videos.youtubeUrl`. Home video CTAs continue to use a vetted
+  external URL in `href`.
 - Use consistent crops: hero at least 1600×1000, card images at least 900×700,
   people at least 400×400, and logos with transparent padding. The current
   frontend deliberately uses a standard image element so its media URLs can

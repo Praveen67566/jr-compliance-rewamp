@@ -1,5 +1,8 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { describe, it } from "node:test";
+import { fileURLToPath } from "node:url";
 
 import bureauIndianStandardsSeedPages from "../../cms/src/seed/bureau-indian-standards-pages.json";
 import governmentLicenseCertificationSeedPages from "../../cms/src/seed/government-license-certification-pages.json";
@@ -65,7 +68,123 @@ import {
   taxAccountingSlugs,
 } from "@/data/tax-accounting-pages-fallback";
 
+const repositoryRoot = fileURLToPath(new URL("../..", import.meta.url));
+
+function repositoryFile(path: string): string {
+  return resolve(repositoryRoot, path);
+}
+
+function readJson(path: string): Record<string, unknown> {
+  return JSON.parse(readFileSync(repositoryFile(path), "utf8")) as Record<string, unknown>;
+}
+
+const fixedServiceSchemaNames = [
+  "company-registration-page",
+  "mca-service-page",
+  "import-export-service-page",
+  "government-license-certification-page",
+  "ipr-service-page",
+  "fssai-service-page",
+  "sebi-business-registration-page",
+  "tax-accounting-page",
+  "labour-compliance-page",
+  "fund-raising-page",
+  "bureau-indian-standards-page",
+  "pollution-advisory-page",
+  "telecommunication-engineering-centre-page",
+  "wireless-planning-coordination-page",
+  "bureau-energy-efficiency-page",
+  "cdsco-registration-page",
+  "aerb-approval-page",
+  "lmpc-certification-page",
+  "stqc-page",
+] as const;
+
 describe("service-detail content mirrors", () => {
+  it("adds the optional YouTube and ticker components to all fixed service schemas", () => {
+    for (const schemaName of fixedServiceSchemaNames) {
+      const schema = readJson(
+        `cms/src/api/${schemaName}/content-types/${schemaName}/schema.json`,
+      );
+      const attributes = schema.attributes as Record<string, Record<string, unknown>>;
+
+      assert.deepEqual(attributes.youtubeVideos, {
+        type: "component",
+        component: "registration.youtube-video-section",
+        repeatable: false,
+      });
+      assert.deepEqual(attributes.tickerCta, {
+        type: "component",
+        component: "home.cta-band",
+        repeatable: false,
+      });
+
+      const fields = Object.keys(attributes);
+      assert.ok(fields.indexOf("whyChoose") < fields.indexOf("youtubeVideos"));
+      assert.ok(fields.indexOf("youtubeVideos") < fields.indexOf("breakdown"));
+      assert.ok(fields.indexOf("breakdown") < fields.indexOf("tickerCta"));
+      assert.ok(fields.indexOf("tickerCta") < fields.indexOf("faqs"));
+    }
+  });
+
+  it("keeps the YouTube component contract fixed and editor ordered", () => {
+    const video = readJson("cms/src/components/registration/youtube-video.json");
+    const section = readJson(
+      "cms/src/components/registration/youtube-video-section.json",
+    );
+    const videoAttributes = video.attributes as Record<string, Record<string, unknown>>;
+    const sectionAttributes = section.attributes as Record<string, Record<string, unknown>>;
+
+    assert.deepEqual(videoAttributes.title, { type: "string", required: true });
+    assert.deepEqual(videoAttributes.youtubeUrl, { type: "string", required: true });
+    assert.deepEqual(sectionAttributes.eyebrow, { type: "string", required: true });
+    assert.deepEqual(sectionAttributes.title, { type: "string", required: true });
+    assert.deepEqual(sectionAttributes.description, { type: "text" });
+    assert.deepEqual(sectionAttributes.videos, {
+      type: "component",
+      component: "registration.youtube-video",
+      repeatable: true,
+      required: true,
+      min: 1,
+    });
+  });
+
+  it("renders the optional sections in order with accessible lazy embeds", () => {
+    const component = readFileSync(
+      repositoryFile(
+        "frontend/components/company-registration/company-registration-page.tsx",
+      ),
+      "utf8",
+    );
+    const strapiAdapter = readFileSync(
+      repositoryFile("frontend/lib/strapi.ts"),
+      "utf8",
+    );
+
+    const whyChooseIndex = component.indexOf("{content.whyChoose.items.map");
+    const youtubeIndex = component.indexOf("{content.youtubeVideos ?");
+    const breakdownIndex = component.indexOf('id="breakdown"');
+    const tickerIndex = component.indexOf("{content.tickerCta ?");
+    const faqIndex = component.indexOf('id="faq"');
+
+    assert.ok(whyChooseIndex >= 0);
+    assert.ok(whyChooseIndex < youtubeIndex);
+    assert.ok(youtubeIndex < breakdownIndex);
+    assert.ok(breakdownIndex < tickerIndex);
+    assert.ok(tickerIndex < faqIndex);
+    assert.match(component, /loading="lazy"/);
+    assert.match(component, /referrerPolicy="strict-origin-when-cross-origin"/);
+    assert.match(component, /allowFullScreen/);
+    assert.match(component, /src=\{video\.embedUrl\}/);
+    assert.match(component, /title=\{video\.title\}/);
+    assert.match(component, /<figcaption/);
+    assert.doesNotMatch(component, /autoplay/i);
+    assert.match(component, /className="contact-ticker"/);
+    assert.match(strapiAdapter, /youtubeVideos: \{ videos: true \}/);
+    assert.match(strapiAdapter, /tickerCta: \{ cta: true \}/);
+    assert.ok(!strapiAdapter.includes("populate=deep"));
+  });
+
   it("keeps IEC Code fallback content identical to its CMS migration mirror", () => {
     assert.deepEqual(fallbackImportExportServicePages, importExportServiceSeedPages);
   });

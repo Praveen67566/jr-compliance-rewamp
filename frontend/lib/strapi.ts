@@ -66,7 +66,10 @@ import type {
   Testimonial,
   TimelineEvent,
   WirelessPlanningCoordinationPageContent,
+  YouTubeVideo,
+  YouTubeVideoSection,
 } from "@/lib/types";
+import { youtubeEmbedUrl } from "@/lib/youtube";
 
 type UnknownRecord = Record<string, unknown>;
 export type SingleTypeSlug =
@@ -239,7 +242,9 @@ const fixedServiceDetailPopulateTree: PopulateTree = {
   advantages: { items: true },
   process: { items: true },
   whyChoose: { items: true },
+  youtubeVideos: { videos: true },
   breakdown: { groups: { items: true } },
+  tickerCta: { cta: true },
   faqs: { items: true },
   finalCta: { cta: true },
   seo: { shareImage: true },
@@ -1560,6 +1565,49 @@ function strictLink(value: unknown): Link | null {
   return label && href ? { label, href, ...(target ? { target } : {}) } : null;
 }
 
+function mapFixedServiceYouTubeVideos(value: unknown): YouTubeVideoSection | null {
+  const section = record(value);
+  const eyebrow = text(section.eyebrow);
+  const title = text(section.title);
+  const description = text(section.description);
+  const videos = orderedEntries(section.videos)
+    .map((entry) => {
+      const video = record(entry);
+      const videoTitle = text(video.title);
+      const youtubeUrl = text(video.youtubeUrl);
+      const embedUrl = youtubeUrl ? youtubeEmbedUrl(youtubeUrl) : null;
+
+      return videoTitle && embedUrl ? { title: videoTitle, embedUrl } : null;
+    })
+    .filter((video): video is YouTubeVideo => Boolean(video));
+
+  return eyebrow && title && videos.length
+    ? {
+        eyebrow,
+        title,
+        ...(description ? { description } : {}),
+        videos,
+      }
+    : null;
+}
+
+function mapFixedServiceTickerCta(
+  value: unknown,
+): NonNullable<CompanyRegistrationPageContent["tickerCta"]> | null {
+  const section = record(value);
+  const title = text(section.title);
+  const description = text(section.description);
+  const cta = strictLink(section.cta);
+
+  return title && cta
+    ? {
+        title,
+        ...(description ? { description } : {}),
+        cta,
+      }
+    : null;
+}
+
 function strictTextList(value: unknown): string[] | null {
   const source = orderedEntries(value);
   const items = source.map(
@@ -2076,6 +2124,8 @@ function mapCmsOnlyFixedServiceDetailPage<T extends CompanyRegistrationPageConte
   const whyChoose = strictFixedServiceCardSection(page.whyChoose);
   const breakdown = strictFixedServiceBreakdown(page.breakdown);
   const faqs = strictFixedServiceFaqSection(page.faqs);
+  const youtubeVideos = mapFixedServiceYouTubeVideos(page.youtubeVideos);
+  const tickerCta = mapFixedServiceTickerCta(page.tickerCta);
   const closingTitle = text(finalCta.title);
   const closingDescription = text(finalCta.description) ?? "";
   const closingCta = strictLink(finalCta.cta);
@@ -2125,7 +2175,9 @@ function mapCmsOnlyFixedServiceDetailPage<T extends CompanyRegistrationPageConte
     advantages,
     process,
     whyChoose,
+    ...(youtubeVideos ? { youtubeVideos } : {}),
     breakdown,
+    ...(tickerCta ? { tickerCta } : {}),
     faqs,
     closingCta: {
       title: closingTitle,
@@ -2145,9 +2197,16 @@ function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
   const hero = record(page.hero);
   const overview = record(page.overview);
   const finalCta = record(page.finalCta);
+  const youtubeVideos = mapFixedServiceYouTubeVideos(page.youtubeVideos);
+  const tickerCta = mapFixedServiceTickerCta(page.tickerCta);
+  const {
+    youtubeVideos: _fallbackYoutubeVideos,
+    tickerCta: _fallbackTickerCta,
+    ...fallbackWithoutOptionalSections
+  } = fallback;
 
   return {
-    ...fallback,
+    ...fallbackWithoutOptionalSections,
     ...chrome,
     slug: text(page.slug) ?? fallback.slug,
     menuLabel: text(page.menuLabel) ?? fallback.menuLabel,
@@ -2167,7 +2226,9 @@ function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
     advantages: mapRegistrationCardSection(page.advantages, fallback.advantages),
     process: mapRegistrationCardSection(page.process, fallback.process),
     whyChoose: mapRegistrationCardSection(page.whyChoose, fallback.whyChoose),
+    ...(youtubeVideos ? { youtubeVideos } : {}),
     breakdown: mapRegistrationBreakdown(page.breakdown, fallback.breakdown),
+    ...(tickerCta ? { tickerCta } : {}),
     faqs: mapRegistrationFaqSection(page.faqs, fallback.faqs),
     closingCta: {
       title: text(finalCta.title) ?? fallback.closingCta.title,

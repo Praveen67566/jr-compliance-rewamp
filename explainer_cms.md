@@ -40,11 +40,16 @@ The CMS provides content for:
 - shared header/footer and global consultation-form copy through the `site-setting` single type
 
 The committed model contains five single types, thirty-six collection types,
-and fifty-seven components: forty-one content types in total, including
+and fifty-nine components: forty-one content types in total, including
 nineteen fixed service-detail collections. That fixed service-detail count is
 unchanged; the Legal Page collection and two Global collections use separate
 fixed contracts. The seven empty Approval collections and both Global
 collections are schema integrations only and contain no bundled records.
+
+Every fixed service-detail collection also exposes two optional components:
+`youtubeVideos` follows Why JR, and `tickerCta` follows the breakdown and
+precedes FAQ. Leaving either field empty preserves the existing page and does
+not make an otherwise complete record invalid.
 
 The frontend reads published CMS content using a server-only API token. If
 Strapi is unavailable, fallback-backed routes use local data from
@@ -228,6 +233,10 @@ There are likewise no seed JSON files, fallback mirrors, or initial records for
 created and published directly through Strapi Content Manager after schema and
 token permissions are deployed.
 
+The optional `youtubeVideos` and `tickerCta` service fields are also not added
+to historical seed JSON or frontend fallback data, and bootstrap performs no
+backfill. Editors opt records into either section after the schema is deployed.
+
 ## API content types
 
 Each content type folder follows the Strapi pattern:
@@ -270,14 +279,15 @@ Each content type folder follows the Strapi pattern:
 `cms/src/api/company-registration-page/`
 : Dedicated detail-page records for the nineteen Company Registration slugs.
 Each record uses the fixed hero, overview, challenges, advantages, process,
-Why JR, breakdown, FAQ, closing CTA, and SEO fields; it is not a generic page
-builder.
+Why JR, optional YouTube videos, breakdown, optional ticker CTA, FAQ, closing
+CTA, and SEO fields; it is not a generic page builder.
 
 `cms/src/api/mca-service-page/`
 : Dedicated detail-page records for approved MCA Services slugs. The first DSC
 record uses the same fixed hero, overview, challenges, advantages, process,
-Why JR, breakdown, FAQ, closing CTA, and SEO fields without widening the
-Company Registration collection into a generic page builder.
+Why JR, optional YouTube videos, breakdown, optional ticker CTA, FAQ, closing
+CTA, and SEO fields without widening the Company Registration collection into
+a generic page builder.
 
 `cms/src/api/import-export-service-page/`
 : Dedicated fixed detail-page records for Import Export Service. IEC Code is
@@ -440,7 +450,10 @@ Strapi components are reusable field groups stored as JSON schemas in `cms/src/c
 
 `cms/src/components/registration/`
 : Fixed Company Registration field groups for hero copy, overview paragraphs,
-  detail cards, breakdown groups, FAQs, and their section wrappers.
+  detail cards, ordered titled YouTube videos, breakdown groups, FAQs, and
+  their section wrappers. `registration.youtube-video` stores a title and URL;
+  `registration.youtube-video-section` stores its heading, optional description,
+  and one or more videos.
 
 `cms/src/components/global/`
 : Eleven fixed Global field groups: `country-hero`, `certificate-card`,
@@ -533,6 +546,10 @@ PostgreSQL variables for local and deployed CMS environments are defined in
 - Keep every `SEED_*` flag disabled. The current local PostgreSQL content came
   from a verified transfer; use the reviewed export/import workflow for another
   target rather than a seed or backfill.
+- On any fixed service record, editors may optionally add one or more titled
+  HTTPS single-video YouTube URLs under **YouTube Videos** and an optional
+  **Ticker CTA**. Leave both empty for the backwards-compatible rollout; no
+  seed, fallback, or database backfill is required.
 - Deploying `legal-page` does not populate the active PostgreSQL database.
   Review and publish exactly the three allowed records through Content Manager,
   or use the reviewed `content,files` transfer workflow after backups. Grant the

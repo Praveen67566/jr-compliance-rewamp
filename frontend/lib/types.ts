@@ -547,6 +547,20 @@ export type RegistrationBreakdownGroup = {
   items: string[];
 };
 
+/** One editor-managed YouTube video normalized for privacy-enhanced embedding. */
+export type YouTubeVideo = {
+  title: string;
+  embedUrl: string;
+};
+
+/** Optional video collection shared by the fixed Corporate and Approval pages. */
+export type YouTubeVideoSection = {
+  eyebrow: string;
+  title: string;
+  description?: string;
+  videos: YouTubeVideo[];
+};
+
 /**
  * Editor-managed content shared by every Company Registration detail route.
  * The shape is deliberately fixed: it is a service contract, not a generic
@@ -587,10 +601,16 @@ export type CompanyRegistrationPageData = {
     title: string;
     items: RegistrationDetail[];
   };
+  youtubeVideos?: YouTubeVideoSection;
   breakdown: {
     eyebrow: string;
     title: string;
     groups: RegistrationBreakdownGroup[];
+  };
+  tickerCta?: {
+    title: string;
+    description?: string;
+    cta: Link;
   };
   faqs: {
     eyebrow: string;

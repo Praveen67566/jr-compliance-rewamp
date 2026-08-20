@@ -238,7 +238,11 @@ The main flow is:
   fallback when the CMS disables the form.
 
 `frontend/components/home/home.css`
-: Home-only visual details, including the hero, service stack, bands, cards, FAQ, and closing CTA. Use Tailwind utilities in the TSX for ordinary layout/spacing; retain this file for complex layered art, pseudo-elements, and animation hooks.
+: Home visual details, including the hero, service stack, bands, cards, FAQ,
+  and closing CTA. The existing `.contact-ticker` treatment is also reused by
+  the fixed service-detail template. Use Tailwind utilities in the TSX for
+  ordinary layout/spacing; retain this file for complex layered art,
+  pseudo-elements, and animation hooks.
 
 `frontend/components/home/service-stack.tsx`
 : Main service tabs/cards section. Uses service category data and service icon fallbacks.
@@ -278,8 +282,13 @@ The main flow is:
 `frontend/components/company-registration/company-registration-page.tsx`
 : One fixed Tailwind-first service template for every Company Registration
   route and every fixed category detail route. It renders the bluefield hero, overview,
-  challenges, advantages, process, Why JR, service breakdown, native-details
-  FAQ, and shared closing CTA without page-specific CSS or legacy markup.
+  challenges, advantages, process, Why JR, an optional YouTube video grid,
+  service breakdown, an optional ticker CTA, native-details FAQ, and shared
+  closing CTA without page-specific CSS or legacy markup. YouTube videos render
+  immediately after Why JR in a one-column/two-column navy grid. Each visible
+  title labels a lazy 16:9 `youtube-nocookie.com` iframe with no autoplay,
+  `allowFullScreen`, and `strict-origin-when-cross-origin` referrer policy. The
+  reused `.contact-ticker` renders immediately before FAQ.
 
 `frontend/components/global/global-country-page.tsx`
 : Dedicated responsive country-landing template. It renders the CMS-owned hero
@@ -398,7 +407,9 @@ they render no local or placeholder content.
 
 The existing fallback files keep their implemented routes working when Strapi
 is offline. They also document the expected content shape for
-editors/developers.
+editors/developers. The optional service-page YouTube and ticker sections are
+not added to fallback or seed mirrors; existing pages remain unchanged until
+editors populate and publish those CMS fields.
 
 ## Library files
 
@@ -412,7 +423,8 @@ editors/developers.
   Indian Standards, Pollution Advisory, Telecommunication Engineering Centre,
   Wireless Planning and Coordination, Bureau of Energy Efficiency, CDSCO
   Registration, AERB Approval, LMPC Certification, and STQC service-detail
-  models. It also defines the separate `GlobalCountryPageData` /
+  models, including the optional service-page YouTube video section and ticker
+  CTA. It also defines the separate `GlobalCountryPageData` /
   `GlobalCountryPageContent` and `GlobalCertificatePageData` /
   `GlobalCertificatePageContent` contracts used only by the Global templates.
 
@@ -421,7 +433,9 @@ editors/developers.
   `headerMenu.categories.links` and every nested registration-page component—
   fetches published single types or exact-slug entries from all nineteen fixed
   service-detail collections, converts media URLs, and safely falls back when
-  known local fallback data is available. The separate legal-page query allows
+  known local fallback data is available. It omits missing or malformed optional
+  service video/ticker sections and normalizes accepted HTTPS single-video
+  YouTube URLs to `youtube-nocookie.com` embed URLs. The separate legal-page query allows
   only the three fixed slugs, requests published content, explicitly populates
   ordered `sections` plus `seo.shareImage`, applies the `jr-legal-pages` tag,
   and strictly maps supported Blocks before falling back to complete local
@@ -456,6 +470,11 @@ cached Global country and certificate loaders as `getGlobalCountryPage`,
 `frontend/lib/link-props.ts`
 : Converts CMS link targets into safe anchor props. Adds `rel="noreferrer"` for new-tab links.
 
+`frontend/lib/youtube.ts`
+: Pure allow-list normalizer for service-page videos. It accepts supported
+  HTTPS single-video YouTube URL shapes, validates the 11-character video ID,
+  and returns a parameter-free `youtube-nocookie.com` embed URL or `null`.
+
 `frontend/lib/leads.ts`
 : Pure consultation validation, phone/path normalization, lead-type routing,
   and exact webhook payload construction. Focused tests cover this contract.
@@ -473,6 +492,15 @@ cached Global country and certificate loaders as `getGlobalCountryPage`,
   fixed Draft and Publish schema, all three metadata route files, explicit
   Strapi population, matching signed `jr-legal-pages` tags, safe Site Setting
   migration wiring, and fixed sitemap inclusion.
+
+`frontend/tests/service-detail-content.test.ts`
+: Preserves the existing service fallback/seed parity checks and verifies that
+  all nineteen schemas expose the two optional components in the fixed order,
+  including the component constraints and accessible lazy iframe attributes.
+
+`frontend/tests/youtube.test.ts`
+: Covers every supported YouTube URL shape and rejects non-HTTPS, unsafe-host,
+  playlist-only, channel, malformed, and bare-ID inputs.
 
 ## Public assets
 

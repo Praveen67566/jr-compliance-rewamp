@@ -35,9 +35,16 @@ type SectionHeadingProps = {
   title: string;
   tone?: "dark" | "light";
   compact?: boolean;
+  headingId?: string;
 };
 
-function SectionHeading({ eyebrow, title, tone = "dark", compact = false }: SectionHeadingProps) {
+function SectionHeading({
+  eyebrow,
+  title,
+  tone = "dark",
+  compact = false,
+  headingId,
+}: SectionHeadingProps) {
   const light = tone === "light";
 
   return (
@@ -51,6 +58,7 @@ function SectionHeading({ eyebrow, title, tone = "dark", compact = false }: Sect
         {eyebrow}
       </span>
       <h2
+        id={headingId}
         className={`break-words font-display text-[clamp(2.5rem,4vw,4.35rem)] leading-[0.97] tracking-[-0.045em] ${compact ? "mb-0" : ""} ${
           light ? "text-white" : "text-navy-950"
         }`}
@@ -398,6 +406,64 @@ export function CompanyRegistrationPage({ content }: CompanyRegistrationPageProp
         </div>
       </section>
 
+      {content.youtubeVideos ? (
+        <section
+          className="relative isolate overflow-hidden bg-navy-950 py-14 min-[560px]:py-18 min-[821px]:py-28"
+          aria-labelledby="youtube-videos-heading"
+          id="youtube-videos"
+        >
+          <div
+            className="pointer-events-none absolute inset-0 -z-10 opacity-25 [background-image:linear-gradient(rgba(139,220,255,0.12)_1px,transparent_1px),linear-gradient(90deg,rgba(139,220,255,0.12)_1px,transparent_1px)] [background-size:48px_48px] [mask-image:radial-gradient(circle_at_center,black,transparent_82%)]"
+            aria-hidden="true"
+          />
+          <div
+            className="pointer-events-none absolute -right-28 top-10 -z-10 size-80 rounded-full bg-electric/12 blur-3xl"
+            aria-hidden="true"
+          />
+          <div className="relative mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
+            <SectionHeading
+              eyebrow={content.youtubeVideos.eyebrow}
+              headingId="youtube-videos-heading"
+              title={content.youtubeVideos.title}
+              tone="light"
+            />
+            {content.youtubeVideos.description ? (
+              <p className="-mt-5 mb-10 max-w-[760px] text-base leading-8 text-ice/72 md:text-lg">
+                {content.youtubeVideos.description}
+              </p>
+            ) : null}
+            <div className="grid grid-cols-1 gap-6 min-[821px]:grid-cols-2">
+              {content.youtubeVideos.videos.map((video, index) => (
+                <figure
+                  className="m-0 min-w-0 overflow-hidden rounded-[26px] border border-sky/20 bg-navy-800/80 shadow-[0_24px_62px_rgba(0,8,34,0.34)]"
+                  key={`${video.embedUrl}-${index}`}
+                >
+                  <div className="relative aspect-video overflow-hidden border-b border-sky/15 bg-navy-900">
+                    <iframe
+                      allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                      className="absolute inset-0 h-full w-full border-0"
+                      loading="lazy"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      src={video.embedUrl}
+                      title={video.title}
+                    />
+                  </div>
+                  <figcaption className="flex min-w-0 items-start gap-4 p-6 md:p-7">
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-full border border-sky/30 bg-electric/12 text-[0.65rem] font-extrabold tracking-[0.12em] text-sky">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <h3 className="mb-0 min-w-0 break-words font-display text-[1.65rem] leading-[1.05] text-white">
+                      {video.title}
+                    </h3>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
       <section className="relative isolate scroll-mt-28 overflow-hidden bg-[linear-gradient(180deg,var(--blue-cloud),var(--blue-ice))] py-14 text-navy-950 min-[560px]:py-18 min-[821px]:py-28" id="breakdown">
         <div
           className="pointer-events-none absolute inset-0 -z-10 opacity-50 [background-image:linear-gradient(rgba(13,92,184,0.07)_1px,transparent_1px),linear-gradient(90deg,rgba(13,92,184,0.07)_1px,transparent_1px)] [background-size:46px_46px] [mask-image:linear-gradient(100deg,black,transparent_88%)]"
@@ -454,6 +520,28 @@ export function CompanyRegistrationPage({ content }: CompanyRegistrationPageProp
           </div>
         </div>
       </section>
+
+      {content.tickerCta ? (
+        <section
+          className="contact-ticker"
+          aria-label={content.tickerCta.description ?? content.tickerCta.title}
+        >
+          <a
+            aria-label={`${content.tickerCta.title}: ${content.tickerCta.cta.label}`}
+            href={content.tickerCta.cta.href}
+            {...linkTargetProps(content.tickerCta.cta)}
+          >
+            <span aria-hidden="true">{content.tickerCta.title}</span>
+            <i aria-hidden="true">✦</i>
+            <span aria-hidden="true">{content.tickerCta.title}</span>
+            <i aria-hidden="true">✦</i>
+            <span aria-hidden="true">{content.tickerCta.title}</span>
+            <i aria-hidden="true">✦</i>
+            <span aria-hidden="true">{content.tickerCta.title}</span>
+            <i aria-hidden="true">✦</i>
+          </a>
+        </section>
+      ) : null}
 
       <section className="scroll-mt-28 bg-ice py-14 text-navy-950 min-[560px]:py-18 min-[821px]:py-28" id="faq">
         <div className="mx-auto grid w-full max-w-[1320px] grid-cols-1 gap-10 px-[18px] min-[560px]:px-[22px] min-[821px]:grid-cols-[minmax(0,0.65fr)_minmax(0,1.35fr)] min-[821px]:px-8">

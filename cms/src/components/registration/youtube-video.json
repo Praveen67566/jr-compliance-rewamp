@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_registration_youtube_videos",
+  "info": {
+    "displayName": "Registration YouTube video"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "youtubeUrl": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

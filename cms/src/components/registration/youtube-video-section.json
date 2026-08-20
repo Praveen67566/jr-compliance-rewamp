@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_registration_youtube_video_sections",
+  "info": {
+    "displayName": "Registration YouTube video section"
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "videos": {
+      "type": "component",
+      "component": "registration.youtube-video",
+      "repeatable": true,
+      "required": true,
+      "min": 1
+    }
+  }
+}

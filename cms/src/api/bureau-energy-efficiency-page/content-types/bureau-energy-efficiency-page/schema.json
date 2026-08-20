@@ -62,11 +62,21 @@
       "repeatable": false,
       "required": true
     },
+    "youtubeVideos": {
+      "type": "component",
+      "component": "registration.youtube-video-section",
+      "repeatable": false
+    },
     "breakdown": {
       "type": "component",
       "component": "registration.breakdown-section",
       "repeatable": false,
       "required": true
+    },
+    "tickerCta": {
+      "type": "component",
+      "component": "home.cta-band",
+      "repeatable": false
     },
     "faqs": {
       "type": "component",
