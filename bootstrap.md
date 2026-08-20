@@ -106,12 +106,13 @@ If a command cannot be run, clearly explain why.
 ## Prompt:-
 
 Don't change anything unneccesarry only change the change in need.
-first understand the complete archticture of code and everything 
+first understand the complete archticture of code and everything.
 
-I want to add in navbar a calling icon and a whatsapp icon given in the images dont change the ui of navbar add small icons for calling and whatsapp and add these in site setting
+i want to add a floating whatsapp icon at the bottom position you can by viewing the image it should show in all pages and the whatsapp floating i con html also given.
+
+change only this i don't want any other changes no changes in structure or anything.
 
 
-only these two changes in header dont change anthing else and no need to add seed data
 
 
 
