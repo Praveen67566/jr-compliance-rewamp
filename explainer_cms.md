@@ -32,17 +32,23 @@ The CMS provides content for:
 - future CMS-only AERB Approval paths through `aerb-approval-page`
 - future CMS-only LMPC Certification paths through `lmpc-certification-page`
 - future CMS-only STQC paths through `stqc-page`
+- future CMS-only `/globals/[country]` landings through `global-country-page`
+- future CMS-only `/globals/[country]/[slug]` certificate pages through
+  `global-certificate-page`
 - shared header/footer and global consultation-form copy through the `site-setting` single type
 
-The committed model contains five single types, thirty-three collection types,
-and forty-six components: thirty-eight content types in total, including
-nineteen fixed service-detail collections. The seven new Approval collections
-are schema integrations only and contain no bundled records.
+The committed model contains five single types, thirty-five collection types,
+and fifty-seven components: forty content types in total, including nineteen
+fixed service-detail collections. That fixed service-detail count is unchanged;
+the two Global collections use separate country and certificate contracts. The
+seven empty Approval collections and both Global collections are schema
+integrations only and contain no bundled records.
 
 The frontend reads published CMS content using a server-only API token. If
 Strapi is unavailable, fallback-backed routes use local data from
 `frontend/data/*-fallback.ts`; the seven empty Approval families have no local
-page and return 404.
+page and return 404. Global pages never use local fallbacks and return 404 until
+a matching complete record is published.
 
 The main CMS flow is:
 
@@ -52,7 +58,8 @@ The main CMS flow is:
    running CMS database.
 3. The frontend fetches published single types and related collections through
    REST, including all nineteen fixed service-detail collections filtered by
-   exact slug or Approval path.
+   exact slug or Approval path, plus the two Global collections filtered by
+   exact country/certificate route segments.
 4. `cms/src/revalidation.ts` can notify Next.js after publish changes.
 5. Next.js revalidates the affected cache tags and fetches fresh CMS content.
 
@@ -123,6 +130,9 @@ The main CMS flow is:
 
 `cms/src/revalidation.ts`
 : Signed webhook sender for Next.js cache revalidation. It watches Strapi document and media lifecycle events, maps changed CMS models to frontend cache tags, signs the payload with HMAC SHA-256, and sends it to `NEXT_REVALIDATE_URL`.
+  Global country changes map to `jr-global-country-pages`; Global certificate
+  changes map to `jr-global-certificate-pages`. Shared Site Setting and media
+  changes continue to invalidate all applicable page tags.
 
 ## Historical content-source files
 
@@ -195,6 +205,11 @@ Wireless Planning and Coordination, Bureau of Energy Efficiency, CDSCO
 Registration, AERB Approval, LMPC Certification, or STQC. Their collections
 are intentionally empty and their first records are created directly in
 Strapi Content Manager.
+
+There are likewise no seed JSON files, fallback mirrors, or initial records for
+`global-country-page` or `global-certificate-page`. Every Global record is
+created and published directly through Strapi Content Manager after schema and
+token permissions are deployed.
 
 ## API content types
 
@@ -317,6 +332,20 @@ route.
 `cms/src/api/stqc-page/`
 : Empty dedicated fixed detail-page collection for STQC.
 
+`cms/src/api/global-country-page/`
+: Empty dedicated country-landing collection for `/globals/[country]`. A
+  record owns its title, menu label, single-segment slug, country hero,
+  certificate listing/cards, closing CTA, SEO, and sort order. It is a
+  Global-specific fixed contract, not a service-detail collection or generic
+  page builder.
+
+`cms/src/api/global-certificate-page/`
+: Empty dedicated certificate collection for
+  `/globals/[country]/[slug]`. A record owns its title, menu label, country
+  name, single-segment country and certificate slugs, certificate hero,
+  overview, neutral scope, process, JR Compliance role, conclusion, closing
+  CTA, SEO, and sort order. It is separate from Corporate and Approval content.
+
 `cms/src/api/service-category/`
 : Service category records used by the home Service Stack. Categories group services.
 
@@ -384,6 +413,13 @@ Strapi components are reusable field groups stored as JSON schemas in `cms/src/c
 `cms/src/components/registration/`
 : Fixed Company Registration field groups for hero copy, overview paragraphs,
   detail cards, breakdown groups, FAQs, and their section wrappers.
+
+`cms/src/components/global/`
+: Eleven fixed Global field groups: `country-hero`, `certificate-card`,
+  `certificate-listing`, `certificate-hero`, `text-item`, `overview`,
+  `scope-section`, `process-step`, `process-section`, `role-section`, and
+  `conclusion`. They hold editor-owned prose, CTAs, required country/card
+  media, optional process media, and ordered items without a dynamic zone.
 
 ## Admin customization
 
@@ -470,6 +506,12 @@ PostgreSQL variables for local and deployed CMS environments are defined in
   from a verified transfer; use the reviewed export/import workflow for another
   target rather than a seed or backfill.
 - Do not rely on local `public/uploads` for production media durability.
+- After deploying the two Global schemas, grant the existing server-side
+  `next-site-reader` token `find` and `findOne` for both Global collections.
+  Leave the Public role with no Global collection or Upload access. Publishing
+  a country does not edit navigation: add its exact `/globals/<country>` link
+  under **Site Setting → Header Menu → Global**, and put certificate
+  destinations on that country record's cards.
 - When a schema changes, update `cms/CONTENT_MODEL.md`, the Strapi schema files,
   frontend types, frontend mapper, and any applicable fallback data together.
   CMS-only collections with no local record do not require an empty fallback

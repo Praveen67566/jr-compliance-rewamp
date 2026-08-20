@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_global_certificate_heroes",
+  "info": {
+    "displayName": "Global certificate hero"
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "cta": {
+      "type": "component",
+      "component": "shared.cta",
+      "repeatable": false,
+      "required": true
+    }
+  }
+}

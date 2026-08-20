@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_global_text_items",
+  "info": {
+    "displayName": "Global text item"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "text",
+      "required": true
+    }
+  }
+}

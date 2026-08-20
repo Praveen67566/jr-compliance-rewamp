@@ -24,16 +24,23 @@ routes:
   Standards, Pollution Advisory, Telecommunication Engineering Centre,
   Wireless Planning and Coordination, Bureau of Energy Efficiency, CDSCO
   Registration, AERB Approval, LMPC Certification, and STQC
+- `/globals/[country]` for complete published CMS-only Global country landings
+- `/globals/[country]/[slug]` for complete published CMS-only Global
+  certificate pages
 
 The seven new Approval integrations add no local pages, so the current sitemap
-still contains thirty-four active routes. Their first routes appear only after
-complete records are published in Strapi.
+still contains thirty-four active routes. The two empty Global collections also
+add no active or local route. Approval and Global URLs appear in the sitemap
+only after complete records are published in Strapi.
 
 Content comes from Strapi when `STRAPI_URL` and `STRAPI_API_TOKEN` are configured.
 Implemented routes fall back to typed local content in
 `frontend/data/*-fallback.ts` when Strapi is unavailable or incomplete. The
 seven empty CMS-only Approval families have no fallback or first page, so their
 routes exist only after an editor publishes a complete Strapi record.
+The Global route families are also strictly CMS-only: they have no local
+fallback, seed content, sample record, or default page and therefore return 404
+when Strapi is unavailable or a matching complete published record is absent.
 
 The main flow is:
 
@@ -126,6 +133,22 @@ The main flow is:
   generates static params and metadata and returns the framework 404 for an
   unknown or incomplete path.
 
+`frontend/app/globals/[country]/page.tsx`
+: Shared country landing route. It awaits the dynamic country parameter,
+  discovers published `global-country-page` slugs for static generation and
+  the sitemap, generates record-owned metadata, and returns the framework 404
+  for a draft, unpublished, incomplete, unknown, or unavailable CMS record. It
+  uses async params, `revalidate = 60`, `dynamicParams = true`, and
+  `pageMetadata`.
+
+`frontend/app/globals/[country]/[slug]/page.tsx`
+: Shared certificate route. It resolves a published
+  `global-certificate-page` by the exact `countrySlug` and `slug`, discovers
+  published country/certificate paths, generates record-owned metadata, and
+  returns the framework 404 for any incomplete or non-matching record. It also
+  uses async params, `revalidate = 60`, `dynamicParams = true`, and
+  `pageMetadata`.
+
 `frontend/app/icon.tsx`
 : Generates the app icon/fav icon through Next.
 
@@ -133,10 +156,14 @@ The main flow is:
 : Generates `robots.txt`.
 
 `frontend/app/sitemap.ts`
-: Generates `sitemap.xml` for the active routes.
+: Generates `sitemap.xml` for the active routes. Complete published Global
+  country and certificate paths are discovered from Strapi; empty Global
+  collections add no URL.
 
 `frontend/app/api/revalidate/route.ts`
-: Secure Strapi webhook endpoint. It verifies an HMAC signature from Strapi and revalidates the matching Next cache tags after publish/unpublish/delete events.
+: Secure Strapi webhook endpoint. It verifies an HMAC signature from Strapi and revalidates the matching Next cache tags after publish/unpublish/delete events,
+  including `jr-global-country-pages` and
+  `jr-global-certificate-pages`.
 
 `frontend/app/api/leads/route.ts`
 : Same-origin consultation endpoint. It validates and normalizes the required
@@ -155,6 +182,9 @@ The main flow is:
 
 `frontend/components/site-header.tsx`
 : Shared navbar/header. It renders the JR logo, desktop navigation, a two-pane category/link mega menu, contact CTA, and mobile navigation. Layout and responsive styling use Tailwind utilities; it consumes CMS/fallback navigation data.
+  Global country links remain editor-managed through the existing
+  `site-setting.headerMenu` Global category. Publishing a Global page does not
+  add it to the navbar automatically.
 
 `frontend/components/site-header.css`
 : Header-only bluefield, navigation rail, popover, and mobile-menu artwork. It is imported once by the root layout to preserve the established cascade.
@@ -221,6 +251,22 @@ The main flow is:
   route and every fixed category detail route. It renders the bluefield hero, overview,
   challenges, advantages, process, Why JR, service breakdown, native-details
   FAQ, and shared closing CTA without page-specific CSS or legacy markup.
+
+`frontend/components/global/global-country-page.tsx`
+: Dedicated responsive country-landing template. It renders the CMS-owned hero
+  image, title, description and CTA, followed by the ordered certificate cards
+  with required logos, descriptions, and links, then the shared closing CTA.
+  Certificate links are managed on these country cards and should use the exact
+  `/globals/<country>/<certificate>` destination.
+
+`frontend/components/global/global-certificate-page.tsx`
+: Dedicated responsive certificate template. It renders the fixed
+  certificate-specific sequence: hero, overview paragraphs, neutral scope
+  items, ordered process, JR Compliance role, conclusion, and closing CTA. Both
+  Global templates use the Compliance Network theme and shared site shell; they
+  are separate from the completed Corporate/Approval template. The certificate
+  hero renders the centralized `ConsultationForm` only when
+  `site.leadForm.enabled` is true.
 
 ## Data fallbacks
 
@@ -305,6 +351,11 @@ Centre, Wireless Planning and Coordination, Bureau of Energy Efficiency,
 CDSCO Registration, AERB Approval, LMPC Certification, or STQC. Those seven
 families begin empty in Strapi and every page in them is CMS-only.
 
+There are also no fallback modules for `global-country-page` or
+`global-certificate-page`. Editors create every country and certificate record
+directly in Strapi. The dynamic route files and shared UI templates exist, but
+they render no local or placeholder content.
+
 The existing fallback files keep their implemented routes working when Strapi
 is offline. They also document the expected content shape for
 editors/developers.
@@ -320,7 +371,9 @@ editors/developers.
   Indian Standards, Pollution Advisory, Telecommunication Engineering Centre,
   Wireless Planning and Coordination, Bureau of Energy Efficiency, CDSCO
   Registration, AERB Approval, LMPC Certification, and STQC service-detail
-  models.
+  models. It also defines the separate `GlobalCountryPageData` /
+  `GlobalCountryPageContent` and `GlobalCertificatePageData` /
+  `GlobalCertificatePageContent` contracts used only by the Global templates.
 
 `frontend/lib/strapi.ts`
 : Server-side Strapi v5 adapter. Builds explicit populate queries—including
@@ -328,13 +381,21 @@ editors/developers.
   fetches published single types or exact-slug entries from all nineteen fixed
   service-detail collections, converts media URLs, and safely falls back when
   known local fallback data is available. Later CMS-only category records are
-  strictly validated before rendering.
+  strictly validated before rendering. The two Global collections have their
+  own explicit hero, card, CTA, SEO, text-item, process, and media populate
+  trees and strict mappers; they are filtered by exact route segments, request
+  only `status=published`, convert media URLs to absolute CMS URLs, and never
+  use `populate=deep` or a local page fallback.
 
 `frontend/lib/content.ts`
 : Small route-facing content loader. Exposes functions used by pages to get
 home/about/careers/contact content plus cached pages and slug discovery for all
 nineteen fixed service-detail collections. The seven empty Approval families
-pass no page fallback to the Strapi adapter.
+pass no page fallback to the Strapi adapter. It also exposes cached Global
+country and certificate loaders as `getGlobalCountryPage`,
+`getGlobalCountrySlugs`, `getGlobalCertificatePage`, and
+`getGlobalCertificatePaths`. Unavailable or incomplete Global content stays
+`null`, and discovery returns no Global path when Strapi is unavailable.
 
 `frontend/lib/page-metadata.ts`
 : Converts page SEO data into Next metadata.

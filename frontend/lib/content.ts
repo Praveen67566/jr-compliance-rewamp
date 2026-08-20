@@ -65,6 +65,10 @@ import {
   getFundRaisingSlugsFromStrapi,
   getGovernmentLicenseCertificationPageFromStrapi,
   getGovernmentLicenseCertificationSlugsFromStrapi,
+  getGlobalCertificatePageFromStrapi,
+  getGlobalCertificatePathsFromStrapi,
+  getGlobalCountryPageFromStrapi,
+  getGlobalCountrySlugsFromStrapi,
   getHomepageFromStrapi,
   getIprServicePageFromStrapi,
   getIprServiceSlugsFromStrapi,
@@ -101,6 +105,8 @@ import type {
   FssaiServicePageContent,
   FundRaisingPageContent,
   GovernmentLicenseCertificationPageContent,
+  GlobalCertificatePageContent,
+  GlobalCountryPageContent,
   HomepageContent,
   ImportExportServicePageContent,
   IprServicePageContent,
@@ -530,3 +536,50 @@ export const getStqcPage = cache(async function getStqcPage(
 export const getStqcSlugs = cache(async function getStqcSlugs(): Promise<string[]> {
   return getStqcSlugsFromStrapi();
 });
+
+const cmsOnlyGlobalChromeFallback = {
+  site: fallbackHomepage.site,
+  navigation: fallbackHomepage.navigation,
+  footer: fallbackHomepage.footer,
+};
+
+export const getGlobalCountryPage = cache(async function getGlobalCountryPage(
+  country: string,
+): Promise<GlobalCountryPageContent | null> {
+  return getGlobalCountryPageFromStrapi(country, cmsOnlyGlobalChromeFallback);
+});
+
+export const getGlobalCountrySlugs = cache(
+  async function getGlobalCountrySlugs(): Promise<string[]> {
+    return [...new Set(await getGlobalCountrySlugsFromStrapi())];
+  },
+);
+
+export const getGlobalCertificatePage = cache(async function getGlobalCertificatePage(
+  country: string,
+  slug: string,
+): Promise<GlobalCertificatePageContent | null> {
+  return getGlobalCertificatePageFromStrapi(
+    country,
+    slug,
+    cmsOnlyGlobalChromeFallback,
+  );
+});
+
+export const getGlobalCertificatePaths = cache(
+  async function getGlobalCertificatePaths(): Promise<
+    Array<{ country: string; slug: string }>
+  > {
+    const seen = new Set<string>();
+
+    return (await getGlobalCertificatePathsFromStrapi()).filter(({ country, slug }) => {
+      const key = `${country}/${slug}`;
+      if (seen.has(key)) {
+        return false;
+      }
+
+      seen.add(key);
+      return true;
+    });
+  },
+);

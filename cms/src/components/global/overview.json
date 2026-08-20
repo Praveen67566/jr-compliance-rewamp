@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_global_overviews",
+  "info": {
+    "displayName": "Global certificate overview"
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "paragraphs": {
+      "type": "component",
+      "component": "global.text-item",
+      "repeatable": true,
+      "required": true,
+      "min": 1
+    }
+  }
+}

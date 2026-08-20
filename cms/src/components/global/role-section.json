@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_global_role_sections",
+  "info": {
+    "displayName": "Global certificate role section"
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "items": {
+      "type": "component",
+      "component": "global.text-item",
+      "repeatable": true,
+      "required": true,
+      "min": 1
+    },
+    "cta": {
+      "type": "component",
+      "component": "shared.cta",
+      "repeatable": false,
+      "required": true
+    }
+  }
+}

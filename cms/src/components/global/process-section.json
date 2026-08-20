@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_global_process_sections",
+  "info": {
+    "displayName": "Global certificate process section"
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "steps": {
+      "type": "component",
+      "component": "global.process-step",
+      "repeatable": true,
+      "required": true,
+      "min": 1
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

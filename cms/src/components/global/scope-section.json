@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_global_scope_sections",
+  "info": {
+    "displayName": "Global certificate scope section"
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "items": {
+      "type": "component",
+      "component": "global.text-item",
+      "repeatable": true,
+      "required": true,
+      "min": 1
+    }
+  }
+}

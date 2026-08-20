@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_global_process_steps",
+  "info": {
+    "displayName": "Global certificate process step"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    }
+  }
+}

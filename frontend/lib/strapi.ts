@@ -22,6 +22,11 @@ import type {
   FssaiServicePageContent,
   FundRaisingPageContent,
   GovernmentLicenseCertificationPageContent,
+  GlobalCertificateCard,
+  GlobalCertificatePageContent,
+  GlobalCertificateProcessStep,
+  GlobalCountryPageContent,
+  GlobalPageImage,
   HomepageContent,
   ImportExportServicePageContent,
   Insight,
@@ -83,7 +88,9 @@ export type RevalidatableContentSlug =
   | "cdsco-registration-page"
   | "aerb-approval-page"
   | "lmpc-certification-page"
-  | "stqc-page";
+  | "stqc-page"
+  | "global-country-page"
+  | "global-certificate-page";
 type PopulateValue = true | PopulateTree;
 
 interface PopulateTree {
@@ -120,6 +127,8 @@ export const strapiCacheTagBySlug: Record<RevalidatableContentSlug, string> = {
   "aerb-approval-page": "jr-aerb-approval-pages",
   "lmpc-certification-page": "jr-lmpc-certification-pages",
   "stqc-page": "jr-stqc-pages",
+  "global-country-page": "jr-global-country-pages",
+  "global-certificate-page": "jr-global-certificate-pages",
 };
 
 /**
@@ -223,6 +232,24 @@ const fixedServiceDetailPopulateTree: PopulateTree = {
   whyChoose: { items: true },
   breakdown: { groups: { items: true } },
   faqs: { items: true },
+  finalCta: { cta: true },
+  seo: { shareImage: true },
+};
+
+const globalCountryPopulateTree: PopulateTree = {
+  hero: { image: true, cta: true },
+  certificates: { cards: { logo: true, link: true } },
+  finalCta: { cta: true },
+  seo: { shareImage: true },
+};
+
+const globalCertificatePopulateTree: PopulateTree = {
+  hero: { cta: true },
+  overview: { paragraphs: true },
+  scope: { items: true },
+  process: { steps: true, image: true },
+  ourRole: { items: true, cta: true },
+  conclusion: { paragraphs: true, cta: true },
   finalCta: { cta: true },
   seo: { shareImage: true },
 };
@@ -1608,6 +1635,263 @@ function strictFixedServiceSeo(value: unknown): Seo | null {
     : null;
 }
 
+const globalRouteSegmentPattern = /^[A-Za-z0-9-_.~]+$/;
+
+function strictGlobalImage(value: unknown): GlobalPageImage | null {
+  const src = mediaUrl(value);
+  const alt = text(record(value).alternativeText);
+
+  return src && alt ? { src, alt } : null;
+}
+
+function strictGlobalCertificateCards(value: unknown): GlobalCertificateCard[] | null {
+  const source = orderedEntries(value);
+  const items = source.map((entry) => {
+    const item = record(entry);
+    const title = text(item.title);
+    const description = text(item.description);
+    const logo = strictGlobalImage(item.logo);
+    const itemLink = strictLink(item.link);
+
+    return title && description && logo && itemLink
+      ? { title, description, logo, link: itemLink }
+      : null;
+  });
+
+  return items.length && items.every((item): item is GlobalCertificateCard => Boolean(item))
+    ? items
+    : null;
+}
+
+function strictGlobalProcessSteps(value: unknown): GlobalCertificateProcessStep[] | null {
+  const source = orderedEntries(value);
+  const steps = source.map((entry) => {
+    const item = record(entry);
+    const title = text(item.title);
+    const description = text(item.description);
+    return title && description ? { title, description } : null;
+  });
+
+  return steps.length &&
+    steps.every((item): item is GlobalCertificateProcessStep => Boolean(item))
+    ? steps
+    : null;
+}
+
+function mapCmsOnlyGlobalCountryPage(
+  chromeFallback: PageChromeContent,
+  requestedCountry: string,
+  rawPage: unknown,
+  rawSettings: unknown,
+): GlobalCountryPageContent | null {
+  const page = record(rawPage);
+  const hero = record(page.hero);
+  const certificates = record(page.certificates);
+  const finalCta = record(page.finalCta);
+  const slug = text(page.slug);
+  const menuLabel = text(page.menuLabel);
+  const pageTitle = text(page.title);
+  const heroEyebrow = text(hero.eyebrow);
+  const heroDescription = text(hero.description);
+  const heroImage = strictGlobalImage(hero.image);
+  const heroCta = strictLink(hero.cta);
+  const certificatesEyebrow = text(certificates.eyebrow);
+  const certificatesTitle = text(certificates.title);
+  const certificateItems = strictGlobalCertificateCards(certificates.cards);
+  const closingTitle = text(finalCta.title);
+  const closingDescription = text(finalCta.description) ?? "";
+  const closingCta = strictLink(finalCta.cta);
+  const seo = strictFixedServiceSeo(page.seo);
+
+  if (
+    !slug ||
+    slug !== requestedCountry ||
+    !globalRouteSegmentPattern.test(slug) ||
+    !menuLabel ||
+    !pageTitle ||
+    !heroEyebrow ||
+    !heroDescription ||
+    !heroImage ||
+    !heroCta ||
+    !certificatesEyebrow ||
+    !certificatesTitle ||
+    !certificateItems ||
+    !closingTitle ||
+    !closingCta ||
+    !seo
+  ) {
+    return null;
+  }
+
+  const certificatesDescription = text(certificates.description);
+
+  return {
+    ...mapPageChrome(chromeFallback, rawSettings),
+    slug,
+    menuLabel,
+    seo,
+    hero: {
+      eyebrow: heroEyebrow,
+      title: pageTitle,
+      description: heroDescription,
+      image: heroImage,
+      cta: heroCta,
+    },
+    certificates: {
+      eyebrow: certificatesEyebrow,
+      title: certificatesTitle,
+      ...(certificatesDescription ? { description: certificatesDescription } : {}),
+      items: certificateItems,
+    },
+    closingCta: {
+      title: closingTitle,
+      description: closingDescription,
+      cta: closingCta,
+    },
+  };
+}
+
+function mapCmsOnlyGlobalCertificatePage(
+  chromeFallback: PageChromeContent,
+  requestedCountry: string,
+  requestedSlug: string,
+  rawPage: unknown,
+  rawSettings: unknown,
+): GlobalCertificatePageContent | null {
+  const page = record(rawPage);
+  const hero = record(page.hero);
+  const overview = record(page.overview);
+  const scope = record(page.scope);
+  const process = record(page.process);
+  const ourRole = record(page.ourRole);
+  const conclusion = record(page.conclusion);
+  const finalCta = record(page.finalCta);
+  const countryName = text(page.countryName);
+  const countrySlug = text(page.countrySlug);
+  const slug = text(page.slug);
+  const menuLabel = text(page.menuLabel);
+  const pageTitle = text(page.title);
+  const heroEyebrow = text(hero.eyebrow);
+  const heroDescription = text(hero.description);
+  const heroCta = strictLink(hero.cta);
+  const overviewEyebrow = text(overview.eyebrow);
+  const overviewTitle = text(overview.title);
+  const overviewParagraphs = strictTextList(overview.paragraphs);
+  const scopeEyebrow = text(scope.eyebrow);
+  const scopeTitle = text(scope.title);
+  const scopeItems = strictTextList(scope.items);
+  const processEyebrow = text(process.eyebrow);
+  const processTitle = text(process.title);
+  const processSteps = strictGlobalProcessSteps(process.steps);
+  const processImageUrl = mediaUrl(process.image);
+  const processImage = processImageUrl ? strictGlobalImage(process.image) : undefined;
+  const roleEyebrow = text(ourRole.eyebrow);
+  const roleTitle = text(ourRole.title);
+  const roleItems = strictTextList(ourRole.items);
+  const roleCta = strictLink(ourRole.cta);
+  const conclusionEyebrow = text(conclusion.eyebrow);
+  const conclusionTitle = text(conclusion.title);
+  const conclusionParagraphs = strictTextList(conclusion.paragraphs);
+  const conclusionCta = strictLink(conclusion.cta);
+  const closingTitle = text(finalCta.title);
+  const closingDescription = text(finalCta.description) ?? "";
+  const closingCta = strictLink(finalCta.cta);
+  const seo = strictFixedServiceSeo(page.seo);
+
+  if (
+    !countryName ||
+    !countrySlug ||
+    countrySlug !== requestedCountry ||
+    !globalRouteSegmentPattern.test(countrySlug) ||
+    !slug ||
+    slug !== requestedSlug ||
+    !globalRouteSegmentPattern.test(slug) ||
+    !menuLabel ||
+    !pageTitle ||
+    !heroEyebrow ||
+    !heroDescription ||
+    !heroCta ||
+    !overviewEyebrow ||
+    !overviewTitle ||
+    !overviewParagraphs ||
+    !scopeEyebrow ||
+    !scopeTitle ||
+    !scopeItems ||
+    !processEyebrow ||
+    !processTitle ||
+    !processSteps ||
+    (processImageUrl && !processImage) ||
+    !roleEyebrow ||
+    !roleTitle ||
+    !roleItems ||
+    !roleCta ||
+    !conclusionEyebrow ||
+    !conclusionTitle ||
+    !conclusionParagraphs ||
+    !conclusionCta ||
+    !closingTitle ||
+    !closingCta ||
+    !seo
+  ) {
+    return null;
+  }
+
+  const scopeDescription = text(scope.description);
+  const processDescription = text(process.description);
+  const roleDescription = text(ourRole.description);
+
+  return {
+    ...mapPageChrome(chromeFallback, rawSettings),
+    countryName,
+    countrySlug,
+    slug,
+    menuLabel,
+    seo,
+    hero: {
+      eyebrow: heroEyebrow,
+      title: pageTitle,
+      description: heroDescription,
+      cta: heroCta,
+    },
+    overview: {
+      eyebrow: overviewEyebrow,
+      title: overviewTitle,
+      paragraphs: overviewParagraphs,
+    },
+    scope: {
+      eyebrow: scopeEyebrow,
+      title: scopeTitle,
+      ...(scopeDescription ? { description: scopeDescription } : {}),
+      items: scopeItems,
+    },
+    process: {
+      eyebrow: processEyebrow,
+      title: processTitle,
+      ...(processDescription ? { description: processDescription } : {}),
+      steps: processSteps,
+      ...(processImage ? { image: processImage } : {}),
+    },
+    ourRole: {
+      eyebrow: roleEyebrow,
+      title: roleTitle,
+      ...(roleDescription ? { description: roleDescription } : {}),
+      items: roleItems,
+      cta: roleCta,
+    },
+    conclusion: {
+      eyebrow: conclusionEyebrow,
+      title: conclusionTitle,
+      paragraphs: conclusionParagraphs,
+      cta: conclusionCta,
+    },
+    closingCta: {
+      title: closingTitle,
+      description: closingDescription,
+      cta: closingCta,
+    },
+  };
+}
+
 function mapCmsOnlyFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
   chromeFallback: PageChromeContent,
   requestedSlug: string,
@@ -1933,6 +2217,84 @@ function fixedServiceSlugsQuery(): string {
   return params.toString();
 }
 
+function globalCountryPageQuery(country: string): string {
+  const params = new URLSearchParams({ status: "published" });
+  params.set("filters[slug][$eq]", country);
+  params.set("pagination[pageSize]", "1");
+  addPopulateTree(params, globalCountryPopulateTree);
+  return params.toString();
+}
+
+function globalCertificatePageQuery(country: string, slug: string): string {
+  const params = new URLSearchParams({ status: "published" });
+  params.set("filters[countrySlug][$eq]", country);
+  params.set("filters[slug][$eq]", slug);
+  params.set("pagination[pageSize]", "1");
+  addPopulateTree(params, globalCertificatePopulateTree);
+  return params.toString();
+}
+
+function globalCountrySlugsQuery(): string {
+  const params = new URLSearchParams({ status: "published" });
+  params.set("fields[0]", "slug");
+  params.set("sort[0]", "sortOrder:asc");
+  params.set("pagination[pageSize]", "100");
+  return params.toString();
+}
+
+function globalCertificatePathsQuery(): string {
+  const params = new URLSearchParams({ status: "published" });
+  params.set("fields[0]", "countrySlug");
+  params.set("fields[1]", "slug");
+  params.set("sort[0]", "sortOrder:asc");
+  params.set("pagination[pageSize]", "100");
+  return params.toString();
+}
+
+async function getGlobalCollectionEntry(
+  collectionPath: "global-country-pages" | "global-certificate-pages",
+  contentSlug: "global-country-page" | "global-certificate-page",
+  query: string,
+): Promise<unknown> {
+  if (!strapiUrl || !strapiApiToken) {
+    return null;
+  }
+
+  const response = await fetch(`${strapiUrl}/api/${collectionPath}?${query}`, {
+    headers: { Authorization: `Bearer ${strapiApiToken}` },
+    next: { revalidate: 60, tags: [strapiCacheTagBySlug[contentSlug]] },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Strapi request for ${contentSlug} failed with ${response.status}`);
+  }
+
+  const body = (await response.json()) as { data?: unknown };
+  return asArray(body.data)[0] ?? null;
+}
+
+async function getGlobalPathEntries(
+  collectionPath: "global-country-pages" | "global-certificate-pages",
+  contentSlug: "global-country-page" | "global-certificate-page",
+  query: string,
+): Promise<unknown[]> {
+  if (!strapiUrl || !strapiApiToken) {
+    return [];
+  }
+
+  const response = await fetch(`${strapiUrl}/api/${collectionPath}?${query}`, {
+    headers: { Authorization: `Bearer ${strapiApiToken}` },
+    next: { revalidate: 60, tags: [strapiCacheTagBySlug[contentSlug]] },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Strapi path request for ${contentSlug} failed with ${response.status}`);
+  }
+
+  const body = (await response.json()) as { data?: unknown };
+  return asArray(body.data);
+}
+
 async function getSingleType(slug: SingleTypeSlug): Promise<unknown> {
   if (!strapiUrl || !strapiApiToken) {
     return null;
@@ -2086,6 +2448,53 @@ export function getLmpcCertificationSlugsFromStrapi(): Promise<string[]> {
 
 export function getStqcSlugsFromStrapi(): Promise<string[]> {
   return getFixedServiceSlugsFromStrapi(stqcCollection);
+}
+
+export async function getGlobalCountrySlugsFromStrapi(): Promise<string[]> {
+  try {
+    const entries = await getGlobalPathEntries(
+      "global-country-pages",
+      "global-country-page",
+      globalCountrySlugsQuery(),
+    );
+
+    return entries
+      .map((entry) => text(record(entry).slug))
+      .filter(
+        (slug): slug is string => Boolean(slug && globalRouteSegmentPattern.test(slug)),
+      );
+  } catch (error) {
+    console.warn("Unable to discover published Global country pages from Strapi.", error);
+    return [];
+  }
+}
+
+export async function getGlobalCertificatePathsFromStrapi(): Promise<
+  Array<{ country: string; slug: string }>
+> {
+  try {
+    const entries = await getGlobalPathEntries(
+      "global-certificate-pages",
+      "global-certificate-page",
+      globalCertificatePathsQuery(),
+    );
+
+    return entries.flatMap((entry) => {
+      const item = record(entry);
+      const country = text(item.countrySlug);
+      const slug = text(item.slug);
+
+      return country &&
+        slug &&
+        globalRouteSegmentPattern.test(country) &&
+        globalRouteSegmentPattern.test(slug)
+        ? [{ country, slug }]
+        : [];
+    });
+  } catch (error) {
+    console.warn("Unable to discover published Global certificate pages from Strapi.", error);
+    return [];
+  }
 }
 
 export async function getHomepageFromStrapi(
@@ -2454,4 +2863,67 @@ export function getStqcPageFromStrapi(
     chromeFallback,
     stqcCollection,
   );
+}
+
+export async function getGlobalCountryPageFromStrapi(
+  country: string,
+  chromeFallback: PageChromeContent,
+): Promise<GlobalCountryPageContent | null> {
+  if (!globalRouteSegmentPattern.test(country) || !strapiUrl || !strapiApiToken) {
+    return null;
+  }
+
+  try {
+    const [page, settings] = await Promise.all([
+      getGlobalCollectionEntry(
+        "global-country-pages",
+        "global-country-page",
+        globalCountryPageQuery(country),
+      ),
+      getSingleType("site-setting"),
+    ]);
+
+    return page
+      ? mapCmsOnlyGlobalCountryPage(chromeFallback, country, page, settings)
+      : null;
+  } catch (error) {
+    console.warn(`Unable to load Global country page ${country} from Strapi.`, error);
+    return null;
+  }
+}
+
+export async function getGlobalCertificatePageFromStrapi(
+  country: string,
+  slug: string,
+  chromeFallback: PageChromeContent,
+): Promise<GlobalCertificatePageContent | null> {
+  if (
+    !globalRouteSegmentPattern.test(country) ||
+    !globalRouteSegmentPattern.test(slug) ||
+    !strapiUrl ||
+    !strapiApiToken
+  ) {
+    return null;
+  }
+
+  try {
+    const [page, settings] = await Promise.all([
+      getGlobalCollectionEntry(
+        "global-certificate-pages",
+        "global-certificate-page",
+        globalCertificatePageQuery(country, slug),
+      ),
+      getSingleType("site-setting"),
+    ]);
+
+    return page
+      ? mapCmsOnlyGlobalCertificatePage(chromeFallback, country, slug, page, settings)
+      : null;
+  } catch (error) {
+    console.warn(
+      `Unable to load Global certificate page ${country}/${slug} from Strapi.`,
+      error,
+    );
+    return null;
+  }
 }

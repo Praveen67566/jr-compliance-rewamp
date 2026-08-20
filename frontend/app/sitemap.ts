@@ -9,6 +9,8 @@ import {
   getCdscoRegistrationSlugs,
   getFundRaisingSlugs,
   getGovernmentLicenseCertificationSlugs,
+  getGlobalCertificatePaths,
+  getGlobalCountrySlugs,
   getIprServiceSlugs,
   getImportExportServiceSlugs,
   getLabourComplianceSlugs,
@@ -44,6 +46,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     aerbApprovalSlugs,
     lmpcCertificationSlugs,
     stqcSlugs,
+    globalCountrySlugs,
+    globalCertificatePaths,
   ] = await Promise.all([
     getMcaServiceSlugs(),
     getImportExportServiceSlugs(),
@@ -63,6 +67,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getAerbApprovalSlugs(),
     getLmpcCertificationSlugs(),
     getStqcSlugs(),
+    getGlobalCountrySlugs(),
+    getGlobalCertificatePaths(),
   ]);
 
   return [
@@ -118,6 +124,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ]),
     ].map((routePath) => ({
       url: new URL(`/approval/${routePath}`, siteUrl).toString(),
+      changeFrequency: "monthly" as const,
+      priority: 0.75,
+    })),
+    ...globalCountrySlugs.map((country) => ({
+      url: new URL(`/globals/${country}`, siteUrl).toString(),
+      changeFrequency: "monthly" as const,
+      priority: 0.75,
+    })),
+    ...globalCertificatePaths.map(({ country, slug }) => ({
+      url: new URL(`/globals/${country}/${slug}`, siteUrl).toString(),
       changeFrequency: "monthly" as const,
       priority: 0.75,
     })),

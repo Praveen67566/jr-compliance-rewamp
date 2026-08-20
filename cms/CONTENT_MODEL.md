@@ -1,4 +1,4 @@
-# Strapi v5 content model — homepage, editorial, and registration routes
+# Strapi v5 content model — homepage, editorial, registration, and Global routes
 
 This is the CMS contract for the new Next.js homepage, the initial editorial
 routes (About Us, Careers, Contact Us), the nineteen approved Company
@@ -16,9 +16,17 @@ corresponding `site/*.html`, `site/corporate/*.html`, and
 colours, and responsive behaviour belong in Next.js; editors own copy, links,
 ordering, SEO, and approved media.
 
-The committed schema contains five single types, thirty-three collection types,
-and forty-six components: thirty-eight content types in total. Nineteen of the
-collections use the fixed service-detail contract.
+Two additional collections provide the separate CMS-only Global system:
+`global-country-page` renders `/globals/[country]`, and
+`global-certificate-page` renders `/globals/[country]/[slug]`. Both begin empty
+and use dedicated fixed Global contracts and shared templates. The legacy
+Global HTML files informed structure only; no page copy, fallback, seed,
+initial record, Webflow UI, or remote media URL is bundled.
+
+The committed schema contains five single types, thirty-five collection types,
+and fifty-seven components: forty content types in total. Nineteen of the
+collections use the fixed service-detail contract; that count does not include
+the two Global collections.
 
 Use named fields rather than a page-builder dynamic zone for these initial routes.
 That makes the front-end contract stable and easy for non-technical editors to
@@ -409,6 +417,81 @@ or category.
    React route, fallback file, seed mirror, or deployment is required for that
    content record.
 
+### CMS-only Global collections
+
+The two Global collections begin with no content records. They have no local
+fallback modules, seed JSON, sample content, or initial CMS entries. Their
+schemas support two shared frontend templates without changing or reusing the
+completed Corporate and Approval contracts.
+
+The country page `slug`, certificate `countrySlug`, and certificate `slug` all
+use the single-segment route pattern `^[A-Za-z0-9-_.~]+$`. Do not enter
+`/globals/`, a leading slash, another slash, spaces, query parameters, or
+fragments. Manually keep every
+`countrySlug` + `slug` certificate pair unique because these string fields are
+not a composite database UID.
+
+#### `global-country-page` — API: `api::global-country-page.global-country-page`
+
+One complete published record per `/globals/[country]` landing page.
+
+| Field | Strapi field | Rules |
+| --- | --- | --- |
+| `title` | Short text | Required; public H1 and CMS record name |
+| `menuLabel` | Short text | Required; editor-facing navigation label |
+| `slug` | UID from `title` | Required; exact single route segment matching `[country]` |
+| `hero` | `global.country-hero` | Required; eyebrow, description, image, and CTA; parent `title` is the H1 |
+| `certificates` | `global.certificate-listing` | Required; heading and at least one ordered, complete certificate card |
+| `finalCta` | `home.cta-band` | Required |
+| `seo` | `shared.seo` | Required |
+| `sortOrder` | Integer, minimum `0` | Required; discovery/editorial order |
+
+#### `global-certificate-page` — API: `api::global-certificate-page.global-certificate-page`
+
+One complete published record per `/globals/[country]/[slug]` certificate
+page. The fixed scope section is neutral so editors may describe products,
+documents, or requirements without introducing a page builder.
+
+| Field | Strapi field | Rules |
+| --- | --- | --- |
+| `title` | Short text | Required; public H1 and CMS record name |
+| `menuLabel` | Short text | Required; certificate/card label |
+| `countryName` | Short text | Required; human-readable country name |
+| `countrySlug` | Short text | Required; exact single route segment matching `[country]` |
+| `slug` | Short text | Required; exact single route segment matching certificate `[slug]` |
+| `hero` | `global.certificate-hero` | Required; eyebrow, description, and CTA; parent `title` is the H1 |
+| `overview` | `global.overview` | Required; heading and at least one ordered paragraph |
+| `scope` | `global.scope-section` | Required; heading and at least one ordered scope item |
+| `process` | `global.process-section` | Required; heading, at least one ordered step, and optional image |
+| `ourRole` | `global.role-section` | Required; heading, at least one ordered assistance item, and CTA |
+| `conclusion` | `global.conclusion` | Required; heading, at least one ordered paragraph, and CTA |
+| `finalCta` | `home.cta-band` | Required |
+| `seo` | `shared.seo` | Required |
+| `sortOrder` | Integer, minimum `0` | Required; discovery/editorial order |
+
+Every selected country hero image and certificate-card logo must include Media
+Library alternative text. The optional process image must include alternative
+text when selected. Every CTA/link needs a label, href, and target; every SEO
+record needs `metaTitle` and `metaDescription`. Each repeatable section must
+contain at least one fully populated item. The frontend strictly validates all
+of these requirements and returns 404 for a draft, unpublished, incomplete,
+unknown, or unavailable record rather than filling it with another page's
+content.
+
+#### Editor workflow for Global pages
+
+1. Create and complete a **Global Country Page**, save it, and publish it.
+2. Add its exact `/globals/<country>` URL under **Site Setting → Header Menu →
+   Global**, then publish Site Setting. Publishing the country record alone
+   does not add a navbar link.
+3. Create and publish complete **Global Certificate Page** records using the
+   same exact country segment.
+4. Add each certificate's exact `/globals/<country>/<slug>` destination to the
+   appropriate country record's ordered card, then republish the country.
+5. Verify both public templates, metadata, navigation, card links, and sitemap
+   entries. The existing two dynamic route files discover complete records; no
+   fallback, seed, individual React page, or code deployment is required.
+
 | Type (API) | Fields | Relations |
 | --- | --- | --- |
 | **Service Category** (`service-category`, `service-categories`) | `name` short text*, `slug` UID from `name`*, `description` long text, `sortOrder` integer* | `services`: **one-to-many** to Service (inverse of `serviceCategory`) |
@@ -501,6 +584,25 @@ settings, colour pickers, Webflow IDs, or public form endpoints.
 | `registration.faq-item` | `question` short text*, `answer` long text* |
 | `registration.faq-section` | `eyebrow` short text*, `title` short text*, `items` repeatable `registration.faq-item`* |
 
+### Global-route components
+
+These eleven components form the two fixed Global templates. They do not form
+a dynamic zone and do not count as fixed service-detail components.
+
+| Component UID | Exact fields |
+| --- | --- |
+| `global.country-hero` | `eyebrow` short text*, `description` long text*, `image` single image media*, `cta` `shared.cta`*; parent country `title` supplies the H1 |
+| `global.certificate-card` | `logo` single image media*, `title` short text*, `description` long text*, `link` `shared.cta`* |
+| `global.certificate-listing` | `eyebrow` short text*, `title` short text*, `description` long text, `cards` repeatable `global.certificate-card`* (minimum 1) |
+| `global.certificate-hero` | `eyebrow` short text*, `description` long text*, `cta` `shared.cta`*; parent certificate `title` supplies the H1 |
+| `global.text-item` | `text` long text* |
+| `global.overview` | `eyebrow` short text*, `title` short text*, `paragraphs` repeatable `global.text-item`* (minimum 1) |
+| `global.scope-section` | `eyebrow` short text*, `title` short text*, `description` long text, `items` repeatable `global.text-item`* (minimum 1) |
+| `global.process-step` | `title` short text*, `description` long text* |
+| `global.process-section` | `eyebrow` short text*, `title` short text*, `description` long text, `steps` repeatable `global.process-step`* (minimum 1), `image` single image media |
+| `global.role-section` | `eyebrow` short text*, `title` short text*, `description` long text, `items` repeatable `global.text-item`* (minimum 1), `cta` `shared.cta`* |
+| `global.conclusion` | `eyebrow` short text*, `title` short text*, `paragraphs` repeatable `global.text-item`* (minimum 1), `cta` `shared.cta`* |
+
 ## Legacy content to migrate
 
 Migrate copy and approved assets from `site/index.html` into the model. The
@@ -575,13 +677,14 @@ attributes are flattened and documents use `documentId`; do not copy v4
 | Consumer | Allowed permissions |
 | --- | --- |
 | **Public role** | None for these content types or Upload. The browser never receives a Strapi token. |
-| **`next-site-reader` API token** | Custom, read-only: `find` for `site-setting`, `home-page`, `about-page`, `careers-page`, and `contact-page`; `find` and `findOne` for all nineteen fixed service-detail collections, including `bureau-indian-standards-page`, `pollution-advisory-page`, `telecommunication-engineering-centre-page`, `wireless-planning-coordination-page`, `bureau-energy-efficiency-page`, `cdsco-registration-page`, `aerb-approval-page`, `lmpc-certification-page`, and `stqc-page`, plus every listed supporting collection type; Upload `find`. No create, update, delete, publish, or admin access. Store only as `STRAPI_API_TOKEN` on the Next server. |
+| **`next-site-reader` API token** | Custom, read-only: `find` for `site-setting`, `home-page`, `about-page`, `careers-page`, and `contact-page`; `find` and `findOne` for all nineteen fixed service-detail collections, including `bureau-indian-standards-page`, `pollution-advisory-page`, `telecommunication-engineering-centre-page`, `wireless-planning-coordination-page`, `bureau-energy-efficiency-page`, `cdsco-registration-page`, `aerb-approval-page`, `lmpc-certification-page`, and `stqc-page`; `find` and `findOne` for `global-country-page` and `global-certificate-page`; plus every listed supporting collection type and Upload `find`. No create, update, delete, publish, or admin access. Store only as `STRAPI_API_TOKEN` on the Next server. |
 | **Content Editor admin role** | Content Manager create/read/update for the listed types and Media Library upload/edit. No schema access and no delete permission. |
 | **Publisher/Admin role** | Editor permissions plus publish. Content Type Builder remains development-only and developer-owned. |
 
 Deploying a schema does not extend an existing custom API token automatically.
-Grant `find` and `findOne` for each of the seven new collection APIs before an
-editor expects its published records to render.
+Grant `find` and `findOne` for both Global collection APIs, as well as the seven
+empty Approval collection APIs, before an editor expects CMS-only records to
+render. Public access remains disabled.
 
 Use these generated endpoints:
 
@@ -610,15 +713,27 @@ GET /api/cdsco-registration-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/aerb-approval-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/lmpc-certification-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/stqc-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/global-country-pages?filters[slug][$eq]=<country>&status=published
+GET /api/global-certificate-pages?filters[countrySlug][$eq]=<country>&filters[slug][$eq]=<slug>&status=published
 ```
 
 Strapi does not populate relations, components, or media by default. The Next
 CMS client must attach one centralized, explicit populate object for every
-route request (hero/card media, logo media, category → services → icon, FAQ
+route request (hero/card media, logo media, Global text/process/CTA fields,
+category → services → icon, FAQ
 category → FAQs, testimonial media, recognition media, team media, careers
 gallery media, and SEO share images). Do not use unbounded deep-population
 plugins or issue a browser request per card. The API token is sent as
 `Authorization: Bearer <token>` by the Next server only.
+Global slug/path discovery uses published collection queries with only the
+fields needed for static params and sitemap URLs; an empty collection produces
+no route.
+
+Signed publish/unpublish/delete revalidation maps `global-country-page` to
+`jr-global-country-pages` and `global-certificate-page` to
+`jr-global-certificate-pages`. Both tags are recognized by the frontend
+receiver and included when a shared Site Setting or media change requires broad
+page invalidation. The normal 60-second cache window remains a fallback.
 
 ## Onboarding checklist
 
@@ -640,9 +755,10 @@ plugins or issue a browser request per card. The API token is sent as
    `telecommunication-engineering-centre-page`,
    `wireless-planning-coordination-page`, `bureau-energy-efficiency-page`,
    `cdsco-registration-page`, `aerb-approval-page`,
-   `lmpc-certification-page`, and `stqc-page` collections. Enable Draft &
-   Publish on all of them. Commit Strapi’s generated schemas to git; do not
-   create schema changes directly in production.
+   `lmpc-certification-page`, `stqc-page`, `global-country-page`, and
+   `global-certificate-page` collections. Enable Draft & Publish on all of
+   them. Commit Strapi’s generated schemas to git; do not create schema changes
+   directly in production.
 4. Configure the media provider and migrate the approved legacy images/logos.
    Add filename, alt text, and captions before selecting them in content.
 5. Create the service categories/services, logos, FAQ categories/FAQs,
@@ -656,7 +772,9 @@ plugins or issue a browser request per card. The API token is sent as
    Pollution Advisory. Select the intended ordered relations and verify every
    link and media item. Leave the seven new CMS-only Approval collections empty
    until an editor creates the first complete approved record through the
-   workflow above. Keep all `SEED_*` flags false.
+   workflow above. Also leave both Global collections empty until editors
+   create their complete country and certificate records in Content Manager.
+   Keep all `SEED_*` flags false.
    To populate another PostgreSQL
    target with the approved content, use a reviewed encrypted Strapi
    `content,files` export/import after a verified database and media backup;
@@ -667,7 +785,8 @@ plugins or issue a browser request per card. The API token is sent as
    (never `NEXT_PUBLIC_*`).
 8. Wire the typed route fetchers to the five single-type endpoints and all
    exact-slug service-detail collection queries and Approval path queries with
-   explicit populate contracts, render only published data, and add signed
+   explicit populate contracts, plus the exact Global country/certificate
+   queries and path discovery. Render only published data, and add signed
    Strapi publish webhooks to
    invalidate the matching Next cache tags.
 9. Test with an editor: change home or route hero copy, reorder a service/team

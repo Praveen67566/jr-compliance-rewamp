@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_global_conclusions",
+  "info": {
+    "displayName": "Global certificate conclusion"
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "paragraphs": {
+      "type": "component",
+      "component": "global.text-item",
+      "repeatable": true,
+      "required": true,
+      "min": 1
+    },
+    "cta": {
+      "type": "component",
+      "component": "shared.cta",
+      "repeatable": false,
+      "required": true
+    }
+  }
+}

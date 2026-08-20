@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_global_certificate_listings",
+  "info": {
+    "displayName": "Global certificate listing"
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "cards": {
+      "type": "component",
+      "component": "global.certificate-card",
+      "repeatable": true,
+      "required": true,
+      "min": 1
+    }
+  }
+}

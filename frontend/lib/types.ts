@@ -631,3 +631,110 @@ export type LmpcCertificationPageContent = PageChromeContent & LmpcCertification
 export type StqcPageData = CompanyRegistrationPageData;
 
 export type StqcPageContent = PageChromeContent & StqcPageData;
+
+/** An approved CMS image with the alternative text required by Global templates. */
+export type GlobalPageImage = {
+  src: string;
+  alt: string;
+};
+
+/** One certificate destination displayed on a Global country landing page. */
+export type GlobalCertificateCard = {
+  title: string;
+  description: string;
+  logo: GlobalPageImage;
+  link: Link;
+};
+
+/**
+ * Editor-managed country landing content for `/globals/[country]`.
+ * The fixed shape is intentionally separate from Corporate and Approval pages.
+ */
+export type GlobalCountryPageData = {
+  slug: string;
+  menuLabel: string;
+  seo: Seo;
+  hero: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    image: GlobalPageImage;
+    cta: Link;
+  };
+  certificates: {
+    eyebrow: string;
+    title: string;
+    description?: string;
+    items: GlobalCertificateCard[];
+  };
+  closingCta: {
+    title: string;
+    description: string;
+    cta: Link;
+  };
+};
+
+export type GlobalCountryPageContent = PageChromeContent & GlobalCountryPageData;
+
+/** One ordered step in a Global certificate process. */
+export type GlobalCertificateProcessStep = {
+  title: string;
+  description: string;
+};
+
+/**
+ * Editor-managed certificate content for `/globals/[country]/[slug]`.
+ * Its fixed sequence reflects country certification content rather than the
+ * Company Registration information architecture.
+ */
+export type GlobalCertificatePageData = {
+  countryName: string;
+  countrySlug: string;
+  slug: string;
+  menuLabel: string;
+  seo: Seo;
+  hero: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    cta: Link;
+  };
+  overview: {
+    eyebrow: string;
+    title: string;
+    paragraphs: string[];
+  };
+  scope: {
+    eyebrow: string;
+    title: string;
+    description?: string;
+    items: string[];
+  };
+  process: {
+    eyebrow: string;
+    title: string;
+    description?: string;
+    steps: GlobalCertificateProcessStep[];
+    image?: GlobalPageImage;
+  };
+  ourRole: {
+    eyebrow: string;
+    title: string;
+    description?: string;
+    items: string[];
+    cta: Link;
+  };
+  conclusion: {
+    eyebrow: string;
+    title: string;
+    paragraphs: string[];
+    cta: Link;
+  };
+  closingCta: {
+    title: string;
+    description: string;
+    cta: Link;
+  };
+};
+
+export type GlobalCertificatePageContent = PageChromeContent & GlobalCertificatePageData;

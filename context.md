@@ -20,6 +20,13 @@ Those seven families deliberately contain no first page, local fallback, seed
 mirror, or initial CMS record. Other legacy routes stay out of scope until
 their content records and destinations are validated.
 
+The frontend and CMS also provide a separate, empty CMS-only Global system:
+country landing records render through `/globals/[country]`, and certificate
+records render through `/globals/[country]/[slug]`. The two Global collections
+use their own content contracts and shared UI templates; they do not change or
+reuse the completed Corporate and Approval page structures. No Global record,
+fallback, seed file, or active public URL is bundled with the integration.
+
 ## Non-negotiable rules
 
 1. Treat `site/` as read-only. Do not edit, delete, import Webflow CSS/JS, or
@@ -55,7 +62,7 @@ their content records and destinations are validated.
 | `frontend/postcss.config.mjs` | Tailwind v4 PostCSS integration. |
 | `frontend/public/images/` | Small selected copy of approved legacy logo/photo assets. `images/services/` preserves the 15 exact legacy service/flag SVGs; `images/services-blue/` holds their blue-theme derivatives used by the home fallback. Do not point new UI at `site/assets/`. |
 | `cms/` | Active Strapi v5 TypeScript project: schemas, core REST APIs, CMS-to-Next revalidation, editor setup, and PostgreSQL configuration for local and deployed environments. |
-| `cms/CONTENT_MODEL.md` | Definitive editorial contract: five single types, thirty-three collections, and forty-six components. Change it deliberately alongside the schemas and Next mapper. |
+| `cms/CONTENT_MODEL.md` | Definitive editorial contract: five single types, thirty-five collections, and fifty-seven components. Change it deliberately alongside the schemas and Next mapper. |
 | `cms/README.md` | CMS local PostgreSQL workflow, editor permissions, REST contract, transfer policy, and revalidation behavior. |
 | `ecosystem.config.js` | PM2 process definition for the 24/7 Linux/VPS deployment: one frontend and one CMS process, bound to loopback-only private ports with no secrets in source. |
 | `prod.md` | Required production deployment and launch runbook for the frontend, CMS, PM2, Nginx/TLS, database, media, migration, secrets, and cache invalidation. |
@@ -148,11 +155,21 @@ their content records and destinations are validated.
   `/approval/[...slug]`, but add no first routes, fallbacks, seed files, or
   initial content records. Editors create and publish their first complete
   records directly in Strapi.
+- Two dedicated Global collections also begin empty. `global-country-page`
+  owns complete country landings for `/globals/[country]`, and
+  `global-certificate-page` owns complete certificate pages for
+  `/globals/[country]/[slug]`. They render through two Global-specific,
+  responsive Tailwind templates and strict CMS-only loaders. Publishing a
+  country or certificate record does not require another React route, but an
+  incomplete, draft, unpublished, or unknown record returns 404. Navigation
+  remains editor-managed through Site Setting; country landing cards own the
+  links to their certificate records.
 - The Strapi v5 CMS is implemented in `cms/`: five single types (`site-setting`,
-  `home-page`, `about-page`, `careers-page`, `contact-page`), thirty-three
-  collections, forty-six components, and core REST route/controller/service
-  files for all thirty-eight types. All editorial content uses Draft & Publish;
-  i18n is intentionally off.
+  `home-page`, `about-page`, `careers-page`, `contact-page`), thirty-five
+  collections, fifty-seven components, and core REST route/controller/service
+  files for all forty types. The fixed service-detail collection count remains
+  nineteen; the two Global collections are separate contracts. All editorial
+  content uses Draft & Publish; i18n is intentionally off.
 - Every active page and shared header/footer has a typed CMS mapping. CMS
   controls copy, links/targets, order, SEO, imagery/alt text, shared navigation,
   footer groups, legal notices, and optional home insights. Next.js continues to
@@ -164,7 +181,9 @@ their content records and destinations are validated.
   Use a reviewed encrypted Strapi content/files export and import when another
   PostgreSQL target needs the same content and media.
 - The frontend emits an app icon, `robots.txt`, and a sitemap for all thirty-four
-  active routes. It uses `SITE_URL` for the production origin and has baseline
+  currently active routes. The empty Global collections do not increase that
+  count; complete published Global records are discovered dynamically and then
+  added to the sitemap. It uses `SITE_URL` for the production origin and has baseline
   response hardening headers; the host still needs TLS-edge HSTS, rate limiting,
   and a tested CSP for the selected CMS/media origin.
 - `frontend` production start honors a host-provided `PORT` and otherwise uses
@@ -235,16 +254,22 @@ to `/#services` until validated detail pages are migrated.
   Indian Standards and Pollution Advisory. Only their visible, page-specific
   fixed service content is retained; duplicated sections, hidden placeholders,
   unrelated testimonials/resources, Webflow forms, and legacy UI are excluded.
+- `site/global-approvals/china.html` and
+  `site/china-cel-certification.html` were used only to understand the two
+  Global information architectures. No copy, record, fallback, seed content,
+  Webflow markup, styles, scripts, or remote media URL was migrated from them.
 
 ## Strapi integration behavior
 
 1. With no `STRAPI_URL`, the app renders the matching typed `*-page-fallback.ts`
    source when one exists. Pages in the seven empty CMS-only Approval families
-   return 404 until a complete record is available from Strapi.
+   and both Global route families return 404 until a complete record is
+   available from Strapi.
 2. With `STRAPI_URL` and a server-only `STRAPI_API_TOKEN`, the app requests the
    published `site-setting` plus the matching `home-page`, `about-page`,
    `careers-page`, or `contact-page` single type, or filters the published
-   matching fixed service-detail collection by exact slug, every 60 seconds.
+   matching fixed service-detail collection by exact slug, or the matching
+   Global collection by exact country/certificate slug, every 60 seconds.
 3. `frontend/lib/strapi.ts` explicitly populates only the nested relations and
    media each route requires. Do not replace this with `populate=deep`.
 4. The adapter maps the documented Strapi v5 fields to typed page contracts; it
@@ -252,7 +277,8 @@ to `/#services` until validated detail pages are migrated.
    cannot blank the live site accidentally. Later CMS-only records in the
    eighteen extensible service categories are strictly validated and return a 404
    when a required fixed field is missing, so they never borrow their
-   category’s first-page copy.
+   category’s first-page copy. Global records have no fallback at all and must
+   pass their own complete country or certificate contract before rendering.
 5. Strapi media URLs are converted to absolute CMS URLs. The current frontend
    uses standard image elements so local and CDN media both work without an
    image-domain configuration change.
@@ -275,6 +301,12 @@ Centre, Wireless Planning and Coordination, Bureau of Energy Efficiency,
 CDSCO Registration, AERB Approval, LMPC Certification, and STQC schemas are
 present but deliberately have no bundled fallback, seed mirror, first page, or
 initial CMS record.
+
+The `global-country-page` and `global-certificate-page` schemas are likewise
+present but deliberately empty. After deployment, editors create all Global
+records in Content Manager, and the existing `next-site-reader` token must be
+granted `find` and `findOne` for both collections. Public-role access remains
+disabled.
 
 The deployed integration still requires durable object/media storage,
 production secrets, a production read-only frontend token, and an explicitly

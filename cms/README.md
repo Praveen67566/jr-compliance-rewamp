@@ -23,6 +23,10 @@ This is the Strapi v5 TypeScript CMS for the active JR Compliance routes:
   `wireless-planning-coordination-page`, `bureau-energy-efficiency-page`,
   `cdsco-registration-page`, `aerb-approval-page`,
   `lmpc-certification-page`, and `stqc-page` collections
+- future `/globals/[country]` records — empty CMS-only
+  `global-country-page` collection
+- future `/globals/[country]/[slug]` records — empty CMS-only
+  `global-certificate-page` collection
 - shared header/footer and global consultation-form copy — `site-setting`
 
 Later approved records in any of the eighteen extensible service families use
@@ -41,6 +45,11 @@ route path unique across all nine Approval collections.
 The exact editorial contract lives in [CONTENT_MODEL.md](./CONTENT_MODEL.md).
 Next.js owns the Compliance Network layout, interaction, and motion; Strapi owns
 editable copy, links, display order, and approved media.
+
+The two Global collections use their own country-landing and certificate
+contracts and do not change or reuse the completed Corporate/Approval schemas.
+Both begin empty: no initial record, fallback, seed JSON, or sample page is
+created by this integration.
 
 ## Run locally
 
@@ -91,9 +100,11 @@ not merge editor records, administrator accounts, API tokens, or secrets.
 
 ## Schema and editor policy
 
-The committed schemas define five single types, thirty-three collection types,
-and forty-six components (thirty-eight content types total), including nineteen
-fixed service-detail collections. All editorial types use Draft & Publish.
+The committed schemas define five single types, thirty-five collection types,
+and fifty-seven components (forty content types total), including nineteen
+fixed service-detail collections. The fixed service-detail count remains
+unchanged; the two Global collections and their eleven components are separate
+contracts. All editorial types use Draft & Publish.
 Page-selected relations are intentionally unidirectional, ordered selections; the inverse
 pairs are only Service Category → Service and FAQ Category → FAQ.
 
@@ -115,6 +126,22 @@ discover the record automatically; no fallback, seed file, React page, or code
 deployment is required for the new content record. An incomplete or unpublished
 CMS-only record returns 404 by design.
 
+To publish a Global country landing, open **Global Country Page** in Content
+Manager and complete `title`, `menuLabel`, its single-segment `slug`, hero,
+certificate listing with at least one complete logo card, closing CTA, SEO, and
+`sortOrder`. Save and publish it, then add its exact `/globals/<country>` URL
+under **Site Setting → Header Menu → Global** and publish Site Setting.
+
+To publish a certificate, open **Global Certificate Page** and complete
+`title`, `menuLabel`, `countryName`, single-segment `countrySlug` and `slug`,
+hero, overview paragraphs, neutral scope items, process steps, JR Compliance
+role, conclusion, closing CTA, SEO, and `sortOrder`. Save and publish it, then
+put its exact `/globals/<country>/<slug>` URL on the appropriate country-page
+card. The two shared frontend templates, static-param discovery, metadata, and
+sitemap require no page-specific code deployment. Draft, incomplete,
+unpublished, unknown, and unavailable Global records return 404. Publishing a
+record does not automatically expose it in navigation.
+
 The centralized form copy is edited under **Site Setting → Lead Form**. Its
 message label and placeholder are editor-managed, but the message remains
 required in frontend and server validation. Webhook configuration and form
@@ -128,8 +155,9 @@ Accounting, Labour Compliance, Fund Raising, Bureau of Indian Standards, and
 Pollution Advisory. The Telecommunication Engineering Centre, Wireless
 Planning and Coordination, Bureau of Energy Efficiency, CDSCO Registration,
 AERB Approval, LMPC Certification, and STQC collections are present but begin
-empty: they have no bundled first records, fallback modules, or seed JSON. On
-startup, the CMS also
+empty: they have no bundled first records, fallback modules, or seed JSON. The
+two Global collections also begin empty and have no fallback, seed, sample, or
+initial record. On startup, the CMS also
 migrates only an exact known legacy demo-menu signature: either
 the original flat menu or one of the two preceding categorized menus. Those
 known signatures retain the former IPR/FSSAI later-page URLs and may also retain
@@ -156,15 +184,17 @@ Set permissions deliberately:
   `telecommunication-engineering-centre-page`,
   `wireless-planning-coordination-page`, `bureau-energy-efficiency-page`,
   `cdsco-registration-page`, `aerb-approval-page`,
-  `lmpc-certification-page`, and `stqc-page` collections, listed supporting
-  collections, and Upload `find` only.
+  `lmpc-certification-page`, `stqc-page`, `global-country-page`, and
+  `global-certificate-page` collections, listed supporting collections, and
+  Upload `find` only.
 - Content Editor: create/read/update listed content and media, but no schema or
   delete access.
 - Publisher/Admin: editor access plus publish.
 
-After deploying the seven schemas, update every existing `next-site-reader`
-token policy to include their `find` and `findOne` actions before relying on a
-CMS-only page.
+After deploying the schemas, update every existing `next-site-reader` token
+policy to include `find` and `findOne` for both Global collections as well as
+the seven empty Approval collections before relying on a CMS-only page. Leave
+the Public role with no access.
 
 The frontend receives only these server-side environment variables:
 
@@ -175,13 +205,15 @@ STRAPI_API_TOKEN=<next-site-reader-token>
 ```
 
 Never use a `NEXT_PUBLIC_*` prefix for the token. The Next app requests only
-published documents with explicit population paths and uses its local fallback
-when either value is absent.
+published documents with explicit population paths. Fallback-backed routes use
+local content when either value is absent; Global routes have no fallback and
+return 404.
 
 ## REST endpoints
 
 Core routers/controllers/services are committed for every defined content type.
-The frontend uses these published single-type and fixed service endpoints:
+The frontend uses these published single-type, fixed service, and Global
+endpoints:
 
 ```text
 GET /api/site-setting?status=published
@@ -208,11 +240,15 @@ GET /api/cdsco-registration-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/aerb-approval-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/lmpc-certification-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/stqc-pages?filters[slug][$eq]=<slug>&status=published
+GET /api/global-country-pages?filters[slug][$eq]=<country>&status=published
+GET /api/global-certificate-pages?filters[countrySlug][$eq]=<country>&filters[slug][$eq]=<slug>&status=published
 ```
 
 Relations, media, and nested components are not populated by default. Keep the
 centralized explicit populate trees in `frontend/lib/strapi.ts`; do not switch
-them to `populate=deep`.
+them to `populate=deep`. Global slug/path discovery uses the same published
+collection endpoints with only the route fields needed for static params and
+the sitemap.
 
 ## Signed cache revalidation
 
@@ -234,6 +270,10 @@ only its allow-listed Next cache tags. CMS collection changes route to their
 affected page tags; a shared-site-setting change refreshes all routes. Failed
 notifications never block publishing because the frontend also revalidates via
 the normal 60-second cache window.
+
+`global-country-page` changes invalidate `jr-global-country-pages`, and
+`global-certificate-page` changes invalidate
+`jr-global-certificate-pages`.
 
 ## Validation
 
