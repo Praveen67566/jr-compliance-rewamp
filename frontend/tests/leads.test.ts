@@ -63,13 +63,32 @@ describe("lead request validation", () => {
     });
   });
 
-  it("requires a non-empty message and consent", () => {
-    const result = validateLeadRequest({ ...validRequest, message: "", consent: false });
-    assert.equal(result.success, false);
-    if (result.success) assert.fail("Expected validation to fail.");
+  it("allows an empty optional message while still requiring consent", () => {
+    const optionalMessage = validateLeadRequest({ ...validRequest, message: "" });
+    assert.equal(optionalMessage.success, true);
+    if (!optionalMessage.success) assert.fail("Expected an empty optional message to be valid.");
+    assert.equal(buildLeadWebhookPayload(optionalMessage.data).message, "");
 
-    assert.ok(result.errors.message);
-    assert.ok(result.errors.consent);
+    const { message: _message, ...requestWithoutMessage } = validRequest;
+    const omittedMessage = validateLeadRequest(requestWithoutMessage);
+    assert.equal(omittedMessage.success, true);
+    if (!omittedMessage.success) assert.fail("Expected an omitted optional message to be valid.");
+    assert.equal(buildLeadWebhookPayload(omittedMessage.data).message, "");
+
+    const missingConsent = validateLeadRequest({ ...validRequest, message: "", consent: false });
+    assert.equal(missingConsent.success, false);
+    if (missingConsent.success) assert.fail("Expected missing consent to fail validation.");
+    assert.equal(missingConsent.errors.message, undefined);
+    assert.ok(missingConsent.errors.consent);
+  });
+
+  it("validates a non-empty optional message", () => {
+    for (const message of ["Help", "x".repeat(1001), "Valid\u0007message", 42]) {
+      const result = validateLeadRequest({ ...validRequest, message });
+      assert.equal(result.success, false);
+      if (result.success) assert.fail("Expected an invalid optional message to fail validation.");
+      assert.ok(result.errors.message);
+    }
   });
 
   it("normalizes pasted Indian country and trunk prefixes", () => {

@@ -98,10 +98,20 @@ describe("POST /api/leads", () => {
     });
   });
 
-  it("rejects a missing required message without calling downstream", async () => {
+  it("forwards an empty optional message", async () => {
     const fetchCalls = stubFetch(async () => new Response(null, { status: 204 }));
 
     const response = await POST(leadRequest({ ...validBody, message: "" }));
+
+    assert.equal(response.status, 200);
+    assert.equal(fetchCalls.length, 1);
+    assert.equal(JSON.parse(String(fetchCalls[0][1]?.body)).message, "");
+  });
+
+  it("still rejects missing consent without calling downstream", async () => {
+    const fetchCalls = stubFetch(async () => new Response(null, { status: 204 }));
+
+    const response = await POST(leadRequest({ ...validBody, message: "", consent: false }));
 
     assert.equal(response.status, 422);
     assert.equal(fetchCalls.length, 0);

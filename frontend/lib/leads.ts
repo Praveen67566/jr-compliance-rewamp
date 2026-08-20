@@ -139,7 +139,9 @@ export function validateLeadRequest(value: unknown): LeadValidationResult {
     errors.phone = "Enter a valid 10 digit mobile number.";
   }
 
-  if (message.length < 5 || message.length > LEAD_MESSAGE_MAX_LENGTH) {
+  if (value.message !== undefined && typeof value.message !== "string") {
+    errors.message = "Enter valid requirements.";
+  } else if (message && (message.length < 5 || message.length > LEAD_MESSAGE_MAX_LENGTH)) {
     errors.message = `Enter your requirements in 5 to ${LEAD_MESSAGE_MAX_LENGTH} characters.`;
   } else if (/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/.test(message)) {
     errors.message = "Remove unsupported control characters from your requirements.";

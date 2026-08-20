@@ -105,12 +105,13 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Don't change anything unneccesarry only change the change in need.
-first understand the complete archticture of code and everything.
+Now Changes in Only Consultation Form only frontend changes nothing else no
+cms config or anychanges in cms
 
-i want to add a floating whatsapp icon at the bottom position you can by viewing the image it should show in all pages and the whatsapp floating i con html also given.
+1. I Want Consultation Form Ui is so like build by ai make it like a premium form ui matching with theme
+2. make it small the consultation form and Tell us about your requirements to be optional like the given image now make the ui of form perfect
 
-change only this i don't want any other changes no changes in structure or anything.
+
 
 
 
