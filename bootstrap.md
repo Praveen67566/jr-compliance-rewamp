@@ -108,34 +108,10 @@ If a command cannot be run, clearly explain why.
 Don't change anything unneccesarry only change the change in need.
 first understand the complete archticture of code and everything 
 
-only change needs
-in corporate
-Company Registration
-MCA Services
-Import Export Service
-Government License & Certification
-IPR Services
-FSSAI
-SEBI Business Registration
-Tax and Accounting
-Labour Compliance
-Fund Raising
-in approval
-Bureau of Indian Standards (BIS)
-Pollution Advisory 
-Telecommunication Engineering Centre (TEC)
-Wireless Planning and Coordination (WPC)
-Bureau of Energy Efficiency (BEE)
-CDSCO Registration
-AERB Approval
-LMPC Certification
-STQC
+I want to add in navbar a calling icon and a whatsapp icon given in the images dont change the ui of navbar add small icons for calling and whatsapp and add these in site setting
 
-now i want these categories pages schema includes two sections 
-1. tickerCta first one similar like home page Let's Talk Compliance
-positioned exactly before faq section in frontend.
-2. second is a section for youtube videos where relavant youtube videos can be added
-and position this after Why JR Compliance section.
 
-Don't change anything in already structured schema only add these and no need to add seed data.
+only these two changes in header dont change anthing else and no need to add seed data
+
+
 

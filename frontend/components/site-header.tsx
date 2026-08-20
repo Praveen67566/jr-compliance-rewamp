@@ -14,6 +14,9 @@ function sharedHref(href: string) {
   return href.startsWith("#") ? `/${href}` : href;
 }
 
+const headerContactActionClass =
+  "grid size-9 shrink-0 place-items-center rounded-full border text-white transition-[background-color,border-color,box-shadow,transform] duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric motion-safe:hover:-translate-y-0.5";
+
 export function SiteHeader({ navigation, site }: SiteHeaderProps) {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
@@ -181,6 +184,55 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
         </div>
 
         <div className="header-utility-area">
+          <a
+            className={`${headerContactActionClass} border-cobalt-600/55 bg-electric shadow-[inset_0_1px_rgba(255,255,255,0.3),0_7px_16px_rgba(13,92,184,0.25)] hover:border-cobalt-700 hover:bg-cobalt-700 hover:shadow-[0_10px_20px_rgba(13,92,184,0.3)]`}
+            href={site.phoneHref}
+            aria-label={`Call ${site.phone}`}
+            onClick={closeAll}
+          >
+            <svg
+              aria-hidden="true"
+              className="size-[18px]"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="#ffffff"
+              strokeWidth="1.9"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.69 2.8a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.33 1.84.56 2.8.69A2 2 0 0 1 22 16.92Z" />
+            </svg>
+          </a>
+
+          {site.whatsAppHref ? (
+            <a
+              className={`${headerContactActionClass} border-[#1fbd5b] bg-[#25d366] shadow-[inset_0_1px_rgba(255,255,255,0.35),0_7px_16px_rgba(37,211,102,0.25)] hover:border-[#199f4c] hover:bg-[#20bd5a] hover:shadow-[0_10px_20px_rgba(37,211,102,0.3)]`}
+              href={site.whatsAppHref}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`Chat with ${site.name} on WhatsApp`}
+              onClick={closeAll}
+            >
+              <svg
+                aria-hidden="true"
+                className="size-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="#ffffff"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M20.5 11.7a8.5 8.5 0 0 1-12.64 7.43L3.5 20.5l1.37-4.36A8.5 8.5 0 1 1 20.5 11.7Z" />
+                <path
+                  d="M8.3 7.9c.2-.43.42-.44.72-.45h.38c.12 0 .3.04.46.38.16.35.55 1.35.6 1.45.05.1.08.22.02.35-.06.14-.1.22-.2.34-.1.12-.21.26-.3.35-.1.1-.2.2-.09.4.12.2.5.82 1.08 1.33.74.66 1.36.86 1.56.96.2.1.31.08.43-.05.12-.14.5-.58.63-.78.13-.2.27-.16.45-.1.19.07 1.18.56 1.38.66.2.1.34.15.39.23.05.09.05.5-.12.98-.17.48-.98.92-1.35.97-.35.05-.8.08-1.3-.08-.3-.1-.7-.22-1.2-.44-.5-.22-2.2-.81-3.72-2.77-.43-.55-.9-1.47-.9-2.8 0-1.32.68-1.97.93-2.24Z"
+                  fill="#ffffff"
+                  stroke="none"
+                />
+              </svg>
+            </a>
+          ) : null}
+
           <a className="header-cta" href={sharedHref(site.headerCta.href)} {...linkTargetProps(site.headerCta)}>
             {site.headerCta.label} <span aria-hidden="true">↗</span>
           </a>
