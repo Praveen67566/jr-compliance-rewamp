@@ -105,11 +105,7 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Now Changes in Only Consultation Form only frontend changes nothing else no
-cms config or anychanges in cms
 
-1. I Want Consultation Form Ui is so like build by ai make it like a premium form ui matching with theme
-2. make it small the consultation form and Tell us about your requirements to be optional like the given image now make the ui of form perfect
 
 
 

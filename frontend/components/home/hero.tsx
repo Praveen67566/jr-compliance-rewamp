@@ -11,6 +11,7 @@ type HeroProps = {
   hero: HomepageContent["hero"];
   leadForm: LeadFormSettings;
   pageTitle: string;
+  showConsultationForm?: boolean;
 };
 
 type FloatingCardProps = {
@@ -107,7 +108,7 @@ function FloatingCard({ card, className, children }: FloatingCardProps) {
   );
 }
 
-export function Hero({ hero, leadForm, pageTitle }: HeroProps) {
+export function Hero({ hero, leadForm, pageTitle, showConsultationForm = true }: HeroProps) {
   const rotatingWords = useMemo(() => hero.rotatingWords.filter(Boolean), [hero.rotatingWords]);
   const prefersReducedMotion = usePrefersReducedMotion();
   const { activeWord, displayedWord } = useTypedRotatingWord(rotatingWords, prefersReducedMotion);
@@ -147,7 +148,7 @@ export function Hero({ hero, leadForm, pageTitle }: HeroProps) {
           </a>
         </div>
 
-        {leadForm.enabled ? (
+        {showConsultationForm && leadForm.enabled ? (
           <div className="relative z-[2] mx-auto w-full max-w-[560px] self-center">
             <ConsultationForm pageTitle={pageTitle} settings={leadForm} />
           </div>

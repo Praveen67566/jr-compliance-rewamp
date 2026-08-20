@@ -11,7 +11,12 @@ type CareersPageProps = {
 export function CareersPage({ content }: CareersPageProps) {
   return (
     <SitePageShell footer={content.footer} navigation={content.navigation} site={content.site}>
-      <RouteHero {...content.hero} leadForm={content.site.leadForm} pageTitle={content.seo.title} />
+      <RouteHero
+        {...content.hero}
+        leadForm={content.site.leadForm}
+        pageTitle={content.seo.title}
+        showConsultationForm={false}
+      />
 
       <section className="careers-purpose-section section">
         <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">

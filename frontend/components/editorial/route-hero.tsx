@@ -11,10 +11,21 @@ type RouteHeroProps = {
   imageAlt?: string;
   leadForm: LeadFormSettings;
   pageTitle: string;
+  showConsultationForm?: boolean;
 };
 
 /** Shared bluefield page opening for the editorial routes. */
-export function RouteHero({ eyebrow, title, description, cta, image, imageAlt, leadForm, pageTitle }: RouteHeroProps) {
+export function RouteHero({
+  eyebrow,
+  title,
+  description,
+  cta,
+  image,
+  imageAlt,
+  leadForm,
+  pageTitle,
+  showConsultationForm = true,
+}: RouteHeroProps) {
   return (
     <section className="route-hero" id="top">
       <div className="route-hero-grid" aria-hidden="true" />
@@ -33,7 +44,7 @@ export function RouteHero({ eyebrow, title, description, cta, image, imageAlt, l
           ) : null}
         </div>
 
-        {leadForm.enabled ? (
+        {showConsultationForm && leadForm.enabled ? (
           <div className="relative z-[2] mx-auto w-full max-w-[540px] self-center">
             <ConsultationForm pageTitle={pageTitle} settings={leadForm} />
           </div>
