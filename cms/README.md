@@ -6,6 +6,8 @@ This is the Strapi v5 TypeScript CMS for the active JR Compliance routes:
 - `/about-us` — `about-page`
 - `/careers` — `careers-page`
 - `/contact-us` — `contact-page`
+- `/privacy-policy`, `/terms-and-conditions`, and `/purchase-and-billing` —
+  three fixed `legal-page` collection records
 - `/corporate/[slug]` — `company-registration-page` collection (nineteen approved slugs)
 - `/corporate/dsc-certificate` — `mca-service-page` collection (first approved MCA Services route)
 - `/corporate/iec-registration` — `import-export-service-page` collection (first approved Import Export Service route)
@@ -50,6 +52,12 @@ The two Global collections use their own country-landing and certificate
 contracts and do not change or reuse the completed Corporate/Approval schemas.
 Both begin empty: no initial record, fallback, seed JSON, or sample page is
 created by this integration.
+
+The three footer legal routes use one dedicated fixed `legal-page` collection,
+not a generic page builder. Their approved wording is mirrored in
+`frontend/data/legal-pages-fallback.ts` and
+`cms/src/seed/legal-pages.json`; the latter is a historical content/parity
+source, not an active PostgreSQL bootstrap mechanism.
 
 ## Run locally
 
@@ -98,13 +106,20 @@ Before any Strapi import, take a verified PostgreSQL backup and an uploads
 backup. An import replaces selected target content and upload files; it does
 not merge editor records, administrator accounts, API tokens, or secrets.
 
+Deploying the Legal Page schema does not create its three records in the active
+PostgreSQL database. Review and create/publish them in Content Manager, or move
+them through the reviewed `content,files` transfer workflow after the required
+backups. Also update the existing reader-token permissions before expecting CMS
+records to replace the typed frontend fallbacks. Do not enable a seed flag for
+this rollout.
+
 ## Schema and editor policy
 
-The committed schemas define five single types, thirty-five collection types,
-and fifty-seven components (forty content types total), including nineteen
+The committed schemas define five single types, thirty-six collection types,
+and fifty-seven components (forty-one content types total), including nineteen
 fixed service-detail collections. The fixed service-detail count remains
-unchanged; the two Global collections and their eleven components are separate
-contracts. All editorial types use Draft & Publish.
+unchanged; the dedicated Legal Page collection and the two Global collections
+are separate contracts. All editorial types use Draft & Publish.
 Page-selected relations are intentionally unidirectional, ordered selections; the inverse
 pairs are only Service Category → Service and FAQ Category → FAQ.
 
@@ -115,6 +130,16 @@ The shared navbar is edited under **Site Setting → Header Menu**:
 - Careers and About Us use only their direct `href`.
 - `children` remains available for a small single-level submenu, but should not
   be combined with `categories` on the same menu item.
+
+To publish the legal routes, open **Legal Page** in Content Manager and create
+exactly three records. Each record requires `title`, `eyebrow`, at least one
+ordered `shared.legal-notice` section, SEO, and a `slug` matching exactly
+`privacy-policy`, `terms-and-conditions`, or `purchase-and-billing`;
+`introduction` is optional Blocks content. Use `sortOrder` `0`, `1`, and `2`
+for Privacy Policy, Terms and Conditions, and Purchase and Billing
+respectively. Review the wording against the historical JSON mirror, save, and
+publish each record. Then verify **Site Setting → Legal Links** points to the
+three matching internal routes and publish Site Setting.
 
 To publish the first page in one of the seven empty Approval collections, open
 that collection in Content Manager, create a record, and complete every fixed
@@ -152,19 +177,25 @@ categories and links, nineteen Company Registration records, and the first
 approved records for MCA Services, Import Export Service, Government License &
 Certification, IPR Services, FSSAI, SEBI Business Registration, Tax and
 Accounting, Labour Compliance, Fund Raising, Bureau of Indian Standards, and
-Pollution Advisory. The Telecommunication Engineering Centre, Wireless
+Pollution Advisory. The Legal Page schema and its fallback/historical mirrors
+are committed, but the active PostgreSQL environment still requires the three
+records to be reviewed and published through Content Manager or a reviewed
+transfer. The Telecommunication Engineering Centre, Wireless
 Planning and Coordination, Bureau of Energy Efficiency, CDSCO Registration,
 AERB Approval, LMPC Certification, and STQC collections are present but begin
 empty: they have no bundled first records, fallback modules, or seed JSON. The
 two Global collections also begin empty and have no fallback, seed, sample, or
-initial record. On startup, the CMS also
-migrates only an exact known legacy demo-menu signature: either
-the original flat menu or one of the two preceding categorized menus. Those
+initial record. On startup, the CMS also migrates only exact known Site Setting
+signatures: either the original flat menu or one of the two preceding
+categorized menus. Those
 known signatures retain the former IPR/FSSAI later-page URLs and may also retain
-the older Indian Subsidiary and Mutual Fund placeholders. The check is
-idempotent and signature-based; any customized menu or pending Site Setting
-draft is left untouched. Until an unmatched custom menu is completed and
-published, the frontend retains its matching typed fallback.
+the older Indian Subsidiary and Mutual Fund placeholders; separately, the exact
+original three `#legal` footer links are replaced with `/privacy-policy`,
+`/terms-and-conditions`, and `/purchase-and-billing`. The checks are idempotent
+and signature-based. Any customized or partially migrated values, or any
+pending Site Setting draft, are left untouched. Until an unmatched custom
+setting is completed and published, the frontend retains its matching typed
+fallback.
 
 Do not create a generic `Page`, a dynamic-zone page builder, a navigation
 collection, CSS fields, animation settings, or public submission endpoints.
@@ -175,7 +206,7 @@ Set permissions deliberately:
 
 - Public role: no reads for these content types and no Upload access.
 - `next-site-reader` API token: `find` for the five single types and `find` plus
-  `findOne` for the `company-registration-page`, `mca-service-page`,
+  `findOne` for `legal-page`, `company-registration-page`, `mca-service-page`,
   `import-export-service-page`, `government-license-certification-page`,
   `ipr-service-page`, `fssai-service-page`, and
   `sebi-business-registration-page`, `tax-accounting-page`,
@@ -192,9 +223,9 @@ Set permissions deliberately:
 - Publisher/Admin: editor access plus publish.
 
 After deploying the schemas, update every existing `next-site-reader` token
-policy to include `find` and `findOne` for both Global collections as well as
-the seven empty Approval collections before relying on a CMS-only page. Leave
-the Public role with no access.
+policy to include `find` and `findOne` for `legal-page`, both Global
+collections, and the seven empty Approval collections before relying on a new
+CMS record. Leave the Public role with no access.
 
 The frontend receives only these server-side environment variables:
 
@@ -212,7 +243,7 @@ return 404.
 ## REST endpoints
 
 Core routers/controllers/services are committed for every defined content type.
-The frontend uses these published single-type, fixed service, and Global
+The frontend uses these published single-type, legal, fixed service, and Global
 endpoints:
 
 ```text
@@ -221,6 +252,7 @@ GET /api/home-page?status=published
 GET /api/about-page?status=published
 GET /api/careers-page?status=published
 GET /api/contact-page?status=published
+GET /api/legal-pages?filters[slug][$eq]=<privacy-policy|terms-and-conditions|purchase-and-billing>&status=published
 GET /api/company-registration-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/mca-service-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/import-export-service-pages?filters[slug][$eq]=<slug>&status=published
@@ -246,9 +278,11 @@ GET /api/global-certificate-pages?filters[countrySlug][$eq]=<country>&filters[sl
 
 Relations, media, and nested components are not populated by default. Keep the
 centralized explicit populate trees in `frontend/lib/strapi.ts`; do not switch
-them to `populate=deep`. Global slug/path discovery uses the same published
-collection endpoints with only the route fields needed for static params and
-the sitemap.
+them to `populate=deep`. The legal query explicitly uses
+`populate[sections]=true` and
+`populate[seo][populate][shareImage]=true`; Global slug/path discovery uses the
+same published collection endpoints with only the route fields needed for
+static params and the sitemap.
 
 ## Signed cache revalidation
 
@@ -273,7 +307,8 @@ the normal 60-second cache window.
 
 `global-country-page` changes invalidate `jr-global-country-pages`, and
 `global-certificate-page` changes invalidate
-`jr-global-certificate-pages`.
+`jr-global-certificate-pages`. `legal-page` changes invalidate the dedicated
+`jr-legal-pages` tag. All use the same signed webhook contract.
 
 ## Validation
 
@@ -287,5 +322,6 @@ npm run build
 ```
 
 Before handing off a schema change, test an editor workflow: change a hero,
-reorder a selected service/team member/job, replace media, save a draft, publish,
-and confirm the matching page updates without a frontend code change.
+reorder a selected service/team member/job or legal section, replace media,
+save a draft, publish, and confirm the matching page updates without a frontend
+code change.

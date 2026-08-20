@@ -13,6 +13,7 @@ import governmentLicenseCertificationPages from "./government-license-certificat
 import importExportServicePages from "./import-export-service-pages.json";
 import iprServicePages from "./ipr-service-pages.json";
 import labourCompliancePages from "./labour-compliance-pages.json";
+import legalPages from "./legal-pages.json";
 import mcaServicePages from "./mca-service-pages.json";
 import sebiBusinessRegistrationPages from "./sebi-business-registration-pages.json";
 import taxAccountingPages from "./tax-accounting-pages.json";
@@ -56,6 +57,7 @@ const CONTENT_TYPES = {
   aboutPage: "api::about-page.about-page",
   careersPage: "api::careers-page.careers-page",
   contactPage: "api::contact-page.contact-page",
+  legalPage: "api::legal-page.legal-page",
   companyRegistrationPage: "api::company-registration-page.company-registration-page",
   governmentLicenseCertificationPage:
     "api::government-license-certification-page.government-license-certification-page",
@@ -124,6 +126,12 @@ const legacyHeaderMenu = [
   { label: "Careers", href: "/careers" },
   { label: "About Us", href: "/about-us" },
   { label: "Contact Us", href: "/contact-us" },
+];
+
+const legacyLegalLinks = [
+  sameTab("Privacy Policy", "#legal"),
+  sameTab("Terms and Conditions", "#legal"),
+  sameTab("Purchase and Billing", "#legal"),
 ];
 
 function objectValue(value: unknown): Record<string, unknown> {
@@ -201,6 +209,10 @@ function comparableHeaderMenu(value: unknown): ComparableHeaderItem[] | null {
   });
 }
 
+function comparableLinks(value: unknown): ComparableLink[] | null {
+  return Array.isArray(value) ? value.map(comparableLink) : null;
+}
+
 const previousServiceHrefByLabel: Record<string, string> = {
   "TM Search": "/corporate/trademark-registration/trademark-search",
   "TM Application Filing": "/corporate/trademark-registration/trademark-application-filing",
@@ -252,10 +264,11 @@ function previousCategorizedHeaderMenu(
 }
 
 /**
- * Upgrade only the exact original demo header. Editor-created or partially
- * migrated menus never match this signature and are therefore not modified.
+ * Upgrade only the exact original demo navigation links. Editor-created or
+ * partially migrated values never match these signatures and are therefore
+ * not modified.
  */
-export async function migrateLegacyHeaderMenu(strapi: Core.Strapi): Promise<void> {
+export async function migrateLegacySiteSettingLinks(strapi: Core.Strapi): Promise<void> {
   const siteSettings = documentService(strapi, CONTENT_TYPES.siteSetting);
   const populate = {
     populate: {
@@ -265,6 +278,7 @@ export async function migrateLegacyHeaderMenu(strapi: Core.Strapi): Promise<void
           categories: { populate: { links: true } },
         },
       },
+      legalLinks: true,
     },
   };
   const [existing, draft] = await Promise.all([
@@ -278,6 +292,8 @@ export async function migrateLegacyHeaderMenu(strapi: Core.Strapi): Promise<void
 
   const currentMenu = comparableHeaderMenu(existing.headerMenu);
   const draftMenu = comparableHeaderMenu(draft?.headerMenu);
+  const currentLegalLinks = comparableLinks(existing.legalLinks);
+  const draftLegalLinks = comparableLinks(draft?.legalLinks);
   if (draft) {
     const publishedUpdatedAt = timestampValue(existing.updatedAt);
     const draftUpdatedAt = timestampValue(draft.updatedAt);
@@ -285,7 +301,8 @@ export async function migrateLegacyHeaderMenu(strapi: Core.Strapi): Promise<void
       publishedUpdatedAt === undefined ||
       draftUpdatedAt === undefined ||
       publishedUpdatedAt !== draftUpdatedAt ||
-      JSON.stringify(draftMenu) !== JSON.stringify(currentMenu)
+      JSON.stringify(draftMenu) !== JSON.stringify(currentMenu) ||
+      JSON.stringify(draftLegalLinks) !== JSON.stringify(currentLegalLinks)
     ) {
       // Publishing the menu also publishes the Site Setting draft. Never do
       // that while any editor-managed Site Setting field has pending changes.
@@ -299,19 +316,27 @@ export async function migrateLegacyHeaderMenu(strapi: Core.Strapi): Promise<void
       JSON.stringify(currentMenu) ===
       JSON.stringify(previousCategorizedHeaderMenu(companyRegistrationLinksWerePlaceholders)),
   );
+  const hasLegacyLegalLinks =
+    JSON.stringify(currentLegalLinks) === JSON.stringify(legacyLegalLinks);
 
-  if (!isOriginalFlatMenu && !isPreviousCategorizedMenu) {
+  const shouldMigrateHeader = isOriginalFlatMenu || isPreviousCategorizedMenu;
+  if (!shouldMigrateHeader && !hasLegacyLegalLinks) {
     return;
   }
 
   await siteSettings.update({
     documentId: existing.documentId,
-    data: { headerMenu: initialSite.headerMenu },
+    data: {
+      ...(shouldMigrateHeader ? { headerMenu: initialSite.headerMenu } : {}),
+      ...(hasLegacyLegalLinks ? { legalLinks: initialSite.legalLinks } : {}),
+    },
     status: "published",
   });
-  strapi.log.info(
-    "Migrated the exact demo header menu to the current categorized service navigation.",
-  );
+  const migratedAreas = [
+    ...(shouldMigrateHeader ? ["header menu"] : []),
+    ...(hasLegacyLegalLinks ? ["footer legal links"] : []),
+  ];
+  strapi.log.info(`Migrated the exact demo ${migratedAreas.join(" and ")}.`);
 }
 
 function documentService(strapi: Core.Strapi, uid: string): DocumentService {
@@ -341,6 +366,7 @@ type McaServiceSeedPage = (typeof mcaServicePages)[number];
 type SebiBusinessRegistrationSeedPage = (typeof sebiBusinessRegistrationPages)[number];
 type TaxAccountingSeedPage = (typeof taxAccountingPages)[number];
 type PollutionAdvisorySeedPage = (typeof pollutionAdvisoryPages)[number];
+type LegalSeedPage = (typeof legalPages)[number];
 type ServiceDetailSeedPage =
   | CompanyRegistrationSeedPage
   | GovernmentLicenseCertificationSeedPage
@@ -395,6 +421,22 @@ function serviceDetailPageData(
       metaTitle: page.seo.title,
       metaDescription: page.seo.description,
       noIndex: false,
+    },
+    sortOrder,
+  };
+}
+
+function legalPageData(page: LegalSeedPage, sortOrder: number): Record<string, unknown> {
+  return {
+    title: page.title,
+    slug: page.slug,
+    eyebrow: page.eyebrow,
+    introduction: page.introduction,
+    sections: page.sections,
+    seo: {
+      metaTitle: page.seo.title,
+      metaDescription: page.seo.description,
+      noIndex: page.seo.noIndex,
     },
     sortOrder,
   };
@@ -1576,6 +1618,10 @@ export async function seedInitialContent(strapi: Core.Strapi): Promise<void> {
       noIndex: false,
     },
   });
+
+  for (const [sortOrder, page] of legalPages.entries()) {
+    await createPublished(strapi, CONTENT_TYPES.legalPage, legalPageData(page, sortOrder));
+  }
 
   await createPublished(strapi, CONTENT_TYPES.siteSetting, {
     ...initialSite,

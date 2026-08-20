@@ -41,11 +41,10 @@ closed before a production launch:
    and `.strapi/` ignored.
 4. **Use an isolated production database and migrate content deliberately.**
    Do not deploy or configure the retained SQLite rollback source, and keep all
-   `SEED_*` flags false. The CMS bootstrap can upgrade only an exact known demo
-   header-menu signature (the original flat menu or one of the two preceding
-   categorized menus with former IPR/FSSAI URLs and the optional two Company
-   Registration placeholders); it does not replace customized navigation
-   records.
+   `SEED_*` flags false. The CMS bootstrap can upgrade only exact known demo
+   navigation signatures: the original flat header (or one of the two preceding
+   categorized menus) and the original three `#legal` footer links. It skips
+   pending drafts and does not replace customized navigation records.
 
 The PostgreSQL driver (`pg@8.22.0`) is included in the CMS lockfile. The
 remaining database, media, and audit gates require deployment-environment
@@ -167,7 +166,8 @@ Page, Import Export Service Page, Government License & Certification Page, IPR
 Service Page, FSSAI Service Page, SEBI Business Registration Page, Tax and
 Accounting Page, Labour Compliance Page, Fund Raising Page, Bureau of Indian
 Standards Page, and Pollution Advisory Page collections, and their populated
-content/media. Do not grant the public role content or upload access, and never
+content/media. Also grant `find` and `findOne` for the fixed Legal Page
+collection. Do not grant the public role content or upload access, and never
 send this token to the browser.
 
 ## 24/7 VPS process supervision (PM2)
@@ -380,8 +380,9 @@ Registration, the GST Registration record in Tax and Accounting, the Shop &
 Establishment Registration record in Labour Compliance, and the MSME
 Registration record in Fund Raising, the ISI Certification record in Bureau of
 Indian Standards, and the EPR Certification record in Pollution Advisory are
-**Published**, media records point to durable storage, and the frontend token
-can read only published data.
+**Published**. Confirm Privacy Policy, Terms and Conditions, and Purchase and
+Billing are also published in Legal Page, media records point to durable
+storage, and the frontend token can read only published data.
 
 ### 4. Build the frontend
 
@@ -538,7 +539,8 @@ Do not delete the previous release until the launch-validation checks pass.
 
 Run these checks against the production domains after DNS and TLS are live:
 
-1. `GET /`, `/about-us`, `/careers`, and `/contact-us` returns `200`; an
+1. `GET /`, `/about-us`, `/careers`, `/contact-us`, `/privacy-policy`,
+   `/terms-and-conditions`, and `/purchase-and-billing` returns `200`; an
    unknown route returns `404`.
 2. `GET /robots.txt`, `/sitemap.xml`, and `/icon` returns `200`; sitemap URLs
    use the canonical HTTPS origin.
@@ -552,9 +554,9 @@ Run these checks against the production domains after DNS and TLS are live:
    in application logs. Confirm the sixth rapid request is rejected and Nginx
    returns `429` under the configured edge limit; do not run this against live
    lead intake without coordinating the test record.
-6. With the frontend token, verify all five published single-type endpoints and
-   all twelve fixed service collection endpoints return expected content.
-   Confirm the anonymous CMS request is denied.
+6. With the frontend token, verify all five published single-type endpoints,
+   the fixed service collection endpoints, and `/api/legal-pages` return
+   expected published content. Confirm the anonymous CMS request is denied.
 7. Change a harmless CMS field, save a draft, publish it, and verify the
    matching page updates through the signed webhook (or within 60 seconds if
    the webhook is intentionally unavailable).

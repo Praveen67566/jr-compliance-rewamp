@@ -353,8 +353,10 @@ environment-specific.
    Government License & Certification Pages, IPR Service Pages, FSSAI Service
    Pages, SEBI Business Registration Pages, Tax and Accounting Pages, Labour
    Compliance Pages, Fund Raising Pages, supporting collections, and Media
-   Library now contain records. The imported entries are published and can be
-   edited normally: save your change, then click **Publish** to make it live.
+   Library now contain records. Also confirm that Privacy Policy, Terms and
+   Conditions, and Purchase and Billing are published under Legal Pages. The
+   imported entries can be edited normally: save your change, then click
+   **Publish** to make it live.
 
    If the frontend was already deployed before the import, refresh its cached
    data after the CMS is online:
@@ -375,7 +377,8 @@ Create a Strapi API token for the frontend:
    Pages, Government License & Certification Pages, IPR Service Pages, FSSAI
    Service Pages, SEBI Business Registration Pages, Tax and Accounting Pages,
    Labour Compliance Pages, Fund Raising Pages, their selected supporting
-   collections, and Upload `find`.
+   collections, Legal Pages, and Upload `find`. Legal Pages requires both
+   `find` and `findOne`.
 4. Keep the Public role without content or Upload read access.
 5. Copy the token once and store it securely.
 

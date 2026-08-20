@@ -10,6 +10,8 @@ The CMS provides content for:
 - `/about-us` through the `about-page` single type
 - `/careers` through the `careers-page` single type
 - `/contact-us` through the `contact-page` single type
+- `/privacy-policy`, `/terms-and-conditions`, and `/purchase-and-billing`
+  through three fixed `legal-page` records
 - the nineteen Company Registration routes through `company-registration-page`
 - `/corporate/dsc-certificate` through `mca-service-page`
 - `/corporate/iec-registration` through `import-export-service-page`
@@ -37,18 +39,19 @@ The CMS provides content for:
   `global-certificate-page`
 - shared header/footer and global consultation-form copy through the `site-setting` single type
 
-The committed model contains five single types, thirty-five collection types,
-and fifty-seven components: forty content types in total, including nineteen
-fixed service-detail collections. That fixed service-detail count is unchanged;
-the two Global collections use separate country and certificate contracts. The
-seven empty Approval collections and both Global collections are schema
-integrations only and contain no bundled records.
+The committed model contains five single types, thirty-six collection types,
+and fifty-seven components: forty-one content types in total, including
+nineteen fixed service-detail collections. That fixed service-detail count is
+unchanged; the Legal Page collection and two Global collections use separate
+fixed contracts. The seven empty Approval collections and both Global
+collections are schema integrations only and contain no bundled records.
 
 The frontend reads published CMS content using a server-only API token. If
 Strapi is unavailable, fallback-backed routes use local data from
 `frontend/data/*-fallback.ts`; the seven empty Approval families have no local
-page and return 404. Global pages never use local fallbacks and return 404 until
-a matching complete record is published.
+page and return 404. The three Legal Page routes have exact typed fallbacks;
+Global pages never use local fallbacks and return 404 until a matching complete
+record is published.
 
 The main CMS flow is:
 
@@ -58,8 +61,9 @@ The main CMS flow is:
    running CMS database.
 3. The frontend fetches published single types and related collections through
    REST, including all nineteen fixed service-detail collections filtered by
-   exact slug or Approval path, plus the two Global collections filtered by
-   exact country/certificate route segments.
+   exact slug or Approval path, the Legal Page collection filtered by its exact
+   three-value slug allow-list, and the two Global collections filtered by exact
+   country/certificate route segments.
 4. `cms/src/revalidation.ts` can notify Next.js after publish changes.
 5. Next.js revalidates the affected cache tags and fetches fresh CMS content.
 
@@ -122,17 +126,19 @@ The main CMS flow is:
 
 `cms/src/index.ts`
 : Strapi lifecycle entry. On bootstrap it registers the Next.js revalidation
-  hooks, safely upgrades only an exact known demo-header signature (including
-  the preceding categorized IPR/FSSAI links and former Company Registration
-  placeholder variant), preserves any
-  pending Site Setting draft, and does not invoke the historical seed or
-  backfill helpers.
+  hooks and safely upgrades only exact known Site Setting signatures. It can
+  replace the known demo header variants and, independently, the exact original
+  three `#legal` footer links with `/privacy-policy`,
+  `/terms-and-conditions`, and `/purchase-and-billing`. Customized or partially
+  migrated values and any pending Site Setting draft are preserved. Bootstrap
+  does not invoke the historical seed or content backfill helpers.
 
 `cms/src/revalidation.ts`
 : Signed webhook sender for Next.js cache revalidation. It watches Strapi document and media lifecycle events, maps changed CMS models to frontend cache tags, signs the payload with HMAC SHA-256, and sends it to `NEXT_REVALIDATE_URL`.
-  Global country changes map to `jr-global-country-pages`; Global certificate
-  changes map to `jr-global-certificate-pages`. Shared Site Setting and media
-  changes continue to invalidate all applicable page tags.
+  Legal Page changes map to `jr-legal-pages`, Global country changes map to
+  `jr-global-country-pages`, and Global certificate changes map to
+  `jr-global-certificate-pages`. Shared Site Setting and media changes continue
+  to invalidate all applicable page tags.
 
 ## Historical content-source files
 
@@ -140,12 +146,15 @@ The main CMS flow is:
 : Historical content-source and guarded legacy seed runner. The normal CMS
   bootstrap no longer invokes it, the active CMS uses PostgreSQL, and every
   `SEED_*` flag must remain `false`; populate a new target with a reviewed
-  encrypted Strapi `content,files` import instead.
+  encrypted Strapi `content,files` import instead. The safe exact-signature Site
+  Setting link migration is exported from this module and called separately by
+  bootstrap; that migration does not create Legal Page records.
 
 `cms/src/seed/content.ts`
 : The approved historical content source: shared settings, page content, service
   categories, services, logos, testimonials, recognitions, FAQs, team members,
-  jobs, gallery items, and related records.
+  jobs, gallery items, and related records. Its Site Setting mirror contains the
+  three internal legal routes used after the exact-signature migration.
 
 `cms/src/seed/company-registration-pages.json`
 : A historical JSON mirror of the nineteen typed frontend registration
@@ -200,6 +209,14 @@ The main CMS flow is:
   `site/approval/epr-certification.html` for migration and content parity
   checks.
 
+`cms/src/seed/legal-pages.json`
+: A historical CMS mirror of the three typed frontend legal fallbacks, in
+  `sortOrder` order: Privacy Policy, Terms and Conditions, and Purchase and
+  Billing. It preserves the approved headings, Blocks paragraphs/lists/links,
+  contact information, and SEO data without Webflow code. It supports parity
+  checks and the disabled historical seed runner; it is not a normal
+  PostgreSQL bootstrap source.
+
 There are no seed JSON files for Telecommunication Engineering Centre,
 Wireless Planning and Coordination, Bureau of Energy Efficiency, CDSCO
 Registration, AERB Approval, LMPC Certification, or STQC. Their collections
@@ -241,6 +258,14 @@ Each content type folder follows the Strapi pattern:
 : Contact Us page content. Stores hero, contact methods, office/address content, enquiry copy, response steps, SEO, and CTA.
 
 ### Collection types
+
+`cms/src/api/legal-page/`
+: Dedicated fixed collection for `/privacy-policy`,
+  `/terms-and-conditions`, and `/purchase-and-billing`. Each record owns a
+  required `title`, exact allow-listed UID `slug`, required `eyebrow`, optional
+  Blocks `introduction`, one or more ordered `shared.legal-notice` sections,
+  required `shared.seo`, and required `sortOrder` from `0` through `2`. It uses
+  Draft & Publish and is not a generic page builder.
 
 `cms/src/api/company-registration-page/`
 : Dedicated detail-page records for the nineteen Company Registration slugs.
@@ -393,7 +418,10 @@ route.
 Strapi components are reusable field groups stored as JSON schemas in `cms/src/components/`.
 
 `cms/src/components/shared/`
-: Cross-page primitives: `link`, `cta`, `seo`, `section-heading`, `contact`, `social-link`, and `legal-notice`.
+: Cross-page primitives: `link`, `cta`, `seo`, `section-heading`, `contact`,
+  `social-link`, and `legal-notice`. The existing `legal-notice` title/Blocks
+  body component is reused by Site Setting footer notices and ordered Legal
+  Page sections, so this feature adds no new component schema.
 
 `cms/src/components/navigation/`
 : Header/footer navigation structures: `menu-item`, nested `menu-category`, and `link-group`.
@@ -505,6 +533,13 @@ PostgreSQL variables for local and deployed CMS environments are defined in
 - Keep every `SEED_*` flag disabled. The current local PostgreSQL content came
   from a verified transfer; use the reviewed export/import workflow for another
   target rather than a seed or backfill.
+- Deploying `legal-page` does not populate the active PostgreSQL database.
+  Review and publish exactly the three allowed records through Content Manager,
+  or use the reviewed `content,files` transfer workflow after backups. Grant the
+  existing server-side `next-site-reader` token `find` and `findOne` for
+  `legal-page`; leave the Public role with no Legal Page access. The frontend
+  query explicitly populates `sections` and `seo.shareImage` through bounded
+  populate paths, and signed changes invalidate `jr-legal-pages`.
 - Do not rely on local `public/uploads` for production media durability.
 - After deploying the two Global schemas, grant the existing server-side
   `next-site-reader` token `find` and `findOne` for both Global collections.

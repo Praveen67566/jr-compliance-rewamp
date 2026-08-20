@@ -23,9 +23,9 @@ export const fallbackHomepage: HomepageContent = {
     footerTagline: "Your trusted partner for the latest regulatory updates.",
     copyrightText: "Copyright © JR Compliance",
     legalLinks: [
-      { label: "Privacy Policy", href: "#legal" },
-      { label: "Terms and Conditions", href: "#legal" },
-      { label: "Purchase and Billing", href: "#legal" },
+      { label: "Privacy Policy", href: "/privacy-policy" },
+      { label: "Terms and Conditions", href: "/terms-and-conditions" },
+      { label: "Purchase and Billing", href: "/purchase-and-billing" },
     ],
     leadForm: {
       enabled: true,
@@ -42,8 +42,8 @@ export const fallbackHomepage: HomepageContent = {
       consentText: "I agree to be contacted about my enquiry and accept the",
       privacyLink: {
         label: "Privacy Policy",
-        href: "https://www.jrcompliance.com/privacy-policy",
-        target: "_blank",
+        href: "/privacy-policy",
+        target: "_self",
       },
       submitLabel: "Get Free Consultation",
       submittingLabel: "Sending your request...",

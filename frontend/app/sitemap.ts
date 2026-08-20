@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 
 import { companyRegistrationSlugs } from "@/data/company-registration-pages-fallback";
+import { legalPageSlugs } from "@/data/legal-pages-fallback";
 import {
   getAerbApprovalSlugs,
   getBureauEnergyEfficiencySlugs,
@@ -92,6 +93,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.7,
     },
+    ...legalPageSlugs.map((slug) => ({
+      url: new URL(`/${slug}`, siteUrl).toString(),
+      changeFrequency: "yearly" as const,
+      priority: 0.5,
+    })),
     ...[
       ...new Set([
         ...companyRegistrationSlugs,

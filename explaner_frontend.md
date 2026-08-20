@@ -9,12 +9,15 @@ detail routes and the first detail route for each of MCA Services, Import
 Export Service, Government License & Certification, IPR Services, FSSAI, and
 SEBI Business Registration, Tax and Accounting, Labour Compliance, and Fund
 Raising, plus the first Bureau of Indian Standards and Pollution Advisory
-routes:
+routes, and the three completed fixed legal routes:
 
 - `/`
 - `/about-us`
 - `/careers`
 - `/contact-us`
+- `/privacy-policy`
+- `/terms-and-conditions`
+- `/purchase-and-billing`
 - `/corporate/[slug]` for the nineteen approved Company Registration slugs,
   DSC, IEC Code, Ayush License, Trademark Registration, FSSAI Basic
   Registration, Portfolio Manager Registration, GST Registration, Shop &
@@ -28,16 +31,19 @@ routes:
 - `/globals/[country]/[slug]` for complete published CMS-only Global
   certificate pages
 
-The seven new Approval integrations add no local pages, so the current sitemap
-still contains thirty-four active routes. The two empty Global collections also
-add no active or local route. Approval and Global URLs appear in the sitemap
-only after complete records are published in Strapi.
+The three legal routes are fixed sitemap entries, so the current sitemap
+contains thirty-seven active routes. The seven new Approval integrations add
+no local pages, and the two empty Global collections also add no active or
+local route. Additional Approval and Global URLs appear in the sitemap only
+after complete records are published in Strapi.
 
 Content comes from Strapi when `STRAPI_URL` and `STRAPI_API_TOKEN` are configured.
 Implemented routes fall back to typed local content in
 `frontend/data/*-fallback.ts` when Strapi is unavailable or incomplete. The
-seven empty CMS-only Approval families have no fallback or first page, so their
-routes exist only after an editor publishes a complete Strapi record.
+three legal routes use a restricted semantic Blocks fallback mirrored in the
+CMS migration JSON. The seven empty CMS-only Approval families have no fallback
+or first page, so their routes exist only after an editor publishes a complete
+Strapi record.
 The Global route families are also strictly CMS-only: they have no local
 fallback, seed content, sample record, or default page and therefore return 404
 when Strapi is unavailable or a matching complete published record is absent.
@@ -118,6 +124,19 @@ The main flow is:
 `frontend/app/contact-us/page.tsx`
 : Contact Us route. Loads Contact content, metadata, and renders the Contact page.
 
+`frontend/app/privacy-policy/page.tsx`
+: Static Privacy Policy route. Loads the fixed legal record, generates metadata
+  through `pageMetadata`, renders the shared legal template, and revalidates
+  every 60 seconds.
+
+`frontend/app/terms-and-conditions/page.tsx`
+: Static Terms and Conditions route. Uses the same typed legal loader,
+  metadata helper, legal renderer, and 60-second route revalidation.
+
+`frontend/app/purchase-and-billing/page.tsx`
+: Static Purchase and Billing route. Uses the same fixed collection contract
+  and shared renderer without adding a root-level dynamic catch-all.
+
 `frontend/app/corporate/[slug]/page.tsx`
 : Shared dynamic route for the nineteen Company Registration pages plus DSC,
   IEC Code, Ayush License, Trademark Registration, FSSAI Basic Registration,
@@ -156,14 +175,15 @@ The main flow is:
 : Generates `robots.txt`.
 
 `frontend/app/sitemap.ts`
-: Generates `sitemap.xml` for the active routes. Complete published Global
-  country and certificate paths are discovered from Strapi; empty Global
-  collections add no URL.
+: Generates `sitemap.xml` for the thirty-seven fixed active routes, including
+  all three `legalPageSlugs`. Complete published Global country and certificate
+  paths are discovered from Strapi; empty Global collections add no URL.
 
 `frontend/app/api/revalidate/route.ts`
 : Secure Strapi webhook endpoint. It verifies an HMAC signature from Strapi and revalidates the matching Next cache tags after publish/unpublish/delete events,
-  including `jr-global-country-pages` and
-  `jr-global-certificate-pages`.
+  including `jr-legal-pages`, `jr-global-country-pages`, and
+  `jr-global-certificate-pages`. Only allow-listed tags are accepted, and
+  webhook invalidation complements the normal 60-second fetch revalidation.
 
 `frontend/app/api/leads/route.ts`
 : Same-origin consultation endpoint. It validates and normalizes the required
@@ -190,7 +210,9 @@ The main flow is:
 : Header-only bluefield, navigation rail, popover, and mobile-menu artwork. It is imported once by the root layout to preserve the established cascade.
 
 `frontend/components/site-footer.tsx`
-: Shared footer. Renders logo, contact details, social links, link groups, popular services, legal links, and disclaimers from CMS/fallback data.
+: Shared footer. Renders logo, contact details, social links, link groups,
+  popular services, legal links, and disclaimers from CMS/fallback data. Its
+  three legal links now resolve to the completed local legal routes.
 
 `frontend/components/site-footer.css`
 : Footer-only network field, glass panel, and legal-area styling.
@@ -246,6 +268,13 @@ The main flow is:
 `frontend/components/contact/contact-page.tsx`
 : Renders the Contact page sections: hero, contact methods, office/address content, and CTA.
 
+`frontend/components/legal/legal-page.tsx`
+: One responsive, Tailwind-first renderer for all three legal routes. It wraps
+  the page in `SitePageShell`, renders a bluefield hero and ice reading surface,
+  derives unique section anchors and an accessible sticky navigation list, and
+  preserves semantic paragraphs, H2-H4 headings, ordered/unordered lists,
+  inline formatting, and allow-listed links. It never injects legacy HTML.
+
 `frontend/components/company-registration/company-registration-page.tsx`
 : One fixed Tailwind-first service template for every Company Registration
   route and every fixed category detail route. It renders the bluefield hero, overview,
@@ -271,7 +300,11 @@ The main flow is:
 ## Data fallbacks
 
 `frontend/data/homepage-fallback.ts`
-: Typed local fallback for the home page and shared chrome. Its navbar includes nested categories and links for Corporate, Approval, and Global so the menu remains complete while Strapi is unavailable or an older CMS record is awaiting migration.
+: Typed local fallback for the home page and shared chrome. Its navbar includes
+  nested categories and links for Corporate, Approval, and Global so the menu
+  remains complete while Strapi is unavailable or an older CMS record is
+  awaiting migration. Its footer legal links point to the three completed
+  routes, and its consultation privacy link points to `/privacy-policy`.
 
 `frontend/data/about-page-fallback.ts`
 : Typed local fallback for About Us content.
@@ -281,6 +314,13 @@ The main flow is:
 
 `frontend/data/contact-page-fallback.ts`
 : Typed local fallback for Contact Us content.
+
+`frontend/data/legal-pages-fallback.ts`
+: Typed, normalized fallback for Privacy Policy, Terms and Conditions, and
+  Purchase and Billing. It exports `fallbackLegalPages`, `legalPageSlugs`, and
+  `legalPageFallback`, preserves ordered sections and a restricted semantic
+  Blocks subset, and stays identical to
+  `cms/src/seed/legal-pages.json` for CMS migration parity.
 
 `frontend/data/company-registration-pages-fallback.ts`
 : The normalized content source for the nineteen approved legacy Company
@@ -364,8 +404,9 @@ editors/developers.
 
 `frontend/lib/types.ts`
 : The main TypeScript content contract. Defines shared link, navigation, site
-  settings, footer, SEO, editorial pages, and the fixed
-  named Company Registration, MCA Services, Import Export Service, and
+  settings, footer, SEO, editorial pages, the three fixed `LegalPageSlug`
+  values, and the legal paragraph/heading/list/inline Blocks nodes, plus the
+  fixed named Company Registration, MCA Services, Import Export Service, and
   Government License & Certification, IPR Services, FSSAI, and SEBI Business
   Registration, Tax and Accounting, Labour Compliance, Fund Raising, Bureau of
   Indian Standards, Pollution Advisory, Telecommunication Engineering Centre,
@@ -380,8 +421,12 @@ editors/developers.
   `headerMenu.categories.links` and every nested registration-page component—
   fetches published single types or exact-slug entries from all nineteen fixed
   service-detail collections, converts media URLs, and safely falls back when
-  known local fallback data is available. Later CMS-only category records are
-  strictly validated before rendering. The two Global collections have their
+  known local fallback data is available. The separate legal-page query allows
+  only the three fixed slugs, requests published content, explicitly populates
+  ordered `sections` plus `seo.shareImage`, applies the `jr-legal-pages` tag,
+  and strictly maps supported Blocks before falling back to complete local
+  legal content. Later CMS-only category records are strictly validated before
+  rendering. The two Global collections have their
   own explicit hero, card, CTA, SEO, text-item, process, and media populate
   trees and strict mappers; they are filtered by exact route segments, request
   only `status=published`, convert media URLs to absolute CMS URLs, and never
@@ -389,16 +434,21 @@ editors/developers.
 
 `frontend/lib/content.ts`
 : Small route-facing content loader. Exposes functions used by pages to get
-home/about/careers/contact content plus cached pages and slug discovery for all
-nineteen fixed service-detail collections. The seven empty Approval families
-pass no page fallback to the Strapi adapter. It also exposes cached Global
-country and certificate loaders as `getGlobalCountryPage`,
+home/about/careers/contact content, the cached fixed `getLegalPage` loader, plus
+cached pages and slug discovery for all nineteen fixed service-detail
+collections. The legal loader combines the matching typed fallback with shared
+fallback chrome and the published exact-slug CMS record. The seven empty
+Approval families pass no page fallback to the Strapi adapter. It also exposes
+cached Global country and certificate loaders as `getGlobalCountryPage`,
 `getGlobalCountrySlugs`, `getGlobalCertificatePage`, and
 `getGlobalCertificatePaths`. Unavailable or incomplete Global content stays
 `null`, and discovery returns no Global path when Strapi is unavailable.
 
 `frontend/lib/page-metadata.ts`
-: Converts page SEO data into Next metadata.
+: Converts page SEO data into Next metadata. Each static legal route supplies
+  its fixed pathname; when `SITE_URL` is configured the helper emits an
+  absolute canonical from that path or a site-relative CMS override, while an
+  editor-provided absolute canonical remains authoritative.
 
 `frontend/lib/site-url.ts`
 : Resolves the public site URL from environment values, used for canonical URLs and sitemap metadata.
@@ -413,6 +463,16 @@ country and certificate loaders as `getGlobalCountryPage`,
 `frontend/lib/lead-rate-limit.ts`
 : Bounded in-memory fixed-window protection for the current single frontend
   process. Production also requires the documented Nginx/edge limit.
+
+## Tests
+
+`frontend/tests/legal-pages.test.ts`
+: Verifies exact fallback/CMS mirror parity, the three fixed slugs, approved
+  paragraph/heading/list hierarchy and contact details, exclusion of Webflow
+  and encoding artifacts, fallback and CMS-managed footer destinations, the
+  fixed Draft and Publish schema, all three metadata route files, explicit
+  Strapi population, matching signed `jr-legal-pages` tags, safe Site Setting
+  migration wiring, and fixed sitemap inclusion.
 
 ## Public assets
 

@@ -32,7 +32,14 @@ import type {
   Insight,
   IprServicePageContent,
   LabourCompliancePageContent,
+  LegalContentBlock,
+  LegalInlineNode,
+  LegalListItemBlock,
   PollutionAdvisoryPageContent,
+  LegalPageContent,
+  LegalPageSlug,
+  LegalSection,
+  LegalTextNode,
   LegalNotice,
   LeadFormSettings,
   LeadFormTrustItem,
@@ -70,6 +77,7 @@ export type SingleTypeSlug =
   | "contact-page";
 export type RevalidatableContentSlug =
   | SingleTypeSlug
+  | "legal-page"
   | "company-registration-page"
   | "mca-service-page"
   | "import-export-service-page"
@@ -107,6 +115,7 @@ export const strapiCacheTagBySlug: Record<RevalidatableContentSlug, string> = {
   "about-page": "jr-about-page",
   "careers-page": "jr-careers-page",
   "contact-page": "jr-contact-page",
+  "legal-page": "jr-legal-pages",
   "company-registration-page": "jr-company-registration-pages",
   "mca-service-page": "jr-mca-service-pages",
   "import-export-service-page": "jr-import-export-service-pages",
@@ -233,6 +242,11 @@ const fixedServiceDetailPopulateTree: PopulateTree = {
   breakdown: { groups: { items: true } },
   faqs: { items: true },
   finalCta: { cta: true },
+  seo: { shareImage: true },
+};
+
+const legalPagePopulateTree: PopulateTree = {
+  sections: true,
   seo: { shareImage: true },
 };
 
@@ -1635,6 +1649,151 @@ function strictFixedServiceSeo(value: unknown): Seo | null {
     : null;
 }
 
+function strictLegalTextNode(value: unknown): LegalTextNode | null {
+  const node = record(value);
+  if (node.type !== "text" || typeof node.text !== "string" || !node.text.trim()) {
+    return null;
+  }
+
+  return {
+    type: "text",
+    text: node.text,
+    ...(boolean(node.bold) ? { bold: true } : {}),
+    ...(boolean(node.italic) ? { italic: true } : {}),
+    ...(boolean(node.underline) ? { underline: true } : {}),
+    ...(boolean(node.strikethrough) ? { strikethrough: true } : {}),
+    ...(boolean(node.code) ? { code: true } : {}),
+  };
+}
+
+function safeLegalBlockUrl(value: unknown): string | null {
+  const url = text(value);
+  if (!url) {
+    return null;
+  }
+
+  if ((url.startsWith("/") && !url.startsWith("//")) || url.startsWith("#")) {
+    return url;
+  }
+
+  try {
+    return ["http:", "https:", "mailto:", "tel:"].includes(new URL(url).protocol)
+      ? url
+      : null;
+  } catch {
+    return null;
+  }
+}
+
+function strictLegalInlineNodes(value: unknown): LegalInlineNode[] | null {
+  const source = asArray(value);
+  const nodes = source.map((entry) => {
+    const node = record(entry);
+    if (node.type === "text") {
+      return strictLegalTextNode(node);
+    }
+
+    if (node.type !== "link") {
+      return null;
+    }
+
+    const url = safeLegalBlockUrl(node.url);
+    const children = asArray(node.children).map(strictLegalTextNode);
+    return url && children.length && children.every((child): child is LegalTextNode => Boolean(child))
+      ? { type: "link" as const, url, children }
+      : null;
+  });
+
+  return nodes.length && nodes.every((node): node is LegalInlineNode => Boolean(node))
+    ? nodes
+    : null;
+}
+
+function strictLegalBlocks(value: unknown, allowEmpty = false): LegalContentBlock[] | null {
+  if (!Array.isArray(value)) {
+    return null;
+  }
+
+  if (!value.length) {
+    return allowEmpty ? [] : null;
+  }
+
+  const blocks = value.map((entry): LegalContentBlock | null => {
+    const block = record(entry);
+    const children = strictLegalInlineNodes(block.children);
+
+    if (block.type === "paragraph") {
+      return children ? { type: "paragraph", children } : null;
+    }
+
+    if (
+      block.type === "heading" &&
+      (block.level === 2 || block.level === 3 || block.level === 4)
+    ) {
+      return children ? { type: "heading", level: block.level, children } : null;
+    }
+
+    if (
+      block.type !== "list" ||
+      (block.format !== "ordered" && block.format !== "unordered")
+    ) {
+      return null;
+    }
+
+    const sourceItems = asArray(block.children);
+    const items = sourceItems.map((entry) => {
+      const item = record(entry);
+      const itemChildren = item.type === "list-item"
+        ? strictLegalInlineNodes(item.children)
+        : null;
+      return itemChildren ? { type: "list-item" as const, children: itemChildren } : null;
+    });
+
+    return items.length && items.every((item): item is LegalListItemBlock => Boolean(item))
+      ? { type: "list", format: block.format, children: items }
+      : null;
+  });
+
+  return blocks.every((block): block is LegalContentBlock => Boolean(block))
+    ? blocks
+    : null;
+}
+
+function strictLegalSections(value: unknown): LegalSection[] | null {
+  const source = asArray(value);
+  const sections = source.map((entry) => {
+    const section = record(entry);
+    const title = text(section.title);
+    const body = strictLegalBlocks(section.body);
+    return title && body ? { title, body } : null;
+  });
+
+  return sections.length && sections.every((section): section is LegalSection => Boolean(section))
+    ? sections
+    : null;
+}
+
+function mapLegalPage(
+  fallback: LegalPageContent,
+  rawPage: unknown,
+  rawSettings: unknown,
+): LegalPageContent {
+  const page = record(rawPage);
+  const settings = record(rawSettings);
+  const introduction = strictLegalBlocks(page.introduction, true);
+  const sections = strictLegalSections(page.sections);
+
+  return {
+    ...mapPageChrome(fallback, rawSettings),
+    slug: fallback.slug,
+    eyebrow: text(page.eyebrow) ?? fallback.eyebrow,
+    title: text(page.title) ?? fallback.title,
+    introduction: introduction ?? fallback.introduction,
+    sections: sections ?? fallback.sections,
+    seo: mapSeo(page.seo, fallback.seo, settings.defaultSeo),
+  };
+}
+
 const globalRouteSegmentPattern = /^[A-Za-z0-9-_.~]+$/;
 
 function strictGlobalImage(value: unknown): GlobalPageImage | null {
@@ -2217,6 +2376,20 @@ function fixedServiceSlugsQuery(): string {
   return params.toString();
 }
 
+const fixedLegalPageSlugs = new Set<LegalPageSlug>([
+  "privacy-policy",
+  "terms-and-conditions",
+  "purchase-and-billing",
+]);
+
+function legalPageQuery(slug: LegalPageSlug): string {
+  const params = new URLSearchParams({ status: "published" });
+  params.set("filters[slug][$eq]", slug);
+  params.set("pagination[pageSize]", "1");
+  addPopulateTree(params, legalPagePopulateTree);
+  return params.toString();
+}
+
 function globalCountryPageQuery(country: string): string {
   const params = new URLSearchParams({ status: "published" });
   params.set("filters[slug][$eq]", country);
@@ -2249,6 +2422,24 @@ function globalCertificatePathsQuery(): string {
   params.set("sort[0]", "sortOrder:asc");
   params.set("pagination[pageSize]", "100");
   return params.toString();
+}
+
+async function getLegalPageEntry(slug: LegalPageSlug): Promise<unknown> {
+  if (!fixedLegalPageSlugs.has(slug) || !strapiUrl || !strapiApiToken) {
+    return null;
+  }
+
+  const response = await fetch(`${strapiUrl}/api/legal-pages?${legalPageQuery(slug)}`, {
+    headers: { Authorization: `Bearer ${strapiApiToken}` },
+    next: { revalidate: 60, tags: [strapiCacheTagBySlug["legal-page"]] },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Strapi request for legal-page failed with ${response.status}`);
+  }
+
+  const body = (await response.json()) as { data?: unknown };
+  return asArray(body.data)[0] ?? null;
 }
 
 async function getGlobalCollectionEntry(
@@ -2575,6 +2766,27 @@ export async function getContactPageFromStrapi(
     return mapContactPage(fallback, page, settings);
   } catch (error) {
     console.error("Unable to load Contact content from Strapi; using fallback content.", error);
+    return null;
+  }
+}
+
+export async function getLegalPageFromStrapi(
+  slug: LegalPageSlug,
+  fallback: LegalPageContent,
+): Promise<LegalPageContent | null> {
+  if (!fixedLegalPageSlugs.has(slug) || !strapiUrl || !strapiApiToken) {
+    return null;
+  }
+
+  try {
+    const [page, settings] = await Promise.all([
+      getLegalPageEntry(slug),
+      getSingleType("site-setting"),
+    ]);
+
+    return page ? mapLegalPage(fallback, page, settings) : null;
+  } catch (error) {
+    console.warn(`Unable to load ${slug} from Strapi; using legal-page fallback content.`, error);
     return null;
   }
 }

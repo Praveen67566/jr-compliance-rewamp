@@ -1,4 +1,4 @@
-# Strapi v5 content model — homepage, editorial, registration, and Global routes
+# Strapi v5 content model — homepage, editorial, registration, legal, and Global routes
 
 This is the CMS contract for the new Next.js homepage, the initial editorial
 routes (About Us, Careers, Contact Us), the nineteen approved Company
@@ -23,10 +23,16 @@ and use dedicated fixed Global contracts and shared templates. The legacy
 Global HTML files informed structure only; no page copy, fallback, seed,
 initial record, Webflow UI, or remote media URL is bundled.
 
-The committed schema contains five single types, thirty-five collection types,
-and fifty-seven components: forty content types in total. Nineteen of the
+One dedicated fixed `legal-page` collection owns `/privacy-policy`,
+`/terms-and-conditions`, and `/purchase-and-billing`. These records reuse the
+existing `shared.legal-notice` component, mirror the approved legacy wording in
+typed frontend fallback data and a historical CMS JSON source, and do not widen
+the model into a generic page builder.
+
+The committed schema contains five single types, thirty-six collection types,
+and fifty-seven components: forty-one content types in total. Nineteen of the
 collections use the fixed service-detail contract; that count does not include
-the two Global collections.
+the legal collection or the two Global collections.
 
 Use named fields rather than a page-builder dynamic zone for these initial routes.
 That makes the front-end contract stable and easy for non-technical editors to
@@ -153,6 +159,37 @@ only global form copy belongs in `site-setting.leadForm`.
 All `sortOrder` values are required integers, minimum `0`. The front end sorts
 children by this field as a safe fallback; each route's explicit relations
 determine which entries appear on that route.
+
+### `legal-page` — API: `api::legal-page.legal-page`
+
+Exactly one published record is allowed for each fixed footer route:
+`/privacy-policy`, `/terms-and-conditions`, and `/purchase-and-billing`. This is
+a dedicated legal-content contract, not a generic page builder or dynamic
+zone.
+
+| Field | Strapi field | Rules |
+| --- | --- | --- |
+| `title` | Short text | Required; public H1 and CMS record name |
+| `slug` | UID from `title` | Required; must match exactly `privacy-policy`, `terms-and-conditions`, or `purchase-and-billing` |
+| `eyebrow` | Short text | Required; short label above the H1 |
+| `introduction` | Rich Text (Blocks) | Optional; ordered introductory paragraphs and links before the first section |
+| `sections` | Repeatable `shared.legal-notice` | Required, minimum one; editor order controls the section/anchor order, while each component preserves its heading and Blocks body |
+| `seo` | `shared.seo` | Required; metadata, canonical URL, optional share image, and indexing choice |
+| `sortOrder` | Integer, `0` to `2` | Required; Privacy Policy `0`, Terms and Conditions `1`, Purchase and Billing `2` |
+
+The approved content exists in matching order in
+`frontend/data/legal-pages-fallback.ts` and the historical CMS mirror
+`cms/src/seed/legal-pages.json`. The normal bootstrap does not seed or backfill
+these records into the active PostgreSQL database. After deploying the schema,
+review and create/publish the three records through Content Manager, or import
+them through the reviewed Strapi `content,files` transfer workflow after the
+required backups. Until then, the three frontend routes use their typed
+fallback records.
+
+Site Setting bootstrap migration is separate from record creation. It replaces
+the exact original three `#legal` footer-link signature with the three internal
+routes above, and only when no editor has a pending Site Setting draft. Any
+customized or partially migrated legal-link list is preserved.
 
 ### `company-registration-page` — API: `api::company-registration-page.company-registration-page`
 
@@ -535,7 +572,7 @@ collection pairs above.
 | `shared.seo` | `metaTitle` short text*, `metaDescription` long text*, `shareImage` single image media, `canonicalUrl` short text, `noIndex` boolean (default `false`) |
 | `shared.contact` | `phoneDisplay` short text*, `phoneE164` short text*, `email` email*, `whatsAppUrl` short text* |
 | `shared.social-link` | `network` enum `linkedin` / `facebook` / `x` / `youtube` / `instagram`*, `url` short text* |
-| `shared.legal-notice` | `title` short text*, `body` Rich Text (Blocks)* |
+| `shared.legal-notice` | `title` short text*, `body` Rich Text (Blocks)*; reused for Site Setting footer notices and ordered `legal-page.sections` |
 | `shared.lead-form-settings` | `enabled` boolean* (default `true`), `heading` short text*, `subtitle` short text*, `nameLabel` short text*, `namePlaceholder` short text*, `emailLabel` short text*, `emailPlaceholder` short text*, `phoneLabel` short text*, `phonePlaceholder` short text*, `messageLabel` short text*, `messagePlaceholder` short text*, `consentText` long text*, `privacyLink` `shared.link`*, `submitLabel` short text*, `submittingLabel` short text*, `successTitle` short text*, `successMessage` long text*, `redirectPath` short text*, `secureLabel` short text*, `durationLabel` short text*, `noSpamLabel` short text*, `trustHeading` short text, `trustDescription` long text, `trustItems` repeatable `shared.lead-form-trust-item`, `experienceText` short text. The message itself is always required by the form and submission API; the CMS exposes no optional-message switch. |
 | `shared.lead-form-trust-item` | `name` short text*, `logo` single image media, `link` `shared.link` component; items render in editor order and may fall back to their name when no logo is selected |
 | `navigation.menu-item` | `label` short text*, `href` short text, `children` repeatable `shared.link` component, `categories` repeatable `navigation.menu-category` component; use categories for multi-column mega menus, children for a simple submenu, and `href` alone for Careers/About Us |
@@ -634,6 +671,9 @@ invent claims or silently repair source inconsistencies.
 | `/about-us` | `site/about-us.html` | Hero “Your #1 Partner for 360° Compliance Solutions”; 13+/100+/4.8 proof stats; the five Our Mantra cards; six dated timeline events (2013–14 through 2022); four “Why partner with us?” cards; Pioneers stats; 14 JRians; five achievement cards; final Contact Us CTA. |
 | `/careers` | `site/careers.html` | Hero, Vision/Mission, four values, culture gallery, five active openings, four benefits, six unique employee testimonials, four career FAQs, and final Contact Us CTA. Preserve job labels but have an editor validate legacy department/category inconsistencies before publishing. |
 | `/contact-us` | `site/contact-us.html` | “Let's Ensure Your Compliance Together”; phone, email, Bawana office address; direct-contact copy; final CTA anchored to the contact options. Centralized form copy comes from `site-setting.leadForm`; do not copy the commented legacy Bitrix webhook or its credential-like URL. |
+| `/privacy-policy` | `site/privacy-policy.html` | Preserve the approved Privacy Policy title, introduction, consent wording, section headings, paragraphs, lists, links, and contact information in ordered Blocks content. Exclude all Webflow markup, CSS, JavaScript, classes, forms, tracking scripts, and `data-wf-*` attributes. |
+| `/terms-and-conditions` | `site/terms-and-conditions.html` | Preserve the approved Terms and Conditions title, introductory provisions, ordered section headings, paragraphs, lists, links, and contact information. Exclude all Webflow UI and transport code. |
+| `/purchase-and-billing` | `site/purchase-and-billing.html` | Preserve the approved purchase terms for Services and Products, including their heading hierarchy, paragraphs, lists, links, and contact information. Exclude all Webflow UI, scripts, forms, and tracking code. |
 | `/corporate/[slug]` (nineteen Company Registration routes) | Matching approved files under `site/corporate/` | Page-specific SEO, hero, overview, four challenges, four advantages, six process steps, Why JR cards, Eligibility/Documents/Who Needs It breakdown, FAQs, and shared final CTA. Exclude the duplicated private-company challenge block, hidden placeholder processes/tabs/resources, copied testimonials, Webflow lead form, and all legacy UI/transport code. |
 | `/corporate/dsc-certificate` (MCA Services) | `site/corporate/dsc-certificate.html` | Page-specific SEO, DSC hero and overview, four DSC challenges, four advantages, six service steps, Why JR cards, Eligibility/Documents/Who Needs It breakdown, FAQs, and shared final CTA. Exclude the copied Private Limited Company blocks, hidden Products/Requirements/process templates/resources, Webflow lead form, and all legacy UI/transport code. |
 | `/corporate/iec-registration` (Import Export Service) | `site/corporate/iec-registration.html` | Page-specific IEC SEO, hero and overview, four IEC challenges, four advantages, six service steps, Why JR cards, Eligibility/Documents/Who Needs It breakdown, five FAQs, and shared final CTA. Exclude copied Private Limited Company challenges, hidden Products/process/templates/resources, unrelated testimonials, the Webflow form, and all legacy UI/transport code. |
@@ -677,14 +717,14 @@ attributes are flattened and documents use `documentId`; do not copy v4
 | Consumer | Allowed permissions |
 | --- | --- |
 | **Public role** | None for these content types or Upload. The browser never receives a Strapi token. |
-| **`next-site-reader` API token** | Custom, read-only: `find` for `site-setting`, `home-page`, `about-page`, `careers-page`, and `contact-page`; `find` and `findOne` for all nineteen fixed service-detail collections, including `bureau-indian-standards-page`, `pollution-advisory-page`, `telecommunication-engineering-centre-page`, `wireless-planning-coordination-page`, `bureau-energy-efficiency-page`, `cdsco-registration-page`, `aerb-approval-page`, `lmpc-certification-page`, and `stqc-page`; `find` and `findOne` for `global-country-page` and `global-certificate-page`; plus every listed supporting collection type and Upload `find`. No create, update, delete, publish, or admin access. Store only as `STRAPI_API_TOKEN` on the Next server. |
+| **`next-site-reader` API token** | Custom, read-only: `find` for `site-setting`, `home-page`, `about-page`, `careers-page`, and `contact-page`; `find` and `findOne` for `legal-page`, all nineteen fixed service-detail collections, including `bureau-indian-standards-page`, `pollution-advisory-page`, `telecommunication-engineering-centre-page`, `wireless-planning-coordination-page`, `bureau-energy-efficiency-page`, `cdsco-registration-page`, `aerb-approval-page`, `lmpc-certification-page`, and `stqc-page`; `find` and `findOne` for `global-country-page` and `global-certificate-page`; plus every listed supporting collection type and Upload `find`. No create, update, delete, publish, or admin access. Store only as `STRAPI_API_TOKEN` on the Next server. |
 | **Content Editor admin role** | Content Manager create/read/update for the listed types and Media Library upload/edit. No schema access and no delete permission. |
 | **Publisher/Admin role** | Editor permissions plus publish. Content Type Builder remains development-only and developer-owned. |
 
 Deploying a schema does not extend an existing custom API token automatically.
-Grant `find` and `findOne` for both Global collection APIs, as well as the seven
-empty Approval collection APIs, before an editor expects CMS-only records to
-render. Public access remains disabled.
+Grant `find` and `findOne` for the `legal-page` API, both Global collection
+APIs, and the seven empty Approval collection APIs before an editor expects
+newly deployed collection records to render. Public access remains disabled.
 
 Use these generated endpoints:
 
@@ -694,6 +734,7 @@ GET /api/home-page?status=published
 GET /api/about-page?status=published
 GET /api/careers-page?status=published
 GET /api/contact-page?status=published
+GET /api/legal-pages?filters[slug][$eq]=<privacy-policy|terms-and-conditions|purchase-and-billing>&status=published
 GET /api/company-registration-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/mca-service-pages?filters[slug][$eq]=<slug>&status=published
 GET /api/import-export-service-pages?filters[slug][$eq]=<slug>&status=published
@@ -719,8 +760,9 @@ GET /api/global-certificate-pages?filters[countrySlug][$eq]=<country>&filters[sl
 
 Strapi does not populate relations, components, or media by default. The Next
 CMS client must attach one centralized, explicit populate object for every
-route request (hero/card media, logo media, Global text/process/CTA fields,
-category → services → icon, FAQ
+route request (the legal query uses `populate[sections]=true` and
+`populate[seo][populate][shareImage]=true`; other trees cover hero/card media,
+logo media, Global text/process/CTA fields, category → services → icon, FAQ
 category → FAQs, testimonial media, recognition media, team media, careers
 gallery media, and SEO share images). Do not use unbounded deep-population
 plugins or issue a browser request per card. The API token is sent as
@@ -729,11 +771,12 @@ Global slug/path discovery uses published collection queries with only the
 fields needed for static params and sitemap URLs; an empty collection produces
 no route.
 
-Signed publish/unpublish/delete revalidation maps `global-country-page` to
-`jr-global-country-pages` and `global-certificate-page` to
-`jr-global-certificate-pages`. Both tags are recognized by the frontend
-receiver and included when a shared Site Setting or media change requires broad
-page invalidation. The normal 60-second cache window remains a fallback.
+Signed publish/unpublish/delete revalidation maps `legal-page` to
+`jr-legal-pages`, `global-country-page` to `jr-global-country-pages`, and
+`global-certificate-page` to `jr-global-certificate-pages`. These tags are
+recognized by the frontend receiver and included when a shared Site Setting or
+media change requires broad page invalidation. The normal 60-second cache
+window remains a fallback.
 
 ## Onboarding checklist
 
@@ -755,10 +798,10 @@ page invalidation. The normal 60-second cache window remains a fallback.
    `telecommunication-engineering-centre-page`,
    `wireless-planning-coordination-page`, `bureau-energy-efficiency-page`,
    `cdsco-registration-page`, `aerb-approval-page`,
-   `lmpc-certification-page`, `stqc-page`, `global-country-page`, and
-   `global-certificate-page` collections. Enable Draft & Publish on all of
-   them. Commit Strapi’s generated schemas to git; do not create schema changes
-   directly in production.
+   `lmpc-certification-page`, `stqc-page`, `legal-page`,
+   `global-country-page`, and `global-certificate-page` collections. Enable
+   Draft & Publish on all of them. Commit Strapi’s generated schemas to git; do
+   not create schema changes directly in production.
 4. Configure the media provider and migrate the approved legacy images/logos.
    Add filename, alt text, and captions before selecting them in content.
 5. Create the service categories/services, logos, FAQ categories/FAQs,
@@ -769,12 +812,14 @@ page invalidation. The normal 60-second cache window remains a fallback.
    records for MCA Services, Import Export Service, Government License &
    Certification, IPR Services, FSSAI, SEBI Business Registration, Tax and
    Accounting, Labour Compliance, Fund Raising, Bureau of Indian Standards, and
-   Pollution Advisory. Select the intended ordered relations and verify every
-   link and media item. Leave the seven new CMS-only Approval collections empty
-   until an editor creates the first complete approved record through the
-   workflow above. Also leave both Global collections empty until editors
-   create their complete country and certificate records in Content Manager.
-   Keep all `SEED_*` flags false.
+   Pollution Advisory. Create and publish the three exact Legal Page records in
+   `sortOrder` 0–2, and set Site Setting legal links to their matching internal
+   routes. Select the intended ordered relations and verify every link and
+   media item. Leave the seven new CMS-only Approval collections empty until an
+   editor creates the first complete approved record through the workflow
+   above. Also leave both Global collections empty until editors create their
+   complete country and certificate records in Content Manager. Keep all
+   `SEED_*` flags false; the legal JSON mirror is not a normal bootstrap path.
    To populate another PostgreSQL
    target with the approved content, use a reviewed encrypted Strapi
    `content,files` export/import after a verified database and media backup;
@@ -783,12 +828,12 @@ page invalidation. The normal 60-second cache window remains a fallback.
 7. Create the `next-site-reader` custom API token and apply the permissions
    above. Put `STRAPI_URL` and `STRAPI_API_TOKEN` in the Next server environment
    (never `NEXT_PUBLIC_*`).
-8. Wire the typed route fetchers to the five single-type endpoints and all
-   exact-slug service-detail collection queries and Approval path queries with
-   explicit populate contracts, plus the exact Global country/certificate
-   queries and path discovery. Render only published data, and add signed
-   Strapi publish webhooks to
-   invalidate the matching Next cache tags.
+8. Wire the typed route fetchers to the five single-type endpoints, the exact
+   allow-listed Legal Page slug query, and all exact-slug service-detail
+   collection queries and Approval path queries with explicit populate
+   contracts, plus the exact Global country/certificate queries and path
+   discovery. Render only published data, and add signed Strapi publish
+   webhooks to invalidate the matching Next cache tags.
 9. Test with an editor: change home or route hero copy, reorder a service/team
    member/opening, replace media, save a draft, publish it, and confirm the
    live page updates without a code change.

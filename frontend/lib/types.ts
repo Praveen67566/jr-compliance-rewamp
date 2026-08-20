@@ -461,6 +461,80 @@ export type ContactPageContent = PageChromeContent & {
   };
 };
 
+/** The only fixed public routes backed by the dedicated legal-page collection. */
+export type LegalPageSlug =
+  | "privacy-policy"
+  | "terms-and-conditions"
+  | "purchase-and-billing";
+
+/** A text leaf supported by Strapi's Blocks editor and the legal renderer. */
+export type LegalTextNode = {
+  type: "text";
+  text: string;
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
+  strikethrough?: boolean;
+  code?: boolean;
+};
+
+/** A safe inline link. Strapi Blocks links contain text leaves only. */
+export type LegalLinkNode = {
+  type: "link";
+  url: string;
+  children: LegalTextNode[];
+};
+
+export type LegalInlineNode = LegalTextNode | LegalLinkNode;
+
+export type LegalParagraphBlock = {
+  type: "paragraph";
+  children: LegalInlineNode[];
+};
+
+export type LegalHeadingBlock = {
+  type: "heading";
+  level: 2 | 3 | 4;
+  children: LegalInlineNode[];
+};
+
+export type LegalListItemBlock = {
+  type: "list-item";
+  children: LegalInlineNode[];
+};
+
+export type LegalListBlock = {
+  type: "list";
+  format: "ordered" | "unordered";
+  children: LegalListItemBlock[];
+};
+
+/** Restricted semantic subset of Blocks used by the fixed legal template. */
+export type LegalContentBlock =
+  | LegalParagraphBlock
+  | LegalHeadingBlock
+  | LegalListBlock;
+
+export type LegalSection = {
+  title: string;
+  body: LegalContentBlock[];
+};
+
+/**
+ * Editor-managed content for the three fixed footer/legal routes. Rich text is
+ * deliberately constrained to semantic legal prose rather than a page builder.
+ */
+export type LegalPageData = {
+  slug: LegalPageSlug;
+  eyebrow: string;
+  title: string;
+  introduction: LegalContentBlock[];
+  sections: LegalSection[];
+  seo: Seo;
+};
+
+export type LegalPageContent = PageChromeContent & LegalPageData;
+
 /** A title-and-description pair used by the fixed registration-page sections. */
 export type RegistrationDetail = {
   title: string;

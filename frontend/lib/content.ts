@@ -33,6 +33,7 @@ import {
   labourComplianceFallback,
   labourComplianceSlugs,
 } from "@/data/labour-compliance-pages-fallback";
+import { legalPageFallback } from "@/data/legal-pages-fallback";
 import {
   pollutionAdvisoryFallback,
   pollutionAdvisorySlugs,
@@ -76,6 +77,7 @@ import {
   getImportExportServiceSlugsFromStrapi,
   getLabourCompliancePageFromStrapi,
   getLabourComplianceSlugsFromStrapi,
+  getLegalPageFromStrapi,
   getLmpcCertificationPageFromStrapi,
   getLmpcCertificationSlugsFromStrapi,
   getPollutionAdvisoryPageFromStrapi,
@@ -111,6 +113,8 @@ import type {
   ImportExportServicePageContent,
   IprServicePageContent,
   LabourCompliancePageContent,
+  LegalPageContent,
+  LegalPageSlug,
   LmpcCertificationPageContent,
   PollutionAdvisoryPageContent,
   McaServicePageContent,
@@ -135,6 +139,25 @@ export const getCareersPage = cache(async function getCareersPage(): Promise<Car
 
 export const getContactPage = cache(async function getContactPage(): Promise<ContactPageContent> {
   return (await getContactPageFromStrapi(fallbackContactPage)) ?? fallbackContactPage;
+});
+
+export const getLegalPage = cache(async function getLegalPage(
+  slug: LegalPageSlug,
+): Promise<LegalPageContent> {
+  const page = legalPageFallback(slug);
+  if (!page) {
+    // LegalPageSlug is fixed, so this protects runtime JavaScript callers only.
+    throw new Error(`Missing legal-page fallback for ${slug}.`);
+  }
+
+  const fallback: LegalPageContent = {
+    ...page,
+    site: fallbackHomepage.site,
+    navigation: fallbackHomepage.navigation,
+    footer: fallbackHomepage.footer,
+  };
+
+  return (await getLegalPageFromStrapi(slug, fallback)) ?? fallback;
 });
 
 export const getCompanyRegistrationPage = cache(async function getCompanyRegistrationPage(

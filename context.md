@@ -27,6 +27,11 @@ use their own content contracts and shared UI templates; they do not change or
 reuse the completed Corporate and Approval page structures. No Global record,
 fallback, seed file, or active public URL is bundled with the integration.
 
+The footer legal routes `/privacy-policy`, `/terms-and-conditions`, and
+`/purchase-and-billing` are also complete. They use one fixed `legal-page`
+collection, one typed semantic Blocks fallback/migration mirror, and one shared
+responsive legal template; they are not a generic page builder.
+
 ## Non-negotiable rules
 
 1. Treat `site/` as read-only. Do not edit, delete, import Webflow CSS/JS, or
@@ -51,7 +56,7 @@ fallback, seed file, or active public URL is bundled with the integration.
 | --- | --- |
 | `site/` | 354-page legacy Webflow archive; matching legacy HTML files are content-only sources for the completed routes. |
 | `frontend/` | New Next.js 16 App Router application. This is the active frontend. |
-| `frontend/data/*-page-fallback.ts` and category-specific `frontend/data/*-pages-fallback.ts` | Typed fallback content normalized from matching legacy pages. It keeps every completed route working before Strapi is deployed. |
+| `frontend/data/*-page-fallback.ts` and category-specific `frontend/data/*-pages-fallback.ts` | Typed fallback content normalized from matching legacy pages, including the three legal records in `legal-pages-fallback.ts`. It keeps every completed route working before Strapi is deployed. |
 | `frontend/lib/types.ts` | Shared shell and rendering contracts, including named fixed contracts for all nineteen service-detail collections. |
 | `frontend/lib/strapi.ts` | Server-only Strapi v5 REST client, explicit route-specific populate paths, media URL handling, and schema-to-UI mappers. |
 | `frontend/components/` | Reusable shell components; `site-page-shell.tsx` centralizes header/footer, `editorial/` centralizes the Compliance Network route primitives, and route folders compose their pages. |
@@ -62,7 +67,7 @@ fallback, seed file, or active public URL is bundled with the integration.
 | `frontend/postcss.config.mjs` | Tailwind v4 PostCSS integration. |
 | `frontend/public/images/` | Small selected copy of approved legacy logo/photo assets. `images/services/` preserves the 15 exact legacy service/flag SVGs; `images/services-blue/` holds their blue-theme derivatives used by the home fallback. Do not point new UI at `site/assets/`. |
 | `cms/` | Active Strapi v5 TypeScript project: schemas, core REST APIs, CMS-to-Next revalidation, editor setup, and PostgreSQL configuration for local and deployed environments. |
-| `cms/CONTENT_MODEL.md` | Definitive editorial contract: five single types, thirty-five collections, and fifty-seven components. Change it deliberately alongside the schemas and Next mapper. |
+| `cms/CONTENT_MODEL.md` | Definitive editorial contract: five single types, thirty-six collections, and fifty-seven components. Change it deliberately alongside the schemas and Next mapper. |
 | `cms/README.md` | CMS local PostgreSQL workflow, editor permissions, REST contract, transfer policy, and revalidation behavior. |
 | `ecosystem.config.js` | PM2 process definition for the 24/7 Linux/VPS deployment: one frontend and one CMS process, bound to loopback-only private ports with no secrets in source. |
 | `prod.md` | Required production deployment and launch runbook for the frontend, CMS, PM2, Nginx/TLS, database, media, migration, secrets, and cache invalidation. |
@@ -80,7 +85,8 @@ fallback, seed file, or active public URL is bundled with the integration.
   covering offline and pre-migration CMS records.
 - Shared footer continues the same navy/cobalt network field through a
   structured blue-glass content panel, subtle grid/orbit detail, and responsive
-  service/legal groups.
+  service/legal groups. Its three policy links now resolve to the completed
+  local legal routes in both CMS-managed and fallback chrome.
 - Hero word rotation, photo/card composition, client-logo marquee, service tabs,
   contact ticker, trust/metrics, testimonials, recognition cards, FAQ tabs and
   accordions, closing CTA, and comprehensive footer.
@@ -110,6 +116,13 @@ fallback, seed file, or active public URL is bundled with the integration.
 - Contact Us uses the legacy contact methods and Bawana address. It offers
   direct phone/email/location routes plus the centralized, server-validated
   consultation form shared by every current hero template.
+- Privacy Policy, Terms and Conditions, and Purchase and Billing use three thin
+  static routes and one shared `components/legal/legal-page.tsx` Tailwind
+  template. Approved legacy headings, paragraphs, lists, links, emphasis, and
+  contact details are stored as a strict semantic Blocks AST in typed fallback
+  data and the matching CMS seed mirror. The Purchase and Billing record merges
+  its three legal source containers while excluding the intervening marketing
+  FAQ; no Webflow markup or transport code is rendered.
 - Nineteen Company Registration pages use one dynamic App Router route and one
   fixed Tailwind template. Their approved legacy hero, overview, challenges,
   advantages, process, breakdown, and FAQ content lives in a typed fallback and
@@ -165,11 +178,12 @@ fallback, seed file, or active public URL is bundled with the integration.
   remains editor-managed through Site Setting; country landing cards own the
   links to their certificate records.
 - The Strapi v5 CMS is implemented in `cms/`: five single types (`site-setting`,
-  `home-page`, `about-page`, `careers-page`, `contact-page`), thirty-five
+  `home-page`, `about-page`, `careers-page`, `contact-page`), thirty-six
   collections, fifty-seven components, and core REST route/controller/service
-  files for all forty types. The fixed service-detail collection count remains
-  nineteen; the two Global collections are separate contracts. All editorial
-  content uses Draft & Publish; i18n is intentionally off.
+  files for all forty-one types. The fixed service-detail collection count
+  remains nineteen; the two Global collections and fixed `legal-page`
+  collection are separate contracts. All editorial content uses Draft &
+  Publish; i18n is intentionally off.
 - Every active page and shared header/footer has a typed CMS mapping. CMS
   controls copy, links/targets, order, SEO, imagery/alt text, shared navigation,
   footer groups, legal notices, and optional home insights. Next.js continues to
@@ -180,8 +194,8 @@ fallback, seed file, or active public URL is bundled with the integration.
   never be selected as the running database. All `SEED_*` flags remain false.
   Use a reviewed encrypted Strapi content/files export and import when another
   PostgreSQL target needs the same content and media.
-- The frontend emits an app icon, `robots.txt`, and a sitemap for all thirty-four
-  currently active routes. The empty Global collections do not increase that
+- The frontend emits an app icon, `robots.txt`, and a sitemap for all thirty-seven
+  fixed active routes. The empty Global collections do not increase that
   count; complete published Global records are discovered dynamically and then
   added to the sitemap. It uses `SITE_URL` for the production origin and has baseline
   response hardening headers; the host still needs TLS-edge HSTS, rate limiting,
@@ -258,6 +272,13 @@ to `/#services` until validated detail pages are migrated.
   `site/china-cel-certification.html` were used only to understand the two
   Global information architectures. No copy, record, fallback, seed content,
   Webflow markup, styles, scripts, or remote media URL was migrated from them.
+- `site/privacy-policy.html`, `site/terms-and-conditions.html`, and
+  `site/purchase-and-billing.html`: approved legal headings, paragraphs, lists,
+  inline emphasis, links, and contact details. These tracked files are
+  byte-identical to the supplied Downloads references and remain read-only.
+  Only semantic legal content was normalized; Webflow structure, styling,
+  scripts, tracking, forms, footer duplication, and the Purchase page's
+  intervening marketing FAQ were excluded.
 
 ## Strapi integration behavior
 
@@ -268,10 +289,13 @@ to `/#services` until validated detail pages are migrated.
 2. With `STRAPI_URL` and a server-only `STRAPI_API_TOKEN`, the app requests the
    published `site-setting` plus the matching `home-page`, `about-page`,
    `careers-page`, or `contact-page` single type, or filters the published
-   matching fixed service-detail collection by exact slug, or the matching
-   Global collection by exact country/certificate slug, every 60 seconds.
+   matching fixed service-detail collection by exact slug, the fixed
+   `legal-page` collection by one of its three allow-listed slugs, or the
+   matching Global collection by exact country/certificate slug, every 60
+   seconds.
 3. `frontend/lib/strapi.ts` explicitly populates only the nested relations and
-   media each route requires. Do not replace this with `populate=deep`.
+   media each route requires. Legal pages explicitly populate `sections` and
+   `seo.shareImage`. Do not replace this with `populate=deep`.
 4. The adapter maps the documented Strapi v5 fields to typed page contracts; it
    keeps fallback values for any unpublished or incomplete field so editors
    cannot blank the live site accidentally. Later CMS-only records in the
@@ -307,6 +331,14 @@ present but deliberately empty. After deployment, editors create all Global
 records in Content Manager, and the existing `next-site-reader` token must be
 granted `find` and `findOne` for both collections. Public-role access remains
 disabled.
+
+The `legal-page` schema and its three reviewed local migration records are
+tracked, but normal PostgreSQL startup never auto-creates editor content. Create
+and publish the three records through Content Manager or a reviewed
+content/files transfer, then grant the `next-site-reader` token `find` and
+`findOne` for `legal-page`; keep Public access disabled. Bootstrap only replaces
+the exact original three `#legal` Site Setting links and skips customized or
+pending editor drafts.
 
 The deployed integration still requires durable object/media storage,
 production secrets, a production read-only frontend token, and an explicitly

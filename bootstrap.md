@@ -104,26 +104,3 @@ If a command cannot be run, clearly explain why.
 - Tell me what validation passed or failed.
 
 ## Prompt:-
-
-Read bootstrap.md, context.md, theme.md, explaner_frontend.md, explainer_cms.md, and the service-category.md.
-
-Build a new CMS-only Global system without changing, refactoring, or renaming the completed Corporate and Approval routes, schemas, components, fallbacks, or content.
-Use /globals consistently for both page types:
-- /globals/[country]
-- /globals/[country]/[slug]
-Create two dedicated Strapi collections:
-1. global-country-page
-2. global-certificate-page
-Content managers must be able to create and publish every Global page directly through Strapi Content Manager.
-Shared frontend UI
-Build two complete, responsive shared templates:
-- GlobalCountryPage renders the country hero image, title, description, CTA, and multiple certificate cards containing a logo, title, description, and link.
-- GlobalCertificatePage renders the certificate hero, overview, products/documents/requirements, certification process, JR Compliance’s role, conclusion, and closing CTA.
-Follow the theme.md and build a better design.
-“CMS-only” means no hard-coded page content, fallback, seed, initial CMS record, or individual component for every page. It does not mean no frontend UI. These two shared templates must render all published CMS records using the Compliance Network theme.
-Use these files only as structural references:
-- site/global-approvals/china.html for the country-page structure.
-- site/china-cel-certification.html for the certificate-page structure.
-Treat site/ as read-only. Do not copy legacy markup, CSS, scripts, forms, classes, or remote asset URLs.
-Create only two dynamic Next.js route files. A published record should render automatically based on its country and certificate slugs. Draft, incomplete, unknown, or unpublished records must return 404.
-Add strict TypeScript contracts, server-only Strapi loaders, explicit populate paths, cache tags, signed revalidation, metadata, and sitemap discovery. Never use populate=deep or expose STRAPI_API_TOKEN to the browser.

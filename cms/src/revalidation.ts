@@ -14,6 +14,7 @@ const ALL_PAGE_TAGS = [
   "jr-about-page",
   "jr-careers-page",
   "jr-contact-page",
+  "jr-legal-pages",
   "jr-global-country-pages",
   "jr-global-certificate-pages",
   "jr-company-registration-pages",
@@ -48,6 +49,7 @@ const cacheTagsByUid: Record<string, readonly string[]> = {
   "api::about-page.about-page": ["jr-about-page"],
   "api::careers-page.careers-page": ["jr-careers-page"],
   "api::contact-page.contact-page": ["jr-contact-page"],
+  "api::legal-page.legal-page": ["jr-legal-pages"],
   "api::global-country-page.global-country-page": ["jr-global-country-pages"],
   "api::global-certificate-page.global-certificate-page": [
     "jr-global-certificate-pages",

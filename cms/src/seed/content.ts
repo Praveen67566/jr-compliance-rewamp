@@ -272,9 +272,9 @@ export const initialSite = {
     whatsAppUrl: "https://api.whatsapp.com/send?phone=919266450125&text=Hello",
   },
   legalLinks: [
-    sameTab("Privacy Policy", "#legal"),
-    sameTab("Terms and Conditions", "#legal"),
-    sameTab("Purchase and Billing", "#legal"),
+    sameTab("Privacy Policy", "/privacy-policy"),
+    sameTab("Terms and Conditions", "/terms-and-conditions"),
+    sameTab("Purchase and Billing", "/purchase-and-billing"),
   ],
   legalNotices: [
     {
@@ -322,7 +322,7 @@ export const initialSite = {
     messageLabel: "Tell us about your requirements",
     messagePlaceholder: "Tell us about your requirements...",
     consentText: "I agree to be contacted about my enquiry and accept the",
-    privacyLink: newTab("Privacy Policy", "https://www.jrcompliance.com/privacy-policy"),
+    privacyLink: sameTab("Privacy Policy", "/privacy-policy"),
     submitLabel: "Get Free Consultation",
     submittingLabel: "Sending your request...",
     successTitle: "Thank you",

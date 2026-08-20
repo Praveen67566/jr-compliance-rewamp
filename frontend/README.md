@@ -1,22 +1,30 @@
 # JR Compliance frontend
 
 The active frontend is a Next.js 16 App Router rebuild of the JR Compliance
-home page, `/about-us`, `/careers`, `/contact-us`, and nineteen Company
-Registration pages plus the first MCA Services, Import Export Service,
-Government License & Certification, IPR Services, FSSAI, and SEBI Business
-Registration, Tax and Accounting, Labour Compliance, and Fund Raising pages
-under `/corporate/[slug]`, plus ISI Certification and EPR Certification under
-`/approval/[...slug]`. It is intentionally separate from the legacy Webflow
-export in `../site`. That Approval catch-all is also connected to seven empty
-CMS-only collections for Telecommunication Engineering Centre, Wireless
-Planning and Coordination, Bureau of Energy Efficiency, CDSCO Registration,
-AERB Approval, LMPC Certification, and STQC.
+home page, `/about-us`, `/careers`, `/contact-us`, the three fixed footer/legal
+routes (`/privacy-policy`, `/terms-and-conditions`, and
+`/purchase-and-billing`), and nineteen Company Registration pages plus the
+first MCA Services, Import Export Service, Government License & Certification,
+IPR Services, FSSAI, and SEBI Business Registration, Tax and Accounting,
+Labour Compliance, and Fund Raising pages under `/corporate/[slug]`, plus ISI
+Certification and EPR Certification under `/approval/[...slug]`. It is
+intentionally separate from the legacy Webflow export in `../site`. That
+Approval catch-all is also connected to seven empty CMS-only collections for
+Telecommunication Engineering Centre, Wireless Planning and Coordination,
+Bureau of Energy Efficiency, CDSCO Registration, AERB Approval, LMPC
+Certification, and STQC.
 
 The frontend also includes two separate CMS-only Global templates and dynamic
 routes: country landings at `/globals/[country]` and certificate pages at
 `/globals/[country]/[slug]`. Their dedicated `global-country-page` and
 `global-certificate-page` collections begin empty. No Global fallback, seed,
 sample record, or page-specific route is bundled.
+
+The three legal pages use separate static App Router files and one shared
+Tailwind renderer at `components/legal/legal-page.tsx`. Their semantic heading,
+paragraph, list, inline-formatting, and safe-link content comes from the fixed
+`legal-page` collection, with typed local Blocks fallbacks mirrored in
+`../cms/src/seed/legal-pages.json`.
 
 Approval slugs are stored as relative route paths: flat values such as
 `isi-certificate` and nested values such as
@@ -25,14 +33,15 @@ route. Future Approval pages are published from Strapi without adding a new
 frontend page file. Their full relative paths must be unique across all nine
 Approval collections.
 
-The current sitemap contains thirty-four active routes, including eleven
-category-first service routes (nine Corporate and two Approval). Seven further
-Approval families have collection wiring only, with no first page, local
-fallback, seed mirror, or initial record, so they do not increase that
-thirty-four-route count. The empty Global collections likewise add no active or
-local route; their complete published records are added to the sitemap
-automatically. Additional pages in all eighteen extensible service families are
-CMS-only whenever no local fallback exists.
+The current sitemap contains thirty-seven fixed active routes, including the
+three legal routes and eleven category-first service routes (nine Corporate
+and two Approval). Seven further Approval families have collection wiring
+only, with no first page, local fallback, seed mirror, or initial record, so
+they do not increase that thirty-seven-route count. The empty Global
+collections likewise add no active or local route; their complete published
+records are added to the sitemap automatically. Additional pages in all
+eighteen extensible service families are CMS-only whenever no local fallback
+exists.
 
 ## Run locally
 
@@ -54,13 +63,16 @@ Copy `.env.example` to `.env.local` only when a Strapi instance is available.
 Without `STRAPI_URL`, implemented routes render their typed local content in
 `data/*-page-fallback.ts`; the seven empty CMS-only Approval families have no
 offline page and return 404 until Strapi supplies a complete published record.
+The three legal routes remain complete through `data/legal-pages-fallback.ts`.
 The Global routes are always CMS-only and return 404 without a complete exact
 match from Strapi.
 
 Set `SITE_URL` to the deployed public origin. It keeps any site-relative CMS
 canonical URL absolute in generated metadata and is the strict origin allow-list
 for `/api/leads`; production lead intake fails closed if it is missing or
-invalid. It does not expose credentials.
+invalid. Each legal route passes its fixed pathname to `pageMetadata`, so the
+helper emits the route canonical when `SITE_URL` is configured while preserving
+an editor-provided absolute canonical override. It does not expose credentials.
 
 Set the server-only `LEAD_WEBHOOK_BASE_URL` to
 `https://webhook.jrcompliance.com`. The browser sends consultation requests to
@@ -72,10 +84,14 @@ configuration or the Strapi token.
 - `data/*-page-fallback.ts` and
   the category-specific `data/*-pages-fallback.ts` modules are the safe,
   normalized legacy-content fallbacks while Strapi is not live.
-- `lib/types.ts` defines the shared shell and page UI contracts.
+- `data/legal-pages-fallback.ts` holds the three normalized legal records in a
+  restricted, typed Blocks shape. It stays exactly aligned with the CMS
+  migration mirror at `../cms/src/seed/legal-pages.json`.
+- `lib/types.ts` defines the shared shell and page UI contracts, including the
+  fixed legal slugs and semantic paragraph, heading, list, text, and link nodes.
 - `lib/strapi.ts` is a server-only Strapi v5 adapter. It uses explicit REST
   population and maps `site-setting`, `home-page`, `about-page`,
-  `careers-page`, `contact-page`, and exact-slug
+  `careers-page`, `contact-page`, `legal-page`, and exact-slug
   `company-registration-page`, `mca-service-page`, `import-export-service-page`,
   `government-license-certification-page`, `ipr-service-page`,
   `fssai-service-page`, `sebi-business-registration-page`,
@@ -86,6 +102,10 @@ configuration or the Strapi token.
   `cdsco-registration-page`, `aerb-approval-page`,
   `lmpc-certification-page`, `stqc-page`, `global-country-page`, and
   `global-certificate-page` collection entries into the UI contracts.
+- Legal reads filter one of the three fixed slugs, request only published
+  records, explicitly populate the ordered legal sections and SEO share image,
+  and use the `jr-legal-pages` cache tag with 60-second revalidation. Invalid or
+  incomplete CMS Blocks retain the complete typed fallback.
 - DSC, IEC Code, Ayush License, Trademark Registration, FSSAI Basic
   Registration, Portfolio Manager Registration, GST Registration, Shop &
   Establishment Registration, MSME Registration, ISI Certification, and EPR
@@ -103,8 +123,16 @@ configuration or the Strapi token.
 - CMS link targets, collection `sortOrder` values, shared footer groups, and
   shared SEO are carried through the typed adapter rather than hard-coded in
   individual routes.
+- `app/privacy-policy/page.tsx`, `app/terms-and-conditions/page.tsx`, and
+  `app/purchase-and-billing/page.tsx` are static route modules that load their
+  fixed record, reuse `pageMetadata` for SEO/canonical handling, and render the
+  same legal template with `revalidate = 60`.
 - `components/site-page-shell.tsx` centralizes the shared header/footer;
   `components/editorial/` centralizes the Compliance Network route primitives.
+- `components/legal/legal-page.tsx` is the one responsive legal-page template.
+  It renders the bluefield hero, ice reading surface, keyboard-focusable anchor
+  navigation, semantic H2-H4 content, lists, formatting, and allow-listed links
+  without importing or injecting legacy HTML.
 - `components/company-registration/company-registration-page.tsx` is the
   Tailwind-first fixed template shared by the Company Registration routes and
   all nineteen fixed service-detail collections, including the seven empty
@@ -119,6 +147,13 @@ configuration or the Strapi token.
   validation, consent, honeypot, UTM capture, submission state, and redirect.
   `app/api/leads/route.ts` validates it again, rate-limits requests, derives the
   lead type from the page path, and forwards one exact allow-listed payload.
+- Shared fallback and CMS-managed Site Setting legal links point to the three
+  completed local routes; the consultation form privacy link points to
+  `/privacy-policy`.
+- `tests/legal-pages.test.ts` verifies fallback/CMS mirror parity, legal
+  hierarchy and contact copy, legacy-artifact exclusion, fixed route/footer
+  links, the dedicated CMS contract, metadata routes, explicit population,
+  matching revalidation tags, and sitemap wiring.
 - The CMS schema and editor setup are documented in `../cms/CONTENT_MODEL.md`.
 
 Global navigation stays editor-managed. After a complete country record is
@@ -167,9 +202,11 @@ with `X-Strapi-Signature: sha256=<HMAC-SHA256 payload>`, plus the optional
 media. The receiver verifies the HMAC in constant time and immediately expires
 only the recognized Next 16 cache tags. Never place either secret in a
 `NEXT_PUBLIC_*` variable.
-Global publish events use the allow-listed `jr-global-country-pages` and
-`jr-global-certificate-pages` tags; the 60-second fetch revalidation remains a
-fallback if a webhook notification fails.
+Legal publish events use the allow-listed `jr-legal-pages` tag, while Global
+publish events use `jr-global-country-pages` and
+`jr-global-certificate-pages`. The CMS signs each notification, the frontend
+accepts only known tags, and the 60-second fetch revalidation remains a fallback
+if a webhook notification fails.
 
 Do not import legacy Webflow styles, scripts, or markup. Use the matching file
 under `../site/` only to verify approved content and media, then build original
