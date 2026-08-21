@@ -123,7 +123,9 @@ export function ServiceStack({ services }: ServiceStackProps) {
                             <span />
                           </span>
                         ) : null}
-                        <span className="service-name">{service.label}</span>
+                        <span className="service-name min-h-[3.12em] max-[560px]:min-h-[4.16em]">
+                          {service.label}
+                        </span>
                         {service.summary ? <span className="service-summary">{service.summary}</span> : null}
                         <span className="service-arrow" aria-hidden="true">
                           ↗

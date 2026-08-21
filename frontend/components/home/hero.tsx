@@ -127,7 +127,7 @@ export function Hero({ hero, leadForm, pageTitle, showConsultationForm = true }:
           </div>
           <h1>
             {hero.prefix}{" "}
-            <span className="hero-rotating-slot">
+            <span className="hero-rotating-slot mb-[0.1em] mt-[0.1em]">
               <span className="hero-rotating-word-sizer" aria-hidden="true">
                 {hero.rotatingWords.map((word, index) => (
                   <span key={`${word}-${index}`}>{word}</span>
