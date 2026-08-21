@@ -142,11 +142,12 @@ those shared components before adding route-specific CSS.
 ### Company Registration detail system
 
 - All `/corporate/[slug]` Company Registration pages share one fixed visual and
-  content sequence: bluefield hero, ice overview, dark challenges, ice
-  advantages, numbered process, cobalt Why JR field, optional navy YouTube video
-  grid, ice breakdown, optional ticker CTA, FAQ, and the shared closing
-  CTA/footer. The video grid renders immediately after Why JR; the ticker
-  renders immediately before FAQ.
+  content sequence: bluefield hero, optional trusted-brands marquee, ice
+  overview, dark challenges, ice advantages, numbered process, cobalt Why JR
+  field, optional navy YouTube video grid, ice breakdown, optional ticker CTA,
+  FAQ, and the shared closing CTA/footer. The trusted-brands marquee renders
+  immediately after the hero, the video grid renders immediately after Why JR,
+  and the ticker renders immediately before FAQ.
 - Use Tailwind utilities for the complete detail-page composition. The network
   grid and orbit treatment may also use Tailwind arbitrary gradients; do not
   add a page stylesheet when utilities remain readable.

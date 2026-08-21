@@ -46,10 +46,11 @@ unchanged; the Legal Page collection and two Global collections use separate
 fixed contracts. The seven empty Approval collections and both Global
 collections are schema integrations only and contain no bundled records.
 
-Every fixed service-detail collection also exposes two optional components:
+Every fixed service-detail collection also exposes an optional `trustedLogos`
+relation plus two optional components. Trusted logos follow the hero,
 `youtubeVideos` follows Why JR, and `tickerCta` follows the breakdown and
-precedes FAQ. Leaving either field empty preserves the existing page and does
-not make an otherwise complete record invalid.
+precedes FAQ. Leaving any of these fields empty preserves the existing page
+and does not make an otherwise complete record invalid.
 
 The frontend reads published CMS content using a server-only API token. If
 Strapi is unavailable, fallback-backed routes use local data from
@@ -142,8 +143,9 @@ The main CMS flow is:
 : Signed webhook sender for Next.js cache revalidation. It watches Strapi document and media lifecycle events, maps changed CMS models to frontend cache tags, signs the payload with HMAC SHA-256, and sends it to `NEXT_REVALIDATE_URL`.
   Legal Page changes map to `jr-legal-pages`, Global country changes map to
   `jr-global-country-pages`, and Global certificate changes map to
-  `jr-global-certificate-pages`. Shared Site Setting and media changes continue
-  to invalidate all applicable page tags.
+  `jr-global-certificate-pages`. Brand Logo changes invalidate the homepage
+  and all fixed service-detail page tags. Shared Site Setting and media changes
+  continue to invalidate all applicable page tags.
 
 ## Historical content-source files
 
@@ -233,9 +235,10 @@ There are likewise no seed JSON files, fallback mirrors, or initial records for
 created and published directly through Strapi Content Manager after schema and
 token permissions are deployed.
 
-The optional `youtubeVideos` and `tickerCta` service fields are also not added
-to historical seed JSON or frontend fallback data, and bootstrap performs no
-backfill. Editors opt records into either section after the schema is deployed.
+The optional `trustedLogos`, `youtubeVideos`, and `tickerCta` service fields
+are also not added to historical seed JSON or frontend fallback data, and
+bootstrap performs no backfill. Editors opt records into these fields after
+the schema is deployed.
 
 ## API content types
 
@@ -278,16 +281,16 @@ Each content type folder follows the Strapi pattern:
 
 `cms/src/api/company-registration-page/`
 : Dedicated detail-page records for the nineteen Company Registration slugs.
-Each record uses the fixed hero, overview, challenges, advantages, process,
-Why JR, optional YouTube videos, breakdown, optional ticker CTA, FAQ, closing
-CTA, and SEO fields; it is not a generic page builder.
+Each record uses the fixed hero, optional trusted logos, overview, challenges,
+advantages, process, Why JR, optional YouTube videos, breakdown, optional
+ticker CTA, FAQ, closing CTA, and SEO fields; it is not a generic page builder.
 
 `cms/src/api/mca-service-page/`
 : Dedicated detail-page records for approved MCA Services slugs. The first DSC
-record uses the same fixed hero, overview, challenges, advantages, process,
-Why JR, optional YouTube videos, breakdown, optional ticker CTA, FAQ, closing
-CTA, and SEO fields without widening the Company Registration collection into
-a generic page builder.
+record uses the same fixed hero, optional trusted logos, overview, challenges,
+advantages, process, Why JR, optional YouTube videos, breakdown, optional
+ticker CTA, FAQ, closing CTA, and SEO fields without widening the Company
+Registration collection into a generic page builder.
 
 `cms/src/api/import-export-service-page/`
 : Dedicated fixed detail-page records for Import Export Service. IEC Code is
@@ -388,7 +391,7 @@ route.
 : Individual service cards with labels, summaries, icons, links, and ordering.
 
 `cms/src/api/brand-logo/`
-: Client/regulator logos used by logo bands and trust sections.
+: Client/regulator logos selected by homepage and fixed-service logo bands.
 
 `cms/src/api/testimonial/`
 : Home page testimonials.
@@ -546,10 +549,11 @@ PostgreSQL variables for local and deployed CMS environments are defined in
 - Keep every `SEED_*` flag disabled. The current local PostgreSQL content came
   from a verified transfer; use the reviewed export/import workflow for another
   target rather than a seed or backfill.
-- On any fixed service record, editors may optionally add one or more titled
-  HTTPS single-video YouTube URLs under **YouTube Videos** and an optional
-  **Ticker CTA**. Leave both empty for the backwards-compatible rollout; no
-  seed, fallback, or database backfill is required.
+- On any fixed service record, editors may optionally select client Brand Logo
+  records under **Trusted Logos**, add one or more titled HTTPS single-video
+  YouTube URLs under **YouTube Videos**, and add a **Ticker CTA**. Leave these
+  fields empty for the backwards-compatible rollout; no seed, fallback, or
+  database backfill is required.
 - Deploying `legal-page` does not populate the active PostgreSQL database.
   Review and publish exactly the three allowed records through Content Manager,
   or use the reviewed `content,files` transfer workflow after backups. Grant the

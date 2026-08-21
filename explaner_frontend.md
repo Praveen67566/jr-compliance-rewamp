@@ -237,6 +237,12 @@ The main flow is:
   centralized form. The previous team image/supporting-card artwork remains the
   fallback when the CMS disables the form.
 
+`frontend/components/home/trusted-brands-marquee.tsx`
+: Shared trusted-brand rail used by the homepage and fixed service pages. It
+  rotates editor-selected logos, pauses on hover or keyboard focus, adapts its
+  slot count responsively, and exposes a static scrollable list when reduced
+  motion is requested.
+
 `frontend/components/home/home.css`
 : Home visual details, including the hero, service stack, bands, cards, FAQ,
   and closing CTA. The existing `.contact-ticker` treatment is also reused by
@@ -281,11 +287,13 @@ The main flow is:
 
 `frontend/components/company-registration/company-registration-page.tsx`
 : One fixed Tailwind-first service template for every Company Registration
-  route and every fixed category detail route. It renders the bluefield hero, overview,
-  challenges, advantages, process, Why JR, an optional YouTube video grid,
-  service breakdown, an optional ticker CTA, native-details FAQ, and shared
-  closing CTA without page-specific CSS or legacy markup. YouTube videos render
-  immediately after Why JR in a one-column/two-column navy grid. Each visible
+  route and every fixed category detail route. It renders the bluefield hero,
+  optional trusted-brand rail, overview, challenges, advantages, process, Why
+  JR, an optional YouTube video grid, service breakdown, an optional ticker CTA,
+  native-details FAQ, and shared closing CTA without page-specific CSS or
+  legacy markup. The trusted-brand rail reuses the homepage design and renders
+  immediately after the hero. YouTube videos render immediately after Why JR
+  in a one-column/two-column navy grid. Each visible
   title labels a lazy 16:9 `youtube-nocookie.com` iframe with no autoplay,
   `allowFullScreen`, and `strict-origin-when-cross-origin` referrer policy. The
   reused `.contact-ticker` renders immediately before FAQ.
@@ -407,9 +415,9 @@ they render no local or placeholder content.
 
 The existing fallback files keep their implemented routes working when Strapi
 is offline. They also document the expected content shape for
-editors/developers. The optional service-page YouTube and ticker sections are
-not added to fallback or seed mirrors; existing pages remain unchanged until
-editors populate and publish those CMS fields.
+editors/developers. The optional service-page trusted-logo, YouTube, and ticker
+fields are not added to fallback or seed mirrors; existing pages remain
+unchanged until editors populate and publish those CMS fields.
 
 ## Library files
 
@@ -423,8 +431,8 @@ editors populate and publish those CMS fields.
   Indian Standards, Pollution Advisory, Telecommunication Engineering Centre,
   Wireless Planning and Coordination, Bureau of Energy Efficiency, CDSCO
   Registration, AERB Approval, LMPC Certification, and STQC service-detail
-  models, including the optional service-page YouTube video section and ticker
-  CTA. It also defines the separate `GlobalCountryPageData` /
+  models, including optional trusted logos, the service-page YouTube video
+  section, and ticker CTA. It also defines the separate `GlobalCountryPageData` /
   `GlobalCountryPageContent` and `GlobalCertificatePageData` /
   `GlobalCertificatePageContent` contracts used only by the Global templates.
 
@@ -433,9 +441,10 @@ editors populate and publish those CMS fields.
   `headerMenu.categories.links` and every nested registration-page component—
   fetches published single types or exact-slug entries from all nineteen fixed
   service-detail collections, converts media URLs, and safely falls back when
-  known local fallback data is available. It omits missing or malformed optional
-  service video/ticker sections and normalizes accepted HTTPS single-video
-  YouTube URLs to `youtube-nocookie.com` embed URLs. The separate legal-page query allows
+  known local fallback data is available. It omits missing or malformed
+  optional trusted-logo, service-video, and ticker fields and normalizes
+  accepted HTTPS single-video YouTube URLs to `youtube-nocookie.com` embed
+  URLs. The separate legal-page query allows
   only the three fixed slugs, requests published content, explicitly populates
   ordered `sections` plus `seo.shareImage`, applies the `jr-legal-pages` tag,
   and strictly maps supported Blocks before falling back to complete local
@@ -495,8 +504,10 @@ cached Global country and certificate loaders as `getGlobalCountryPage`,
 
 `frontend/tests/service-detail-content.test.ts`
 : Preserves the existing service fallback/seed parity checks and verifies that
-  all nineteen schemas expose the two optional components in the fixed order,
-  including the component constraints and accessible lazy iframe attributes.
+  all nineteen schemas expose the optional trusted-logo relation and two
+  optional components in the fixed order, including explicit population,
+  shared marquee reuse, component constraints, and accessible lazy iframe
+  attributes.
 
 `frontend/tests/youtube.test.ts`
 : Covers every supported YouTube URL shape and rejects non-HTTPS, unsafe-host,

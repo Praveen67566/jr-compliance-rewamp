@@ -129,6 +129,10 @@ responsive legal template; they are not a generic page builder.
   the matching Strapi collection. Repeated private-company blocks, hidden
   placeholder tabs/processes, Webflow forms, and copied resource sections were
   deliberately excluded.
+- All nineteen fixed Corporate and Approval service collections expose an
+  optional editor-ordered trusted-logo relation immediately after the hero.
+  Populated records reuse the homepage marquee design and motion; no fallback,
+  seed mirror, or database backfill is added for the optional field.
 - The first MCA Services page, `/corporate/dsc-certificate`, uses the same
   fixed Tailwind template with its own dedicated `mca-service-page` CMS
   collection, typed fallback, migration record, cache tag, and legacy DSC

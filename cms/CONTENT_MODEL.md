@@ -196,11 +196,12 @@ customized or partially migrated legal-link list is preserved.
 One published record per approved `/corporate/[slug]` route. This is a fixed
 service-detail contract, not a generic page builder.
 
-Across all nineteen fixed service-detail collections, the two additions are
-optional for backwards-compatible rollout. `youtubeVideos` renders immediately
-after `whyChoose`; `tickerCta` renders after `breakdown` and immediately before
-`faqs`. Neither field changes the existing required sections, and no seed,
-fallback, or database backfill populates them.
+Across all nineteen fixed service-detail collections, three fields are optional
+for backwards-compatible rollout. `trustedLogos` renders immediately after
+`hero`, `youtubeVideos` renders immediately after `whyChoose`, and `tickerCta`
+renders after `breakdown` and immediately before `faqs`. None changes the
+existing required sections, and no seed, fallback, or database backfill
+populates them.
 
 | Field | Strapi field | Rules |
 | --- | --- | --- |
@@ -208,6 +209,7 @@ fallback, or database backfill populates them.
 | `menuLabel` | Short text | Required; matches the Company Registration navbar label |
 | `slug` | UID from `title` | Required; exact route segment |
 | `hero` | `registration.hero` | Required |
+| `trustedLogos` | Relation | Optional many-to-many selection of client `brand-logo` records; editor order is display order |
 | `overview` | `registration.overview` | Required |
 | `challenges` | `registration.card-section` | Required; ordered page-specific cards |
 | `advantages` | `registration.card-section` | Required; ordered page-specific cards |
@@ -236,6 +238,7 @@ required fixed field is complete.
 | `menuLabel` | Short text | Required; matches the MCA Services navbar label |
 | `slug` | UID from `title` | Required; exact route segment and globally unique across every `/corporate/[slug]` collection |
 | `hero` | `registration.hero` | Required |
+| `trustedLogos` | Relation | Optional many-to-many selection of client `brand-logo` records; editor order is display order |
 | `overview` | `registration.overview` | Required |
 | `challenges` | `registration.card-section` | Required; ordered page-specific cards |
 | `advantages` | `registration.card-section` | Required; ordered page-specific cards |
@@ -262,6 +265,7 @@ service-detail template without a new React route or local fallback.
 | `menuLabel` | Short text | Required; matches the Import Export Service navbar label |
 | `slug` | UID from `title` | Required; exact route segment and globally unique across every `/corporate/[slug]` collection |
 | `hero` | `registration.hero` | Required |
+| `trustedLogos` | Relation | Optional many-to-many selection of client `brand-logo` records; editor order is display order |
 | `overview` | `registration.overview` | Required |
 | `challenges` | `registration.card-section` | Required; ordered page-specific cards |
 | `advantages` | `registration.card-section` | Required; ordered page-specific cards |
@@ -288,6 +292,7 @@ the same fixed service-detail template without borrowing Ayush content.
 | `menuLabel` | Short text | Required; matches the Government License & Certification navbar label |
 | `slug` | UID from `title` | Required; exact route segment and globally unique across every `/corporate/[slug]` collection |
 | `hero` | `registration.hero` | Required |
+| `trustedLogos` | Relation | Optional many-to-many selection of client `brand-logo` records; editor order is display order |
 | `overview` | `registration.overview` | Required |
 | `challenges` | `registration.card-section` | Required; ordered page-specific cards |
 | `advantages` | `registration.card-section` | Required; ordered page-specific cards |
@@ -314,6 +319,7 @@ template without borrowing Trademark Registration content.
 | `menuLabel` | Short text | Required; matches the IPR Services navbar label |
 | `slug` | UID from `title` | Required; exact route segment and globally unique across every `/corporate/[slug]` collection |
 | `hero` | `registration.hero` | Required |
+| `trustedLogos` | Relation | Optional many-to-many selection of client `brand-logo` records; editor order is display order |
 | `overview` | `registration.overview` | Required |
 | `challenges` | `registration.card-section` | Required; ordered page-specific cards |
 | `advantages` | `registration.card-section` | Required; ordered page-specific cards |
@@ -340,6 +346,7 @@ without borrowing FSSAI Basic Registration content.
 | `menuLabel` | Short text | Required; matches the FSSAI navbar label |
 | `slug` | UID from `title` | Required; exact route segment and globally unique across every `/corporate/[slug]` collection |
 | `hero` | `registration.hero` | Required |
+| `trustedLogos` | Relation | Optional many-to-many selection of client `brand-logo` records; editor order is display order |
 | `overview` | `registration.overview` | Required |
 | `challenges` | `registration.card-section` | Required; ordered page-specific cards |
 | `advantages` | `registration.card-section` | Required; ordered page-specific cards |
@@ -367,6 +374,7 @@ without borrowing Portfolio Manager Registration content.
 | `menuLabel` | Short text | Required; matches the SEBI Business Registration navbar label |
 | `slug` | UID from `title` | Required; exact route segment and globally unique across every `/corporate/[slug]` collection |
 | `hero` | `registration.hero` | Required |
+| `trustedLogos` | Relation | Optional many-to-many selection of client `brand-logo` records; editor order is display order |
 | `overview` | `registration.overview` | Required |
 | `challenges` | `registration.card-section` | Required; ordered page-specific cards |
 | `advantages` | `registration.card-section` | Required; ordered page-specific cards |
@@ -453,9 +461,10 @@ detail-page families, not records in the separate Home Service Stack
 
 All nine Approval collections use the same fixed fields as the other
 service-detail collections: required `title`, `menuLabel`, route-safe `slug`,
-`hero`, `overview`, `challenges`, `advantages`, `process`, `whyChoose`,
-optional `youtubeVideos`, `breakdown`, optional `tickerCta`, `faqs`, `finalCta`,
-`seo`, and `sortOrder`. Every CMS-only record must complete all required nested
+`hero`, optional `trustedLogos`, `overview`, `challenges`, `advantages`,
+`process`, `whyChoose`, optional `youtubeVideos`, `breakdown`, optional
+`tickerCta`, `faqs`, `finalCta`, `seo`, and `sortOrder`. Every CMS-only record
+must complete all required nested
 content before publication; the frontend returns 404 for an incomplete record
 and never copies content from another page or category.
 
@@ -469,8 +478,8 @@ is omitted without invalidating the rest of the service record.
 
 1. Open the intended family collection in Strapi Content Manager.
 2. Create a record and complete `title`, `menuLabel`, every required fixed
-   content section, SEO, and `sortOrder`. Add **YouTube Videos** and **Ticker
-   CTA** only when approved content is available.
+   content section, SEO, and `sortOrder`. Add **Trusted Logos**, **YouTube
+   Videos**, and **Ticker CTA** only when approved content is available.
 3. Enter a route-safe relative `slug` with no leading slash. Manually verify
    that the full path is unique across all nine Approval collections because a
    Strapi UID is unique only within its own collection.
@@ -560,7 +569,7 @@ content.
 | --- | --- | --- |
 | **Service Category** (`service-category`, `service-categories`) | `name` short text*, `slug` UID from `name`*, `description` long text, `sortOrder` integer* | `services`: **one-to-many** to Service (inverse of `serviceCategory`) |
 | **Service** (`service`, `services`) | `title` short text*, `slug` UID from `title`*, `summary` long text, `icon` single image media*, `link` `shared.link`*, `sortOrder` integer* | `serviceCategory`: **many-to-one** to Service Category* |
-| **Brand Logo** (`brand-logo`, `brand-logos`) | `name` short text*, `kind` enum `client` / `regulator`*, `logo` single image media*, `sortOrder` integer*, `websiteUrl` short text | Selected by the two Home Page many-way relations; no inverse field |
+| **Brand Logo** (`brand-logo`, `brand-logos`) | `name` short text*, `kind` enum `client` / `regulator`*, `logo` single image media*, `sortOrder` integer*, `websiteUrl` short text | Selected by the Home Page logo relations and the optional fixed-service `trustedLogos` relations; no inverse field |
 | **Testimonial** (`testimonial`, `testimonials`) | `quote` long text*, `personName` short text*, `personRole` short text, `companyName` short text, `personPhoto` single image media, `companyLogo` single image media, `publishedOn` date, `sortOrder` integer* | Selected by Home Page |
 | **Recognition** (`recognition`, `recognitions`) | `category` short text*, `title` short text*, `excerpt` long text*, `sourceName` short text, `sourceLogo` single image media, `coverImage` single image media, `link` `shared.link`*, `sortOrder` integer* | Selected by Home Page |
 | **FAQ Category** (`faq-category`, `faq-categories`) | `name` short text*, `slug` UID from `name`*, `icon` single image media, `sortOrder` integer* | `faqs`: **one-to-many** to FAQ (inverse of `faqCategory`) |
@@ -568,7 +577,7 @@ content.
 | **Insight** (`insight`, `insights`) | `title` short text*, `summary` long text*, `kind` enum `article` / `video`*, `image` single image media*, `link` `shared.link`*, `publishedOn` date, `sortOrder` integer* | Selected by Home Page |
 
 `*` means required. No collection entry should be hard-deleted when it may be
-referenced; unpublish it first and remove it from the Home Page relation.
+referenced; unpublish it first and remove it from every page relation.
 
 ### Editorial route collections
 
@@ -588,8 +597,8 @@ the editor's actual content task.
 ## Components
 
 Components have no REST endpoints. Media is allowed in components; collection
-relations deliberately live on the two single types or the two parent/child
-collection pairs above.
+relations deliberately live on their parent content types—including fixed
+service `trustedLogos`—or the two parent/child collection pairs above.
 
 | Component UID | Exact fields |
 | --- | --- |
@@ -716,10 +725,10 @@ invent claims or silently repair source inconsistencies.
 | `/approval/isi-certificate` (Bureau of Indian Standards) | `site/approval/isi-certificate.html` | Page-specific ISI Certification SEO, hero and overview, four challenges, four advantages, six service steps, four Why JR cards, Eligibility/Documents/Who Needs It breakdown, five FAQs, and shared final CTA. Exclude duplicated template sections, hidden placeholders, unrelated testimonials/resources, Webflow forms, and all legacy UI/transport code. |
 | `/approval/epr-certification` (Pollution Advisory) | `site/approval/epr-certification.html` | Page-specific EPR SEO, hero and overview, five service-scope items, four benefits, four service steps, three Why JR cards, Documents Required breakdown, five FAQs, and shared final CTA. Exclude duplicated template sections, hidden placeholders, unrelated testimonials/resources, Webflow forms, and all legacy UI/transport code. |
 
-The optional service-page YouTube and ticker sections are not sourced from
-these legacy pages and are not added to frontend fallbacks or historical seed
-JSON. Deploying the schema performs no record backfill; editors populate the
-sections selectively after review.
+The optional service-page trusted-logo, YouTube, and ticker fields are not
+sourced from these legacy pages and are not added to frontend fallbacks or
+historical seed JSON. Deploying the schema performs no record backfill;
+editors populate the fields selectively after review.
 
 Copy the approved media into Strapi Media Library first. The local Next.js
 fallback copies are development safety nets only; a published Strapi record
@@ -809,10 +818,11 @@ no route.
 
 Signed publish/unpublish/delete revalidation maps `legal-page` to
 `jr-legal-pages`, `global-country-page` to `jr-global-country-pages`, and
-`global-certificate-page` to `jr-global-certificate-pages`. These tags are
-recognized by the frontend receiver and included when a shared Site Setting or
-media change requires broad page invalidation. The normal 60-second cache
-window remains a fallback.
+`global-certificate-page` to `jr-global-certificate-pages`. Brand Logo changes
+invalidate the homepage and all nineteen fixed-service cache tags. These tags
+are recognized by the frontend receiver and included when a shared Site
+Setting or media change requires broad page invalidation. The normal 60-second
+cache window remains a fallback.
 
 ## Onboarding checklist
 

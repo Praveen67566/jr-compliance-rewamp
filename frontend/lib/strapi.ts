@@ -237,6 +237,7 @@ const populateTrees: Record<SingleTypeSlug, PopulateTree> = {
 
 const fixedServiceDetailPopulateTree: PopulateTree = {
   hero: { cta: true },
+  trustedLogos: { logo: true },
   overview: { paragraphs: true },
   challenges: { items: true },
   advantages: { items: true },
@@ -2115,6 +2116,7 @@ function mapCmsOnlyFixedServiceDetailPage<T extends CompanyRegistrationPageConte
   const heroEyebrow = text(hero.eyebrow);
   const heroDescription = text(hero.description);
   const heroCta = strictLink(hero.cta);
+  const trustedLogos = mapLogos(page.trustedLogos, []);
   const overviewEyebrow = text(overview.eyebrow);
   const overviewTitle = text(overview.title);
   const overviewParagraphs = strictTextList(overview.paragraphs);
@@ -2166,6 +2168,7 @@ function mapCmsOnlyFixedServiceDetailPage<T extends CompanyRegistrationPageConte
       description: heroDescription,
       cta: heroCta,
     },
+    ...(trustedLogos.length ? { trustedLogos } : {}),
     overview: {
       eyebrow: overviewEyebrow,
       title: overviewTitle,
@@ -2197,9 +2200,11 @@ function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
   const hero = record(page.hero);
   const overview = record(page.overview);
   const finalCta = record(page.finalCta);
+  const trustedLogos = mapLogos(page.trustedLogos, []);
   const youtubeVideos = mapFixedServiceYouTubeVideos(page.youtubeVideos);
   const tickerCta = mapFixedServiceTickerCta(page.tickerCta);
   const {
+    trustedLogos: _fallbackTrustedLogos,
     youtubeVideos: _fallbackYoutubeVideos,
     tickerCta: _fallbackTickerCta,
     ...fallbackWithoutOptionalSections
@@ -2217,6 +2222,7 @@ function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
       description: text(hero.description) ?? fallback.hero.description,
       cta: link(hero.cta, fallback.hero.cta),
     },
+    ...(trustedLogos.length ? { trustedLogos } : {}),
     overview: {
       eyebrow: text(overview.eyebrow) ?? fallback.overview.eyebrow,
       title: text(overview.title) ?? fallback.overview.title,

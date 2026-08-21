@@ -1,5 +1,6 @@
 import { RouteClosingCta } from "@/components/editorial/route-closing-cta";
 import { ConsultationForm } from "@/components/forms/consultation-form";
+import { TrustedBrandsMarquee } from "@/components/home/trusted-brands-marquee";
 import { SitePageShell } from "@/components/site-page-shell";
 import { linkTargetProps } from "@/lib/link-props";
 import type {
@@ -283,6 +284,8 @@ export function CompanyRegistrationPage({ content }: CompanyRegistrationPageProp
           )}
         </div>
       </section>
+
+      {content.trustedLogos ? <TrustedBrandsMarquee logos={content.trustedLogos} /> : null}
 
       <section className="relative isolate scroll-mt-28 overflow-hidden bg-ice py-14 text-navy-950 min-[560px]:py-18 min-[821px]:py-28" id="overview">
         <div

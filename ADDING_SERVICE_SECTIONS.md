@@ -22,6 +22,7 @@ The shared service page currently renders:
 
 ```text
 Hero
+Trusted brands (optional)
 Overview
 Challenges
 Advantages

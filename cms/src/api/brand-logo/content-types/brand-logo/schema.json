@@ -5,7 +5,7 @@
     "singularName": "brand-logo",
     "pluralName": "brand-logos",
     "displayName": "Brand Logo",
-    "description": "A client or regulator logo selected by the homepage."
+    "description": "A client or regulator logo selected by the homepage or a fixed service page."
   },
   "options": {
     "draftAndPublish": true

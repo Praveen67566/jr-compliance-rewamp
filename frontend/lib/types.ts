@@ -576,6 +576,8 @@ export type CompanyRegistrationPageData = {
     description: string;
     cta: Link;
   };
+  /** Optional, editor-ordered client logos rendered directly after the hero. */
+  trustedLogos?: Logo[];
   overview: {
     eyebrow: string;
     title: string;

@@ -31,6 +31,11 @@
       "repeatable": false,
       "required": true
     },
+    "trustedLogos": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::brand-logo.brand-logo"
+    },
     "overview": {
       "type": "component",
       "component": "registration.overview",

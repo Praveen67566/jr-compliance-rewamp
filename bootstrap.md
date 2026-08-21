@@ -105,11 +105,45 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Only Ui Changes Dont change anything else not in cms config not in cms project don't change anything in architecture:-
-HomePage Ui changes
-1. In the Hero section Bridging [Companies]
-to Worldwide Standards where the sequare one changes but fells like sometimes sqauare text overlaping the static text so i want a litile space reference give in image.
-2. In Our Service Stack section icons are not alignged in a line align first align them and for reference images are given.
+read ADDING_SERVICE_SECTIONS.md because now in 
+Corporate collections:
+
+- `company-registration-page`
+- `mca-service-page`
+- `import-export-service-page`
+- `government-license-certification-page`
+- `ipr-service-page`
+- `fssai-service-page`
+- `sebi-business-registration-page`
+- `tax-accounting-page`
+- `labour-compliance-page`
+- `fund-raising-page`
+
+Approval collections:
+
+- `bureau-indian-standards-page`
+- `pollution-advisory-page`
+- `telecommunication-engineering-centre-page`
+- `wireless-planning-coordination-page`
+- `bureau-energy-efficiency-page`
+- `cdsco-registration-page`
+- `aerb-approval-page`
+- `lmpc-certification-page`
+- `stqc-page`
+
+I want To add a section in all given collection which is the collection already available in Home Page Named as Trusted by leading brands
+and the position of this section in all collection pages is exactly after the hero section.
+
+for reference a image is given.
+
+Also the Trusted by leading brands with same animation and design add in the ui of pages just after hero section.
+
+ and make sure dont change anything else.
+ and don't change anything unccessary.
+
+
+
+
 
 
 

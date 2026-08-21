@@ -101,13 +101,18 @@ const fixedServiceSchemaNames = [
 ] as const;
 
 describe("service-detail content mirrors", () => {
-  it("adds the optional YouTube and ticker components to all fixed service schemas", () => {
+  it("adds the optional trusted-logo, YouTube, and ticker fields to all fixed service schemas", () => {
     for (const schemaName of fixedServiceSchemaNames) {
       const schema = readJson(
         `cms/src/api/${schemaName}/content-types/${schemaName}/schema.json`,
       );
       const attributes = schema.attributes as Record<string, Record<string, unknown>>;
 
+      assert.deepEqual(attributes.trustedLogos, {
+        type: "relation",
+        relation: "manyToMany",
+        target: "api::brand-logo.brand-logo",
+      });
       assert.deepEqual(attributes.youtubeVideos, {
         type: "component",
         component: "registration.youtube-video-section",
@@ -120,6 +125,8 @@ describe("service-detail content mirrors", () => {
       });
 
       const fields = Object.keys(attributes);
+      assert.ok(fields.indexOf("hero") < fields.indexOf("trustedLogos"));
+      assert.ok(fields.indexOf("trustedLogos") < fields.indexOf("overview"));
       assert.ok(fields.indexOf("whyChoose") < fields.indexOf("youtubeVideos"));
       assert.ok(fields.indexOf("youtubeVideos") < fields.indexOf("breakdown"));
       assert.ok(fields.indexOf("breakdown") < fields.indexOf("tickerCta"));
@@ -149,7 +156,7 @@ describe("service-detail content mirrors", () => {
     });
   });
 
-  it("renders the optional sections in order with accessible lazy embeds", () => {
+  it("renders and maps the optional sections in their fixed order", () => {
     const component = readFileSync(
       repositoryFile(
         "frontend/components/company-registration/company-registration-page.tsx",
@@ -160,13 +167,28 @@ describe("service-detail content mirrors", () => {
       repositoryFile("frontend/lib/strapi.ts"),
       "utf8",
     );
+    const revalidation = readFileSync(
+      repositoryFile("cms/src/revalidation.ts"),
+      "utf8",
+    );
 
+    const heroIndex = component.indexOf('id="top"');
+    const trustedLogosIndex = component.indexOf("{content.trustedLogos ?");
+    const overviewIndex = component.indexOf('id="overview"');
     const whyChooseIndex = component.indexOf("{content.whyChoose.items.map");
     const youtubeIndex = component.indexOf("{content.youtubeVideos ?");
     const breakdownIndex = component.indexOf('id="breakdown"');
     const tickerIndex = component.indexOf("{content.tickerCta ?");
     const faqIndex = component.indexOf('id="faq"');
 
+    assert.ok(heroIndex >= 0);
+    assert.ok(heroIndex < trustedLogosIndex);
+    assert.ok(trustedLogosIndex < overviewIndex);
+    assert.match(
+      component,
+      /import \{ TrustedBrandsMarquee \} from "@\/components\/home\/trusted-brands-marquee"/,
+    );
+    assert.match(component, /<TrustedBrandsMarquee logos=\{content\.trustedLogos\} \/>/);
     assert.ok(whyChooseIndex >= 0);
     assert.ok(whyChooseIndex < youtubeIndex);
     assert.ok(youtubeIndex < breakdownIndex);
@@ -180,9 +202,57 @@ describe("service-detail content mirrors", () => {
     assert.match(component, /<figcaption/);
     assert.doesNotMatch(component, /autoplay/i);
     assert.match(component, /className="contact-ticker"/);
+    assert.match(strapiAdapter, /trustedLogos: \{ logo: true \}/);
+    assert.equal(
+      strapiAdapter.match(/const trustedLogos = mapLogos\(page\.trustedLogos, \[\]\);/g)?.length,
+      2,
+    );
+    assert.equal(
+      strapiAdapter.match(/\.\.\.\(trustedLogos\.length \? \{ trustedLogos \} : \{\}\)/g)?.length,
+      2,
+    );
+    assert.match(strapiAdapter, /trustedLogos: _fallbackTrustedLogos/);
+    const cmsOnlyMapper = strapiAdapter.slice(
+      strapiAdapter.indexOf("function mapCmsOnlyFixedServiceDetailPage"),
+      strapiAdapter.indexOf("function mapFixedServiceDetailPage"),
+    );
+    const cmsOnlyCompletenessGate = cmsOnlyMapper.slice(
+      cmsOnlyMapper.indexOf("if ("),
+      cmsOnlyMapper.indexOf("return {"),
+    );
+    assert.doesNotMatch(cmsOnlyCompletenessGate, /trustedLogos/);
     assert.match(strapiAdapter, /youtubeVideos: \{ videos: true \}/);
     assert.match(strapiAdapter, /tickerCta: \{ cta: true \}/);
     assert.ok(!strapiAdapter.includes("populate=deep"));
+
+    const brandLogoRevalidation = revalidation.slice(
+      revalidation.indexOf('"api::brand-logo.brand-logo"'),
+      revalidation.indexOf('"api::testimonial.testimonial"'),
+    );
+    for (const tag of [
+      "jr-homepage",
+      "jr-company-registration-pages",
+      "jr-mca-service-pages",
+      "jr-import-export-service-pages",
+      "jr-government-license-certification-pages",
+      "jr-ipr-service-pages",
+      "jr-fssai-service-pages",
+      "jr-sebi-business-registration-pages",
+      "jr-tax-accounting-pages",
+      "jr-labour-compliance-pages",
+      "jr-fund-raising-pages",
+      "jr-bureau-indian-standards-pages",
+      "jr-pollution-advisory-pages",
+      "jr-telecommunication-engineering-centre-pages",
+      "jr-wireless-planning-coordination-pages",
+      "jr-bureau-energy-efficiency-pages",
+      "jr-cdsco-registration-pages",
+      "jr-aerb-approval-pages",
+      "jr-lmpc-certification-pages",
+      "jr-stqc-pages",
+    ]) {
+      assert.match(brandLogoRevalidation, new RegExp(`"${tag}"`));
+    }
   });
 
   it("keeps IEC Code fallback content identical to its CMS migration mirror", () => {
