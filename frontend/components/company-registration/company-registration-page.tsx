@@ -228,7 +228,7 @@ export function CompanyRegistrationPage({ content }: CompanyRegistrationPageProp
               <span className="size-1.5 rounded-full bg-current" aria-hidden="true" />
               {content.hero.eyebrow}
             </span>
-            <h1 className="mb-0 max-w-[880px] break-words font-display text-[clamp(3.25rem,5vw,5.8rem)] leading-[0.92] tracking-[-0.055em] text-white">
+            <h1 className="mb-2 max-w-[880px] break-words font-display text-[clamp(3.25rem,5vw,5.8rem)] leading-[0.92] tracking-[-0.055em] text-white">
               {content.hero.title}
             </h1>
             <p className="mb-0 mt-7 max-w-[760px] break-words text-base leading-8 text-ice/78 md:text-lg">
