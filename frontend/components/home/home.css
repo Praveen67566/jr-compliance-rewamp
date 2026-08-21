@@ -1182,9 +1182,9 @@
 
 .regulators-section {
   background:
-    radial-gradient(circle at 12% 90%, rgba(41, 144, 245, 0.19), transparent 27%),
-    radial-gradient(circle at 86% 8%, rgba(90, 182, 255, 0.2), transparent 24%),
-    linear-gradient(135deg, #edf8ff, #f9fdff 65%, #dcefff);
+    radial-gradient(circle at 8% 84%, rgba(22, 140, 245, 0.16), transparent 30%),
+    radial-gradient(circle at 88% 12%, rgba(139, 220, 255, 0.2), transparent 28%),
+    linear-gradient(135deg, var(--blue-cloud) 0%, var(--blue-ice) 58%, #dcefff 100%);
   color: #071c46;
   isolation: isolate;
   overflow: hidden;
@@ -1192,16 +1192,29 @@
 }
 
 .regulators-section::before {
-  background-image: linear-gradient(rgba(22, 140, 245, 0.09) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(22, 140, 245, 0.09) 1px, transparent 1px);
-  background-size: 52px 52px;
+  background-image:
+    linear-gradient(rgba(22, 140, 245, 0.075) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(22, 140, 245, 0.075) 1px, transparent 1px);
+  background-size: 54px 54px;
   content: "";
   inset: 0;
-  mask-image: radial-gradient(circle at 82% 45%, black, transparent 48%);
-  opacity: 0.62;
+  mask-image: linear-gradient(90deg, transparent 2%, black 24%, black 76%, transparent 98%);
+  opacity: 0.64;
   pointer-events: none;
   position: absolute;
   z-index: 0;
+}
+
+.regulators-section::after {
+  border: 1px solid rgba(22, 140, 245, 0.13);
+  border-radius: 50%;
+  content: "";
+  height: 620px;
+  pointer-events: none;
+  position: absolute;
+  right: -310px;
+  top: -330px;
+  width: 620px;
 }
 
 .regulator-network-layer {
@@ -1219,42 +1232,42 @@
 }
 
 .regulator-network-orbit--one {
-  height: 570px;
-  left: -286px;
-  top: -318px;
-  width: 570px;
-  animation: route-orbit-drift 19s ease-in-out infinite;
+  animation: regulator-orbit-drift 17s ease-in-out infinite alternate;
+  height: 430px;
+  left: -245px;
+  top: -215px;
+  width: 430px;
 }
 
 .regulator-network-orbit--two {
-  border-color: rgba(139, 220, 255, 0.38);
-  bottom: -245px;
-  height: 470px;
-  right: -150px;
-  width: 470px;
-  animation: route-orbit-drift 16s ease-in-out infinite reverse;
+  animation: regulator-orbit-drift 19s -5s ease-in-out infinite alternate-reverse;
+  border-color: rgba(139, 220, 255, 0.3);
+  bottom: -260px;
+  height: 480px;
+  right: -180px;
+  width: 480px;
 }
 
 .regulator-network-node {
-  background: var(--blue-cobalt-600);
-  border: 4px solid rgba(234, 246, 255, 0.86);
+  animation: regulator-node-pulse 4.8s ease-in-out infinite;
+  background: var(--blue-electric);
+  border: 3px solid rgba(234, 246, 255, 0.92);
   border-radius: 50%;
-  box-shadow: 0 0 0 8px rgba(22, 140, 245, 0.09), 0 0 24px rgba(22, 140, 245, 0.5);
-  height: 12px;
+  box-shadow: 0 0 0 7px rgba(22, 140, 245, 0.08), 0 0 22px rgba(22, 140, 245, 0.45);
+  height: 10px;
   position: absolute;
-  width: 12px;
-  animation: route-signal-pulse 4.8s ease-in-out infinite;
+  width: 10px;
 }
 
 .regulator-network-node--one {
-  left: 11%;
-  top: 26%;
+  left: 10%;
+  top: 29%;
 }
 
 .regulator-network-node--two {
-  bottom: 18%;
-  right: 15%;
-  animation-delay: -1.7s;
+  animation-delay: -1.8s;
+  bottom: 20%;
+  right: 14%;
 }
 
 .regulators-section .site-container {
@@ -1263,146 +1276,410 @@
 }
 
 .regulator-panel {
-  --regulator-panel-shape: polygon(
-    9% 0,
-    91% 0,
-    91% 7%,
-    96% 7%,
-    96% 18%,
-    100% 18%,
-    100% 82%,
-    96% 82%,
-    96% 93%,
-    91% 93%,
-    91% 100%,
-    9% 100%,
-    9% 93%,
-    4% 93%,
-    4% 82%,
-    0 82%,
-    0 18%,
-    4% 18%,
-    4% 7%,
-    9% 7%
-  );
-  filter: drop-shadow(0 24px 38px rgba(7, 76, 149, 0.12));
+  background:
+    radial-gradient(circle at 84% 12%, rgba(22, 140, 245, 0.28), transparent 27%),
+    radial-gradient(circle at 12% 88%, rgba(13, 92, 184, 0.18), transparent 31%),
+    linear-gradient(132deg, rgba(3, 15, 43, 0.985), rgba(6, 40, 95, 0.97) 56%, rgba(4, 26, 67, 0.985));
+  border: 1px solid rgba(139, 220, 255, 0.3);
+  border-radius: 34px;
+  box-shadow:
+    0 34px 80px rgba(3, 24, 66, 0.2),
+    inset 0 1px rgba(248, 252, 255, 0.12),
+    inset 0 -1px rgba(139, 220, 255, 0.06);
+  color: var(--blue-cloud);
   isolation: isolate;
-  min-height: 480px;
-  padding: 68px clamp(48px, 7vw, 92px) 64px;
+  overflow: hidden;
+  padding: 52px clamp(34px, 4.8vw, 64px) 46px;
   position: relative;
-}
-
-.regulator-panel::before,
-.regulator-panel::after {
-  clip-path: var(--regulator-panel-shape);
-  content: "";
-  inset: 0;
-  pointer-events: none;
-  position: absolute;
 }
 
 .regulator-panel::before {
-  background: linear-gradient(125deg, rgba(22, 140, 245, 0.48), rgba(139, 220, 255, 0.72), rgba(13, 92, 184, 0.44));
-  z-index: -2;
-}
-
-.regulator-panel::after {
-  background:
-    linear-gradient(rgba(22, 140, 245, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(22, 140, 245, 0.055) 1px, transparent 1px),
-    radial-gradient(circle at 82% 8%, rgba(103, 198, 255, 0.22), transparent 27%),
-    linear-gradient(145deg, rgba(248, 252, 255, 0.98), rgba(234, 246, 255, 0.96));
-  background-size: 42px 42px, 42px 42px, auto, auto;
-  inset: 1px;
+  background-image:
+    linear-gradient(rgba(139, 220, 255, 0.065) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 220, 255, 0.065) 1px, transparent 1px);
+  background-size: 46px 46px;
+  content: "";
+  inset: 0;
+  mask-image: radial-gradient(circle at 72% 48%, black 0 20%, transparent 74%);
+  opacity: 0.58;
+  pointer-events: none;
+  position: absolute;
   z-index: -1;
 }
 
+.regulator-panel::after {
+  background: linear-gradient(90deg, transparent, rgba(168, 228, 255, 0.4), transparent);
+  content: "";
+  height: 1px;
+  left: 0;
+  opacity: 0.55;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.regulator-panel-scan {
+  animation: regulator-panel-scan 8.5s ease-in-out infinite;
+  background: linear-gradient(90deg, transparent, rgba(139, 220, 255, 0.08), rgba(139, 220, 255, 0.2), transparent);
+  bottom: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  transform: skewX(-16deg);
+  width: 190px;
+  z-index: 0;
+}
+
+.regulator-panel-head {
+  align-items: center;
+  display: grid;
+  gap: 48px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  position: relative;
+  z-index: 1;
+}
+
 .regulators-heading {
-  margin: 0 auto;
-  max-width: 690px;
-  text-align: center;
+  margin: 0;
+  max-width: 760px;
+  text-align: left;
 }
 
 .regulators-heading .eyebrow {
-  justify-content: center;
+  color: var(--blue-sky);
+  justify-content: flex-start;
+}
+
+.regulators-heading .eyebrow::before {
+  background: var(--blue-electric);
+  box-shadow: 0 0 0 5px rgba(22, 140, 245, 0.1), 0 0 14px rgba(22, 140, 245, 0.5);
+}
+
+.regulators-heading h2 {
+  color: var(--blue-cloud);
+  max-width: 690px;
+  text-wrap: balance;
 }
 
 .regulators-heading p {
-  color: #476b8f;
-  line-height: 1.65;
-  margin: 18px auto 0;
-  max-width: 590px;
+  color: #bfdcf1;
+  font-size: 0.98rem;
+  line-height: 1.72;
+  margin: 18px 0 0;
+  max-width: 600px;
+}
+
+.regulator-radar {
+  align-items: center;
+  display: flex;
+  height: 112px;
+  justify-content: center;
+  position: relative;
+  width: 112px;
+}
+
+.regulator-radar::before,
+.regulator-radar::after,
+.regulator-radar-ring {
+  border: 1px solid rgba(139, 220, 255, 0.24);
+  border-radius: 50%;
+  content: "";
+  position: absolute;
+}
+
+.regulator-radar::before {
+  inset: 0;
+}
+
+.regulator-radar::after {
+  border-style: dashed;
+  inset: 17px;
+}
+
+.regulator-radar-ring {
+  animation: regulator-radar-rotate 14s linear infinite;
+  inset: 32px;
+}
+
+.regulator-radar-ring::before {
+  background: var(--blue-sky);
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(139, 220, 255, 0.8);
+  content: "";
+  height: 6px;
+  left: 50%;
+  position: absolute;
+  top: -3px;
+  transform: translateX(-50%);
+  width: 6px;
+}
+
+.regulator-radar-core {
+  animation: regulator-node-pulse 3.6s ease-in-out infinite;
+  background: var(--blue-electric);
+  border: 4px solid rgba(3, 15, 43, 0.95);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(139, 220, 255, 0.5), 0 0 24px rgba(22, 140, 245, 0.7);
+  height: 17px;
+  position: relative;
+  width: 17px;
+  z-index: 2;
 }
 
 .regulator-route-divider {
-  background: linear-gradient(90deg, transparent, rgba(22, 140, 245, 0.42) 18%, rgba(22, 140, 245, 0.42) 82%, transparent);
+  background: linear-gradient(90deg, transparent, rgba(139, 220, 255, 0.18) 8%, rgba(139, 220, 255, 0.46) 50%, rgba(139, 220, 255, 0.18) 92%, transparent);
   height: 1px;
-  margin: 35px auto 0;
-  max-width: 360px;
+  margin: 34px 0 0;
+  overflow: visible;
   position: relative;
+  width: 100%;
+  z-index: 1;
 }
 
-.regulator-route-divider::before,
-.regulator-route-divider::after,
-.regulator-route-divider span {
-  background: var(--blue-cobalt-600);
-  border: 3px solid var(--blue-cloud);
-  box-shadow: 0 0 0 1px rgba(22, 140, 245, 0.34), 0 0 14px rgba(22, 140, 245, 0.32);
-  content: "";
+.regulator-route-node {
+  background: var(--blue-electric);
+  border: 3px solid var(--blue-navy-800);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(139, 220, 255, 0.5), 0 0 12px rgba(22, 140, 245, 0.45);
   height: 9px;
   position: absolute;
   top: 50%;
-  transform: translateY(-50%) rotate(45deg);
+  transform: translate(-50%, -50%);
   width: 9px;
 }
 
-.regulator-route-divider::before {
-  left: 16%;
+.regulator-route-node--start {
+  left: 14%;
 }
 
-.regulator-route-divider::after {
-  right: 16%;
+.regulator-route-node--middle {
+  left: 50%;
 }
 
-.regulator-route-divider span {
-  left: calc(50% - 4px);
+.regulator-route-node--end {
+  left: 86%;
+}
+
+.regulator-route-signal {
+  animation: regulator-route-sweep 5.2s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+  background: var(--blue-cloud);
+  border-radius: 999px;
+  box-shadow: 0 0 0 3px rgba(22, 140, 245, 0.2), 0 0 16px rgba(139, 220, 255, 0.8);
+  height: 5px;
+  left: 8%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5px;
 }
 
 .regulator-logo-grid {
   display: grid;
   gap: 12px;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  margin-top: 39px;
+  margin-top: 28px;
+  position: relative;
+  z-index: 1;
 }
 
 .regulator-logo {
+  background:
+    radial-gradient(circle at 82% 14%, rgba(22, 140, 245, 0.12), transparent 38%),
+    linear-gradient(145deg, rgba(248, 252, 255, 0.98), rgba(234, 246, 255, 0.94));
+  border: 1px solid rgba(139, 220, 255, 0.27);
+  border-radius: 18px;
+  box-shadow:
+    0 14px 28px rgba(0, 8, 34, 0.16),
+    inset 0 1px rgba(255, 255, 255, 0.82);
+  min-height: 126px;
+  overflow: hidden;
+  position: relative;
+  transition: border-color 240ms ease, box-shadow 240ms ease, transform 240ms ease;
+}
+
+.regulator-logo::before {
+  color: rgba(13, 92, 184, 0.54);
+  content: attr(data-index);
+  font-size: 0.58rem;
+  font-weight: 850;
+  left: 14px;
+  letter-spacing: 0.11em;
+  position: absolute;
+  top: 12px;
+}
+
+.regulator-logo::after {
+  background: linear-gradient(90deg, var(--blue-electric), rgba(139, 220, 255, 0));
+  bottom: 0;
+  content: "";
+  height: 2px;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  transform: scaleX(0.35);
+  transform-origin: left;
+  transition: opacity 240ms ease, transform 320ms ease;
+  width: 70%;
+}
+
+.regulator-logo:hover,
+.regulator-logo:focus-within {
+  border-color: rgba(139, 220, 255, 0.68);
+  box-shadow:
+    0 20px 38px rgba(0, 12, 43, 0.23),
+    0 0 0 3px rgba(22, 140, 245, 0.08),
+    inset 0 1px rgba(255, 255, 255, 0.9);
+  transform: translateY(-7px);
+}
+
+.regulator-logo:hover::after,
+.regulator-logo:focus-within::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.regulator-logo-link,
+.regulator-logo-content {
   align-items: center;
-  background: rgba(248, 252, 255, 0.7);
-  border: 1px solid rgba(26, 111, 201, 0.18);
-  border-radius: 16px;
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0.7);
+  color: #071c46;
   display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
   justify-content: center;
-  min-height: 94px;
-  padding: 18px;
-  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+  min-height: 126px;
+  padding: 26px 16px 17px;
+  text-align: center;
+  text-decoration: none;
 }
 
-.regulator-logo:hover {
-  border-color: rgba(22, 140, 245, 0.62);
-  box-shadow: 0 14px 30px rgba(13, 84, 160, 0.12);
-  transform: translateY(-4px);
-}
-
-.regulator-logo a {
-  display: block;
+.regulator-logo-link:focus-visible {
+  border-radius: 16px;
+  outline: 2px solid var(--blue-sky);
+  outline-offset: -4px;
 }
 
 .regulator-logo img {
-  max-height: 50px;
-  max-width: 100%;
+  filter: drop-shadow(0 6px 12px rgba(6, 40, 95, 0.13));
+  max-height: 48px;
+  max-width: min(118px, 88%);
   object-fit: contain;
+  transition: filter 240ms ease, transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
 }
+
+.regulator-logo:hover img,
+.regulator-logo:focus-within img {
+  filter: drop-shadow(0 8px 16px rgba(22, 140, 245, 0.23));
+  transform: translateY(-2px) scale(1.05);
+}
+
+.regulator-logo-name {
+  color: #174d82;
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 800;
+  line-height: 1.25;
+  max-width: 150px;
+}
+
+.regulator-logo-arrow {
+  align-items: center;
+  background: rgba(22, 140, 245, 0.08);
+  border: 1px solid rgba(13, 92, 184, 0.14);
+  border-radius: 50%;
+  color: var(--blue-cobalt-700);
+  display: flex;
+  font-size: 0.72rem;
+  height: 24px;
+  justify-content: center;
+  opacity: 0;
+  position: absolute;
+  right: 11px;
+  top: 10px;
+  transform: translate(-4px, 4px);
+  transition: background 200ms ease, color 200ms ease, opacity 200ms ease, transform 200ms ease;
+  width: 24px;
+}
+
+.regulator-logo:hover .regulator-logo-arrow,
+.regulator-logo:focus-within .regulator-logo-arrow {
+  background: var(--blue-electric);
+  color: white;
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+@keyframes regulator-panel-scan {
+  0%,
+  16% {
+    left: -230px;
+    opacity: 0;
+  }
+
+  26% {
+    opacity: 1;
+  }
+
+  62% {
+    opacity: 0.72;
+  }
+
+  78%,
+  100% {
+    left: calc(100% + 80px);
+    opacity: 0;
+  }
+}
+
+@keyframes regulator-route-sweep {
+  0%,
+  8% {
+    left: 8%;
+    opacity: 0;
+  }
+
+  16% {
+    opacity: 1;
+  }
+
+  84% {
+    opacity: 1;
+  }
+
+  92%,
+  100% {
+    left: 92%;
+    opacity: 0;
+  }
+}
+
+@keyframes regulator-radar-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes regulator-orbit-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  100% {
+    transform: translate3d(18px, -12px, 0) scale(1.035);
+  }
+}
+
+@keyframes regulator-node-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 5px rgba(22, 140, 245, 0.07), 0 0 15px rgba(22, 140, 245, 0.34);
+  }
+
+  50% {
+    box-shadow: 0 0 0 9px rgba(22, 140, 245, 0.03), 0 0 27px rgba(22, 140, 245, 0.64);
+  }
+}
+
 
 .why-section {
   background:
@@ -2485,7 +2762,16 @@
   }
 
   .regulator-panel {
-    padding-inline: 66px;
+    padding-inline: 42px;
+  }
+
+  .regulator-logo-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .regulator-logo:nth-child(4),
+  .regulator-logo:nth-child(5) {
+    grid-column: auto;
   }
 
   .testimonials-section[data-keychain-count="4"].is-reveal-ready:not(.is-settled) .testimonial-card:nth-child(1) {
@@ -2543,15 +2829,32 @@
   }
 
   .regulator-panel {
-    min-height: 0;
-    padding: 62px 48px 56px;
+    border-radius: 28px;
+    padding: 40px 30px 32px;
   }
 
-  .regulator-panel .regulator-logo-grid {
+  .regulator-panel-head {
+    gap: 28px;
+  }
+
+  .regulator-radar {
+    height: 86px;
+    width: 86px;
+  }
+
+  .regulator-radar::after {
+    inset: 13px;
+  }
+
+  .regulator-radar-ring {
+    inset: 25px;
+  }
+
+  .regulator-logo-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .regulator-panel .regulator-logo:last-child:nth-child(odd) {
+  .regulator-logo:last-child:nth-child(odd) {
     grid-column: 1 / -1;
   }
 
@@ -2625,22 +2928,82 @@
   }
 
   .regulator-panel {
-    --regulator-panel-shape: inset(0 round 22px);
-    padding: 40px 18px 28px;
+    border-radius: 24px;
+    padding: 31px 18px 20px;
+  }
+
+  .regulator-panel-head {
+    display: block;
+  }
+
+  .regulators-heading {
+    padding-right: 52px;
+  }
+
+  .regulators-heading h2 {
+    font-size: clamp(2.3rem, 12vw, 3.25rem);
+  }
+
+  .regulator-radar {
+    height: 58px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 58px;
+  }
+
+  .regulator-radar::after {
+    inset: 9px;
+  }
+
+  .regulator-radar-ring {
+    inset: 17px;
   }
 
   .regulator-route-divider {
-    max-width: 230px;
+    margin-top: 27px;
   }
 
-  .regulator-panel .regulator-logo-grid {
+  .regulator-logo-grid {
     gap: 9px;
-    margin-top: 31px;
+    grid-template-columns: 1fr;
+    margin-top: 22px;
   }
 
-  .regulator-panel .regulator-logo {
-    min-height: 78px;
-    padding: 14px;
+  .regulator-logo:last-child:nth-child(odd) {
+    grid-column: auto;
+  }
+
+  .regulator-logo,
+  .regulator-logo-link,
+  .regulator-logo-content {
+    min-height: 100px;
+  }
+
+  .regulator-logo-link,
+  .regulator-logo-content {
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 22px 42px 18px 18px;
+    text-align: left;
+  }
+
+  .regulator-logo img {
+    max-height: 42px;
+    max-width: 92px;
+  }
+
+  .regulator-logo-name {
+    font-size: 0.72rem;
+    max-width: none;
+  }
+
+  .regulator-logo-arrow {
+    opacity: 1;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
   .keychain-motif {
@@ -2706,5 +3069,14 @@
 
   .faq-network-orbit {
     animation: none;
+  }
+
+  .regulator-network-orbit,
+  .regulator-network-node,
+  .regulator-panel-scan,
+  .regulator-radar-ring,
+  .regulator-radar-core,
+  .regulator-route-signal {
+    animation: none !important;
   }
 }

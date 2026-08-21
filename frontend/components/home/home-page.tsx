@@ -67,28 +67,67 @@ export function HomePage({ content }: HomePageProps) {
             <span className="regulator-network-node regulator-network-node--one" />
             <span className="regulator-network-node regulator-network-node--two" />
           </div>
+
           <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
             <div className="regulator-panel">
-              <div className="section-heading regulators-heading">
-                <span className="eyebrow">{content.regulators.eyebrow}</span>
-                <h2 id="regulators-heading">{content.regulators.title}</h2>
-                {content.regulators.description ? <p>{content.regulators.description}</p> : null}
+              <span className="regulator-panel-scan" aria-hidden="true" />
+
+              <div className="regulator-panel-head">
+                <div className="section-heading regulators-heading">
+                  <span className="eyebrow">{content.regulators.eyebrow}</span>
+                  <h2 id="regulators-heading">{content.regulators.title}</h2>
+                  {content.regulators.description ? <p>{content.regulators.description}</p> : null}
+                </div>
+
+                <div className="regulator-radar" aria-hidden="true">
+                  <span className="regulator-radar-ring" />
+                  <span className="regulator-radar-core" />
+                </div>
               </div>
+
               <div className="regulator-route-divider" aria-hidden="true">
-                <span />
+                <span className="regulator-route-node regulator-route-node--start" />
+                <span className="regulator-route-node regulator-route-node--middle" />
+                <span className="regulator-route-node regulator-route-node--end" />
+                <span className="regulator-route-signal" />
               </div>
+
               <div className="regulator-logo-grid">
-                {content.regulators.logos.map((logo, index) => (
-                  <div className="regulator-logo" key={`${logo.name}-${index}`}>
-                    {logo.href ? (
-                      <a href={logo.href} target="_blank" rel="noreferrer" aria-label={`${logo.name} website`}>
-                        <img src={logo.src} alt={logo.name} />
-                      </a>
-                    ) : (
+                {content.regulators.logos.map((logo, index) => {
+                  const logoContent = (
+                    <>
                       <img src={logo.src} alt={logo.name} />
-                    )}
-                  </div>
-                ))}
+                      <span className="regulator-logo-name">{logo.name}</span>
+                      {logo.href ? (
+                        <span className="regulator-logo-arrow" aria-hidden="true">
+                          ↗
+                        </span>
+                      ) : null}
+                    </>
+                  );
+
+                  return (
+                    <div
+                      className="regulator-logo"
+                      data-index={String(index + 1).padStart(2, "0")}
+                      key={`${logo.name}-${index}`}
+                    >
+                      {logo.href ? (
+                        <a
+                          className="regulator-logo-link"
+                          href={logo.href}
+                          target="_blank"
+                          rel="noreferrer"
+                          aria-label={`${logo.name} website`}
+                        >
+                          {logoContent}
+                        </a>
+                      ) : (
+                        <div className="regulator-logo-content">{logoContent}</div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
