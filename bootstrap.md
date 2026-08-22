@@ -107,11 +107,7 @@ If a command cannot be run, clearly explain why.
 
 Only Ui Changes:-
 
-In Company Registration pages 
-In Adding Youtube Section
+Now in ui everything is perfect only the call us hanging looks weird make ui of this a bit inhanced or looks
+good because it makes the header also wider so now improve that image given.
 
-Mostly going to one video so if only one video then ui not looks good it looks incomplete so show it in center.
-
-Dont change Anything else only the things needed to change its only a frontend change so no need of change anything in cms.
-
-Be careful.
+Dont Change anything else i want only one change only.

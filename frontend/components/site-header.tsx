@@ -233,6 +233,38 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
             </a>
           ) : null} */}
 
+          <a
+            className="group hidden h-10 shrink-0 items-center gap-2 rounded-full border border-cobalt-700/20 bg-ice/90 px-2.5 text-navy-950 shadow-[inset_0_1px_rgba(255,255,255,0.9),0_6px_14px_rgba(3,15,43,0.1)] transition-[background-color,border-color,box-shadow,transform] duration-200 hover:border-electric/45 hover:bg-cloud hover:shadow-[0_8px_18px_rgba(3,15,43,0.14)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric motion-safe:hover:-translate-y-0.5 min-[981px]:flex max-[1100px]:size-10 max-[1100px]:justify-center max-[1100px]:p-0"
+            href={site.phoneHref}
+            aria-label={`Call ${site.phone}`}
+            onClick={closeAll}
+          >
+            <span
+              aria-hidden="true"
+              className="grid size-7 shrink-0 place-items-center rounded-full bg-[linear-gradient(135deg,var(--blue-electric),var(--blue-cobalt-700))] text-white shadow-[inset_0_1px_rgba(255,255,255,0.3),0_4px_9px_rgba(22,140,245,0.22)] transition-transform duration-200 group-hover:scale-105"
+            >
+              <svg
+                className="size-[14px]"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.69 2.8a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.33 1.84.56 2.8.69A2 2 0 0 1 22 16.92Z" />
+              </svg>
+            </span>
+            <span className="flex flex-col pr-1 max-[1100px]:hidden">
+              <span className="text-[7px] font-extrabold uppercase leading-none tracking-[0.16em] text-cobalt-700/60">
+                Call us
+              </span>
+              <span className="mt-1 whitespace-nowrap text-[11px] font-extrabold leading-none tracking-[0.01em] text-navy-950">
+                {site.phone}
+              </span>
+            </span>
+          </a>
+
           {site.loginButton.enabled ? (
             <a
               className="header-cta max-[980px]:hidden"
@@ -324,205 +356,6 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
         </nav>
       ) : null}
 
-      <div
-        className="
-    site-container
-    pointer-events-none
-    mx-auto
-    hidden
-    w-full
-    max-w-[1320px]
-    px-8
-    min-[981px]:block
-  "
-      >
-        <div className="flex justify-end pr-[18px]">
-        <a
-  href={site.phoneHref}
-  aria-label={`Call ${site.phone}`}
-  onClick={closeAll}
-  className="
-    group
-    pointer-events-auto
-    relative
-    -mt-px
-    flex
-    h-[42px]
-    min-w-[210px]
-    items-center
-    gap-2
-    overflow-hidden
-
-    rounded-b-[14px]
-    border
-    border-t-0
-    border-sky/40
-
-    bg-[linear-gradient(135deg,rgba(248,252,255,0.98),rgba(234,246,255,0.94))]
-    px-2.5
-
-    shadow-[0_8px_18px_rgba(3,15,43,0.14),0_2px_7px_rgba(22,140,245,0.10)]
-    backdrop-blur-xl
-
-    transition-all
-    duration-300
-
-    hover:-translate-y-[2px]
-    hover:border-electric/55
-    hover:shadow-[0_12px_24px_rgba(3,15,43,0.18),0_4px_12px_rgba(22,140,245,0.16)]
-
-    focus-visible:outline
-    focus-visible:outline-2
-    focus-visible:outline-offset-2
-    focus-visible:outline-electric
-  "
->
-  {/* soft inner glow */}
-  <span
-    aria-hidden="true"
-    className="
-      pointer-events-none
-      absolute
-      -left-6
-      -top-10
-      size-20
-      rounded-full
-      bg-electric/10
-      blur-xl
-    "
-  />
-
-  {/* compact phone icon */}
-  <span
-    className="
-      relative
-      grid
-      size-7
-      shrink-0
-      place-items-center
-      rounded-[9px]
-
-      border
-      border-sky/50
-
-      bg-[linear-gradient(135deg,var(--blue-electric),var(--blue-cobalt-700))]
-      text-white
-
-      shadow-[inset_0_1px_rgba(255,255,255,0.30),0_4px_9px_rgba(22,140,245,0.24)]
-
-      transition-all
-      duration-300
-
-      group-hover:scale-105
-    "
-  >
-    <svg
-      aria-hidden="true"
-      className="size-[14px]"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.69 2.8a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.33 1.84.56 2.8.69A2 2 0 0 1 22 16.92Z" />
-    </svg>
-
-    {/* live signal dot */}
-    <span
-      aria-hidden="true"
-      className="
-        absolute
-        -right-[3px]
-        -top-[3px]
-        size-2
-        rounded-full
-        border
-        border-[var(--blue-ice)]
-        bg-electric
-        shadow-[0_0_7px_rgba(22,140,245,0.8)]
-      "
-    />
-  </span>
-
-  {/* number */}
-  <span className="relative flex min-w-0 flex-1 flex-col">
-    <span
-      className="
-        text-[8px]
-        font-extrabold
-        uppercase
-        leading-none
-        tracking-[0.16em]
-        text-cobalt-700/60
-      "
-    >
-      Call us
-    </span>
-
-    <span
-      className="
-        mt-[3px]
-        whitespace-nowrap
-        text-[12px]
-        font-extrabold
-        leading-none
-        tracking-[0.015em]
-        text-[#061a43]
-      "
-    >
-      {site.phone}
-    </span>
-  </span>
-
-  {/* compact arrow */}
-  <span
-    aria-hidden="true"
-    className="
-      grid
-      size-6
-      shrink-0
-      place-items-center
-      rounded-full
-
-      border
-      border-cobalt-700/15
-
-      bg-electric/[0.07]
-      text-[12px]
-      font-bold
-      text-cobalt-700
-
-      transition-all
-      duration-300
-
-      group-hover:bg-electric
-      group-hover:text-white
-      group-hover:translate-x-[2px]
-    "
-  >
-    ↗
-  </span>
-
-  {/* tiny premium bottom signal */}
-  <span
-    aria-hidden="true"
-    className="
-      absolute
-      bottom-0
-      left-[42px]
-      h-px
-      w-8
-      bg-[linear-gradient(90deg,var(--blue-electric),transparent)]
-      transition-all
-      duration-300
-      group-hover:w-16
-    "
-  />
-</a>
-        </div>
-      </div>
     </header>
   );
 }
