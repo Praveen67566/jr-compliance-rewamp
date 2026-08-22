@@ -835,6 +835,8 @@ function mapPageChrome(fallback: PageChromeContent, rawSettings: unknown): PageC
   const footerLogo = mediaUrl(settings.footerLogo);
   const whatsAppHref = text(siteContact.whatsAppUrl);
   const legalNotices = mapLegalNotices(settings.legalNotices);
+  const loginButtonHref = text(settings.loginButtonHref);
+  const loginButtonEnabled = boolean(settings.loginButtonEnabled) === true;
 
   return {
     site: {
@@ -842,6 +844,10 @@ function mapPageChrome(fallback: PageChromeContent, rawSettings: unknown): PageC
       name: text(settings.siteName) ?? fallback.site.name,
       ...(headerLogo ? { logo: headerLogo } : {}),
       ...(footerLogo ? { footerLogo } : {}),
+      loginButton:
+        loginButtonEnabled && loginButtonHref
+          ? { enabled: true, label: fallback.site.loginButton.label, href: loginButtonHref }
+          : { enabled: false, label: fallback.site.loginButton.label },
       headerCta: link(settings.headerCta, fallback.site.headerCta),
       ...(hasLink(settings.footerCta)
         ? { footerCta: link(settings.footerCta, fallback.site.footerCta ?? fallback.site.headerCta) }

@@ -34,6 +34,13 @@
       "repeatable": true,
       "required": true
     },
+    "loginButtonEnabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "loginButtonHref": {
+      "type": "string"
+    },
     "headerCta": {
       "type": "component",
       "component": "shared.cta",

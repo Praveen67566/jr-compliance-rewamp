@@ -15,6 +15,7 @@ export const fallbackHomepage: HomepageContent = {
     name: "JR Compliance",
     logo: "/images/jr-logo.svg",
     footerLogo: "/images/jr-footer-logo.svg",
+    loginButton: { enabled: false, label: "Login" },
     headerCta: { label: "Contact Us", href: "/contact-us" },
     footerCta: { label: "Contact Us", href: "/contact-us" },
     phone: "+91-1800-121-410-410",

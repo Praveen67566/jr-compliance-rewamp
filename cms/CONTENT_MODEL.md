@@ -56,6 +56,8 @@ consultation form.
 | `headerLogo` | Media, single image | Required |
 | `footerLogo` | Media, single image | Required |
 | `headerMenu` | Repeatable `navigation.menu-item` component | Required |
+| `loginButtonEnabled` | Boolean | Optional; defaults to `false` |
+| `loginButtonHref` | Short text | Optional site-relative or absolute href; Login renders only when this is set and `loginButtonEnabled` is on |
 | `headerCta` | `shared.cta` component | Optional |
 | `footerTagline` | Long text | Required |
 | `footerCta` | `shared.cta` component | Optional |

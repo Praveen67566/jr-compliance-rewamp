@@ -121,6 +121,10 @@ export type LegalNotice = {
   body: string;
 };
 
+export type HeaderLoginButton =
+  | { enabled: false; label: string }
+  | { enabled: true; label: string; href: string };
+
 export type Seo = {
   title: string;
   description: string;
@@ -168,6 +172,7 @@ export type SiteSettings = {
   name: string;
   logo: string;
   footerLogo: string;
+  loginButton: HeaderLoginButton;
   headerCta: Link;
   footerCta?: Link;
   phone: string;

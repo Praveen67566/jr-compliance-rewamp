@@ -105,41 +105,11 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-read ADDING_SERVICE_SECTIONS.md because now in 
-Corporate collections:
+Now I have to add a login button in Header navbar given in image a Login button which redirects only like contact page and i want it to be editable by cms now create in site setting a login button and this should be optional like it can be enable or disable.
 
-- `company-registration-page`
-- `mca-service-page`
-- `import-export-service-page`
-- `government-license-certification-page`
-- `ipr-service-page`
-- `fssai-service-page`
-- `sebi-business-registration-page`
-- `tax-accounting-page`
-- `labour-compliance-page`
-- `fund-raising-page`
+Don't Change Anything Unncessary Only Change The Things required.
 
-Approval collections:
-
-- `bureau-indian-standards-page`
-- `pollution-advisory-page`
-- `telecommunication-engineering-centre-page`
-- `wireless-planning-coordination-page`
-- `bureau-energy-efficiency-page`
-- `cdsco-registration-page`
-- `aerb-approval-page`
-- `lmpc-certification-page`
-- `stqc-page`
-
-I want To add a section in all given collection which is the collection already available in Home Page Named as Trusted by leading brands
-and the position of this section in all collection pages is exactly after the hero section.
-
-for reference a image is given.
-
-Also the Trusted by leading brands with same animation and design add in the ui of pages just after hero section.
-
- and make sure dont change anything else.
- and don't change anything unccessary.
+This is Only a simple change through cms i can enable login button and it shows in navbar and login button only have href similar like contact Us button and create a ui before the contactUs Button.
 
 
 

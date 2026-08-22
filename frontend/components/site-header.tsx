@@ -233,6 +233,16 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
             </a>
           ) : null} */}
 
+          {site.loginButton.enabled ? (
+            <a
+              className="inline-flex shrink-0 items-center justify-center rounded-full border border-cobalt-700/25 bg-ice/80 px-3.5 py-[11px] text-[0.84rem] font-extrabold tracking-[-0.01em] text-[#0b315f] shadow-[inset_0_1px_rgba(255,255,255,0.9)] transition-[background-color,border-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:border-electric/55 hover:bg-cloud hover:text-cobalt-700 hover:shadow-[0_8px_18px_rgba(13,92,184,0.14)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric max-[980px]:hidden"
+              href={sharedHref(site.loginButton.href)}
+              onClick={closeAll}
+            >
+              {site.loginButton.label}
+            </a>
+          ) : null}
+
           <a className="header-cta" href={sharedHref(site.headerCta.href)} {...linkTargetProps(site.headerCta)}>
             {site.headerCta.label} <span aria-hidden="true">↗</span>
           </a>
@@ -294,6 +304,15 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
                 : null}
             </div>
           ))}
+          {site.loginButton.enabled ? (
+            <a
+              className="mr-2 mt-4 inline-flex items-center justify-center rounded-full border border-sky/50 bg-ice px-[17px] py-3 text-[0.85rem] font-extrabold text-[#0b315f] transition-[background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-sky-strong hover:bg-cloud focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky"
+              href={sharedHref(site.loginButton.href)}
+              onClick={closeAll}
+            >
+              {site.loginButton.label}
+            </a>
+          ) : null}
           <a
             className="mobile-contact-link"
             href={sharedHref(site.headerCta.href)}
