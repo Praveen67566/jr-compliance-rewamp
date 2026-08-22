@@ -441,7 +441,13 @@ export function CompanyRegistrationPage({
                 {content.youtubeVideos.description}
               </p>
             ) : null}
-            <div className="grid grid-cols-1 gap-6 min-[821px]:grid-cols-2">
+            <div
+              className={`grid grid-cols-1 gap-6 ${
+                content.youtubeVideos.videos.length === 1
+                  ? "mx-auto w-full min-[821px]:max-w-[calc(50%_-_0.75rem)]"
+                  : "min-[821px]:grid-cols-2"
+              }`}
+            >
               {content.youtubeVideos.videos.map((video, index) => (
                 <figure
                   className="m-0 min-w-0 overflow-hidden rounded-[26px] border border-sky/20 bg-navy-800/80 shadow-[0_24px_62px_rgba(0,8,34,0.34)]"

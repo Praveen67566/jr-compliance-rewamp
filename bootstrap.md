@@ -107,36 +107,11 @@ If a command cannot be run, clearly explain why.
 
 Only Ui Changes:-
 
-In HomePage Hero Page Background And In All Company Regstration Pages Hero Section Background 
-i Want a Earth Glob rotating animation
-           BLUE SPACE / GRID BACKGROUND
+In Company Registration pages 
+In Adding Youtube Section
 
-                      soft blue atmospheric light
-                           ↓
-                    ╭────────────╮
-                 ╭──              ──╮
-              ╭──      EUROPE        ──╮
-             │            INDIA ●        │
-             │    AFRICA                 │
-              ╲                         ╱
-                ╲_____________________╱
-                     CITY LIGHTS
+Mostly going to one video so if only one video then ui not looks good it looks incomplete so show it in center.
 
-       Slow continuous rotation →→→
-
-Only in both hero section background image also provide for the reference you can use 3js or any library.
-
-Dont change Anything else only the things needed to change its only a frontend change so no need of schema change.
+Dont change Anything else only the things needed to change its only a frontend change so no need of change anything in cms.
 
 Be careful.
-
-
-
-
-
-
-
-
-
-
-
