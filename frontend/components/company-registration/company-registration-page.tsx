@@ -2,6 +2,7 @@ import { RouteClosingCta } from "@/components/editorial/route-closing-cta";
 import { ConsultationForm } from "@/components/forms/consultation-form";
 import { TrustedBrandsMarquee } from "@/components/home/trusted-brands-marquee";
 import { SitePageShell } from "@/components/site-page-shell";
+import { RotatingEarthBackground } from "@/components/visuals/rotating-earth-background";
 import { linkTargetProps } from "@/lib/link-props";
 import type {
   CompanyRegistrationPageContent,
@@ -29,6 +30,7 @@ type CompanyRegistrationPageProps = {
     | TaxAccountingPageContent
     | LabourCompliancePageContent
     | FundRaisingPageContent;
+  showHeroGlobe?: boolean;
 };
 
 type SectionHeadingProps = {
@@ -163,13 +165,17 @@ function AdvantageCard({ item, index }: { item: RegistrationDetail; index: numbe
   );
 }
 
-export function CompanyRegistrationPage({ content }: CompanyRegistrationPageProps) {
+export function CompanyRegistrationPage({
+  content,
+  showHeroGlobe = false,
+}: CompanyRegistrationPageProps) {
   return (
     <SitePageShell footer={content.footer} navigation={content.navigation} site={content.site}>
       <section
         className="relative isolate overflow-hidden border-b border-sky/15 bg-navy-950 pb-16 pt-10 text-white min-[560px]:pb-20 min-[560px]:pt-12 min-[821px]:pb-24 min-[821px]:pt-14"
         id="top"
       >
+        {showHeroGlobe ? <RotatingEarthBackground variant="registration" /> : null}
         <div
           className="pointer-events-none absolute -inset-16 -z-20 opacity-35 [background-image:linear-gradient(rgba(139,220,255,0.12)_1px,transparent_1px),linear-gradient(90deg,rgba(139,220,255,0.12)_1px,transparent_1px)] [background-size:54px_54px] motion-safe:animate-[service-ambient-drift_18s_ease-in-out_infinite_alternate]"
           aria-hidden="true"

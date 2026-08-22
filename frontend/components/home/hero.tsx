@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 
 import { ConsultationForm } from "@/components/forms/consultation-form";
+import { RotatingEarthBackground } from "@/components/visuals/rotating-earth-background";
 import { linkTargetProps } from "@/lib/link-props";
 import type { HomepageContent, LeadFormSettings } from "@/lib/types";
 
@@ -116,9 +117,8 @@ export function Hero({ hero, leadForm, pageTitle, showConsultationForm = true }:
 
   return (
     <section className="hero" id="top">
+      <RotatingEarthBackground variant="home" />
       <div className="hero-grid" aria-hidden="true" />
-      <div className="hero-orb hero-orb-one" aria-hidden="true" />
-      <div className="hero-orb hero-orb-two" aria-hidden="true" />
 
       <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px] hero-layout">
         <div className="hero-copy">
