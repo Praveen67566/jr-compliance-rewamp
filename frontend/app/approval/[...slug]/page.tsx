@@ -99,5 +99,5 @@ export default async function Page({ params }: ApprovalRouteProps) {
     notFound();
   }
 
-  return <CompanyRegistrationPage content={content} />;
+  return <CompanyRegistrationPage content={content} showHeroGlobe />;
 }

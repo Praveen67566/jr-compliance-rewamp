@@ -107,7 +107,31 @@ If a command cannot be run, clearly explain why.
 
 Only Ui Changes:-
 
-Now in ui everything is perfect only the call us hanging looks weird make ui of this a bit inhanced or looks
-good because it makes the header also wider so now improve that image given.
+I want gloab background ui in hero section in all the given collection page not only in company registration
+
+Corporate collections:
+
+- `company-registration-page`
+- `mca-service-page`
+- `import-export-service-page`
+- `government-license-certification-page`
+- `ipr-service-page`
+- `fssai-service-page`
+- `sebi-business-registration-page`
+- `tax-accounting-page`
+- `labour-compliance-page`
+- `fund-raising-page`
+
+Approval collections:
+
+- `bureau-indian-standards-page`
+- `pollution-advisory-page`
+- `telecommunication-engineering-centre-page`
+- `wireless-planning-coordination-page`
+- `bureau-energy-efficiency-page`
+- `cdsco-registration-page`
+- `aerb-approval-page`
+- `lmpc-certification-page`
+- `stqc-page`
 
 Dont Change anything else i want only one change only.

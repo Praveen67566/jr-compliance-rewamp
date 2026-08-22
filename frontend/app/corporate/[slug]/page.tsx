@@ -102,10 +102,5 @@ export default async function Page({ params }: CompanyRegistrationRouteProps) {
     notFound();
   }
 
-  return (
-    <CompanyRegistrationPage
-      content={content}
-      showHeroGlobe={companyRegistrationSlugs.includes(slug)}
-    />
-  );
+  return <CompanyRegistrationPage content={content} showHeroGlobe />;
 }

@@ -69,15 +69,16 @@ describe("rotating Earth hero scope", () => {
     assert.match(homeHero, /<RotatingEarthBackground variant="home" \/>/);
   });
 
-  it("keeps the registration opt-in limited to the exact nineteen approved slugs", () => {
+  it("enables the globe for all Corporate service collections", () => {
     const corporateRoute = source("frontend/app/corporate/[slug]/page.tsx");
 
     assert.equal(companyRegistrationSlugs.length, 19);
     assert.deepEqual(companyRegistrationSlugs, expectedCompanyRegistrationSlugs);
     assert.match(
       corporateRoute,
-      /showHeroGlobe=\{companyRegistrationSlugs\.includes\(slug\)\}/,
+      /<CompanyRegistrationPage content=\{content\} showHeroGlobe \/>/,
     );
+    assert.doesNotMatch(corporateRoute, /companyRegistrationSlugs\.includes\(slug\)/);
   });
 
   it("keeps the shared service template default-off and renders the globe only in its hero", () => {
@@ -97,10 +98,13 @@ describe("rotating Earth hero scope", () => {
     assert.ok(globe < heroEnd);
   });
 
-  it("leaves Approval routes on the default background", () => {
+  it("enables the globe for all Approval service collections", () => {
     const approvalRoute = source("frontend/app/approval/[...slug]/page.tsx");
 
-    assert.match(approvalRoute, /<CompanyRegistrationPage content=\{content\} \/>/);
-    assert.doesNotMatch(approvalRoute, /showHeroGlobe|RotatingEarthBackground/);
+    assert.match(
+      approvalRoute,
+      /<CompanyRegistrationPage content=\{content\} showHeroGlobe \/>/,
+    );
+    assert.doesNotMatch(approvalRoute, /RotatingEarthBackground/);
   });
 });
