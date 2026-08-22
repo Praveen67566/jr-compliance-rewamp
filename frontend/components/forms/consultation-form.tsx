@@ -2,9 +2,18 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import {
+  getCountries,
+  getCountryCallingCode,
+  type CountryCode,
+} from "libphonenumber-js/min";
 
 import { linkTargetProps } from "@/lib/link-props";
-import { LEAD_MESSAGE_MAX_LENGTH, normalizeLeadPhone } from "@/lib/leads";
+import {
+  DEFAULT_LEAD_COUNTRY,
+  LEAD_MESSAGE_MAX_LENGTH,
+  normalizeLeadPhoneForCountry,
+} from "@/lib/leads";
 import type { LeadFormSettings } from "@/lib/types";
 
 type ConsultationFormProps = {
@@ -17,6 +26,7 @@ type ConsultationFormProps = {
 type FormValues = {
   name: string;
   email: string;
+  phoneCountry: CountryCode;
   phone: string;
   message: string;
   consent: boolean;
@@ -29,6 +39,7 @@ type FormErrors = Partial<Record<FormField, string>>;
 const initialValues: FormValues = {
   name: "",
   email: "",
+  phoneCountry: DEFAULT_LEAD_COUNTRY,
   phone: "",
   message: "",
   consent: false,
@@ -36,6 +47,47 @@ const initialValues: FormValues = {
 };
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const phoneErrorMessage = "Please enter a valid phone number for the selected country.";
+const initialPhoneCountries = getCountries()
+  .map((country) => ({
+    country,
+    name: String(country),
+    callingCode: getCountryCallingCode(country),
+  }))
+  .sort((left, right) =>
+    left.country < right.country ? -1 : left.country > right.country ? 1 : 0,
+  );
+
+function englishPhoneCountries() {
+  let displayNames: Intl.DisplayNames | null = null;
+
+  try {
+    displayNames =
+      typeof Intl.DisplayNames === "function"
+        ? new Intl.DisplayNames(["en"], { type: "region" })
+        : null;
+  } catch {
+    return initialPhoneCountries;
+  }
+
+  if (!displayNames) {
+    return initialPhoneCountries;
+  }
+
+  return initialPhoneCountries
+    .map((option) => {
+      let name = option.name;
+
+      try {
+        name = displayNames.of(option.country) ?? option.name;
+      } catch {
+        // Keep the ISO code when a browser cannot resolve a region display name.
+      }
+
+      return { ...option, name };
+    })
+    .sort((left, right) => left.name.localeCompare(right.name, "en"));
+}
 
 function validate(values: FormValues): FormErrors {
   const errors: FormErrors = {};
@@ -49,8 +101,8 @@ function validate(values: FormValues): FormErrors {
   if (!emailPattern.test(email) || email.length > 254) {
     errors.email = "Please enter a valid email address.";
   }
-  if (!/^\d{10}$/.test(values.phone)) {
-    errors.phone = "Please enter a 10 digit mobile number.";
+  if (!normalizeLeadPhoneForCountry(values.phone, values.phoneCountry)) {
+    errors.phone = phoneErrorMessage;
   }
   if (message && (message.length < 5 || message.length > LEAD_MESSAGE_MAX_LENGTH)) {
     errors.message = `Please enter 5 to ${LEAD_MESSAGE_MAX_LENGTH} characters.`;
@@ -125,6 +177,7 @@ export function ConsultationForm({
   const fieldId = useId().replace(/:/g, "");
   const redirectTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [values, setValues] = useState(initialValues);
+  const [phoneCountries, setPhoneCountries] = useState(initialPhoneCountries);
   const [errors, setErrors] = useState<FormErrors>({});
   const [messageExpanded, setMessageExpanded] = useState(false);
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
@@ -139,6 +192,10 @@ export function ConsultationForm({
     [],
   );
 
+  useEffect(() => {
+    setPhoneCountries(englishPhoneCountries());
+  }, []);
+
   if (!settings.enabled) {
     return null;
   }
@@ -146,13 +203,30 @@ export function ConsultationForm({
   const completedStages = [
     values.name.trim().length >= 3,
     emailPattern.test(values.email.trim()),
-    /^\d{10}$/.test(values.phone),
+    Boolean(normalizeLeadPhoneForCountry(values.phone, values.phoneCountry)),
   ];
+  const selectedCallingCode = getCountryCallingCode(values.phoneCountry);
 
   function updateValue<Field extends keyof FormValues>(field: Field, value: FormValues[Field]) {
     setValues((current) => ({ ...current, [field]: value }));
     if (field in errors) {
       setErrors((current) => ({ ...current, [field]: undefined }));
+    }
+    if (status === "error") {
+      setStatus("idle");
+      setFeedback("");
+    }
+  }
+
+  function updatePhoneCountry(country: CountryCode) {
+    setValues((current) => ({ ...current, phoneCountry: country }));
+    if (errors.phone) {
+      setErrors((current) => ({
+        ...current,
+        phone: normalizeLeadPhoneForCountry(values.phone, country)
+          ? undefined
+          : phoneErrorMessage,
+      }));
     }
     if (status === "error") {
       setStatus("idle");
@@ -166,6 +240,10 @@ export function ConsultationForm({
       return;
     }
 
+    const normalizedPhone = normalizeLeadPhoneForCountry(
+      values.phone,
+      values.phoneCountry,
+    );
     const nextErrors = validate(values);
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length) {
@@ -202,7 +280,7 @@ export function ConsultationForm({
         body: JSON.stringify({
           name: values.name,
           email: values.email,
-          phone: values.phone,
+          phone: normalizedPhone,
           message: values.message,
           consent: values.consent,
           website: values.website,
@@ -339,25 +417,55 @@ export function ConsultationForm({
           </div>
 
           <div>
-            <label className="sr-only" htmlFor={`${fieldId}-phone`}>{settings.phoneLabel}</label>
-            <div className={`${fieldShell} ${errors.phone ? "border-sky-strong" : ""}`}>
-              <span className="absolute inset-y-0 left-0 flex items-center gap-1.5 rounded-l-xl border-r border-sky/15 bg-white/[0.055] px-3 text-[0.78rem] font-extrabold text-sky" aria-hidden="true">
-                <svg className="size-4" fill="none" viewBox="0 0 24 24">
-                  <path d="M7 5.5a13.7 13.7 0 0 0 11.5 11.5l1.4-1.4a1.5 1.5 0 0 1 1.54-.36l2.06.69v4.57A1.5 1.5 0 0 1 22 22C10.95 22 2 13.05 2 2A1.5 1.5 0 0 1 3.5.5h4.57l.69 2.06A1.5 1.5 0 0 1 8.4 4.1L7 5.5Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.7" />
-                </svg>
-                +91
-              </span>
+            <label className="sr-only" htmlFor={`${fieldId}-phone`} id={`${fieldId}-phone-label`}>{settings.phoneLabel}</label>
+            <div
+              aria-labelledby={`${fieldId}-phone-label`}
+              className={`${fieldShell} ${errors.phone ? "border-sky-strong" : ""}`}
+              role="group"
+            >
+              <div className="absolute inset-y-0 left-0 w-28 rounded-l-xl border-r border-sky/15 bg-white/[0.055]">
+                <label className="sr-only" htmlFor={`${fieldId}-phone-country`}>
+                  Country calling code
+                </label>
+                <select
+                  aria-describedby={`${fieldId}-phone-hint${errors.phone ? ` ${fieldId}-phone-error` : ""}`}
+                  className="peer absolute inset-0 z-10 size-full cursor-pointer opacity-0 disabled:cursor-wait"
+                  id={`${fieldId}-phone-country`}
+                  name="phone-country"
+                  onChange={(event) => updatePhoneCountry(event.target.value as CountryCode)}
+                  value={values.phoneCountry}
+                >
+                  {phoneCountries.map(({ country, name, callingCode }) => (
+                    <option key={country} value={country}>
+                      {name} (+{callingCode})
+                    </option>
+                  ))}
+                </select>
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none flex h-full items-center gap-1.5 rounded-l-[11px] px-2.5 text-[0.72rem] font-extrabold text-sky transition-[background-color,box-shadow] peer-focus-visible:bg-white/[0.09] peer-focus-visible:shadow-[inset_0_0_0_2px_var(--blue-sky)]"
+                >
+                  <svg className="size-4 shrink-0" fill="none" viewBox="0 0 24 24">
+                    <path d="M7 5.5a13.7 13.7 0 0 0 11.5 11.5l1.4-1.4a1.5 1.5 0 0 1 1.54-.36l2.06.69v4.57A1.5 1.5 0 0 1 22 22C10.95 22 2 13.05 2 2A1.5 1.5 0 0 1 3.5.5h4.57l.69 2.06A1.5 1.5 0 0 1 8.4 4.1L7 5.5Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.7" />
+                  </svg>
+                  <span className="whitespace-nowrap">
+                    {values.phoneCountry} +{selectedCallingCode}
+                  </span>
+                  <svg className="size-3 shrink-0" fill="none" viewBox="0 0 12 12">
+                    <path d="m3 4.5 3 3 3-3" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+                  </svg>
+                </span>
+              </div>
               <input
                 aria-describedby={`${fieldId}-phone-hint${errors.phone ? ` ${fieldId}-phone-error` : ""}`}
                 aria-invalid={Boolean(errors.phone)}
                 autoComplete="tel-national"
-                className={`${inputClass} pl-[5.35rem]`}
+                className={`${inputClass} pl-[7.5rem]`}
                 id={`${fieldId}-phone`}
                 inputMode="numeric"
-                maxLength={18}
+                maxLength={32}
                 name="phone"
-                onChange={(event) => updateValue("phone", normalizeLeadPhone(event.target.value).slice(0, 10))}
-                pattern="[0-9]{10}"
+                onChange={(event) => updateValue("phone", event.target.value.replace(/\D/g, "").slice(0, 15))}
                 placeholder={settings.phonePlaceholder}
                 required
                 type="tel"
@@ -365,7 +473,7 @@ export function ConsultationForm({
               />
             </div>
             <span className="sr-only" id={`${fieldId}-phone-hint`}>
-              Indian mobile number. The +91 country code is added automatically; enter 10 digits.
+              Choose a country code, then enter the national phone number. The calling code is added automatically.
             </span>
             {errors.phone ? <p className="mb-0 mt-1 text-xs text-sky-strong" id={`${fieldId}-phone-error`}>{errors.phone}</p> : null}
           </div>

@@ -105,11 +105,11 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Now I have to add a login button in Header navbar given in image a Login button which redirects only like contact page and i want it to be editable by cms now create in site setting a login button and this should be optional like it can be enable or disable.
-
-Don't Change Anything Unncessary Only Change The Things required.
-
-This is Only a simple change through cms i can enable login button and it shows in navbar and login button only have href similar like contact Us button and create a ui before the contactUs Button.
+Now in consultation Form:-
+ i want a change the +91 to be dynamic like any country code can be enter there and i dont want you to change anything else this is the change i want the country code to be dynamic so like anyone from us or any country can fill the consulatation form 
+ and it should come as select like dont have to enter everytime.
+ like you choose the best way to make it dynamic.
+ but dont change anything else i dont want anything else to be changed
 
 
 

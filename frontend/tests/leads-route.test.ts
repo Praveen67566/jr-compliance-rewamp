@@ -9,7 +9,7 @@ const siteOrigin = "https://www.jr.test";
 const validBody = {
   name: "Priya Sharma",
   email: "priya@example.com",
-  phone: "9876543210",
+  phone: "+919876543210",
   message: "I need help with company registration.",
   consent: true,
   website: "",
@@ -90,12 +90,51 @@ describe("POST /api/leads", () => {
     assert.deepEqual(JSON.parse(String(init?.body)), {
       name: "Priya Sharma",
       email: "priya@example.com",
-      phone: "9876543210",
+      phone: "+919876543210",
       message: "I need help with company registration.",
       page_name:
         "Company Registration - /corporate/private-limited-company-registration-consultant",
       page_parameters: { utm_source: "google" },
     });
+  });
+
+  it("forwards a canonical international phone without adding country fields", async () => {
+    const fetchCalls = stubFetch(async () => new Response(null, { status: 204 }));
+
+    const response = await POST(
+      leadRequest({
+        ...validBody,
+        phone: "+1 213 373 4253",
+        country: "United States",
+        countryCode: "US",
+        dialCode: "+1",
+        formattedPhone: "+1 (213) 373-4253",
+      }),
+    );
+
+    assert.equal(response.status, 200);
+    assert.equal(fetchCalls.length, 1);
+    assert.deepEqual(JSON.parse(String(fetchCalls[0][1]?.body)), {
+      name: "Priya Sharma",
+      email: "priya@example.com",
+      phone: "+12133734253",
+      message: "I need help with company registration.",
+      page_name:
+        "Company Registration - /corporate/private-limited-company-registration-consultant",
+    });
+  });
+
+  it("rejects a malformed international phone without calling downstream", async () => {
+    const fetchCalls = stubFetch(async () => new Response(null, { status: 204 }));
+
+    const response = await POST(
+      leadRequest({ ...validBody, phone: "+1 213 373 4253 x9" }),
+    );
+
+    assert.equal(response.status, 422);
+    assert.equal(fetchCalls.length, 0);
+    const body = (await response.json()) as { errors?: { phone?: string } };
+    assert.ok(body.errors?.phone);
   });
 
   it("forwards an empty optional message", async () => {

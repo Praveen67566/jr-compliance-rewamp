@@ -1,5 +1,12 @@
+import {
+  isSupportedCountry,
+  parsePhoneNumberWithError,
+  type CountryCode,
+} from "libphonenumber-js/min";
+
 export const LEAD_BODY_LIMIT_BYTES = 16 * 1024;
 export const LEAD_MESSAGE_MAX_LENGTH = 1000;
+export const DEFAULT_LEAD_COUNTRY: CountryCode = "IN";
 
 export type LeadType = "technical" | "corporate" | "global";
 
@@ -43,6 +50,9 @@ export type LeadValidationResult =
   | { success: false; errors: Partial<Record<LeadField, string>> };
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const e164Pattern = /^\+[1-9]\d{1,14}$/;
+const formattedPhonePattern = /^\+?[0-9](?:[0-9 .()-]*[0-9])?$/;
+const phoneSeparatorsPattern = /[ .()-]/g;
 const utmKeys = ["utm_source", "utm_medium", "utm_campaign"] as const;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -58,17 +68,61 @@ function normalizedSingleLine(value: unknown): string {
     : "";
 }
 
-export function normalizeLeadPhone(value: unknown): string {
-  const digits = typeof value === "string" ? value.replace(/\D/g, "") : "";
-  const supportedPrefixes = ["0091", "91", "0"];
+function parsedPossiblePhone(value: string, defaultCountry?: CountryCode): string {
+  try {
+    const phone = parsePhoneNumberWithError(value, {
+      ...(defaultCountry ? { defaultCountry } : {}),
+      extract: false,
+    });
+    const normalized = String(phone.number);
 
-  for (const prefix of supportedPrefixes) {
-    if (digits.length === 10 + prefix.length && digits.startsWith(prefix)) {
-      return digits.slice(prefix.length);
-    }
+    return !phone.ext && phone.isPossible() && e164Pattern.test(normalized) ? normalized : "";
+  } catch {
+    return "";
+  }
+}
+
+export function normalizeLeadPhoneForCountry(
+  value: unknown,
+  country: string,
+): string {
+  if (
+    typeof value !== "string" ||
+    !/^\d{1,15}$/.test(value) ||
+    !isSupportedCountry(country)
+  ) {
+    return "";
   }
 
-  return digits;
+  return parsedPossiblePhone(value, country);
+}
+
+export function normalizeLeadPhone(value: unknown): string {
+  if (typeof value !== "string") {
+    return "";
+  }
+
+  const formatted = value.trim();
+  if (!formattedPhonePattern.test(formatted)) {
+    return "";
+  }
+
+  const compact = formatted.replace(phoneSeparatorsPattern, "");
+  let internationalPhone = "";
+
+  if (compact.startsWith("+")) {
+    internationalPhone = compact;
+  } else if (/^\d{10}$/.test(compact)) {
+    internationalPhone = `+91${compact}`;
+  } else if (/^0\d{10}$/.test(compact)) {
+    internationalPhone = `+91${compact.slice(1)}`;
+  } else if (/^91\d{10}$/.test(compact)) {
+    internationalPhone = `+${compact}`;
+  } else if (/^0091\d{10}$/.test(compact)) {
+    internationalPhone = `+${compact.slice(2)}`;
+  }
+
+  return internationalPhone ? parsedPossiblePhone(internationalPhone) : "";
 }
 
 export function normalizeLeadPathname(value: unknown): string | null {
@@ -135,8 +189,8 @@ export function validateLeadRequest(value: unknown): LeadValidationResult {
     errors.email = "Enter a valid email address.";
   }
 
-  if (!/^\d{10}$/.test(phone)) {
-    errors.phone = "Enter a valid 10 digit mobile number.";
+  if (!phone) {
+    errors.phone = "Enter a valid international phone number.";
   }
 
   if (value.message !== undefined && typeof value.message !== "string") {
