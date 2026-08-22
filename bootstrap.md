@@ -105,11 +105,11 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Now in consultation Form:-
- i want a change the +91 to be dynamic like any country code can be enter there and i dont want you to change anything else this is the change i want the country code to be dynamic so like anyone from us or any country can fill the consulatation form 
- and it should come as select like dont have to enter everytime.
- like you choose the best way to make it dynamic.
- but dont change anything else i dont want anything else to be changed
+Only Ui Changes:-
+
+In Header Login Button Ui is so bad its not visible make it similar like Contact Us Button.
+
+Don't Change Anything Else.
 
 
 

@@ -235,11 +235,11 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
 
           {site.loginButton.enabled ? (
             <a
-              className="inline-flex shrink-0 items-center justify-center rounded-full border border-cobalt-700/25 bg-ice/80 px-3.5 py-[11px] text-[0.84rem] font-extrabold tracking-[-0.01em] text-[#0b315f] shadow-[inset_0_1px_rgba(255,255,255,0.9)] transition-[background-color,border-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:border-electric/55 hover:bg-cloud hover:text-cobalt-700 hover:shadow-[0_8px_18px_rgba(13,92,184,0.14)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric max-[980px]:hidden"
+              className="header-cta max-[980px]:hidden"
               href={sharedHref(site.loginButton.href)}
               onClick={closeAll}
             >
-              {site.loginButton.label}
+              {site.loginButton.label} <span aria-hidden="true">↗</span>
             </a>
           ) : null}
 
