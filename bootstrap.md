@@ -109,8 +109,4 @@ Only Ui Changes:-
 
 Home Page Only
 
-1. In FAQ i want a automatic animation like after 1 min it changes from first category to second then third then start with one
-
-like In Home Faq
-Registration -> Compliance -> Tax & Audits
-like difference is 1 min animation like it changes from Registration to complaince automatically then Compliance and Then Tax & Audits 
+1. Regulatory expertise this section background needs to be different i don't want the same square shape background make it like a good background according to theme.

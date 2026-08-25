@@ -6,11 +6,148 @@ import { KeychainRevealSection } from "@/components/home/keychain-reveal-section
 import { ServiceStack } from "@/components/home/service-stack";
 import { TrustedBrandsMarquee } from "@/components/home/trusted-brands-marquee";
 import { linkTargetProps } from "@/lib/link-props";
-import type { HomepageContent } from "@/lib/types";
+import type { HomepageContent, Logo } from "@/lib/types";
 
 type HomePageProps = {
   content: HomepageContent;
 };
+
+type RegulatorLogoEntry = {
+  isFiller: boolean;
+  logo: Logo;
+  sourceIndex: number;
+};
+
+type RegulatorLogoListProps = {
+  entries: RegulatorLogoEntry[];
+  isClone?: boolean;
+  isDecorative?: boolean;
+  label?: string;
+  listKey: string;
+};
+
+const MINIMUM_REGULATOR_MARQUEE_ITEMS = 18;
+
+function buildRegulatorLogoEntries(logos: Logo[]): RegulatorLogoEntry[] {
+  if (!logos.length) {
+    return [];
+  }
+
+  return Array.from(
+    { length: Math.max(MINIMUM_REGULATOR_MARQUEE_ITEMS, logos.length) },
+    (_, index) => ({
+      isFiller: index >= logos.length,
+      logo: logos[index % logos.length],
+      sourceIndex: index % logos.length,
+    }),
+  );
+}
+
+function RegulatorLogoList({
+  entries,
+  isClone = false,
+  isDecorative = false,
+  label,
+  listKey,
+}: RegulatorLogoListProps) {
+  return (
+    <ul
+      className={`regulator-logo-list${isClone ? " regulator-logo-list--clone" : ""}`}
+      aria-hidden={isDecorative ? "true" : undefined}
+      aria-label={isDecorative ? undefined : label}
+    >
+      {entries.map(({ isFiller, logo, sourceIndex }, index) => {
+        const isCardDecorative = isDecorative || isFiller;
+        const logoContent = (
+          <>
+            <img src={logo.src} alt="" />
+            <span className="regulator-logo-name">{logo.name}</span>
+            {logo.href && !isCardDecorative ? (
+              <span className="regulator-logo-arrow" aria-hidden="true">
+                ↗
+              </span>
+            ) : null}
+          </>
+        );
+
+        return (
+          <li
+            className={`regulator-logo${isFiller ? " regulator-logo--filler" : ""}`}
+            data-index={String(sourceIndex + 1).padStart(2, "0")}
+            aria-hidden={isCardDecorative ? "true" : undefined}
+            key={`${listKey}-${logo.name}-${index}`}
+          >
+            {logo.href && !isCardDecorative ? (
+              <a
+                className="regulator-logo-link"
+                href={logo.href}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`${logo.name} website`}
+              >
+                {logoContent}
+              </a>
+            ) : (
+              <div className="regulator-logo-content">{logoContent}</div>
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+function RegulatorHeadingTitle({ title }: { title: string }) {
+  const normalizedTitle = title.trim();
+  const lastWordStart = normalizedTitle.lastIndexOf(" ");
+
+  if (lastWordStart === -1) {
+    return <span className="regulators-heading-accent">{normalizedTitle}</span>;
+  }
+
+  return (
+    <>
+      {normalizedTitle.slice(0, lastWordStart)}{" "}
+      <span className="regulators-heading-accent">{normalizedTitle.slice(lastWordStart + 1)}</span>
+    </>
+  );
+}
+
+function RegulatorLogoMarquee({ label, logos }: { label: string; logos: Logo[] }) {
+  if (!logos.length) {
+    return null;
+  }
+
+  const entries = buildRegulatorLogoEntries(logos);
+  const reverseEntries = [...entries].reverse();
+  const offset = Math.max(1, Math.floor(entries.length / 3));
+  const offsetEntries = [...entries.slice(offset), ...entries.slice(0, offset)];
+
+  return (
+    <div className="regulator-logo-marquee">
+      <div className="regulator-logo-row regulator-logo-row--primary">
+        <div className="regulator-logo-track">
+          <RegulatorLogoList entries={entries} label={label} listKey="primary" />
+          <RegulatorLogoList entries={entries} isClone isDecorative listKey="primary-clone" />
+        </div>
+      </div>
+
+      <div className="regulator-logo-row regulator-logo-row--reverse" aria-hidden="true">
+        <div className="regulator-logo-track">
+          <RegulatorLogoList entries={reverseEntries} isDecorative listKey="reverse" />
+          <RegulatorLogoList entries={reverseEntries} isClone isDecorative listKey="reverse-clone" />
+        </div>
+      </div>
+
+      <div className="regulator-logo-row regulator-logo-row--tertiary" aria-hidden="true">
+        <div className="regulator-logo-track">
+          <RegulatorLogoList entries={offsetEntries} isDecorative listKey="tertiary" />
+          <RegulatorLogoList entries={offsetEntries} isClone isDecorative listKey="tertiary-clone" />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export function HomePage({ content }: HomePageProps) {
   return (
@@ -61,76 +198,17 @@ export function HomePage({ content }: HomePageProps) {
         </section>
 
         <section className="regulators-section section" aria-labelledby="regulators-heading">
-          <div className="regulator-network-layer" aria-hidden="true">
-            <span className="regulator-network-orbit regulator-network-orbit--one" />
-            <span className="regulator-network-orbit regulator-network-orbit--two" />
-            <span className="regulator-network-node regulator-network-node--one" />
-            <span className="regulator-network-node regulator-network-node--two" />
-          </div>
-
           <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
-            <div className="regulator-panel">
-              <span className="regulator-panel-scan" aria-hidden="true" />
-
-              <div className="regulator-panel-head">
-                <div className="section-heading regulators-heading">
-                  <span className="eyebrow">{content.regulators.eyebrow}</span>
-                  <h2 id="regulators-heading">{content.regulators.title}</h2>
-                  {content.regulators.description ? <p>{content.regulators.description}</p> : null}
-                </div>
-
-                <div className="regulator-radar" aria-hidden="true">
-                  <span className="regulator-radar-ring" />
-                  <span className="regulator-radar-core" />
-                </div>
-              </div>
-
-              <div className="regulator-route-divider" aria-hidden="true">
-                <span className="regulator-route-node regulator-route-node--start" />
-                <span className="regulator-route-node regulator-route-node--middle" />
-                <span className="regulator-route-node regulator-route-node--end" />
-                <span className="regulator-route-signal" />
-              </div>
-
-              <div className="regulator-logo-grid">
-                {content.regulators.logos.map((logo, index) => {
-                  const logoContent = (
-                    <>
-                      <img src={logo.src} alt={logo.name} />
-                      <span className="regulator-logo-name">{logo.name}</span>
-                      {logo.href ? (
-                        <span className="regulator-logo-arrow" aria-hidden="true">
-                          ↗
-                        </span>
-                      ) : null}
-                    </>
-                  );
-
-                  return (
-                    <div
-                      className="regulator-logo"
-                      data-index={String(index + 1).padStart(2, "0")}
-                      key={`${logo.name}-${index}`}
-                    >
-                      {logo.href ? (
-                        <a
-                          className="regulator-logo-link"
-                          href={logo.href}
-                          target="_blank"
-                          rel="noreferrer"
-                          aria-label={`${logo.name} website`}
-                        >
-                          {logoContent}
-                        </a>
-                      ) : (
-                        <div className="regulator-logo-content">{logoContent}</div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
+            <div className="section-heading regulators-heading">
+              <span className="eyebrow">{content.regulators.eyebrow}</span>
+              <h2 id="regulators-heading">
+                <RegulatorHeadingTitle title={content.regulators.title} />
+              </h2>
+              {content.regulators.description ? <p>{content.regulators.description}</p> : null}
             </div>
           </div>
+
+          <RegulatorLogoMarquee label={content.regulators.title} logos={content.regulators.logos} />
         </section>
 
         <section className="metrics-section section">
