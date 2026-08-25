@@ -55,6 +55,7 @@ consultation form.
 | `siteName` | Short text | Required |
 | `headerLogo` | Media, single image | Required |
 | `footerLogo` | Media, single image | Required |
+| `footerBadges` | Media, multiple images | Optional; ordered trust/certification badges shown in the footer bottom row. Set meaningful Media Library alternative text when a badge conveys information; without it the image is treated as decorative. Leaving this field empty preserves the existing footer. |
 | `headerMenu` | Repeatable `navigation.menu-item` component | Required |
 | `loginButtonEnabled` | Boolean | Optional; defaults to `false` |
 | `loginButtonHref` | Short text | Optional site-relative or absolute href; Login renders only when this is set and `loginButtonEnabled` is on |
@@ -808,8 +809,9 @@ GET /api/global-certificate-pages?filters[countrySlug][$eq]=<country>&filters[sl
 Strapi does not populate relations, components, or media by default. The Next
 CMS client must attach one centralized, explicit populate object for every
 route request (the legal query uses `populate[sections]=true` and
-`populate[seo][populate][shareImage]=true`; other trees cover hero/card media,
-logo media, Global text/process/CTA fields, category → services → icon, FAQ
+`populate[seo][populate][shareImage]=true`; other trees cover Site Setting
+footer badge media, hero/card media, logo media, Global text/process/CTA fields,
+category → services → icon, FAQ
 category → FAQs, testimonial media, recognition media, team media, careers
 gallery media, and SEO share images). Do not use unbounded deep-population
 plugins or issue a browser request per card. The API token is sent as

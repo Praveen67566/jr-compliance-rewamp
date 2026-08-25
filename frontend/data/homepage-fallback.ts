@@ -615,6 +615,7 @@ export const fallbackHomepage: HomepageContent = {
     cta: { label: "Contact Us", href: "#contact" },
   },
   footer: {
+    footerBadges: [],
     featuredLinks: [
       { label: "BIS FMCS", href: "#services" },
       { label: "BIS CRS", href: "#services" },

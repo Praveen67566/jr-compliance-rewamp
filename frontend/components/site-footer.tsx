@@ -105,9 +105,17 @@ export function SiteFooter({ site, footer }: SiteFooterProps) {
           </div>
         ))}
       </div>
-      
 
       <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px] footer-bottom">
+        {footer.footerBadges.length ? (
+          <ul className="footer-badges" aria-label="Certifications and recognitions">
+            {footer.footerBadges.map((badge, index) => (
+              <li className="footer-badge" key={`${badge.src}-${index}`}>
+                <img src={badge.src} alt={badge.alt} loading="lazy" />
+              </li>
+            ))}
+          </ul>
+        ) : null}
         <div className="footer-bottom-identity">
           <span>{site.copyrightText}</span>
         </div>

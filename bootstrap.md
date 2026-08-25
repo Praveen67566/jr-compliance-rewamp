@@ -105,9 +105,7 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Only Ui Changes:-
+Now In Footer I want icons to be added referece given in the image and icons can be added from strapi cms 
+and here in frontend you have to create the ui for that icons choose according to current footer ui don't change in current footer ui.
 
-in footer section the ui of legalnotice the paragraph is so bad so improve the ui of that 
-only you have to improve the ui nothing else also referce image is given
-
-Don't change anything else
+I don't want anything else to be change only icons can be added in footer by content manager or cms user

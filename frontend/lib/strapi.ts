@@ -17,6 +17,7 @@ import type {
   ContactPoint,
   Faq,
   FaqCategory,
+  FooterBadge,
   FooterContent,
   FooterLinkGroup,
   FssaiServicePageContent,
@@ -152,6 +153,7 @@ const populateTrees: Record<SingleTypeSlug, PopulateTree> = {
   "site-setting": {
     headerLogo: true,
     footerLogo: true,
+    footerBadges: true,
     headerMenu: { children: true, categories: { links: true } },
     headerCta: true,
     footerCta: true,
@@ -760,6 +762,21 @@ function mapLegalNotices(value: unknown): LegalNotice[] {
   return notices;
 }
 
+function mapFooterBadges(value: unknown): FooterBadge[] {
+  return asArray(value)
+    .map((entry) => {
+      const item = record(entry);
+      const src = mediaUrl(entry);
+      return src
+        ? {
+            src,
+            alt: text(item.alternativeText) ?? "",
+          }
+        : null;
+    })
+    .filter((badge): badge is FooterBadge => Boolean(badge));
+}
+
 function localRedirectPath(value: unknown, fallback: string): string {
   const candidate = text(value);
   if (!candidate || !candidate.startsWith("/") || candidate.startsWith("//") || candidate.includes("\\")) {
@@ -833,6 +850,7 @@ function mapPageChrome(fallback: PageChromeContent, rawSettings: unknown): PageC
   const siteContact = record(settings.contact);
   const headerLogo = mediaUrl(settings.headerLogo);
   const footerLogo = mediaUrl(settings.footerLogo);
+  const footerBadges = mapFooterBadges(settings.footerBadges);
   const whatsAppHref = text(siteContact.whatsAppUrl);
   const legalNotices = mapLegalNotices(settings.legalNotices);
   const loginButtonHref = text(settings.loginButtonHref);
@@ -873,6 +891,7 @@ function mapPageChrome(fallback: PageChromeContent, rawSettings: unknown): PageC
     navigation: mapNavigation(settings.headerMenu, fallback.navigation),
     footer: {
       ...mapLinkGroups(settings.footerLinkGroups, fallback.footer),
+      ...(footerBadges.length ? { footerBadges } : {}),
       ...(legalNotices.length ? { legalNotices } : {}),
     },
   };

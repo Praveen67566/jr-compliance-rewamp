@@ -28,6 +28,11 @@
       "required": true,
       "allowedTypes": ["images"]
     },
+    "footerBadges": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": ["images"]
+    },
     "headerMenu": {
       "type": "component",
       "component": "navigation.menu-item",

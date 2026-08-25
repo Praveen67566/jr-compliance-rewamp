@@ -116,6 +116,11 @@ export type FooterLinkGroup = {
   links: Link[];
 };
 
+export type FooterBadge = {
+  src: string;
+  alt: string;
+};
+
 export type LegalNotice = {
   title: string;
   body: string;
@@ -187,6 +192,7 @@ export type SiteSettings = {
 };
 
 export type FooterContent = {
+  footerBadges: FooterBadge[];
   featuredLinks: Link[];
   popularServices: Link[];
   /** CMS link groups preserve editor-provided titles and group ordering. */
