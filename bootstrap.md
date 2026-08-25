@@ -107,31 +107,7 @@ If a command cannot be run, clearly explain why.
 
 Only Ui Changes:-
 
-I want gloab background ui in hero section in all the given collection page not only in company registration
+in footer section the ui of legalnotice the paragraph is so bad so improve the ui of that 
+only you have to improve the ui nothing else also referce image is given
 
-Corporate collections:
-
-- `company-registration-page`
-- `mca-service-page`
-- `import-export-service-page`
-- `government-license-certification-page`
-- `ipr-service-page`
-- `fssai-service-page`
-- `sebi-business-registration-page`
-- `tax-accounting-page`
-- `labour-compliance-page`
-- `fund-raising-page`
-
-Approval collections:
-
-- `bureau-indian-standards-page`
-- `pollution-advisory-page`
-- `telecommunication-engineering-centre-page`
-- `wireless-planning-coordination-page`
-- `bureau-energy-efficiency-page`
-- `cdsco-registration-page`
-- `aerb-approval-page`
-- `lmpc-certification-page`
-- `stqc-page`
-
-Dont Change anything else i want only one change only.
+Don't change anything else

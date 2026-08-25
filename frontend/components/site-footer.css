@@ -304,11 +304,22 @@
   display: contents;
 }
 
+.footer-notice > div {
+  max-width: 82ch;
+}
+
 .footer-disclaimer p {
-  color: #97bbd7;
-  font-size: 0.71rem;
-  line-height: 1.65;
-  margin: 0 0 9px;
+  color: #c8e2f5;
+  font-size: clamp(0.8rem, 0.76rem + 0.16vw, 0.86rem);
+  font-weight: 500;
+  line-height: 1.75;
+  margin: 0 0 10px;
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+}
+
+.footer-disclaimer p:last-child {
+  margin-bottom: 0;
 }
 
 .footer-bottom {
