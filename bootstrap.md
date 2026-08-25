@@ -105,7 +105,12 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Now In Footer I want icons to be added referece given in the image and icons can be added from strapi cms 
-and here in frontend you have to create the ui for that icons choose according to current footer ui don't change in current footer ui.
+Only Ui Changes:-
 
-I don't want anything else to be change only icons can be added in footer by content manager or cms user
+Home Page Only
+
+1. In FAQ i want a automatic animation like after 1 min it changes from first category to second then third then start with one
+
+like In Home Faq
+Registration -> Compliance -> Tax & Audits
+like difference is 1 min animation like it changes from Registration to complaince automatically then Compliance and Then Tax & Audits 
