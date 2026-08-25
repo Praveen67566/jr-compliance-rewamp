@@ -274,19 +274,25 @@ does not exist.
 ## Step 6: Connect the shared route and sitemap
 
 Keep the existing App Router structure. For categories using the same service
-design, extend `frontend/app/corporate/[slug]/page.tsx` instead of creating one
-route file per service.
+design, extend the typed registry in `frontend/lib/service-routes.ts` instead of
+creating one route file per service.
 
-The route must:
+The shared routes must:
 
 - keep `dynamicParams = true` so a newly published CMS slug can render;
-- include the category’s CMS and fallback slugs in `generateStaticParams`;
-- check the category loader when resolving `/corporate/[slug]`;
-- generate metadata from the resolved record; and
+- include the category’s CMS and fallback slugs in the categorized route’s
+  `generateStaticParams`;
+- resolve `/corporate/{categorySlug}/{cmsServiceSlug}` only through the
+  category’s assigned collection;
+- preserve `/corporate/{legacySlug}` through the permanent redirect resolver in
+  `frontend/app/corporate/[category]/page.tsx`;
+- generate metadata with the categorized canonical path; and
 - render the existing fixed service-detail template.
 
-Resolution order matters when multiple collections share the same dynamic
-route. This is another reason every corporate slug must be globally unique.
+The internal `[category]` parameter name is shared by the one-segment legacy
+route and its categorized child because Next.js rejects different parameter
+names at the same dynamic path level. CMS service slugs may repeat across
+categories; an ambiguous legacy flat path returns 404.
 
 Update `frontend/app/sitemap.ts` so it includes the category’s published and
 fallback slugs. The slug-list request must use the same category cache tag so a
@@ -405,7 +411,9 @@ frontend/data/mca-service-pages-fallback.ts
 frontend/lib/types.ts
 frontend/lib/strapi.ts
 frontend/lib/content.ts
-frontend/app/corporate/[slug]/page.tsx
+frontend/lib/service-routes.ts
+frontend/app/corporate/[category]/page.tsx
+frontend/app/corporate/[category]/[slug]/page.tsx
 frontend/app/sitemap.ts
 frontend/components/company-registration/company-registration-page.tsx
 ```

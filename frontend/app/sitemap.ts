@@ -1,76 +1,24 @@
 import type { MetadataRoute } from "next";
 
-import { companyRegistrationSlugs } from "@/data/company-registration-pages-fallback";
 import { legalPageSlugs } from "@/data/legal-pages-fallback";
-import {
-  getAerbApprovalSlugs,
-  getBureauEnergyEfficiencySlugs,
-  getFssaiServiceSlugs,
-  getBureauIndianStandardsSlugs,
-  getCdscoRegistrationSlugs,
-  getFundRaisingSlugs,
-  getGovernmentLicenseCertificationSlugs,
-  getGlobalCertificatePaths,
-  getGlobalCountrySlugs,
-  getIprServiceSlugs,
-  getImportExportServiceSlugs,
-  getLabourComplianceSlugs,
-  getLmpcCertificationSlugs,
-  getMcaServiceSlugs,
-  getSebiBusinessRegistrationSlugs,
-  getTaxAccountingSlugs,
-  getPollutionAdvisorySlugs,
-  getStqcSlugs,
-  getTelecommunicationEngineeringCentreSlugs,
-  getWirelessPlanningCoordinationSlugs,
-} from "@/lib/content";
+import { getGlobalCertificatePaths, getGlobalCountrySlugs } from "@/lib/content";
+import { getServiceRouteEntries } from "@/lib/service-routes";
 import { publicSiteUrl } from "@/lib/site-url";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = publicSiteUrl();
-  const [
-    mcaServiceSlugs,
-    importExportServiceSlugs,
-    governmentLicenseCertificationSlugs,
-    iprServiceSlugs,
-    fssaiServiceSlugs,
-    sebiBusinessRegistrationSlugs,
-    taxAccountingSlugs,
-    labourComplianceSlugs,
-    fundRaisingSlugs,
-    bureauIndianStandardsSlugs,
-    pollutionAdvisorySlugs,
-    telecommunicationEngineeringCentreSlugs,
-    wirelessPlanningCoordinationSlugs,
-    bureauEnergyEfficiencySlugs,
-    cdscoRegistrationSlugs,
-    aerbApprovalSlugs,
-    lmpcCertificationSlugs,
-    stqcSlugs,
-    globalCountrySlugs,
-    globalCertificatePaths,
-  ] = await Promise.all([
-    getMcaServiceSlugs(),
-    getImportExportServiceSlugs(),
-    getGovernmentLicenseCertificationSlugs(),
-    getIprServiceSlugs(),
-    getFssaiServiceSlugs(),
-    getSebiBusinessRegistrationSlugs(),
-    getTaxAccountingSlugs(),
-    getLabourComplianceSlugs(),
-    getFundRaisingSlugs(),
-    getBureauIndianStandardsSlugs(),
-    getPollutionAdvisorySlugs(),
-    getTelecommunicationEngineeringCentreSlugs(),
-    getWirelessPlanningCoordinationSlugs(),
-    getBureauEnergyEfficiencySlugs(),
-    getCdscoRegistrationSlugs(),
-    getAerbApprovalSlugs(),
-    getLmpcCertificationSlugs(),
-    getStqcSlugs(),
-    getGlobalCountrySlugs(),
-    getGlobalCertificatePaths(),
-  ]);
+  const [corporateEntries, approvalEntries, globalCountrySlugs, globalCertificatePaths] =
+    await Promise.all([
+      getServiceRouteEntries("corporate"),
+      getServiceRouteEntries("approval"),
+      getGlobalCountrySlugs(),
+      getGlobalCertificatePaths(),
+    ]);
+  const servicePaths = [
+    ...new Set(
+      [...corporateEntries, ...approvalEntries].map((entry) => entry.canonicalPath),
+    ),
+  ];
 
   return [
     {
@@ -98,38 +46,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "yearly" as const,
       priority: 0.5,
     })),
-    ...[
-      ...new Set([
-        ...companyRegistrationSlugs,
-        ...mcaServiceSlugs,
-        ...importExportServiceSlugs,
-        ...governmentLicenseCertificationSlugs,
-        ...iprServiceSlugs,
-        ...fssaiServiceSlugs,
-        ...sebiBusinessRegistrationSlugs,
-        ...taxAccountingSlugs,
-        ...labourComplianceSlugs,
-        ...fundRaisingSlugs,
-      ]),
-    ].map((slug) => ({
-      url: new URL(`/corporate/${slug}`, siteUrl).toString(),
-      changeFrequency: "monthly" as const,
-      priority: 0.75,
-    })),
-    ...[
-      ...new Set([
-        ...bureauIndianStandardsSlugs,
-        ...pollutionAdvisorySlugs,
-        ...telecommunicationEngineeringCentreSlugs,
-        ...wirelessPlanningCoordinationSlugs,
-        ...bureauEnergyEfficiencySlugs,
-        ...cdscoRegistrationSlugs,
-        ...aerbApprovalSlugs,
-        ...lmpcCertificationSlugs,
-        ...stqcSlugs,
-      ]),
-    ].map((routePath) => ({
-      url: new URL(`/approval/${routePath}`, siteUrl).toString(),
+    ...servicePaths.map((pathname) => ({
+      url: new URL(pathname, siteUrl).toString(),
       changeFrequency: "monthly" as const,
       priority: 0.75,
     })),

@@ -14,7 +14,8 @@ const validBody = {
   consent: true,
   website: "",
   pageTitle: "Company Registration",
-  pathname: "/corporate/private-limited-company-registration-consultant",
+  pathname:
+    "/corporate/company-registration/private-limited-company-registration-consultant",
 };
 
 function leadRequest(
@@ -93,7 +94,7 @@ describe("POST /api/leads", () => {
       phone: "+919876543210",
       message: "I need help with company registration.",
       page_name:
-        "Company Registration - /corporate/private-limited-company-registration-consultant",
+        "Company Registration - /corporate/company-registration/private-limited-company-registration-consultant",
       page_parameters: { utm_source: "google" },
     });
   });
@@ -120,7 +121,7 @@ describe("POST /api/leads", () => {
       phone: "+12133734253",
       message: "I need help with company registration.",
       page_name:
-        "Company Registration - /corporate/private-limited-company-registration-consultant",
+        "Company Registration - /corporate/company-registration/private-limited-company-registration-consultant",
     });
   });
 

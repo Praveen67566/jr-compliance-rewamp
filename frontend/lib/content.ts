@@ -6,7 +6,10 @@ import {
   bureauIndianStandardsFallback,
   bureauIndianStandardsSlugs,
 } from "@/data/bureau-indian-standards-pages-fallback";
-import { companyRegistrationFallback } from "@/data/company-registration-pages-fallback";
+import {
+  companyRegistrationFallback,
+  companyRegistrationSlugs,
+} from "@/data/company-registration-pages-fallback";
 import { fallbackContactPage } from "@/data/contact-page-fallback";
 import {
   fssaiServiceFallback,
@@ -59,6 +62,7 @@ import {
   getCdscoRegistrationPageFromStrapi,
   getCdscoRegistrationSlugsFromStrapi,
   getCompanyRegistrationPageFromStrapi,
+  getCompanyRegistrationSlugsFromStrapi,
   getContactPageFromStrapi,
   getFssaiServicePageFromStrapi,
   getFssaiServiceSlugsFromStrapi,
@@ -164,19 +168,29 @@ export const getCompanyRegistrationPage = cache(async function getCompanyRegistr
   slug: string,
 ): Promise<CompanyRegistrationPageContent | null> {
   const page = companyRegistrationFallback(slug);
-  if (!page) {
-    return null;
-  }
-
-  const fallback: CompanyRegistrationPageContent = {
-    ...page,
+  const chromeFallback = {
     site: fallbackHomepage.site,
     navigation: fallbackHomepage.navigation,
     footer: fallbackHomepage.footer,
   };
+  const fallback: CompanyRegistrationPageContent | null = page
+    ? {
+        ...page,
+        ...chromeFallback,
+      }
+    : null;
 
-  return (await getCompanyRegistrationPageFromStrapi(slug, fallback)) ?? fallback;
+  return (
+    (await getCompanyRegistrationPageFromStrapi(slug, fallback, chromeFallback)) ?? fallback
+  );
 });
+
+export const getCompanyRegistrationSlugs = cache(
+  async function getCompanyRegistrationSlugs(): Promise<string[]> {
+    const strapiSlugs = await getCompanyRegistrationSlugsFromStrapi();
+    return [...new Set([...companyRegistrationSlugs, ...strapiSlugs])];
+  },
+);
 
 export const getMcaServicePage = cache(async function getMcaServicePage(
   slug: string,

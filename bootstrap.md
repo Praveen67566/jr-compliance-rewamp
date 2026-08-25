@@ -105,8 +105,48 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Only Ui Changes:-
+Read `bootstrap.md`, `context.md`, `theme.md`, and `explaner_frontend.md`.
 
-Home Page Only
+Implement frontend-only hierarchical routes and breadcrumbs for all existing Corporate and Approval service collections.
 
-1. Regulatory expertise this section background needs to be different i don't want the same square shape background make it like a good background according to theme.
+Routes
+
+- Corporate: `/corporate/{categorySlug}/{cmsServiceSlug}`
+- Approval: `/approval/{categorySlug}/{cmsServicePath}`
+
+Examples:
+
+- `/corporate/company-registration/sole-proprietorship-registration`
+- `/approval/pollution-advisory/epr-certification`
+
+Requirements
+
+- Do not modify `cms/`, Strapi schemas, CMS records, or CMS slugs.
+- Category slugs are fixed frontend routing identifiers.
+- Individual service slugs remain CMS-managed.
+- Create one centralized, typed registry mapping every existing Corporate and Approval collection to its fixed category slug and display label.
+- Add `app/corporate/[category]/[slug]/page.tsx`.
+- Update the existing Approval catch-all route to recognize the category as its first segment while preserving multi-segment CMS service slugs.
+- Load services only through the collection assigned to the requested category.
+- Incorrect category/service combinations must return 404.
+- Permanently redirect existing flat URLs to their correct nested URLs.
+- Update frontend-generated links, fallback links, sitemap entries, metadata, and canonical URLs.
+- Do not create category landing pages.
+- Do not redesign the service page.
+
+Update the existing shared breadcrumb to render automatically:
+
+- `Home / Corporate / Category / Service`
+- `Home / Approval / Category / Service`
+
+Use the existing breadcrumb styling and preserve accessibility, responsiveness, focus states, and `aria-current="page"`.
+
+Add focused tests for category mapping, nested routes, multi-segment Approval slugs, incorrect combinations, redirects, breadcrumbs, canonical URLs, and sitemap paths.
+
+Run:
+
+cd frontend
+npm run typecheck
+npm run build
+
+Report all changed files and validation results. Confirm that no CMS files were changed and do not change anything unrelated.

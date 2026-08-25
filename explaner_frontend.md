@@ -18,15 +18,16 @@ routes, and the three completed fixed legal routes:
 - `/privacy-policy`
 - `/terms-and-conditions`
 - `/purchase-and-billing`
-- `/corporate/[slug]` for the nineteen approved Company Registration slugs,
-  DSC, IEC Code, Ayush License, Trademark Registration, FSSAI Basic
+- `/corporate/[category]/[slug]` for the nineteen approved Company Registration
+  slugs, DSC, IEC Code, Ayush License, Trademark Registration, FSSAI Basic
   Registration, Portfolio Manager Registration, GST Registration, Shop &
   Establishment Registration, and MSME Registration
-- `/approval/[...slug]` for ISI Certification, EPR Certification, and later
-  complete CMS-only records across all nine Approval families: Bureau of Indian
-  Standards, Pollution Advisory, Telecommunication Engineering Centre,
-  Wireless Planning and Coordination, Bureau of Energy Efficiency, CDSCO
-  Registration, AERB Approval, LMPC Certification, and STQC
+- `/approval/{category}/{servicePath}` through `/approval/[...slug]` for ISI
+  Certification, EPR Certification, and later complete CMS-only records across
+  all nine Approval families: Bureau of Indian Standards, Pollution Advisory,
+  Telecommunication Engineering Centre, Wireless Planning and Coordination,
+  Bureau of Energy Efficiency, CDSCO Registration, AERB Approval, LMPC
+  Certification, and STQC
 - `/globals/[country]` for complete published CMS-only Global country landings
 - `/globals/[country]/[slug]` for complete published CMS-only Global
   certificate pages
@@ -34,8 +35,12 @@ routes, and the three completed fixed legal routes:
 The three legal routes are fixed sitemap entries, so the current sitemap
 contains thirty-seven active routes. The seven new Approval integrations add
 no local pages, and the two empty Global collections also add no active or
-local route. Additional Approval and Global URLs appear in the sitemap only
-after complete records are published in Strapi.
+local route. Additional Corporate, Approval, and Global URLs appear in the
+sitemap only after complete records are published in Strapi.
+
+Corporate and Approval category slugs are fixed frontend identifiers. Existing
+uncategorized service URLs remain legacy entry points and return permanent 308
+redirects to a unique categorized canonical URL.
 
 Content comes from Strapi when `STRAPI_URL` and `STRAPI_API_TOKEN` are configured.
 Implemented routes fall back to typed local content in
@@ -137,20 +142,31 @@ The main flow is:
 : Static Purchase and Billing route. Uses the same fixed collection contract
   and shared renderer without adding a root-level dynamic catch-all.
 
-`frontend/app/corporate/[slug]/page.tsx`
-: Shared dynamic route for the nineteen Company Registration pages plus DSC,
-  IEC Code, Ayush License, Trademark Registration, FSSAI Basic Registration,
-  Portfolio Manager Registration, GST Registration, Shop & Establishment
-  Registration, and MSME Registration. It awaits Next.js 16 route params,
-  discovers published CMS-only slugs, generates static params and metadata,
-  and returns the framework 404 for an unknown or incomplete slug.
+`frontend/app/corporate/[category]/[slug]/page.tsx`
+: Categorized canonical route for the nineteen Company Registration pages plus
+  DSC, IEC Code, Ayush License, Trademark Registration, FSSAI Basic
+  Registration, Portfolio Manager Registration, GST Registration, Shop &
+  Establishment Registration, and MSME Registration. It validates the fixed
+  category, resolves the complete CMS-managed service slug only through that
+  category's collection, generates canonical static params and metadata, and
+  returns the framework 404 for unknown, incomplete, or wrong-category records.
+
+`frontend/app/corporate/[category]/page.tsx`
+: Legacy one-segment route resolver. Its shared dynamic-segment name avoids a
+  Next.js route-tree conflict with the categorized child route while preserving
+  the public `/corporate/{legacySlug}` URL. A service path with one unique
+  collection match receives a permanent 308 redirect to its categorized
+  canonical URL; missing or ambiguous matches return the framework 404.
 
 `frontend/app/approval/[...slug]/page.tsx`
-: Shared catch-all route for all nine Approval collections. It renders the
-  fallback-backed ISI Certification and EPR Certification pages and discovers
-  complete flat or nested CMS-only paths from every Approval family. It
-  generates static params and metadata and returns the framework 404 for an
-  unknown or incomplete path.
+: Shared catch-all route for all nine Approval collections. A recognized first
+  segment selects the category collection, while every remaining segment is
+  preserved as the CMS-managed service path. A path that does not resolve
+  canonically is also checked as one complete legacy CMS service path; one
+  unique collection match receives a permanent 308 redirect to its categorized
+  URL. Unknown, incomplete, wrong-category, or ambiguous paths return the
+  framework 404. Canonical records generate categorized static params and
+  metadata.
 
 `frontend/app/globals/[country]/page.tsx`
 : Shared country landing route. It awaits the dynamic country parameter,
@@ -176,7 +192,8 @@ The main flow is:
 
 `frontend/app/sitemap.ts`
 : Generates `sitemap.xml` for the thirty-seven fixed active routes, including
-  all three `legalPageSlugs`. Complete published Global country and certificate
+  all three `legalPageSlugs`. Corporate and Approval services emit only their
+  categorized canonical URLs. Complete published Global country and certificate
   paths are discovered from Strapi; empty Global collections add no URL.
 
 `frontend/app/api/revalidate/route.ts`
@@ -467,11 +484,19 @@ cached Global country and certificate loaders as `getGlobalCountryPage`,
 `getGlobalCertificatePaths`. Unavailable or incomplete Global content stays
 `null`, and discovery returns no Global path when Strapi is unavailable.
 
+`frontend/lib/service-routes.ts`
+: Typed registry for the ten Corporate and nine Approval category identifiers,
+  labels, content types, page loaders, and slug loaders. It builds categorized
+  canonical paths and resolves unique legacy service paths for permanent 308
+  redirects without changing CMS-managed service slugs.
+
 `frontend/lib/page-metadata.ts`
 : Converts page SEO data into Next metadata. Each static legal route supplies
   its fixed pathname; when `SITE_URL` is configured the helper emits an
   absolute canonical from that path or a site-relative CMS override, while an
-  editor-provided absolute canonical remains authoritative.
+  editor-provided absolute canonical remains authoritative. Corporate and
+  Approval canonical routes force their categorized pathname so legacy CMS
+  canonical values cannot reintroduce a flat service URL.
 
 `frontend/lib/site-url.ts`
 : Resolves the public site URL from environment values, used for canonical URLs and sitemap metadata.

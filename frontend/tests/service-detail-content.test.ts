@@ -380,9 +380,15 @@ describe("service-detail content mirrors", () => {
       (category) => category.title === "Pollution Advisory",
     );
 
-    assert.equal(bis?.links[0]?.href, "/approval/isi-certificate");
+    assert.equal(
+      bis?.links[0]?.href,
+      "/approval/bureau-indian-standards/isi-certificate",
+    );
     assert.ok(bis?.links.slice(1).every((link) => link.href === "/#services"));
-    assert.equal(pollution?.links[0]?.href, "/approval/epr-certification");
+    assert.equal(
+      pollution?.links[0]?.href,
+      "/approval/pollution-advisory/epr-certification",
+    );
     assert.ok(pollution?.links.slice(1).every((link) => link.href === "/#services"));
   });
 
@@ -409,24 +415,30 @@ describe("service-detail content mirrors", () => {
       (category) => category.title === "Fund Raising",
     );
 
-    assert.equal(importExport?.links[0]?.href, "/corporate/iec-registration");
+    assert.equal(importExport?.links[0]?.href, "/corporate/import-export/iec-registration");
     assert.ok(importExport?.links.slice(1).every((link) => link.href === "/#services"));
-    assert.equal(government?.links[0]?.href, "/corporate/ayush-license");
+    assert.equal(
+      government?.links[0]?.href,
+      "/corporate/government-license-certification/ayush-license",
+    );
     assert.ok(government?.links.slice(1).every((link) => link.href === "/#services"));
-    assert.equal(ipr?.links[0]?.href, "/corporate/trademark-registration");
+    assert.equal(ipr?.links[0]?.href, "/corporate/ipr-services/trademark-registration");
     assert.ok(ipr?.links.slice(1).every((link) => link.href === "/#services"));
-    assert.equal(fssai?.links[0]?.href, "/corporate/fssai-certificate");
+    assert.equal(fssai?.links[0]?.href, "/corporate/fssai/fssai-certificate");
     assert.ok(fssai?.links.slice(1).every((link) => link.href === "/#services"));
-    assert.equal(sebi?.links[0]?.href, "/corporate/portfolio-manager-registration");
+    assert.equal(
+      sebi?.links[0]?.href,
+      "/corporate/sebi-business-registration/portfolio-manager-registration",
+    );
     assert.ok(sebi?.links.slice(1).every((link) => link.href === "/#services"));
-    assert.equal(taxAccounting?.links[0]?.href, "/corporate/gst-registration");
+    assert.equal(taxAccounting?.links[0]?.href, "/corporate/tax-accounting/gst-registration");
     assert.ok(taxAccounting?.links.slice(1).every((link) => link.href === "/#services"));
     assert.equal(
       labourCompliance?.links[0]?.href,
-      "/corporate/shop-and-establishment-act-registration",
+      "/corporate/labour-compliance/shop-and-establishment-act-registration",
     );
     assert.ok(labourCompliance?.links.slice(1).every((link) => link.href === "/#services"));
-    assert.equal(fundRaising?.links[0]?.href, "/corporate/msme-registration");
+    assert.equal(fundRaising?.links[0]?.href, "/corporate/fund-raising/msme-registration");
     assert.ok(fundRaising?.links.slice(1).every((link) => link.href === "/#services"));
   });
 });

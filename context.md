@@ -11,11 +11,14 @@ The completed scope is the new home page, the shared-chrome editorial routes
 detail routes plus the first MCA Services, Import Export Service, Government
 License & Certification, IPR Services, FSSAI, SEBI Business Registration, Tax
 and Accounting, Labour Compliance, and Fund Raising routes under
-`/corporate/[slug]`, plus the first Bureau of Indian Standards and Pollution
-Advisory routes under `/approval/[...slug]`. The same Approval catch-all is
-also wired to seven empty, CMS-only detail-page families: Telecommunication
+`/corporate/[category]/[slug]`, plus the first Bureau of Indian Standards and
+Pollution Advisory routes under categorized `/approval/{category}/{servicePath}`
+URLs resolved by `/approval/[...slug]`. The same Approval catch-all is also
+wired to seven empty, CMS-only detail-page families: Telecommunication
 Engineering Centre, Wireless Planning and Coordination, Bureau of Energy
 Efficiency, CDSCO Registration, AERB Approval, LMPC Certification, and STQC.
+Legacy uncategorized Corporate and Approval service URLs permanently redirect
+with 308 responses to their unique categorized canonical URLs.
 Those seven families deliberately contain no first page, local fallback, seed
 mirror, or initial CMS record. Other legacy routes stay out of scope until
 their content records and destinations are validated.
@@ -59,6 +62,7 @@ responsive legal template; they are not a generic page builder.
 | `frontend/data/*-page-fallback.ts` and category-specific `frontend/data/*-pages-fallback.ts` | Typed fallback content normalized from matching legacy pages, including the three legal records in `legal-pages-fallback.ts`. It keeps every completed route working before Strapi is deployed. |
 | `frontend/lib/types.ts` | Shared shell and rendering contracts, including named fixed contracts for all nineteen service-detail collections. |
 | `frontend/lib/strapi.ts` | Server-only Strapi v5 REST client, explicit route-specific populate paths, media URL handling, and schema-to-UI mappers. |
+| `frontend/lib/service-routes.ts` | Typed Corporate and Approval category registry, categorized canonical-path helpers, and unique legacy-route resolution. |
 | `frontend/components/` | Reusable shell components; `site-page-shell.tsx` centralizes header/footer, `editorial/` centralizes the Compliance Network route primitives, and route folders compose their pages. |
 | `frontend/app/globals.css` | Tailwind v4 theme tokens, baseline reset, shared utility primitives, anchor offsets, and reduced-motion support only. |
 | `frontend/app/animations.css` | Shared CSS-only keyframes for the Compliance Network ambient motion. |
@@ -123,40 +127,45 @@ responsive legal template; they are not a generic page builder.
   data and the matching CMS seed mirror. The Purchase and Billing record merges
   its three legal source containers while excluding the intervening marketing
   FAQ; no Webflow markup or transport code is rendered.
-- Nineteen Company Registration pages use one dynamic App Router route and one
-  fixed Tailwind template. Their approved legacy hero, overview, challenges,
-  advantages, process, breakdown, and FAQ content lives in a typed fallback and
-  the matching Strapi collection. Repeated private-company blocks, hidden
-  placeholder tabs/processes, Webflow forms, and copied resource sections were
-  deliberately excluded.
+- Nineteen Company Registration pages use one categorized canonical App Router
+  route, one legacy redirect resolver, and one fixed Tailwind template. Their
+  approved legacy hero, overview, challenges, advantages, process, breakdown,
+  and FAQ content lives in a typed fallback and the matching Strapi collection.
+  Repeated private-company blocks, hidden placeholder tabs/processes, Webflow
+  forms, and copied resource sections were deliberately excluded.
 - All nineteen fixed Corporate and Approval service collections expose an
   optional editor-ordered trusted-logo relation immediately after the hero.
   Populated records reuse the homepage marquee design and motion; no fallback,
   seed mirror, or database backfill is added for the optional field.
-- The first MCA Services page, `/corporate/dsc-certificate`, uses the same
-  fixed Tailwind template with its own dedicated `mca-service-page` CMS
-  collection, typed fallback, migration record, cache tag, and legacy DSC
+- The first MCA Services page, `/corporate/mca-services/dsc-certificate`, uses
+  the same fixed Tailwind template with its own dedicated `mca-service-page`
+  CMS collection, typed fallback, migration record, cache tag, and legacy DSC
   content.
   The other MCA links remain intentionally out of scope until their routes and
   fixed content records are approved.
-- The first Import Export Service page, `/corporate/iec-registration`, and the
-  first Government License & Certification page, `/corporate/ayush-license`,
+- The first Import Export Service page, `/corporate/import-export/iec-registration`,
+  and the first Government License & Certification page,
+  `/corporate/government-license-certification/ayush-license`,
   use that same fixed template with separate dedicated CMS collections, typed
   fallbacks, migration mirrors, cache tags, and complete approved legacy
   content.
-- The first IPR Services page, `/corporate/trademark-registration`, first FSSAI
-  page, `/corporate/fssai-certificate`, and first SEBI Business Registration
-  page, `/corporate/portfolio-manager-registration`, follow the same pattern
+- The first IPR Services page, `/corporate/ipr-services/trademark-registration`,
+  first FSSAI page, `/corporate/fssai/fssai-certificate`, and first SEBI
+  Business Registration page,
+  `/corporate/sebi-business-registration/portfolio-manager-registration`,
+  follow the same pattern
   through their own dedicated collections, typed fallbacks, migration mirrors,
   and cache tags.
-- The first Tax and Accounting page, `/corporate/gst-registration`, first
-  Labour Compliance page, `/corporate/shop-and-establishment-act-registration`,
-  and first Fund Raising page, `/corporate/msme-registration`, also use the
-  shared fixed template through dedicated `tax-accounting-page`,
+- The first Tax and Accounting page, `/corporate/tax-accounting/gst-registration`,
+  first Labour Compliance page,
+  `/corporate/labour-compliance/shop-and-establishment-act-registration`, and
+  first Fund Raising page, `/corporate/fund-raising/msme-registration`, also
+  use the shared fixed template through dedicated `tax-accounting-page`,
   `labour-compliance-page`, and `fund-raising-page` collections, typed
   fallbacks, migration mirrors, and cache tags.
-- The first Bureau of Indian Standards page, `/approval/isi-certificate`, and
-  first Pollution Advisory page, `/approval/epr-certification`, use the same
+- The first Bureau of Indian Standards page,
+  `/approval/bureau-indian-standards/isi-certificate`, and first Pollution
+  Advisory page, `/approval/pollution-advisory/epr-certification`, use the same
   fixed template through the shared `/approval/[...slug]` route and dedicated
   `bureau-indian-standards-page` and `pollution-advisory-page` collections.
   Both first pages have typed fallbacks, migration mirrors, and cache tags;
@@ -168,7 +177,7 @@ responsive legal template; they are not a generic page builder.
   `wireless-planning-coordination-page`, `bureau-energy-efficiency-page`,
   `cdsco-registration-page`, `aerb-approval-page`,
   `lmpc-certification-page`, and `stqc-page`. They share the fixed Company
-  Registration template and strict CMS-only validation through
+  Registration template and strict category-scoped CMS-only validation through
   `/approval/[...slug]`, but add no first routes, fallbacks, seed files, or
   initial content records. Editors create and publish their first complete
   records directly in Strapi.

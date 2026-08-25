@@ -30,6 +30,10 @@ type CompanyRegistrationPageProps = {
     | TaxAccountingPageContent
     | LabourCompliancePageContent
     | FundRaisingPageContent;
+  breadcrumb: {
+    areaLabel: "Corporate" | "Approval";
+    categoryLabel: string;
+  };
   showHeroGlobe?: boolean;
 };
 
@@ -166,6 +170,7 @@ function AdvantageCard({ item, index }: { item: RegistrationDetail; index: numbe
 }
 
 export function CompanyRegistrationPage({
+  breadcrumb,
   content,
   showHeroGlobe = false,
 }: CompanyRegistrationPageProps) {
@@ -224,8 +229,12 @@ export function CompanyRegistrationPage({
                 className="rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky"
                 href="/#services"
               >
-                {content.hero.eyebrow}
+                {breadcrumb.areaLabel}
               </a>
+              <span aria-hidden="true">/</span>
+              <span className="min-w-0 break-words text-ice/75">
+                {breadcrumb.categoryLabel}
+              </span>
               <span aria-hidden="true">/</span>
               <span aria-current="page" className="min-w-0 break-words text-ice/75">
                 {content.menuLabel}

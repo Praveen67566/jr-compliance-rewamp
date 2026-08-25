@@ -2269,14 +2269,6 @@ function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
   } as T;
 }
 
-function mapCompanyRegistrationPage(
-  fallback: CompanyRegistrationPageContent,
-  rawPage: unknown,
-  rawSettings: unknown,
-): CompanyRegistrationPageContent {
-  return mapFixedServiceDetailPage(fallback, rawPage, rawSettings);
-}
-
 function mapFixedServiceCategoryPage<T extends CompanyRegistrationPageContent>(
   fallback: T | null,
   chromeFallback: PageChromeContent,
@@ -2661,6 +2653,10 @@ async function getFixedServiceSlugsFromStrapi(
   }
 }
 
+export function getCompanyRegistrationSlugsFromStrapi(): Promise<string[]> {
+  return getFixedServiceSlugsFromStrapi(companyRegistrationCollection);
+}
+
 export function getMcaServiceSlugsFromStrapi(): Promise<string[]> {
   return getFixedServiceSlugsFromStrapi(mcaServiceCollection);
 }
@@ -2885,26 +2881,15 @@ export async function getLegalPageFromStrapi(
 
 export async function getCompanyRegistrationPageFromStrapi(
   slug: string,
-  fallback: CompanyRegistrationPageContent,
+  fallback: CompanyRegistrationPageContent | null,
+  chromeFallback: PageChromeContent,
 ): Promise<CompanyRegistrationPageContent | null> {
-  if (!strapiUrl || !strapiApiToken) {
-    return null;
-  }
-
-  try {
-    const [page, settings] = await Promise.all([
-      getFixedServiceEntry(companyRegistrationCollection, slug),
-      getSingleType("site-setting"),
-    ]);
-
-    return page ? mapCompanyRegistrationPage(fallback, page, settings) : null;
-  } catch (error) {
-    console.warn(
-      `Unable to load ${slug} from Strapi; using company-registration fallback content.`,
-      error,
-    );
-    return null;
-  }
+  return getFixedServiceCategoryPageFromStrapi(
+    slug,
+    fallback,
+    chromeFallback,
+    companyRegistrationCollection,
+  );
 }
 
 async function getFixedServiceCategoryPageFromStrapi<T extends CompanyRegistrationPageContent>(

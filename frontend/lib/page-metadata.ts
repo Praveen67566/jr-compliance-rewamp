@@ -1,15 +1,27 @@
 import type { Metadata } from "next";
 
-import { configuredSiteUrl } from "@/lib/site-url";
+import { configuredSiteUrl, publicSiteUrl } from "@/lib/site-url";
 import type { Seo } from "@/lib/types";
 
+type PageMetadataOptions = {
+  forcePathnameCanonical?: boolean;
+};
+
 /** Converts the shared Strapi SEO component into Next's page metadata shape. */
-export function pageMetadata(seo: Seo, pathname: string): Metadata {
+export function pageMetadata(
+  seo: Seo,
+  pathname: string,
+  { forcePathnameCanonical = false }: PageMetadataOptions = {},
+): Metadata {
   const image = seo.shareImage ? [seo.shareImage] : undefined;
-  const metadataBase = configuredSiteUrl();
-  const canonicalUrl = seo.canonicalUrl ?? pathname;
+  const configuredMetadataBase = configuredSiteUrl();
+  const metadataBase =
+    configuredMetadataBase ?? (forcePathnameCanonical ? publicSiteUrl() : undefined);
+  const canonicalUrl = forcePathnameCanonical ? pathname : (seo.canonicalUrl ?? pathname);
   const canonical =
-    canonicalUrl && metadataBase ? new URL(canonicalUrl, metadataBase).toString() : seo.canonicalUrl;
+    canonicalUrl && metadataBase
+      ? new URL(canonicalUrl, metadataBase).toString()
+      : seo.canonicalUrl;
 
   return {
     title: seo.title,

@@ -6,9 +6,11 @@ routes (`/privacy-policy`, `/terms-and-conditions`, and
 `/purchase-and-billing`), and nineteen Company Registration pages plus the
 first MCA Services, Import Export Service, Government License & Certification,
 IPR Services, FSSAI, and SEBI Business Registration, Tax and Accounting,
-Labour Compliance, and Fund Raising pages under `/corporate/[slug]`, plus ISI
-Certification and EPR Certification under `/approval/[...slug]`. It is
-intentionally separate from the legacy Webflow export in `../site`. That
+Labour Compliance, and Fund Raising pages under
+`/corporate/[category]/[slug]`, plus ISI Certification and EPR Certification
+under categorized
+`/approval/{category}/{servicePath}` URLs resolved by `/approval/[...slug]`.
+It is intentionally separate from the legacy Webflow export in `../site`. The
 Approval catch-all is also connected to seven empty CMS-only collections for
 Telecommunication Engineering Centre, Wireless Planning and Coordination,
 Bureau of Energy Efficiency, CDSCO Registration, AERB Approval, LMPC
@@ -26,22 +28,26 @@ paragraph, list, inline-formatting, and safe-link content comes from the fixed
 `legal-page` collection, with typed local Blocks fallbacks mirrored in
 `../cms/src/seed/legal-pages.json`.
 
-Approval slugs are stored as relative route paths: flat values such as
+Approval service slugs remain relative CMS-managed paths: flat values such as
 `isi-certificate` and nested values such as
-`bis-certification/fmcs-bis-certification` are both supported by the catch-all
-route. Future Approval pages are published from Strapi without adding a new
-frontend page file. Their full relative paths must be unique across all nine
-Approval collections.
+`bis-certification/fmcs-bis-certification` are both preserved after the fixed
+frontend category segment by the catch-all route. Future Approval pages are
+published from Strapi without adding a new frontend page file. Their complete
+relative paths may repeat across categories; when they do, categorized URLs
+remain valid while the ambiguous uncategorized legacy path returns 404.
+
+Legacy uncategorized Corporate and Approval service URLs remain supported as
+permanent 308 redirects when exactly one category owns the requested service
+path.
 
 The current sitemap contains thirty-seven fixed active routes, including the
-three legal routes and eleven category-first service routes (nine Corporate
-and two Approval). Seven further Approval families have collection wiring
-only, with no first page, local fallback, seed mirror, or initial record, so
-they do not increase that thirty-seven-route count. The empty Global
-collections likewise add no active or local route; their complete published
-records are added to the sitemap automatically. Additional pages in all
-eighteen extensible service families are CMS-only whenever no local fallback
-exists.
+three legal routes, twenty-eight Corporate service routes, and two Approval
+service routes. Seven further Approval families have collection wiring only,
+with no first page, local fallback, seed mirror, or initial record, so they do
+not increase that thirty-seven-route count. The empty Global collections
+likewise add no active or local route; their complete published records are
+added to the sitemap automatically. Additional pages in all nineteen service
+families are CMS-only whenever no local fallback exists.
 
 ## Run locally
 
@@ -72,7 +78,9 @@ canonical URL absolute in generated metadata and is the strict origin allow-list
 for `/api/leads`; production lead intake fails closed if it is missing or
 invalid. Each legal route passes its fixed pathname to `pageMetadata`, so the
 helper emits the route canonical when `SITE_URL` is configured while preserving
-an editor-provided absolute canonical override. It does not expose credentials.
+an editor-provided absolute canonical override. Corporate and Approval pages
+force their categorized route path as canonical, including when the CMS still
+contains a flat canonical value. It does not expose credentials.
 
 Set the server-only `LEAD_WEBHOOK_BASE_URL` to
 `https://webhook.jrcompliance.com`. The browser sends consultation requests to
@@ -102,6 +110,9 @@ configuration or the Strapi token.
   `cdsco-registration-page`, `aerb-approval-page`,
   `lmpc-certification-page`, `stqc-page`, `global-country-page`, and
   `global-certificate-page` collection entries into the UI contracts.
+- `lib/service-routes.ts` is the typed frontend registry for all ten Corporate
+  and nine Approval category identifiers, labels, collection loaders, canonical
+  paths, and unique legacy-route resolution. CMS service slugs remain unchanged.
 - Legal reads filter one of the three fixed slugs, request only published
   records, explicitly populate the ordered legal sections and SEO share image,
   and use the `jr-legal-pages` cache tag with 60-second revalidation. Invalid or
@@ -110,8 +121,8 @@ configuration or the Strapi token.
   Registration, Portfolio Manager Registration, GST Registration, Shop &
   Establishment Registration, MSME Registration, ISI Certification, and EPR
   Certification have typed local fallbacks. Later fully populated records in
-  their dedicated category collections are discovered for the shared route and
-  sitemap without borrowing the first page’s content.
+  their dedicated category collections are discovered for the categorized
+  routes and sitemap without borrowing the first page’s content.
 - Telecommunication Engineering Centre, Wireless Planning and Coordination,
   Bureau of Energy Efficiency, CDSCO Registration, AERB Approval, LMPC
   Certification, and STQC deliberately have no local fallback modules. Their
