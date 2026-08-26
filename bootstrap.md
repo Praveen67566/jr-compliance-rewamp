@@ -105,48 +105,21 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Read `bootstrap.md`, `context.md`, `theme.md`, and `explaner_frontend.md`.
+Fix the sitemap lastmod dates.
 
-Implement frontend-only hierarchical routes and breadcrumbs for all existing Corporate and Approval service collections.
+Right now many pages are using the same/static date. Instead, use Strapi's real updatedAt value for each CMS page.
 
-Routes
+Requirements:
 
-- Corporate: `/corporate/{categorySlug}/{cmsServiceSlug}`
-- Approval: `/approval/{categorySlug}/{cmsServicePath}`
+Use the existing sitemap implementation.
+Do not create a second sitemap.
+For every Strapi page, set lastModified from updatedAt.
+Do not use new Date() for every page.
+Do not change all sitemap dates on every build/deploy.
+If only one Strapi page is edited, only that page's lastmod should change.
+Make sure all published/indexable pages are included, including pagination if needed.
+Exclude drafts/unpublished pages.
+Follow the existing project structure and helpers.
+Read context.md, README.md, and rules.md first if they exist.
 
-Examples:
-
-- `/corporate/company-registration/sole-proprietorship-registration`
-- `/approval/pollution-advisory/epr-certification`
-
-Requirements
-
-- Do not modify `cms/`, Strapi schemas, CMS records, or CMS slugs.
-- Category slugs are fixed frontend routing identifiers.
-- Individual service slugs remain CMS-managed.
-- Create one centralized, typed registry mapping every existing Corporate and Approval collection to its fixed category slug and display label.
-- Add `app/corporate/[category]/[slug]/page.tsx`.
-- Update the existing Approval catch-all route to recognize the category as its first segment while preserving multi-segment CMS service slugs.
-- Load services only through the collection assigned to the requested category.
-- Incorrect category/service combinations must return 404.
-- Permanently redirect existing flat URLs to their correct nested URLs.
-- Update frontend-generated links, fallback links, sitemap entries, metadata, and canonical URLs.
-- Do not create category landing pages.
-- Do not redesign the service page.
-
-Update the existing shared breadcrumb to render automatically:
-
-- `Home / Corporate / Category / Service`
-- `Home / Approval / Category / Service`
-
-Use the existing breadcrumb styling and preserve accessibility, responsiveness, focus states, and `aria-current="page"`.
-
-Add focused tests for category mapping, nested routes, multi-segment Approval slugs, incorrect combinations, redirects, breadcrumbs, canonical URLs, and sitemap paths.
-
-Run:
-
-cd frontend
-npm run typecheck
-npm run build
-
-Report all changed files and validation results. Confirm that no CMS files were changed and do not change anything unrelated.
+After the change, verify sitemap.xml and confirm that different pages have different real modification dates.

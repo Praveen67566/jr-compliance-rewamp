@@ -301,6 +301,33 @@ export async function getServiceRouteEntries(
   ];
 }
 
+export type ServiceSitemapEntry = ServiceRouteEntry & {
+  updatedAt?: string;
+};
+
+export async function getServiceSitemapEntries(
+  family: ServiceRouteFamily,
+): Promise<ServiceSitemapEntry[]> {
+  const routeEntries = await getServiceRouteEntries(family);
+  const sitemapEntries = await Promise.all(
+    routeEntries.map(async (entry) => {
+      const category = getServiceRouteCategory(family, entry.categorySlug);
+      const content = category ? await category.loadPage(entry.servicePath) : null;
+
+      if (!content || content.seo.noIndex) {
+        return null;
+      }
+
+      return {
+        ...entry,
+        ...(content.updatedAt ? { updatedAt: content.updatedAt } : {}),
+      };
+    }),
+  );
+
+  return sitemapEntries.filter((entry): entry is ServiceSitemapEntry => entry !== null);
+}
+
 export type CategorizedServicePage = {
   category: ServiceRouteCategory;
   content: CompanyRegistrationPageContent;

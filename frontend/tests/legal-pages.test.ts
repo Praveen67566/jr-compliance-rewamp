@@ -211,6 +211,10 @@ describe("fixed legal-page system", () => {
     assert.ok(cmsBootstrap.includes("legalPages.entries()"));
     assert.ok(signedReceiver.includes("strapiCacheTagBySlug"));
     assert.ok(signedReceiver.includes("isValidSignature"));
-    assert.ok(sitemap.includes("...legalPageSlugs.map"));
+    assert.match(
+      sitemap,
+      /Promise\.all\(legalPageSlugs\.map\(\(slug\) => getLegalPage\(slug\)\)\)/,
+    );
+    assert.match(sitemap, /\.\.\.lastModified\(content\.updatedAt\)/);
   });
 });

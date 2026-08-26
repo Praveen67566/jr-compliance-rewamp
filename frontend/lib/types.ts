@@ -205,6 +205,8 @@ export type PageChromeContent = {
   site: SiteSettings;
   navigation: NavigationItem[];
   footer: FooterContent;
+  /** Strapi's document timestamp; local fallback content intentionally omits it. */
+  updatedAt?: string;
 };
 
 export type HomepageContent = PageChromeContent & {

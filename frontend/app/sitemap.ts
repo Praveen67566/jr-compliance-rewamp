@@ -1,65 +1,140 @@
 import type { MetadataRoute } from "next";
 
 import { legalPageSlugs } from "@/data/legal-pages-fallback";
-import { getGlobalCertificatePaths, getGlobalCountrySlugs } from "@/lib/content";
-import { getServiceRouteEntries } from "@/lib/service-routes";
+import {
+  getAboutPage,
+  getCareersPage,
+  getContactPage,
+  getGlobalCertificatePage,
+  getGlobalCertificatePaths,
+  getGlobalCountryPage,
+  getGlobalCountrySlugs,
+  getHomepage,
+  getLegalPage,
+} from "@/lib/content";
+import { getServiceSitemapEntries } from "@/lib/service-routes";
 import { publicSiteUrl } from "@/lib/site-url";
+
+function lastModified(updatedAt: string | undefined) {
+  return updatedAt ? { lastModified: updatedAt } : {};
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = publicSiteUrl();
-  const [corporateEntries, approvalEntries, globalCountrySlugs, globalCertificatePaths] =
+  const [homepage, aboutPage, careersPage, contactPage, legalPages, serviceEntries] =
     await Promise.all([
-      getServiceRouteEntries("corporate"),
-      getServiceRouteEntries("approval"),
-      getGlobalCountrySlugs(),
-      getGlobalCertificatePaths(),
+      getHomepage(),
+      getAboutPage(),
+      getCareersPage(),
+      getContactPage(),
+      Promise.all(legalPageSlugs.map((slug) => getLegalPage(slug))),
+      Promise.all([
+        getServiceSitemapEntries("corporate"),
+        getServiceSitemapEntries("approval"),
+      ]).then((entries) => entries.flat()),
     ]);
-  const servicePaths = [
-    ...new Set(
-      [...corporateEntries, ...approvalEntries].map((entry) => entry.canonicalPath),
+  const [globalCountryPages, globalCertificatePages] = await Promise.all([
+    getGlobalCountrySlugs().then((countries) =>
+      Promise.all(
+        countries.map(async (country) => ({
+          country,
+          content: await getGlobalCountryPage(country),
+        })),
+      ),
     ),
-  ];
+    getGlobalCertificatePaths().then((paths) =>
+      Promise.all(
+        paths.map(async ({ country, slug }) => ({
+          country,
+          slug,
+          content: await getGlobalCertificatePage(country, slug),
+        })),
+      ),
+    ),
+  ]);
 
   return [
-    {
-      url: new URL("/", siteUrl).toString(),
-      changeFrequency: "weekly",
-      priority: 1,
-    },
-    {
-      url: new URL("/about-us", siteUrl).toString(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: new URL("/careers", siteUrl).toString(),
-      changeFrequency: "weekly",
-      priority: 0.7,
-    },
-    {
-      url: new URL("/contact-us", siteUrl).toString(),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    ...legalPageSlugs.map((slug) => ({
-      url: new URL(`/${slug}`, siteUrl).toString(),
-      changeFrequency: "yearly" as const,
-      priority: 0.5,
-    })),
-    ...servicePaths.map((pathname) => ({
-      url: new URL(pathname, siteUrl).toString(),
+    ...(!homepage.seo.noIndex
+      ? [
+          {
+            url: new URL("/", siteUrl).toString(),
+            ...lastModified(homepage.updatedAt),
+            changeFrequency: "weekly" as const,
+            priority: 1,
+          },
+        ]
+      : []),
+    ...(!aboutPage.seo.noIndex
+      ? [
+          {
+            url: new URL("/about-us", siteUrl).toString(),
+            ...lastModified(aboutPage.updatedAt),
+            changeFrequency: "monthly" as const,
+            priority: 0.8,
+          },
+        ]
+      : []),
+    ...(!careersPage.seo.noIndex
+      ? [
+          {
+            url: new URL("/careers", siteUrl).toString(),
+            ...lastModified(careersPage.updatedAt),
+            changeFrequency: "weekly" as const,
+            priority: 0.7,
+          },
+        ]
+      : []),
+    ...(!contactPage.seo.noIndex
+      ? [
+          {
+            url: new URL("/contact-us", siteUrl).toString(),
+            ...lastModified(contactPage.updatedAt),
+            changeFrequency: "monthly" as const,
+            priority: 0.7,
+          },
+        ]
+      : []),
+    ...legalPages.flatMap((content, index) =>
+      content.seo.noIndex
+        ? []
+        : [
+            {
+              url: new URL(`/${legalPageSlugs[index]}`, siteUrl).toString(),
+              ...lastModified(content.updatedAt),
+              changeFrequency: "yearly" as const,
+              priority: 0.5,
+            },
+          ],
+    ),
+    ...serviceEntries.map((entry) => ({
+      url: new URL(entry.canonicalPath, siteUrl).toString(),
+      ...lastModified(entry.updatedAt),
       changeFrequency: "monthly" as const,
       priority: 0.75,
     })),
-    ...globalCountrySlugs.map((country) => ({
-      url: new URL(`/globals/${country}`, siteUrl).toString(),
-      changeFrequency: "monthly" as const,
-      priority: 0.75,
-    })),
-    ...globalCertificatePaths.map(({ country, slug }) => ({
-      url: new URL(`/globals/${country}/${slug}`, siteUrl).toString(),
-      changeFrequency: "monthly" as const,
-      priority: 0.75,
-    })),
+    ...globalCountryPages.flatMap(({ country, content }) =>
+      !content || content.seo.noIndex
+        ? []
+        : [
+            {
+              url: new URL(`/globals/${country}`, siteUrl).toString(),
+              ...lastModified(content.updatedAt),
+              changeFrequency: "monthly" as const,
+              priority: 0.75,
+            },
+          ],
+    ),
+    ...globalCertificatePages.flatMap(({ country, slug, content }) =>
+      !content || content.seo.noIndex
+        ? []
+        : [
+            {
+              url: new URL(`/globals/${country}/${slug}`, siteUrl).toString(),
+              ...lastModified(content.updatedAt),
+              changeFrequency: "monthly" as const,
+              priority: 0.75,
+            },
+          ],
+    ),
   ];
 }

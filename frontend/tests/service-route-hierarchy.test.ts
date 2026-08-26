@@ -378,14 +378,13 @@ describe("fixed service route hierarchy", () => {
 
   it("publishes canonical categorized service URLs only in the sitemap", () => {
     const sitemap = source("frontend/app/sitemap.ts");
+    const serviceRoutes = source("frontend/lib/service-routes.ts");
 
-    assert.match(sitemap, /getServiceRouteEntries\("corporate"\)/);
-    assert.match(sitemap, /getServiceRouteEntries\("approval"\)/);
-    assert.match(
-      sitemap,
-      /\.map\(\(entry\) => entry\.canonicalPath\)/,
-    );
-    assert.match(sitemap, /servicePaths\.map\(\(pathname\) => \(\{/);
+    assert.match(sitemap, /getServiceSitemapEntries\("corporate"\)/);
+    assert.match(sitemap, /getServiceSitemapEntries\("approval"\)/);
+    assert.match(sitemap, /new URL\(entry\.canonicalPath, siteUrl\)/);
+    assert.match(sitemap, /lastModified\(entry\.updatedAt\)/);
+    assert.match(serviceRoutes, /if \(!content \|\| content\.seo\.noIndex\)/);
     assert.doesNotMatch(sitemap, /`\/corporate\/\$\{slug\}`/);
     assert.doesNotMatch(sitemap, /`\/approval\/\$\{routePath\}`/);
   });

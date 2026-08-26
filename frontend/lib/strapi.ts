@@ -1,5 +1,7 @@
 import "server-only";
 
+import { cache } from "react";
+
 import type {
   AboutPageContent,
   AboutValue,
@@ -2304,7 +2306,7 @@ function queryFor(slug: SingleTypeSlug): string {
   return params.toString();
 }
 
-type FixedServiceContentSlug =
+export type FixedServiceContentSlug =
   | "company-registration-page"
   | "mca-service-page"
   | "import-export-service-page"
@@ -2445,18 +2447,33 @@ const stqcCollection = {
   label: "STQC",
 } as const satisfies FixedServiceCollectionConfig;
 
+const fixedServiceCollections = [
+  companyRegistrationCollection,
+  mcaServiceCollection,
+  importExportServiceCollection,
+  governmentLicenseCertificationCollection,
+  iprServiceCollection,
+  fssaiServiceCollection,
+  sebiBusinessRegistrationCollection,
+  taxAccountingCollection,
+  labourComplianceCollection,
+  fundRaisingCollection,
+  bureauIndianStandardsCollection,
+  pollutionAdvisoryCollection,
+  telecommunicationEngineeringCentreCollection,
+  wirelessPlanningCoordinationCollection,
+  bureauEnergyEfficiencyCollection,
+  cdscoRegistrationCollection,
+  aerbApprovalCollection,
+  lmpcCertificationCollection,
+  stqcCollection,
+] as const satisfies readonly FixedServiceCollectionConfig[];
+
 function fixedServiceDetailQuery(slug: string): string {
   const params = new URLSearchParams({ status: "published" });
   params.set("filters[slug][$eq]", slug);
   params.set("pagination[pageSize]", "1");
   addPopulateTree(params, fixedServiceDetailPopulateTree);
-  return params.toString();
-}
-
-function fixedServiceSlugsQuery(): string {
-  const params = new URLSearchParams({ status: "published" });
-  params.set("fields[0]", "slug");
-  params.set("pagination[pageSize]", "100");
   return params.toString();
 }
 
@@ -2491,21 +2508,103 @@ function globalCertificatePageQuery(country: string, slug: string): string {
   return params.toString();
 }
 
-function globalCountrySlugsQuery(): string {
+export type StrapiSitemapPage = {
+  slug: string;
+  updatedAt: string;
+};
+
+export type StrapiGlobalCertificateSitemapPage = StrapiSitemapPage & {
+  country: string;
+};
+
+const sitemapPageSize = 100;
+
+function sitemapCollectionQuery(
+  routeFields: readonly string[],
+  page: number,
+  sort: readonly string[],
+): string {
   const params = new URLSearchParams({ status: "published" });
-  params.set("fields[0]", "slug");
-  params.set("sort[0]", "sortOrder:asc");
-  params.set("pagination[pageSize]", "100");
+
+  [...routeFields, "updatedAt", "publishedAt"].forEach((field, index) => {
+    params.set(`fields[${index}]`, field);
+  });
+  sort.forEach((value, index) => params.set(`sort[${index}]`, value));
+  params.set("pagination[page]", String(page));
+  params.set("pagination[pageSize]", String(sitemapPageSize));
+  params.set("pagination[withCount]", "true");
   return params.toString();
 }
 
-function globalCertificatePathsQuery(): string {
-  const params = new URLSearchParams({ status: "published" });
-  params.set("fields[0]", "countrySlug");
-  params.set("fields[1]", "slug");
-  params.set("sort[0]", "sortOrder:asc");
-  params.set("pagination[pageSize]", "100");
-  return params.toString();
+function positiveInteger(value: unknown): number | undefined {
+  if (typeof value === "number" && Number.isInteger(value) && value > 0) {
+    return value;
+  }
+
+  if (typeof value === "string" && /^[1-9]\d*$/.test(value)) {
+    return Number(value);
+  }
+
+  return undefined;
+}
+
+function strapiTimestamp(value: unknown): string | undefined {
+  const timestamp = text(value);
+  return timestamp && Number.isFinite(Date.parse(timestamp)) ? timestamp : undefined;
+}
+
+function sitemapPageMetadata(value: unknown): { updatedAt: string } | null {
+  const page = record(value);
+  const updatedAt = strapiTimestamp(page.updatedAt);
+  const publishedAt = strapiTimestamp(page.publishedAt);
+
+  return updatedAt && publishedAt ? { updatedAt } : null;
+}
+
+function withStrapiUpdatedAt<T extends PageChromeContent>(
+  content: T | null,
+  rawPage: unknown,
+): T | null {
+  const updatedAt = strapiTimestamp(record(rawPage).updatedAt);
+  return content && updatedAt ? { ...content, updatedAt } : content;
+}
+
+async function getPaginatedPublishedEntries(
+  collectionPath: string,
+  contentSlug: RevalidatableContentSlug,
+  routeFields: readonly string[],
+  sort: readonly string[],
+): Promise<unknown[]> {
+  if (!strapiUrl || !strapiApiToken) {
+    return [];
+  }
+
+  const entries: unknown[] = [];
+  let page = 1;
+  let pageCount = 1;
+
+  do {
+    const response = await fetch(
+      `${strapiUrl}/api/${collectionPath}?${sitemapCollectionQuery(routeFields, page, sort)}`,
+      {
+        headers: { Authorization: `Bearer ${strapiApiToken}` },
+        next: { revalidate: 60, tags: [strapiCacheTagBySlug[contentSlug]] },
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Strapi sitemap request for ${contentSlug} failed with ${response.status}`,
+      );
+    }
+
+    const body = (await response.json()) as { data?: unknown; meta?: unknown };
+    entries.push(...asArray(body.data));
+    pageCount = positiveInteger(record(record(body.meta).pagination).pageCount) ?? page;
+    page += 1;
+  } while (page <= pageCount);
+
+  return entries;
 }
 
 async function getLegalPageEntry(slug: LegalPageSlug): Promise<unknown> {
@@ -2546,28 +2645,6 @@ async function getGlobalCollectionEntry(
 
   const body = (await response.json()) as { data?: unknown };
   return asArray(body.data)[0] ?? null;
-}
-
-async function getGlobalPathEntries(
-  collectionPath: "global-country-pages" | "global-certificate-pages",
-  contentSlug: "global-country-page" | "global-certificate-page",
-  query: string,
-): Promise<unknown[]> {
-  if (!strapiUrl || !strapiApiToken) {
-    return [];
-  }
-
-  const response = await fetch(`${strapiUrl}/api/${collectionPath}?${query}`, {
-    headers: { Authorization: `Bearer ${strapiApiToken}` },
-    next: { revalidate: 60, tags: [strapiCacheTagBySlug[contentSlug]] },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Strapi path request for ${contentSlug} failed with ${response.status}`);
-  }
-
-  const body = (await response.json()) as { data?: unknown };
-  return asArray(body.data);
 }
 
 async function getSingleType(slug: SingleTypeSlug): Promise<unknown> {
@@ -2615,35 +2692,39 @@ async function getFixedServiceEntry(
   return asArray(body.data)[0] ?? null;
 }
 
+export const getFixedServiceSitemapPagesFromStrapi = cache(
+  async function getFixedServiceSitemapPagesFromStrapi(
+    contentSlug: FixedServiceContentSlug,
+  ): Promise<StrapiSitemapPage[]> {
+    const collection = fixedServiceCollections.find(
+      (candidate) => candidate.contentSlug === contentSlug,
+    );
+    if (!collection) {
+      return [];
+    }
+
+    const entries = await getPaginatedPublishedEntries(
+      collection.collectionPath,
+      collection.contentSlug,
+      ["slug"],
+      ["slug:asc"],
+    );
+
+    return entries.flatMap((entry) => {
+      const slug = text(record(entry).slug);
+      const metadata = sitemapPageMetadata(entry);
+      return slug && metadata ? [{ slug, ...metadata }] : [];
+    });
+  },
+);
+
 async function getFixedServiceSlugsFromStrapi(
   collection: FixedServiceCollectionConfig,
 ): Promise<string[]> {
-  if (!strapiUrl || !strapiApiToken) {
-    return [];
-  }
-
   try {
-    const response = await fetch(
-      `${strapiUrl}/api/${collection.collectionPath}?${fixedServiceSlugsQuery()}`,
-      {
-        headers: { Authorization: `Bearer ${strapiApiToken}` },
-        next: {
-          revalidate: 60,
-          tags: [strapiCacheTagBySlug[collection.contentSlug]],
-        },
-      },
+    return (await getFixedServiceSitemapPagesFromStrapi(collection.contentSlug)).map(
+      ({ slug }) => slug,
     );
-
-    if (!response.ok) {
-      throw new Error(
-        `Strapi request for ${collection.contentSlug} slugs failed with ${response.status}`,
-      );
-    }
-
-    const body = (await response.json()) as { data?: unknown };
-    return asArray(body.data)
-      .map((entry) => text(record(entry).slug))
-      .filter((slug): slug is string => Boolean(slug));
   } catch (error) {
     console.warn(
       `Unable to load ${collection.label} slugs from Strapi; using local route fallbacks.`,
@@ -2729,47 +2810,69 @@ export function getStqcSlugsFromStrapi(): Promise<string[]> {
   return getFixedServiceSlugsFromStrapi(stqcCollection);
 }
 
-export async function getGlobalCountrySlugsFromStrapi(): Promise<string[]> {
-  try {
-    const entries = await getGlobalPathEntries(
+export const getGlobalCountrySitemapPagesFromStrapi = cache(
+  async function getGlobalCountrySitemapPagesFromStrapi(): Promise<StrapiSitemapPage[]> {
+    const entries = await getPaginatedPublishedEntries(
       "global-country-pages",
       "global-country-page",
-      globalCountrySlugsQuery(),
+      ["slug"],
+      ["sortOrder:asc", "slug:asc"],
     );
 
-    return entries
-      .map((entry) => text(record(entry).slug))
-      .filter(
-        (slug): slug is string => Boolean(slug && globalRouteSegmentPattern.test(slug)),
-      );
+    return entries.flatMap((entry) => {
+      const slug = text(record(entry).slug);
+      const metadata = sitemapPageMetadata(entry);
+      return slug && metadata && globalRouteSegmentPattern.test(slug)
+        ? [{ slug, ...metadata }]
+        : [];
+    });
+  },
+);
+
+export async function getGlobalCountrySlugsFromStrapi(): Promise<string[]> {
+  try {
+    return (await getGlobalCountrySitemapPagesFromStrapi()).map(({ slug }) => slug);
   } catch (error) {
     console.warn("Unable to discover published Global country pages from Strapi.", error);
     return [];
   }
 }
 
-export async function getGlobalCertificatePathsFromStrapi(): Promise<
-  Array<{ country: string; slug: string }>
-> {
-  try {
-    const entries = await getGlobalPathEntries(
+export const getGlobalCertificateSitemapPagesFromStrapi = cache(
+  async function getGlobalCertificateSitemapPagesFromStrapi(): Promise<
+    StrapiGlobalCertificateSitemapPage[]
+  > {
+    const entries = await getPaginatedPublishedEntries(
       "global-certificate-pages",
       "global-certificate-page",
-      globalCertificatePathsQuery(),
+      ["countrySlug", "slug"],
+      ["sortOrder:asc", "countrySlug:asc", "slug:asc"],
     );
 
     return entries.flatMap((entry) => {
       const item = record(entry);
       const country = text(item.countrySlug);
       const slug = text(item.slug);
+      const metadata = sitemapPageMetadata(entry);
 
       return country &&
         slug &&
+        metadata &&
         globalRouteSegmentPattern.test(country) &&
         globalRouteSegmentPattern.test(slug)
-        ? [{ country, slug }]
+        ? [{ country, slug, ...metadata }]
         : [];
     });
+  },
+);
+
+export async function getGlobalCertificatePathsFromStrapi(): Promise<
+  Array<{ country: string; slug: string }>
+> {
+  try {
+    return (await getGlobalCertificateSitemapPagesFromStrapi()).map(
+      ({ country, slug }) => ({ country, slug }),
+    );
   } catch (error) {
     console.warn("Unable to discover published Global certificate pages from Strapi.", error);
     return [];
@@ -2789,7 +2892,7 @@ export async function getHomepageFromStrapi(
       getSingleType("site-setting"),
     ]);
 
-    return mapHomepage(fallback, page, settings);
+    return withStrapiUpdatedAt(mapHomepage(fallback, page, settings), page);
   } catch (error) {
     // The fallback keeps local design work and a temporarily unavailable CMS
     // from breaking the public experience. The server log retains the reason.
@@ -2811,7 +2914,7 @@ export async function getAboutPageFromStrapi(
       getSingleType("site-setting"),
     ]);
 
-    return mapAboutPage(fallback, page, settings);
+    return withStrapiUpdatedAt(mapAboutPage(fallback, page, settings), page);
   } catch (error) {
     console.error("Unable to load About content from Strapi; using fallback content.", error);
     return null;
@@ -2831,7 +2934,7 @@ export async function getCareersPageFromStrapi(
       getSingleType("site-setting"),
     ]);
 
-    return mapCareersPage(fallback, page, settings);
+    return withStrapiUpdatedAt(mapCareersPage(fallback, page, settings), page);
   } catch (error) {
     console.error("Unable to load Careers content from Strapi; using fallback content.", error);
     return null;
@@ -2851,7 +2954,7 @@ export async function getContactPageFromStrapi(
       getSingleType("site-setting"),
     ]);
 
-    return mapContactPage(fallback, page, settings);
+    return withStrapiUpdatedAt(mapContactPage(fallback, page, settings), page);
   } catch (error) {
     console.error("Unable to load Contact content from Strapi; using fallback content.", error);
     return null;
@@ -2872,7 +2975,9 @@ export async function getLegalPageFromStrapi(
       getSingleType("site-setting"),
     ]);
 
-    return page ? mapLegalPage(fallback, page, settings) : null;
+    return page
+      ? withStrapiUpdatedAt(mapLegalPage(fallback, page, settings), page)
+      : null;
   } catch (error) {
     console.warn(`Unable to load ${slug} from Strapi; using legal-page fallback content.`, error);
     return null;
@@ -2909,7 +3014,10 @@ async function getFixedServiceCategoryPageFromStrapi<T extends CompanyRegistrati
     ]);
 
     return page
-      ? mapFixedServiceCategoryPage(fallback, chromeFallback, slug, page, settings)
+      ? withStrapiUpdatedAt(
+          mapFixedServiceCategoryPage(fallback, chromeFallback, slug, page, settings),
+          page,
+        )
       : null;
   } catch (error) {
     console.warn(
@@ -3173,7 +3281,10 @@ export async function getGlobalCountryPageFromStrapi(
     ]);
 
     return page
-      ? mapCmsOnlyGlobalCountryPage(chromeFallback, country, page, settings)
+      ? withStrapiUpdatedAt(
+          mapCmsOnlyGlobalCountryPage(chromeFallback, country, page, settings),
+          page,
+        )
       : null;
   } catch (error) {
     console.warn(`Unable to load Global country page ${country} from Strapi.`, error);
@@ -3206,7 +3317,10 @@ export async function getGlobalCertificatePageFromStrapi(
     ]);
 
     return page
-      ? mapCmsOnlyGlobalCertificatePage(chromeFallback, country, slug, page, settings)
+      ? withStrapiUpdatedAt(
+          mapCmsOnlyGlobalCertificatePage(chromeFallback, country, slug, page, settings),
+          page,
+        )
       : null;
   } catch (error) {
     console.warn(
