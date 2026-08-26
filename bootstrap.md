@@ -105,43 +105,8 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-read ADDING_SERVICE_SECTIONS.md because i want to add a new section in all these collection pages
+Only Ui Changes:-
 
-Corporate collections:
-
-- `company-registration-page`
-- `mca-service-page`
-- `import-export-service-page`
-- `government-license-certification-page`
-- `ipr-service-page`
-- `fssai-service-page`
-- `sebi-business-registration-page`
-- `tax-accounting-page`
-- `labour-compliance-page`
-- `fund-raising-page`
-
-Approval collections:
-
-- `bureau-indian-standards-page`
-- `pollution-advisory-page`
-- `telecommunication-engineering-centre-page`
-- `wireless-planning-coordination-page`
-- `bureau-energy-efficiency-page`
-- `cdsco-registration-page`
-- `aerb-approval-page`
-- `lmpc-certification-page`
-- `stqc-page`
-
-the ui positioning tickerCta after this section and before Need clarity? this section.
-
-now the section image is given i want the same section as same position of element but ui according to the theme.
-
-and also i want to add icons in the given sections:-
-1. Business advantages
-2. Service Breakdown
-icons added in cards or like items and in ui where the circle animation is happening and these icons are optionals
-
-after these two changes verify and test and i don't want any other things to be changed now first add a section and then add icons and show where the circle animation shows.
-
-don't change anything else.
+In all 19 collection pages ui of resultsSection is so bad i dont want to put that in bule card atleast copy the design from given image the ui i want for it to be simple and text to be small
+inhace the ui only of the section don't change anything else
 

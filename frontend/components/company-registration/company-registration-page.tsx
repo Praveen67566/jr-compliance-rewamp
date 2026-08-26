@@ -241,57 +241,52 @@ function ResultsSection({ section }: { section: RegistrationResultsSection }) {
   return (
     <section
       aria-labelledby="service-results-heading"
-      className="relative isolate scroll-mt-28 overflow-hidden border-t border-cobalt-700/10 bg-ice py-14 text-white min-[560px]:py-18 min-[821px]:py-28"
+      className="relative isolate scroll-mt-28 overflow-hidden border-t border-cobalt-700/10 bg-ice py-14 text-navy-950 min-[560px]:py-18 min-[821px]:py-28"
       id="results"
     >
       <div
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_82%_20%,rgba(22,140,245,0.12),transparent_28%),radial-gradient(circle_at_8%_88%,rgba(13,92,184,0.08),transparent_28%)]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_82%_18%,rgba(22,140,245,0.09),transparent_30%),radial-gradient(circle_at_8%_88%,rgba(13,92,184,0.06),transparent_30%)]"
         aria-hidden="true"
       />
-      <div className="mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
-        <div className="relative isolate grid min-w-0 overflow-hidden rounded-[30px] border border-sky/25 bg-[linear-gradient(135deg,var(--blue-navy-800),var(--blue-navy-950))] p-7 shadow-[0_30px_80px_rgba(3,19,47,0.24)] min-[560px]:p-10 min-[821px]:p-12 min-[1100px]:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] min-[1100px]:gap-14">
-          <div
-            className="pointer-events-none absolute inset-0 -z-10 opacity-25 [background-image:linear-gradient(rgba(139,220,255,0.12)_1px,transparent_1px),linear-gradient(90deg,rgba(139,220,255,0.12)_1px,transparent_1px)] [background-size:42px_42px] [mask-image:linear-gradient(110deg,black,transparent_82%)]"
-            aria-hidden="true"
-          />
-          <div
-            className="pointer-events-none absolute -right-32 -top-32 -z-10 size-80 rounded-full border border-sky/15 shadow-[0_0_0_42px_rgba(22,140,245,0.035)]"
-            aria-hidden="true"
-          />
-
-          <div className="min-w-0">
-            <div className="inline-flex max-w-full flex-wrap items-center gap-3 rounded-full border border-sky/22 bg-white/[0.055] px-4 py-2.5 text-xs text-ice/82">
-              <strong className="font-extrabold text-white">{section.rating.label}</strong>
+      <div className="mx-auto w-full max-w-[1180px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
+        <div className="grid min-w-0 items-start gap-5 min-[821px]:gap-6 min-[1100px]:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)]">
+          <div className="relative flex min-w-0 flex-col overflow-hidden rounded-[22px] border border-cobalt-700/12 bg-cloud p-5 shadow-[0_20px_55px_rgba(3,19,47,0.08)] min-[560px]:p-7 min-[821px]:p-8">
+            <span
+              className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-[linear-gradient(90deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))]"
+              aria-hidden="true"
+            />
+            <div className="flex w-fit max-w-full flex-wrap items-center gap-x-3 gap-y-2 rounded-full border border-cobalt-700/10 bg-ice/70 px-3 py-2 text-xs text-navy-700/80">
+              <strong className="font-extrabold text-navy-950">{section.rating.label}</strong>
               <span className="flex items-center gap-1" aria-hidden="true">
                 {Array.from({ length: 5 }, (_, index) => (
                   <span
-                    className="flex size-5 items-center justify-center rounded-[5px] border border-sky/35 bg-electric/20 text-[0.68rem] leading-none text-sky"
+                    className="flex size-[18px] items-center justify-center rounded-[4px] border border-cobalt-700/15 bg-electric text-[0.58rem] leading-none text-white shadow-[0_3px_8px_rgba(22,140,245,0.16)]"
                     key={index}
                   >
                     ★
                   </span>
                 ))}
               </span>
-              <span className="font-bold text-sky">{section.rating.source}</span>
+              <span className="font-bold text-cobalt-700">{section.rating.source}</span>
             </div>
 
             <h2
-              className="mb-0 mt-7 max-w-[700px] break-words font-display text-[clamp(2.5rem,4vw,4.35rem)] leading-[0.97] tracking-[-0.045em] text-white"
+              className="mb-0 mt-6 max-w-[540px] break-words font-sans text-[clamp(1.75rem,2.2vw,2.4rem)] font-bold leading-[1.08] tracking-[-0.035em] text-navy-950"
               id="service-results-heading"
             >
               {section.title}
             </h2>
-            <p className="mb-0 mt-5 max-w-[680px] break-words text-base leading-7 text-ice/72 md:text-lg md:leading-8">
+            <p className="mb-0 mt-3 max-w-[540px] break-words text-sm leading-6 text-navy-700/75">
               {section.description}
             </p>
 
-            <dl className={`mt-9 grid gap-px overflow-hidden rounded-[20px] border border-sky/18 bg-sky/15 ${statsGrid}`}>
+            <dl className={`mt-8 grid gap-5 border-t border-cobalt-700/10 pt-6 ${statsGrid}`}>
               {section.stats.map((stat, index) => (
-                <div className="flex min-w-0 flex-col bg-navy-900/85 p-5 md:p-6" key={`${stat.label}-${index}`}>
-                  <dt className="order-2 mt-2 break-words text-xs font-bold leading-5 text-ice/60">
+                <div className="flex min-w-0 flex-col border-l-2 border-electric/25 pl-4" key={`${stat.label}-${index}`}>
+                  <dt className="order-2 mt-1.5 break-words text-[0.7rem] font-semibold leading-5 text-navy-700/75">
                     {stat.label}
                   </dt>
-                  <dd className="order-1 m-0 break-words font-display text-[2rem] leading-none tracking-[-0.025em] text-white">
+                  <dd className="order-1 m-0 break-words font-display text-[1.75rem] leading-none tracking-[-0.02em] text-navy-950">
                     {stat.value}
                   </dd>
                 </div>
@@ -299,21 +294,25 @@ function ResultsSection({ section }: { section: RegistrationResultsSection }) {
             </dl>
           </div>
 
-          <blockquote className="relative mb-0 mt-8 flex min-w-0 flex-col justify-center overflow-hidden rounded-[24px] border border-sky/20 bg-white/[0.055] p-7 shadow-[inset_0_1px_rgba(255,255,255,0.05)] min-[560px]:p-9 min-[1100px]:mt-0">
-            <span className="pointer-events-none absolute right-7 top-4 font-display text-[5.5rem] leading-none text-sky/15" aria-hidden="true">
-              “
-            </span>
-            <div className="mb-7 flex items-center gap-3" aria-hidden="true">
-              <span className="size-2.5 rounded-full border-2 border-sky bg-electric shadow-[0_0_18px_rgba(139,220,255,0.72)]" />
-              <span className="h-px flex-1 bg-[linear-gradient(90deg,var(--blue-sky),transparent)]" />
+          <blockquote className="relative mx-0 mb-0 flex min-w-0 flex-col overflow-hidden rounded-[22px] border border-cobalt-700/12 bg-cloud p-5 shadow-[0_20px_55px_rgba(3,19,47,0.08)] min-[560px]:p-7 min-[821px]:p-8">
+            <div className="flex items-center gap-4" aria-hidden="true">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-full border border-cobalt-700/12 bg-cloud font-display text-[1.8rem] leading-none text-cobalt-600/55 shadow-[0_8px_20px_rgba(13,92,184,0.08)]">
+                “
+              </span>
+              <span className="h-px flex-1 bg-[linear-gradient(90deg,rgba(13,92,184,0.2),transparent)]" />
             </div>
-            <p className="relative mb-0 break-words font-display text-[clamp(1.65rem,2.3vw,2.35rem)] leading-[1.12] tracking-[-0.025em] text-white">
-              “{section.quote}”
+            <p className="mb-0 mt-5 max-w-[60ch] break-words text-[0.95rem] font-normal leading-7 text-navy-800">
+              {section.quote}
             </p>
-            <footer className="mt-8 border-t border-sky/15 pt-6 text-sm leading-6 text-ice/65">
+            <footer className="mt-7 border-t border-cobalt-700/10 pt-5 text-xs leading-5 text-navy-700/75">
               <cite className="not-italic">
-                <strong className="block break-words text-base text-sky">{section.name}</strong>
-                {attribution ? <span className="mt-1 block break-words">{attribution}</span> : null}
+                <span className="flex items-start gap-3">
+                  <span className="mt-1.5 size-2 shrink-0 rounded-full bg-electric shadow-[0_0_10px_rgba(22,140,245,0.35)]" aria-hidden="true" />
+                  <span className="min-w-0">
+                    <strong className="block break-words text-sm font-bold text-cobalt-700">{section.name}</strong>
+                    {attribution ? <span className="mt-0.5 block break-words">{attribution}</span> : null}
+                  </span>
+                </span>
               </cite>
             </footer>
           </blockquote>
