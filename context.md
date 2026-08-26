@@ -139,10 +139,11 @@ responsive legal template; they are not a generic page builder.
   seed mirror, or database backfill is added for the optional field.
 - Those same fixed collections expose an optional results panel between the
   breakdown and ticker CTA. Its rating copy, one to three ordered metrics, and
-  testimonial attribution are CMS managed. Advantage items and breakdown
-  groups also accept optional icons, rendered decoratively inside their
-  existing animated rings. Empty fields preserve the existing pages, and no
-  fallback, seed mirror, or database backfill supplies them.
+  testimonial attribution are CMS managed. Detail items in Challenges,
+  Advantages, Process, and Why Choose, plus Breakdown groups, also accept
+  optional icons rendered decoratively inside their themed circular artwork.
+  Empty fields preserve the existing pages, and no fallback, seed mirror, or
+  database backfill supplies them.
 - The first MCA Services page, `/corporate/mca-services/dsc-certificate`, uses
   the same fixed Tailwind template with its own dedicated `mca-service-page`
   CMS collection, typed fallback, migration record, cache tag, and legacy DSC

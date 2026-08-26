@@ -77,6 +77,35 @@ function SectionHeading({
   );
 }
 
+type DecorativeCardIconProps = {
+  src: string;
+  size: "compact" | "standard";
+  surface: "dark" | "light";
+};
+
+function DecorativeCardIcon({ src, size, surface }: DecorativeCardIconProps) {
+  const standard = size === "standard";
+
+  return (
+    <span
+      aria-hidden="true"
+      className={`pointer-events-none absolute left-1/2 top-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border shadow-[0_5px_18px_rgba(3,19,47,0.18)] ${
+        standard ? "size-12" : "size-8"
+      } ${surface === "light" ? "border-sky/45 bg-ice/95" : "border-sky/30 bg-navy-950/90"}`}
+    >
+      <img
+        alt=""
+        aria-hidden="true"
+        className={`pointer-events-none select-none object-contain ${standard ? "size-10" : "size-7"}`}
+        height={standard ? 40 : 28}
+        loading="lazy"
+        src={src}
+        width={standard ? 40 : 28}
+      />
+    </span>
+  );
+}
+
 function DetailCard({ item, index, light = false }: { item: RegistrationDetail; index: number; light?: boolean }) {
   return (
     <article
@@ -92,6 +121,24 @@ function DetailCard({ item, index, light = false }: { item: RegistrationDetail; 
         }`}
         aria-hidden="true"
       />
+      {item.icon ? (
+        <span className="pointer-events-none absolute right-5 top-5 size-16" aria-hidden="true">
+          <span
+            className={`absolute inset-0 z-0 rounded-full border border-dashed motion-safe:animate-[service-orbit_14s_linear_infinite] ${
+              light ? "border-sky/35" : "border-cobalt-600/25"
+            }`}
+          >
+            <span
+              className={`absolute -top-1 left-1/2 size-2 -translate-x-1/2 rounded-full ${
+                light
+                  ? "bg-sky shadow-[0_0_13px_rgba(139,220,255,0.72)]"
+                  : "bg-electric shadow-[0_0_13px_rgba(22,140,245,0.68)]"
+              }`}
+            />
+          </span>
+          <DecorativeCardIcon size="standard" src={item.icon} surface={light ? "light" : "dark"} />
+        </span>
+      ) : null}
       <span className={`text-[0.68rem] font-extrabold tracking-[0.14em] ${light ? "text-sky" : "text-cobalt-600"}`}>
         {String(index + 1).padStart(2, "0")}
       </span>
@@ -127,7 +174,16 @@ function PlanningCard({ item, index }: { item: RegistrationDetail; index: number
         <span className="relative h-px flex-1 overflow-hidden bg-sky/15">
           <span className="absolute inset-0 origin-left scale-x-0 bg-[linear-gradient(90deg,transparent,var(--blue-sky),transparent)] transition-transform duration-500 motion-safe:group-hover:scale-x-100" />
         </span>
-        <span className="size-2 rounded-full border border-sky/70 bg-sky shadow-[0_0_14px_rgba(139,220,255,0.72)]" />
+        {item.icon ? (
+          <span className="pointer-events-none relative size-14 shrink-0" aria-hidden="true">
+            <span className="absolute inset-0 z-0 rounded-full border border-dashed border-sky/45 motion-safe:animate-[service-orbit_14s_linear_infinite]">
+              <span className="absolute -top-1 left-1/2 size-2 -translate-x-1/2 rounded-full bg-sky shadow-[0_0_14px_rgba(139,220,255,0.72)]" />
+            </span>
+            <DecorativeCardIcon size="standard" src={item.icon} surface="light" />
+          </span>
+        ) : (
+          <span className="size-2 rounded-full border border-sky/70 bg-sky shadow-[0_0_14px_rgba(139,220,255,0.72)]" />
+        )}
       </div>
       <h3 className="relative mb-0 mt-8 max-w-[22rem] break-words font-display text-[1.9rem] leading-[1.02] tracking-[-0.03em] text-white">
         {item.title}
@@ -143,20 +199,13 @@ function AdvantageCard({ item, index }: { item: RegistrationDetail; index: numbe
   return (
     <article className="group relative h-full min-w-0 overflow-hidden rounded-[24px] border border-cobalt-700/15 bg-[linear-gradient(145deg,var(--blue-cloud),rgba(234,246,255,0.76))] p-6 shadow-[0_18px_48px_rgba(3,19,47,0.09)] transition-[transform,border-color,box-shadow] duration-300 hover:border-cobalt-600/45 hover:shadow-[0_28px_65px_rgba(13,92,184,0.16)] motion-safe:hover:-translate-y-2 md:p-8">
       <div
-        className="absolute right-5 top-5 size-16"
+        className="pointer-events-none absolute right-5 top-5 size-16"
         aria-hidden="true"
       >
-        <span className="absolute inset-0 rounded-full border border-cobalt-600/15 motion-safe:animate-[service-orbit_14s_linear_infinite]">
+        <span className="absolute inset-0 z-0 rounded-full border border-cobalt-600/15 motion-safe:animate-[service-orbit_14s_linear_infinite]">
           <span className="absolute -top-1 left-1/2 size-2 -translate-x-1/2 rounded-full bg-electric shadow-[0_0_13px_rgba(22,140,245,0.75)]" />
         </span>
-        {item.icon ? (
-          <img
-            alt=""
-            className="absolute left-1/2 top-1/2 size-8 -translate-x-1/2 -translate-y-1/2 object-contain"
-            loading="lazy"
-            src={item.icon}
-          />
-        ) : null}
+        {item.icon ? <DecorativeCardIcon size="standard" src={item.icon} surface="dark" /> : null}
       </div>
       <div className="relative flex items-center gap-3">
         <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl border border-cobalt-600/25 bg-electric text-[0.68rem] font-extrabold tracking-[0.12em] text-white shadow-[0_10px_26px_rgba(22,140,245,0.22)]">
@@ -503,9 +552,23 @@ export function CompanyRegistrationPage({
           <ol className="grid grid-cols-1 gap-px overflow-hidden rounded-[26px] border border-sky/15 bg-sky/15 md:grid-cols-2 lg:grid-cols-3">
             {content.process.items.map((item, index) => (
               <li className="min-w-0 min-h-[230px] bg-navy-950 p-7 md:p-9" key={`${item.title}-${index}`}>
-                <span className="inline-flex size-11 items-center justify-center rounded-full border border-sky/35 text-xs font-extrabold text-sky">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
+                {item.icon ? (
+                  <div className="flex items-center gap-3">
+                    <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-full border border-sky/35 text-xs font-extrabold text-sky">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span className="pointer-events-none relative size-10 shrink-0" aria-hidden="true">
+                      <span className="absolute inset-0 z-0 rounded-full border border-dashed border-sky/35 motion-safe:animate-[service-orbit_12s_linear_infinite]">
+                        <span className="absolute -top-0.5 left-1/2 size-1.5 -translate-x-1/2 rounded-full bg-sky shadow-[0_0_10px_rgba(139,220,255,0.72)]" />
+                      </span>
+                      <DecorativeCardIcon size="compact" src={item.icon} surface="light" />
+                    </span>
+                  </div>
+                ) : (
+                  <span className="inline-flex size-11 items-center justify-center rounded-full border border-sky/35 text-xs font-extrabold text-sky">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                )}
                 <h3 className="mt-8 break-words font-display text-[1.75rem] leading-[1.05] text-white">{item.title}</h3>
                 <p className="mt-4 break-words text-sm leading-7 text-ice/70">{item.description}</p>
               </li>
@@ -623,18 +686,11 @@ export function CompanyRegistrationPage({
                     <span className="inline-flex min-h-8 items-center rounded-full border border-sky/30 bg-sky/10 px-3 text-[0.68rem] font-extrabold tracking-[0.14em] text-sky">
                       {String(groupIndex + 1).padStart(2, "0")}
                     </span>
-                    <span className="relative size-9" aria-hidden="true">
-                      <span className="absolute inset-0 rounded-full border border-dashed border-sky/35 motion-safe:animate-[service-orbit_13s_linear_infinite]">
+                    <span className="pointer-events-none relative size-9" aria-hidden="true">
+                      <span className="absolute inset-0 z-0 rounded-full border border-dashed border-sky/35 motion-safe:animate-[service-orbit_13s_linear_infinite]">
                         <span className="absolute -top-1 left-1/2 size-2 -translate-x-1/2 rounded-full bg-sky shadow-[0_0_12px_rgba(139,220,255,0.75)]" />
                       </span>
-                      {group.icon ? (
-                        <img
-                          alt=""
-                          className="absolute left-1/2 top-1/2 size-[1.125rem] -translate-x-1/2 -translate-y-1/2 object-contain"
-                          loading="lazy"
-                          src={group.icon}
-                        />
-                      ) : null}
+                      {group.icon ? <DecorativeCardIcon size="compact" src={group.icon} surface="light" /> : null}
                     </span>
                   </div>
                   <h3 className="mb-0 mt-8 break-words font-display text-[2rem] leading-none tracking-[-0.03em] text-white">

@@ -203,10 +203,11 @@ Across all nineteen fixed service-detail collections, four additions are
 optional for backwards-compatible rollout. `trustedLogos` renders immediately
 after `hero`, `youtubeVideos` renders immediately after `whyChoose`,
 `resultsSection` renders after `breakdown`, and `tickerCta` renders after the
-results section and immediately before `faqs`. Advantage items and breakdown
-groups also accept optional image icons, rendered as decorative artwork inside
-their existing animated rings. None changes the existing required sections,
-and no seed, fallback, or database backfill populates them.
+results section and immediately before `faqs`. Detail items in Challenges,
+Advantages, Process, and Why Choose, plus Breakdown groups, also accept optional
+image icons rendered as decorative artwork inside their themed circular
+holders. None changes the existing required sections, and no seed, fallback,
+or database backfill populates them.
 
 | Field | Strapi field | Rules |
 | --- | --- | --- |
@@ -491,8 +492,9 @@ is omitted without invalidating the rest of the service record.
 1. Open the intended family collection in Strapi Content Manager.
 2. Create a record and complete `title`, `menuLabel`, every required fixed
    content section, SEO, and `sortOrder`. Add **Trusted Logos**, **YouTube
-   Videos**, **Results Section**, **Ticker CTA**, and optional Advantage or
-   Breakdown icons only when approved content is available.
+   Videos**, **Results Section**, **Ticker CTA**, and optional icons for
+   Challenges, Advantages, Process, Why Choose, or Breakdown only when approved
+   content is available.
 3. Enter a route-safe relative `slug` with no leading slash. Manually verify
    that the full path is unique across all nine Approval collections because a
    Strapi UID is unique only within its own collection.
@@ -661,7 +663,7 @@ settings, colour pickers, Webflow IDs, or public form endpoints.
 | `contact.response-step` | `title` short text*, `description` long text* |
 | `contact.response` | `eyebrow` short text, `title` short text*, `steps` repeatable `contact.response-step`* |
 | `registration.text-item` | `text` long text* |
-| `registration.detail-item` | `title` short text*, `description` long text*, `icon` single image media; the shared picker is optional and the frontend renders it only for Advantage cards |
+| `registration.detail-item` | `title` short text*, `description` long text*, `icon` single image media; the shared picker is optional and the frontend renders it in Challenges, Advantages, Process, and Why Choose cards |
 | `registration.hero` | `eyebrow` short text*, `description` long text*, `cta` `shared.cta`*; page H1 comes from the parent `title` |
 | `registration.overview` | `eyebrow` short text*, `title` short text*, `paragraphs` repeatable `registration.text-item`* |
 | `registration.card-section` | `eyebrow` short text*, `title` short text*, `items` repeatable `registration.detail-item`* |
@@ -739,9 +741,9 @@ invent claims or silently repair source inconsistencies.
 | `/approval/isi-certificate` (Bureau of Indian Standards) | `site/approval/isi-certificate.html` | Page-specific ISI Certification SEO, hero and overview, four challenges, four advantages, six service steps, four Why JR cards, Eligibility/Documents/Who Needs It breakdown, five FAQs, and shared final CTA. Exclude duplicated template sections, hidden placeholders, unrelated testimonials/resources, Webflow forms, and all legacy UI/transport code. |
 | `/approval/epr-certification` (Pollution Advisory) | `site/approval/epr-certification.html` | Page-specific EPR SEO, hero and overview, five service-scope items, four benefits, four service steps, three Why JR cards, Documents Required breakdown, five FAQs, and shared final CTA. Exclude duplicated template sections, hidden placeholders, unrelated testimonials/resources, Webflow forms, and all legacy UI/transport code. |
 
-The optional service-page trusted-logo, YouTube, results, ticker, Advantage
-icon, and Breakdown icon fields are not sourced from these legacy pages and
-are not added to frontend fallbacks or historical seed JSON. Deploying the
+The optional service-page trusted-logo, YouTube, results, ticker, detail-item
+icon, and Breakdown group icon fields are not sourced from these legacy pages
+and are not added to frontend fallbacks or historical seed JSON. Deploying the
 schema performs no record backfill; editors populate the fields selectively
 after review.
 

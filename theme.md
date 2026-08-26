@@ -186,9 +186,12 @@ those shared components before adding route-specific CSS.
   unmodified copies in `images/services/` remain archival approved assets.
 - Treat adjacent labelled service artwork as decorative (`alt=""`). Do not
   recolour client logos.
-- Optional fixed-service Advantage and Breakdown icons are decorative CMS
-  media. Keep each icon stationary and centered inside its existing animated
-  orbit ring; when no icon is selected, preserve the current signal dot.
+- Optional fixed-service icons are decorative CMS media. Detail-item icons
+  render in Challenges, Advantages, Process, and Why Choose; group icons render
+  in Breakdown. Keep each icon stationary and centered inside its themed
+  circular holder while only the surrounding ring or node artwork animates.
+  When no icon is selected, preserve the current signal, numbering, spacing,
+  and animation.
 
 ## Motion
 

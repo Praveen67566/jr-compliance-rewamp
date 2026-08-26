@@ -75,11 +75,12 @@ nineteen schemas.
 The current shared contract also supports two optional, CMS-only visual
 enhancements. `resultsSection` sits between `breakdown` and `tickerCta`, and
 uses editor-owned rating text, heading/body copy, one to three ordered
-`about.stat` metrics, and testimonial attribution. Advantage detail items and
-breakdown groups may each select one optional image icon. The frontend renders
-those icons only inside the existing animated ring artwork for those two
-sections. Empty results or icon fields preserve the existing page exactly;
-they are not populated in fallback or historical seed content.
+`about.stat` metrics, and testimonial attribution. Detail items in Challenges,
+Advantages, Process, and Why Choose, plus Breakdown groups, may each select one
+optional image icon. The frontend renders each icon decoratively and stationary
+inside that section's themed circular artwork; only the surrounding ring or
+node may animate. Empty results or icon fields preserve the existing page
+exactly; they are not populated in fallback or historical seed content.
 
 ## Implementation workflow
 
@@ -213,8 +214,9 @@ Tests should verify, as applicable:
 - Missing or invalid optional content is omitted safely.
 - The React source/render order matches the approved sequence.
 - Accessibility, responsive, URL-safety, and performance attributes are present.
-- Optional decorative icons stay inside their intended animation rings, use
-  empty alternative text, and do not appear in other shared card-section uses.
+- Optional decorative icons stay inside their intended circular holders, use
+  empty alternative text, and render only in Challenges, Advantages, Process,
+  Why Choose, and Breakdown.
 - A results/testimonial section uses semantic heading, metric, `blockquote`,
   and `cite` markup when present.
 - Existing fallback/seed parity tests still pass unchanged.

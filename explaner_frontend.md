@@ -314,9 +314,11 @@ The main flow is:
   title labels a lazy 16:9 `youtube-nocookie.com` iframe with no autoplay,
   `allowFullScreen`, and `strict-origin-when-cross-origin` referrer policy. The
   results panel renders immediately after Breakdown and uses a responsive
-  navy/cobalt metric-and-testimonial layout. Optional Advantage and Breakdown
-  icons remain stationary inside the existing animated rings. The reused
-  `.contact-ticker` renders after Results and immediately before FAQ.
+  navy/cobalt metric-and-testimonial layout. Optional detail-item icons render
+  in Challenges, Advantages, Process, and Why Choose, while optional group
+  icons render in Breakdown. Each icon remains stationary inside its themed
+  circular holder. The reused `.contact-ticker` renders after Results and
+  immediately before FAQ.
 
 `frontend/components/global/global-country-page.tsx`
 : Dedicated responsive country-landing template. It renders the CMS-owned hero
@@ -436,9 +438,9 @@ they render no local or placeholder content.
 The existing fallback files keep their implemented routes working when Strapi
 is offline. They also document the expected content shape for
 editors/developers. Optional service-page trusted logos, YouTube videos,
-results content, ticker content, and Advantage/Breakdown icons are not added
-to fallback or seed mirrors; existing pages remain unchanged until editors
-populate and publish those CMS fields.
+results content, ticker content, detail-item icons, and Breakdown group icons
+are not added to fallback or seed mirrors; existing pages remain unchanged
+until editors populate and publish those CMS fields.
 
 ## Library files
 
@@ -453,8 +455,9 @@ populate and publish those CMS fields.
   Wireless Planning and Coordination, Bureau of Energy Efficiency, CDSCO
   Registration, AERB Approval, LMPC Certification, and STQC service-detail
   models, including optional trusted logos, the service-page YouTube video
-  section, optional results proof, optional Advantage/Breakdown icon URLs, and
-  ticker CTA. It also defines the separate `GlobalCountryPageData` /
+  section, optional results proof, optional detail-item and Breakdown group
+  icon URLs, and ticker CTA. It also defines the separate
+  `GlobalCountryPageData` /
   `GlobalCountryPageContent` and `GlobalCertificatePageData` /
   `GlobalCertificatePageContent` contracts used only by the Global templates.
 
@@ -537,9 +540,9 @@ cached Global country and certificate loaders as `getGlobalCountryPage`,
 : Preserves the existing service fallback/seed parity checks and verifies that
   all nineteen schemas expose the optional trusted-logo relation and three
   optional top-level components in the fixed order, including the bounded
-  results contract, optional icon media, explicit population, safe mapper
-  behavior, semantic results markup, shared marquee reuse, and accessible lazy
-  iframe attributes.
+  results contract, optional icon media across the five intended card sections,
+  explicit population, safe mapper behavior, semantic results markup, shared
+  marquee reuse, and accessible lazy iframe attributes.
 
 `frontend/tests/youtube.test.ts`
 : Covers every supported YouTube URL shape and rejects non-HTTPS, unsafe-host,

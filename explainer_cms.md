@@ -49,10 +49,10 @@ collections are schema integrations only and contain no bundled records.
 Every fixed service-detail collection also exposes an optional `trustedLogos`
 relation plus three optional top-level components. Trusted logos follow the
 hero, `youtubeVideos` follows Why JR, `resultsSection` follows the breakdown,
-and `tickerCta` follows Results and precedes FAQ. Advantage items and Breakdown
-groups also accept optional image icons. Leaving any of these fields empty
-preserves the existing page and does not make an otherwise complete record
-invalid.
+and `tickerCta` follows Results and precedes FAQ. Detail items in Challenges,
+Advantages, Process, and Why Choose, plus Breakdown groups, also accept optional
+image icons. Leaving any of these fields empty preserves the existing page and
+does not make an otherwise complete record invalid.
 
 The frontend reads published CMS content using a server-only API token. If
 Strapi is unavailable, fallback-backed routes use local data from
@@ -238,7 +238,7 @@ created and published directly through Strapi Content Manager after schema and
 token permissions are deployed.
 
 The optional `trustedLogos`, `youtubeVideos`, `resultsSection`, `tickerCta`,
-Advantage icon, and Breakdown icon service fields are also not added to
+detail-item icon, and Breakdown group icon service fields are also not added to
 historical seed JSON or frontend fallback data, and bootstrap performs no
 backfill. Editors opt records into these fields after the schema is deployed.
 
@@ -457,8 +457,9 @@ Strapi components are reusable field groups stored as JSON schemas in `cms/src/c
 `cms/src/components/registration/`
 : Fixed Company Registration field groups for hero copy, overview paragraphs,
   detail cards, ordered titled YouTube videos, breakdown groups, FAQs, and
-  their section wrappers. Detail items and breakdown groups accept optional
-  image icons. `registration.youtube-video` stores a title and URL;
+  their section wrappers. Detail-item icons render in Challenges, Advantages,
+  Process, and Why Choose, while breakdown-group icons render in Breakdown.
+  `registration.youtube-video` stores a title and URL;
   `registration.youtube-video-section` stores its heading, optional description,
   and one or more videos. `registration.results-section` stores required rating
   copy, heading/body, one to three ordered metrics, and testimonial attribution.
@@ -557,9 +558,9 @@ PostgreSQL variables for local and deployed CMS environments are defined in
 - On any fixed service record, editors may optionally select client Brand Logo
   records under **Trusted Logos**, add one or more titled HTTPS single-video
   YouTube URLs under **YouTube Videos**, add a **Results Section**, add a
-  **Ticker CTA**, and select Advantage or Breakdown icons. Leave these fields
-  empty for the backwards-compatible rollout; no seed, fallback, or database
-  backfill is required.
+  **Ticker CTA**, and select icons for Challenges, Advantages, Process, Why
+  Choose, or Breakdown. Leave these fields empty for the backwards-compatible
+  rollout; no seed, fallback, or database backfill is required.
 - Deploying `legal-page` does not populate the active PostgreSQL database.
   Review and publish exactly the three allowed records through Content Manager,
   or use the reviewed `content,files` transfer workflow after backups. Grant the
