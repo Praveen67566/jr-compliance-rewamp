@@ -57,6 +57,8 @@ import type {
   Recognition,
   RegistrationBreakdownGroup,
   RegistrationDetail,
+  RegistrationResultStat,
+  RegistrationResultsSection,
   SebiBusinessRegistrationPageContent,
   Service,
   ServiceCategory,
@@ -244,11 +246,12 @@ const fixedServiceDetailPopulateTree: PopulateTree = {
   trustedLogos: { logo: true },
   overview: { paragraphs: true },
   challenges: { items: true },
-  advantages: { items: true },
+  advantages: { items: { icon: true } },
   process: { items: true },
   whyChoose: { items: true },
   youtubeVideos: { videos: true },
-  breakdown: { groups: { items: true } },
+  breakdown: { groups: { icon: true, items: true } },
+  resultsSection: { stats: true },
   tickerCta: { cta: true },
   faqs: { items: true },
   finalCta: { cta: true },
@@ -1523,7 +1526,10 @@ function mapRegistrationDetails(
       const item = record(entry);
       const title = text(item.title);
       const description = text(item.description);
-      return title && description ? { title, description } : null;
+      const icon = mediaUrl(item.icon);
+      return title && description
+        ? { title, description, ...(icon ? { icon } : {}) }
+        : null;
     })
     .filter((item): item is RegistrationDetail => Boolean(item));
 
@@ -1560,7 +1566,8 @@ function mapRegistrationBreakdown(
         (candidate) => candidate.title.toLowerCase() === title.toLowerCase(),
       );
       const items = mapTextList(group.items, fallbackGroup?.items ?? []);
-      return items.length ? { title, items } : null;
+      const icon = mediaUrl(group.icon);
+      return items.length ? { title, items, ...(icon ? { icon } : {}) } : null;
     })
     .filter((group): group is RegistrationBreakdownGroup => Boolean(group));
 
@@ -1636,6 +1643,44 @@ function mapFixedServiceTickerCta(
     : null;
 }
 
+function mapFixedServiceResultsSection(value: unknown): RegistrationResultsSection | null {
+  const section = record(value);
+  const ratingLabel = text(section.ratingLabel);
+  const ratingSource = text(section.ratingSource);
+  const title = text(section.title);
+  const description = text(section.description);
+  const quote = text(section.quote);
+  const name = text(section.personName);
+  const role = text(section.personRole);
+  const company = text(section.companyName);
+  const stats = orderedEntries(section.stats)
+    .map((entry) => {
+      const stat = record(entry);
+      const value = text(stat.value);
+      const label = text(stat.label);
+
+      return value && label ? { value, label } : null;
+    })
+    .filter((stat): stat is RegistrationResultStat => Boolean(stat))
+    .slice(0, 3);
+
+  return ratingLabel && ratingSource && title && description && stats.length && quote && name
+    ? {
+        rating: {
+          label: ratingLabel,
+          source: ratingSource,
+        },
+        title,
+        description,
+        stats,
+        quote,
+        name,
+        ...(role ? { role } : {}),
+        ...(company ? { company } : {}),
+      }
+    : null;
+}
+
 function strictTextList(value: unknown): string[] | null {
   const source = orderedEntries(value);
   const items = source.map(
@@ -1651,7 +1696,10 @@ function strictRegistrationDetails(value: unknown): RegistrationDetail[] | null 
     const item = record(entry);
     const title = text(item.title);
     const description = text(item.description);
-    return title && description ? { title, description } : null;
+    const icon = mediaUrl(item.icon);
+    return title && description
+      ? { title, description, ...(icon ? { icon } : {}) }
+      : null;
   });
 
   return items.length && items.every((item): item is RegistrationDetail => Boolean(item)) ? items : null;
@@ -1679,7 +1727,10 @@ function strictFixedServiceBreakdown(
     const group = record(entry);
     const groupTitle = text(group.title);
     const items = strictTextList(group.items);
-    return groupTitle && items ? { title: groupTitle, items } : null;
+    const icon = mediaUrl(group.icon);
+    return groupTitle && items
+      ? { title: groupTitle, items, ...(icon ? { icon } : {}) }
+      : null;
   });
 
   return eyebrow && title && groups.length && groups.every((group): group is RegistrationBreakdownGroup => Boolean(group))
@@ -2152,6 +2203,7 @@ function mapCmsOnlyFixedServiceDetailPage<T extends CompanyRegistrationPageConte
   const process = strictFixedServiceCardSection(page.process);
   const whyChoose = strictFixedServiceCardSection(page.whyChoose);
   const breakdown = strictFixedServiceBreakdown(page.breakdown);
+  const resultsSection = mapFixedServiceResultsSection(page.resultsSection);
   const faqs = strictFixedServiceFaqSection(page.faqs);
   const youtubeVideos = mapFixedServiceYouTubeVideos(page.youtubeVideos);
   const tickerCta = mapFixedServiceTickerCta(page.tickerCta);
@@ -2207,6 +2259,7 @@ function mapCmsOnlyFixedServiceDetailPage<T extends CompanyRegistrationPageConte
     whyChoose,
     ...(youtubeVideos ? { youtubeVideos } : {}),
     breakdown,
+    ...(resultsSection ? { resultsSection } : {}),
     ...(tickerCta ? { tickerCta } : {}),
     faqs,
     closingCta: {
@@ -2229,10 +2282,12 @@ function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
   const finalCta = record(page.finalCta);
   const trustedLogos = mapLogos(page.trustedLogos, []);
   const youtubeVideos = mapFixedServiceYouTubeVideos(page.youtubeVideos);
+  const resultsSection = mapFixedServiceResultsSection(page.resultsSection);
   const tickerCta = mapFixedServiceTickerCta(page.tickerCta);
   const {
     trustedLogos: _fallbackTrustedLogos,
     youtubeVideos: _fallbackYoutubeVideos,
+    resultsSection: _fallbackResultsSection,
     tickerCta: _fallbackTickerCta,
     ...fallbackWithoutOptionalSections
   } = fallback;
@@ -2261,6 +2316,7 @@ function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
     whyChoose: mapRegistrationCardSection(page.whyChoose, fallback.whyChoose),
     ...(youtubeVideos ? { youtubeVideos } : {}),
     breakdown: mapRegistrationBreakdown(page.breakdown, fallback.breakdown),
+    ...(resultsSection ? { resultsSection } : {}),
     ...(tickerCta ? { tickerCta } : {}),
     faqs: mapRegistrationFaqSection(page.faqs, fallback.faqs),
     closingCta: {

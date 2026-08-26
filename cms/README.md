@@ -116,7 +116,7 @@ this rollout.
 ## Schema and editor policy
 
 The committed schemas define five single types, thirty-six collection types,
-and fifty-nine components (forty-one content types total), including nineteen
+and sixty components (forty-one content types total), including nineteen
 fixed service-detail collections. The fixed service-detail count remains
 unchanged; the dedicated Legal Page collection and the two Global collections
 are separate contracts. All editorial types use Draft & Publish.

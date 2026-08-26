@@ -12,6 +12,11 @@
     "description": {
       "type": "text",
       "required": true
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
     }
   }
 }

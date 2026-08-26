@@ -1,0 +1,47 @@
+{
+  "collectionName": "components_registration_results_sections",
+  "info": {
+    "displayName": "Registration results section"
+  },
+  "options": {},
+  "attributes": {
+    "ratingLabel": {
+      "type": "string",
+      "required": true
+    },
+    "ratingSource": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "stats": {
+      "type": "component",
+      "component": "about.stat",
+      "repeatable": true,
+      "required": true,
+      "min": 1,
+      "max": 3
+    },
+    "quote": {
+      "type": "text",
+      "required": true
+    },
+    "personName": {
+      "type": "string",
+      "required": true
+    },
+    "personRole": {
+      "type": "string"
+    },
+    "companyName": {
+      "type": "string"
+    }
+  }
+}

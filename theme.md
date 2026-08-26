@@ -144,10 +144,11 @@ those shared components before adding route-specific CSS.
 - All `/corporate/[slug]` Company Registration pages share one fixed visual and
   content sequence: bluefield hero, optional trusted-brands marquee, ice
   overview, dark challenges, ice advantages, numbered process, cobalt Why JR
-  field, optional navy YouTube video grid, ice breakdown, optional ticker CTA,
-  FAQ, and the shared closing CTA/footer. The trusted-brands marquee renders
-  immediately after the hero, the video grid renders immediately after Why JR,
-  and the ticker renders immediately before FAQ.
+  field, optional navy YouTube video grid, ice breakdown, optional navy/cobalt
+  results proof panel, optional ticker CTA, FAQ, and the shared closing
+  CTA/footer. The trusted-brands marquee renders immediately after the hero,
+  the video grid renders immediately after Why JR, the results panel renders
+  immediately after Breakdown, and the ticker renders immediately before FAQ.
 - Use Tailwind utilities for the complete detail-page composition. The network
   grid and orbit treatment may also use Tailwind arbitrary gradients; do not
   add a page stylesheet when utilities remain readable.
@@ -168,7 +169,7 @@ those shared components before adding route-specific CSS.
 | Ticker | Cobalt/electric-blue system alert with cool-white text and sky separators; never a warm accent. |
 | YouTube videos | Navy section with a responsive one-column/two-column grid, visible titles, and 16:9 privacy-enhanced embeds. |
 | Why JR and recognition | Bluefields with network routes and dark blue-glass cards. |
-| Metrics and testimonials | Dark cobalt data cards and pale-blue type; vary opacity/elevation, not colour families. |
+| Metrics and testimonials | Dark cobalt data cards and pale-blue type; the optional fixed-service results panel combines editor-managed rating copy, up to three metrics, and semantic testimonial attribution. Vary opacity/elevation, not colour families. |
 | FAQ | Ice-blue reading surface with cobalt category and accordion states. |
 | Closing CTA and footer | Darkest navy continuation with sky-blue interaction states and route/grid detail. |
 
@@ -185,6 +186,9 @@ those shared components before adding route-specific CSS.
   unmodified copies in `images/services/` remain archival approved assets.
 - Treat adjacent labelled service artwork as decorative (`alt=""`). Do not
   recolour client logos.
+- Optional fixed-service Advantage and Breakdown icons are decorative CMS
+  media. Keep each icon stationary and centered inside its existing animated
+  orbit ring; when no icon is selected, preserve the current signal dot.
 
 ## Motion
 

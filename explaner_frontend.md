@@ -306,14 +306,17 @@ The main flow is:
 : One fixed Tailwind-first service template for every Company Registration
   route and every fixed category detail route. It renders the bluefield hero,
   optional trusted-brand rail, overview, challenges, advantages, process, Why
-  JR, an optional YouTube video grid, service breakdown, an optional ticker CTA,
-  native-details FAQ, and shared closing CTA without page-specific CSS or
-  legacy markup. The trusted-brand rail reuses the homepage design and renders
-  immediately after the hero. YouTube videos render immediately after Why JR
-  in a one-column/two-column navy grid. Each visible
+  JR, an optional YouTube video grid, service breakdown, an optional results
+  proof panel, an optional ticker CTA, native-details FAQ, and shared closing
+  CTA without page-specific CSS or legacy markup. The trusted-brand rail reuses
+  the homepage design and renders immediately after the hero. YouTube videos
+  render immediately after Why JR in a one-column/two-column navy grid. Each visible
   title labels a lazy 16:9 `youtube-nocookie.com` iframe with no autoplay,
   `allowFullScreen`, and `strict-origin-when-cross-origin` referrer policy. The
-  reused `.contact-ticker` renders immediately before FAQ.
+  results panel renders immediately after Breakdown and uses a responsive
+  navy/cobalt metric-and-testimonial layout. Optional Advantage and Breakdown
+  icons remain stationary inside the existing animated rings. The reused
+  `.contact-ticker` renders after Results and immediately before FAQ.
 
 `frontend/components/global/global-country-page.tsx`
 : Dedicated responsive country-landing template. It renders the CMS-owned hero
@@ -432,9 +435,10 @@ they render no local or placeholder content.
 
 The existing fallback files keep their implemented routes working when Strapi
 is offline. They also document the expected content shape for
-editors/developers. The optional service-page trusted-logo, YouTube, and ticker
-fields are not added to fallback or seed mirrors; existing pages remain
-unchanged until editors populate and publish those CMS fields.
+editors/developers. Optional service-page trusted logos, YouTube videos,
+results content, ticker content, and Advantage/Breakdown icons are not added
+to fallback or seed mirrors; existing pages remain unchanged until editors
+populate and publish those CMS fields.
 
 ## Library files
 
@@ -449,7 +453,8 @@ unchanged until editors populate and publish those CMS fields.
   Wireless Planning and Coordination, Bureau of Energy Efficiency, CDSCO
   Registration, AERB Approval, LMPC Certification, and STQC service-detail
   models, including optional trusted logos, the service-page YouTube video
-  section, and ticker CTA. It also defines the separate `GlobalCountryPageData` /
+  section, optional results proof, optional Advantage/Breakdown icon URLs, and
+  ticker CTA. It also defines the separate `GlobalCountryPageData` /
   `GlobalCountryPageContent` and `GlobalCertificatePageData` /
   `GlobalCertificatePageContent` contracts used only by the Global templates.
 
@@ -459,9 +464,10 @@ unchanged until editors populate and publish those CMS fields.
   fetches published single types or exact-slug entries from all nineteen fixed
   service-detail collections, converts media URLs, and safely falls back when
   known local fallback data is available. It omits missing or malformed
-  optional trusted-logo, service-video, and ticker fields and normalizes
-  accepted HTTPS single-video YouTube URLs to `youtube-nocookie.com` embed
-  URLs. The separate legal-page query allows
+  optional trusted-logo, service-video, results, icon, and ticker fields,
+  explicitly populates their nested media/components, and normalizes accepted
+  HTTPS single-video YouTube URLs to `youtube-nocookie.com` embed URLs. The
+  separate legal-page query allows
   only the three fixed slugs, requests published content, explicitly populates
   ordered `sections` plus `seo.shareImage`, applies the `jr-legal-pages` tag,
   and strictly maps supported Blocks before falling back to complete local
@@ -529,10 +535,11 @@ cached Global country and certificate loaders as `getGlobalCountryPage`,
 
 `frontend/tests/service-detail-content.test.ts`
 : Preserves the existing service fallback/seed parity checks and verifies that
-  all nineteen schemas expose the optional trusted-logo relation and two
-  optional components in the fixed order, including explicit population,
-  shared marquee reuse, component constraints, and accessible lazy iframe
-  attributes.
+  all nineteen schemas expose the optional trusted-logo relation and three
+  optional top-level components in the fixed order, including the bounded
+  results contract, optional icon media, explicit population, safe mapper
+  behavior, semantic results markup, shared marquee reuse, and accessible lazy
+  iframe attributes.
 
 `frontend/tests/youtube.test.ts`
 : Covers every supported YouTube URL shape and rejects non-HTTPS, unsafe-host,

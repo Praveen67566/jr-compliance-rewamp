@@ -9,6 +9,11 @@
       "type": "string",
       "required": true
     },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
     "items": {
       "type": "component",
       "component": "registration.text-item",

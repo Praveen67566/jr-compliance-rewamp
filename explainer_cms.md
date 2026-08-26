@@ -40,17 +40,19 @@ The CMS provides content for:
 - shared header/footer and global consultation-form copy through the `site-setting` single type
 
 The committed model contains five single types, thirty-six collection types,
-and fifty-nine components: forty-one content types in total, including
+and sixty components: forty-one content types in total, including
 nineteen fixed service-detail collections. That fixed service-detail count is
 unchanged; the Legal Page collection and two Global collections use separate
 fixed contracts. The seven empty Approval collections and both Global
 collections are schema integrations only and contain no bundled records.
 
 Every fixed service-detail collection also exposes an optional `trustedLogos`
-relation plus two optional components. Trusted logos follow the hero,
-`youtubeVideos` follows Why JR, and `tickerCta` follows the breakdown and
-precedes FAQ. Leaving any of these fields empty preserves the existing page
-and does not make an otherwise complete record invalid.
+relation plus three optional top-level components. Trusted logos follow the
+hero, `youtubeVideos` follows Why JR, `resultsSection` follows the breakdown,
+and `tickerCta` follows Results and precedes FAQ. Advantage items and Breakdown
+groups also accept optional image icons. Leaving any of these fields empty
+preserves the existing page and does not make an otherwise complete record
+invalid.
 
 The frontend reads published CMS content using a server-only API token. If
 Strapi is unavailable, fallback-backed routes use local data from
@@ -235,10 +237,10 @@ There are likewise no seed JSON files, fallback mirrors, or initial records for
 created and published directly through Strapi Content Manager after schema and
 token permissions are deployed.
 
-The optional `trustedLogos`, `youtubeVideos`, and `tickerCta` service fields
-are also not added to historical seed JSON or frontend fallback data, and
-bootstrap performs no backfill. Editors opt records into these fields after
-the schema is deployed.
+The optional `trustedLogos`, `youtubeVideos`, `resultsSection`, `tickerCta`,
+Advantage icon, and Breakdown icon service fields are also not added to
+historical seed JSON or frontend fallback data, and bootstrap performs no
+backfill. Editors opt records into these fields after the schema is deployed.
 
 ## API content types
 
@@ -283,14 +285,15 @@ Each content type folder follows the Strapi pattern:
 : Dedicated detail-page records for the nineteen Company Registration slugs.
 Each record uses the fixed hero, optional trusted logos, overview, challenges,
 advantages, process, Why JR, optional YouTube videos, breakdown, optional
-ticker CTA, FAQ, closing CTA, and SEO fields; it is not a generic page builder.
+results proof, optional ticker CTA, FAQ, closing CTA, and SEO fields; it is not
+a generic page builder.
 
 `cms/src/api/mca-service-page/`
 : Dedicated detail-page records for approved MCA Services slugs. The first DSC
 record uses the same fixed hero, optional trusted logos, overview, challenges,
 advantages, process, Why JR, optional YouTube videos, breakdown, optional
-ticker CTA, FAQ, closing CTA, and SEO fields without widening the Company
-Registration collection into a generic page builder.
+results proof, optional ticker CTA, FAQ, closing CTA, and SEO fields without
+widening the Company Registration collection into a generic page builder.
 
 `cms/src/api/import-export-service-page/`
 : Dedicated fixed detail-page records for Import Export Service. IEC Code is
@@ -454,9 +457,11 @@ Strapi components are reusable field groups stored as JSON schemas in `cms/src/c
 `cms/src/components/registration/`
 : Fixed Company Registration field groups for hero copy, overview paragraphs,
   detail cards, ordered titled YouTube videos, breakdown groups, FAQs, and
-  their section wrappers. `registration.youtube-video` stores a title and URL;
+  their section wrappers. Detail items and breakdown groups accept optional
+  image icons. `registration.youtube-video` stores a title and URL;
   `registration.youtube-video-section` stores its heading, optional description,
-  and one or more videos.
+  and one or more videos. `registration.results-section` stores required rating
+  copy, heading/body, one to three ordered metrics, and testimonial attribution.
 
 `cms/src/components/global/`
 : Eleven fixed Global field groups: `country-hero`, `certificate-card`,
@@ -551,9 +556,10 @@ PostgreSQL variables for local and deployed CMS environments are defined in
   target rather than a seed or backfill.
 - On any fixed service record, editors may optionally select client Brand Logo
   records under **Trusted Logos**, add one or more titled HTTPS single-video
-  YouTube URLs under **YouTube Videos**, and add a **Ticker CTA**. Leave these
-  fields empty for the backwards-compatible rollout; no seed, fallback, or
-  database backfill is required.
+  YouTube URLs under **YouTube Videos**, add a **Results Section**, add a
+  **Ticker CTA**, and select Advantage or Breakdown icons. Leave these fields
+  empty for the backwards-compatible rollout; no seed, fallback, or database
+  backfill is required.
 - Deploying `legal-page` does not populate the active PostgreSQL database.
   Review and publish exactly the three allowed records through Content Manager,
   or use the reviewed `content,files` transfer workflow after backups. Grant the

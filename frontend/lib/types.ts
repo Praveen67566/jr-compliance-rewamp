@@ -552,12 +552,37 @@ export type LegalPageContent = PageChromeContent & LegalPageData;
 export type RegistrationDetail = {
   title: string;
   description: string;
+  /** Optional CMS artwork displayed inside the card's decorative signal ring. */
+  icon?: string;
 };
 
 /** One named group in the service breakdown (for example, Documents). */
 export type RegistrationBreakdownGroup = {
   title: string;
   items: string[];
+  /** Optional CMS artwork displayed inside the group's decorative signal ring. */
+  icon?: string;
+};
+
+/** One ordered proof metric in the optional fixed-service results section. */
+export type RegistrationResultStat = {
+  value: string;
+  label: string;
+};
+
+/** Optional proof and testimonial content shared by fixed service-detail pages. */
+export type RegistrationResultsSection = {
+  rating: {
+    label: string;
+    source: string;
+  };
+  title: string;
+  description: string;
+  stats: RegistrationResultStat[];
+  quote: string;
+  name: string;
+  role?: string;
+  company?: string;
 };
 
 /** One editor-managed YouTube video normalized for privacy-enhanced embedding. */
@@ -622,6 +647,7 @@ export type CompanyRegistrationPageData = {
     title: string;
     groups: RegistrationBreakdownGroup[];
   };
+  resultsSection?: RegistrationResultsSection;
   tickerCta?: {
     title: string;
     description?: string;

@@ -101,7 +101,7 @@ const fixedServiceSchemaNames = [
 ] as const;
 
 describe("service-detail content mirrors", () => {
-  it("adds the optional trusted-logo, YouTube, and ticker fields to all fixed service schemas", () => {
+  it("adds every optional shared field to all fixed service schemas in the fixed order", () => {
     for (const schemaName of fixedServiceSchemaNames) {
       const schema = readJson(
         `cms/src/api/${schemaName}/content-types/${schemaName}/schema.json`,
@@ -118,6 +118,11 @@ describe("service-detail content mirrors", () => {
         component: "registration.youtube-video-section",
         repeatable: false,
       });
+      assert.deepEqual(attributes.resultsSection, {
+        type: "component",
+        component: "registration.results-section",
+        repeatable: false,
+      });
       assert.deepEqual(attributes.tickerCta, {
         type: "component",
         component: "home.cta-band",
@@ -129,9 +134,65 @@ describe("service-detail content mirrors", () => {
       assert.ok(fields.indexOf("trustedLogos") < fields.indexOf("overview"));
       assert.ok(fields.indexOf("whyChoose") < fields.indexOf("youtubeVideos"));
       assert.ok(fields.indexOf("youtubeVideos") < fields.indexOf("breakdown"));
-      assert.ok(fields.indexOf("breakdown") < fields.indexOf("tickerCta"));
+      assert.ok(fields.indexOf("breakdown") < fields.indexOf("resultsSection"));
+      assert.ok(fields.indexOf("resultsSection") < fields.indexOf("tickerCta"));
       assert.ok(fields.indexOf("tickerCta") < fields.indexOf("faqs"));
     }
+  });
+
+  it("keeps results content bounded and both service icon fields optional", () => {
+    const resultsSection = readJson(
+      "cms/src/components/registration/results-section.json",
+    );
+    const detailItem = readJson(
+      "cms/src/components/registration/detail-item.json",
+    );
+    const breakdownGroup = readJson(
+      "cms/src/components/registration/breakdown-group.json",
+    );
+    const resultsAttributes = resultsSection.attributes as Record<
+      string,
+      Record<string, unknown>
+    >;
+    const detailAttributes = detailItem.attributes as Record<string, Record<string, unknown>>;
+    const breakdownAttributes = breakdownGroup.attributes as Record<
+      string,
+      Record<string, unknown>
+    >;
+    const optionalImage = {
+      type: "media",
+      multiple: false,
+      allowedTypes: ["images"],
+    };
+
+    for (const field of [
+      "ratingLabel",
+      "ratingSource",
+      "title",
+      "description",
+      "quote",
+      "personName",
+    ]) {
+      assert.equal(resultsAttributes[field]?.required, true);
+    }
+    assert.deepEqual(resultsAttributes.ratingLabel, { type: "string", required: true });
+    assert.deepEqual(resultsAttributes.ratingSource, { type: "string", required: true });
+    assert.deepEqual(resultsAttributes.title, { type: "string", required: true });
+    assert.deepEqual(resultsAttributes.description, { type: "text", required: true });
+    assert.deepEqual(resultsAttributes.stats, {
+      type: "component",
+      component: "about.stat",
+      repeatable: true,
+      required: true,
+      min: 1,
+      max: 3,
+    });
+    assert.deepEqual(resultsAttributes.quote, { type: "text", required: true });
+    assert.deepEqual(resultsAttributes.personName, { type: "string", required: true });
+    assert.deepEqual(resultsAttributes.personRole, { type: "string" });
+    assert.deepEqual(resultsAttributes.companyName, { type: "string" });
+    assert.deepEqual(detailAttributes.icon, optionalImage);
+    assert.deepEqual(breakdownAttributes.icon, optionalImage);
   });
 
   it("keeps the YouTube component contract fixed and editor ordered", () => {
@@ -178,6 +239,7 @@ describe("service-detail content mirrors", () => {
     const whyChooseIndex = component.indexOf("{content.whyChoose.items.map");
     const youtubeIndex = component.indexOf("{content.youtubeVideos ?");
     const breakdownIndex = component.indexOf('id="breakdown"');
+    const resultsIndex = component.indexOf("{content.resultsSection ?");
     const tickerIndex = component.indexOf("{content.tickerCta ?");
     const faqIndex = component.indexOf('id="faq"');
 
@@ -192,7 +254,8 @@ describe("service-detail content mirrors", () => {
     assert.ok(whyChooseIndex >= 0);
     assert.ok(whyChooseIndex < youtubeIndex);
     assert.ok(youtubeIndex < breakdownIndex);
-    assert.ok(breakdownIndex < tickerIndex);
+    assert.ok(breakdownIndex < resultsIndex);
+    assert.ok(resultsIndex < tickerIndex);
     assert.ok(tickerIndex < faqIndex);
     assert.match(component, /loading="lazy"/);
     assert.match(component, /referrerPolicy="strict-origin-when-cross-origin"/);
@@ -202,6 +265,16 @@ describe("service-detail content mirrors", () => {
     assert.match(component, /<figcaption/);
     assert.doesNotMatch(component, /autoplay/i);
     assert.match(component, /className="contact-ticker"/);
+    assert.match(component, /aria-labelledby="service-results-heading"/);
+    assert.match(component, /<dl className=/);
+    assert.match(component, /<blockquote className=/);
+    assert.match(component, /<cite className="not-italic">/);
+    assert.match(component, /Array\.from\(\{ length: 5 \}/);
+    assert.doesNotMatch(component, /Doola|Trustpilot/i);
+    assert.equal(component.match(/item\.icon/g)?.length, 2);
+    assert.equal(component.match(/group\.icon/g)?.length, 2);
+    assert.match(component, /alt=""[\s\S]*?src=\{item\.icon\}/);
+    assert.match(component, /alt=""[\s\S]*?src=\{group\.icon\}/);
     assert.match(strapiAdapter, /trustedLogos: \{ logo: true \}/);
     assert.equal(
       strapiAdapter.match(/const trustedLogos = mapLogos\(page\.trustedLogos, \[\]\);/g)?.length,
@@ -221,8 +294,33 @@ describe("service-detail content mirrors", () => {
       cmsOnlyMapper.indexOf("return {"),
     );
     assert.doesNotMatch(cmsOnlyCompletenessGate, /trustedLogos/);
+    assert.doesNotMatch(cmsOnlyCompletenessGate, /resultsSection/);
     assert.match(strapiAdapter, /youtubeVideos: \{ videos: true \}/);
+    assert.match(strapiAdapter, /advantages: \{ items: \{ icon: true \} \}/);
+    assert.match(strapiAdapter, /breakdown: \{ groups: \{ icon: true, items: true \} \}/);
+    assert.match(strapiAdapter, /resultsSection: \{ stats: true \}/);
     assert.match(strapiAdapter, /tickerCta: \{ cta: true \}/);
+    assert.equal(
+      strapiAdapter.match(
+        /const resultsSection = mapFixedServiceResultsSection\(page\.resultsSection\);/g,
+      )?.length,
+      2,
+    );
+    assert.equal(
+      strapiAdapter.match(/\.\.\.\(resultsSection \? \{ resultsSection \} : \{\}\)/g)?.length,
+      2,
+    );
+    assert.match(strapiAdapter, /resultsSection: _fallbackResultsSection/);
+    const resultsMapper = strapiAdapter.slice(
+      strapiAdapter.indexOf("function mapFixedServiceResultsSection"),
+      strapiAdapter.indexOf("function strictTextList"),
+    );
+    assert.match(resultsMapper, /\.slice\(0, 3\)/);
+    assert.match(
+      resultsMapper,
+      /ratingLabel && ratingSource && title && description && stats\.length && quote && name/,
+    );
+    assert.match(resultsMapper, /: null;/);
     assert.ok(!strapiAdapter.includes("populate=deep"));
 
     const brandLogoRevalidation = revalidation.slice(

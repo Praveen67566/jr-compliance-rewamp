@@ -105,21 +105,43 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Fix the sitemap lastmod dates.
+read ADDING_SERVICE_SECTIONS.md because i want to add a new section in all these collection pages
 
-Right now many pages are using the same/static date. Instead, use Strapi's real updatedAt value for each CMS page.
+Corporate collections:
 
-Requirements:
+- `company-registration-page`
+- `mca-service-page`
+- `import-export-service-page`
+- `government-license-certification-page`
+- `ipr-service-page`
+- `fssai-service-page`
+- `sebi-business-registration-page`
+- `tax-accounting-page`
+- `labour-compliance-page`
+- `fund-raising-page`
 
-Use the existing sitemap implementation.
-Do not create a second sitemap.
-For every Strapi page, set lastModified from updatedAt.
-Do not use new Date() for every page.
-Do not change all sitemap dates on every build/deploy.
-If only one Strapi page is edited, only that page's lastmod should change.
-Make sure all published/indexable pages are included, including pagination if needed.
-Exclude drafts/unpublished pages.
-Follow the existing project structure and helpers.
-Read context.md, README.md, and rules.md first if they exist.
+Approval collections:
 
-After the change, verify sitemap.xml and confirm that different pages have different real modification dates.
+- `bureau-indian-standards-page`
+- `pollution-advisory-page`
+- `telecommunication-engineering-centre-page`
+- `wireless-planning-coordination-page`
+- `bureau-energy-efficiency-page`
+- `cdsco-registration-page`
+- `aerb-approval-page`
+- `lmpc-certification-page`
+- `stqc-page`
+
+the ui positioning tickerCta after this section and before Need clarity? this section.
+
+now the section image is given i want the same section as same position of element but ui according to the theme.
+
+and also i want to add icons in the given sections:-
+1. Business advantages
+2. Service Breakdown
+icons added in cards or like items and in ui where the circle animation is happening and these icons are optionals
+
+after these two changes verify and test and i don't want any other things to be changed now first add a section and then add icons and show where the circle animation shows.
+
+don't change anything else.
+

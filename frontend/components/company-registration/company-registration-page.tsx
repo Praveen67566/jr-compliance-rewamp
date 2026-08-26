@@ -14,6 +14,7 @@ import type {
   LabourCompliancePageContent,
   McaServicePageContent,
   RegistrationDetail,
+  RegistrationResultsSection,
   SebiBusinessRegistrationPageContent,
   TaxAccountingPageContent,
 } from "@/lib/types";
@@ -142,10 +143,20 @@ function AdvantageCard({ item, index }: { item: RegistrationDetail; index: numbe
   return (
     <article className="group relative h-full min-w-0 overflow-hidden rounded-[24px] border border-cobalt-700/15 bg-[linear-gradient(145deg,var(--blue-cloud),rgba(234,246,255,0.76))] p-6 shadow-[0_18px_48px_rgba(3,19,47,0.09)] transition-[transform,border-color,box-shadow] duration-300 hover:border-cobalt-600/45 hover:shadow-[0_28px_65px_rgba(13,92,184,0.16)] motion-safe:hover:-translate-y-2 md:p-8">
       <div
-        className="absolute right-5 top-5 size-16 rounded-full border border-cobalt-600/15 motion-safe:animate-[service-orbit_14s_linear_infinite]"
+        className="absolute right-5 top-5 size-16"
         aria-hidden="true"
       >
-        <span className="absolute -top-1 left-1/2 size-2 -translate-x-1/2 rounded-full bg-electric shadow-[0_0_13px_rgba(22,140,245,0.75)]" />
+        <span className="absolute inset-0 rounded-full border border-cobalt-600/15 motion-safe:animate-[service-orbit_14s_linear_infinite]">
+          <span className="absolute -top-1 left-1/2 size-2 -translate-x-1/2 rounded-full bg-electric shadow-[0_0_13px_rgba(22,140,245,0.75)]" />
+        </span>
+        {item.icon ? (
+          <img
+            alt=""
+            className="absolute left-1/2 top-1/2 size-8 -translate-x-1/2 -translate-y-1/2 object-contain"
+            loading="lazy"
+            src={item.icon}
+          />
+        ) : null}
       </div>
       <div className="relative flex items-center gap-3">
         <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl border border-cobalt-600/25 bg-electric text-[0.68rem] font-extrabold tracking-[0.12em] text-white shadow-[0_10px_26px_rgba(22,140,245,0.22)]">
@@ -166,6 +177,100 @@ function AdvantageCard({ item, index }: { item: RegistrationDetail; index: numbe
         />
       </div>
     </article>
+  );
+}
+
+function ResultsSection({ section }: { section: RegistrationResultsSection }) {
+  const attribution = [section.role, section.company].filter(Boolean).join(" · ");
+  const statsGrid =
+    section.stats.length === 1
+      ? "grid-cols-1"
+      : section.stats.length === 2
+        ? "grid-cols-1 min-[560px]:grid-cols-2"
+        : "grid-cols-1 min-[560px]:grid-cols-3";
+
+  return (
+    <section
+      aria-labelledby="service-results-heading"
+      className="relative isolate scroll-mt-28 overflow-hidden border-t border-cobalt-700/10 bg-ice py-14 text-white min-[560px]:py-18 min-[821px]:py-28"
+      id="results"
+    >
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_82%_20%,rgba(22,140,245,0.12),transparent_28%),radial-gradient(circle_at_8%_88%,rgba(13,92,184,0.08),transparent_28%)]"
+        aria-hidden="true"
+      />
+      <div className="mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
+        <div className="relative isolate grid min-w-0 overflow-hidden rounded-[30px] border border-sky/25 bg-[linear-gradient(135deg,var(--blue-navy-800),var(--blue-navy-950))] p-7 shadow-[0_30px_80px_rgba(3,19,47,0.24)] min-[560px]:p-10 min-[821px]:p-12 min-[1100px]:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] min-[1100px]:gap-14">
+          <div
+            className="pointer-events-none absolute inset-0 -z-10 opacity-25 [background-image:linear-gradient(rgba(139,220,255,0.12)_1px,transparent_1px),linear-gradient(90deg,rgba(139,220,255,0.12)_1px,transparent_1px)] [background-size:42px_42px] [mask-image:linear-gradient(110deg,black,transparent_82%)]"
+            aria-hidden="true"
+          />
+          <div
+            className="pointer-events-none absolute -right-32 -top-32 -z-10 size-80 rounded-full border border-sky/15 shadow-[0_0_0_42px_rgba(22,140,245,0.035)]"
+            aria-hidden="true"
+          />
+
+          <div className="min-w-0">
+            <div className="inline-flex max-w-full flex-wrap items-center gap-3 rounded-full border border-sky/22 bg-white/[0.055] px-4 py-2.5 text-xs text-ice/82">
+              <strong className="font-extrabold text-white">{section.rating.label}</strong>
+              <span className="flex items-center gap-1" aria-hidden="true">
+                {Array.from({ length: 5 }, (_, index) => (
+                  <span
+                    className="flex size-5 items-center justify-center rounded-[5px] border border-sky/35 bg-electric/20 text-[0.68rem] leading-none text-sky"
+                    key={index}
+                  >
+                    ★
+                  </span>
+                ))}
+              </span>
+              <span className="font-bold text-sky">{section.rating.source}</span>
+            </div>
+
+            <h2
+              className="mb-0 mt-7 max-w-[700px] break-words font-display text-[clamp(2.5rem,4vw,4.35rem)] leading-[0.97] tracking-[-0.045em] text-white"
+              id="service-results-heading"
+            >
+              {section.title}
+            </h2>
+            <p className="mb-0 mt-5 max-w-[680px] break-words text-base leading-7 text-ice/72 md:text-lg md:leading-8">
+              {section.description}
+            </p>
+
+            <dl className={`mt-9 grid gap-px overflow-hidden rounded-[20px] border border-sky/18 bg-sky/15 ${statsGrid}`}>
+              {section.stats.map((stat, index) => (
+                <div className="flex min-w-0 flex-col bg-navy-900/85 p-5 md:p-6" key={`${stat.label}-${index}`}>
+                  <dt className="order-2 mt-2 break-words text-xs font-bold leading-5 text-ice/60">
+                    {stat.label}
+                  </dt>
+                  <dd className="order-1 m-0 break-words font-display text-[2rem] leading-none tracking-[-0.025em] text-white">
+                    {stat.value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          <blockquote className="relative mb-0 mt-8 flex min-w-0 flex-col justify-center overflow-hidden rounded-[24px] border border-sky/20 bg-white/[0.055] p-7 shadow-[inset_0_1px_rgba(255,255,255,0.05)] min-[560px]:p-9 min-[1100px]:mt-0">
+            <span className="pointer-events-none absolute right-7 top-4 font-display text-[5.5rem] leading-none text-sky/15" aria-hidden="true">
+              “
+            </span>
+            <div className="mb-7 flex items-center gap-3" aria-hidden="true">
+              <span className="size-2.5 rounded-full border-2 border-sky bg-electric shadow-[0_0_18px_rgba(139,220,255,0.72)]" />
+              <span className="h-px flex-1 bg-[linear-gradient(90deg,var(--blue-sky),transparent)]" />
+            </div>
+            <p className="relative mb-0 break-words font-display text-[clamp(1.65rem,2.3vw,2.35rem)] leading-[1.12] tracking-[-0.025em] text-white">
+              “{section.quote}”
+            </p>
+            <footer className="mt-8 border-t border-sky/15 pt-6 text-sm leading-6 text-ice/65">
+              <cite className="not-italic">
+                <strong className="block break-words text-base text-sky">{section.name}</strong>
+                {attribution ? <span className="mt-1 block break-words">{attribution}</span> : null}
+              </cite>
+            </footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -518,8 +623,18 @@ export function CompanyRegistrationPage({
                     <span className="inline-flex min-h-8 items-center rounded-full border border-sky/30 bg-sky/10 px-3 text-[0.68rem] font-extrabold tracking-[0.14em] text-sky">
                       {String(groupIndex + 1).padStart(2, "0")}
                     </span>
-                    <span className="relative size-9 rounded-full border border-dashed border-sky/35 motion-safe:animate-[service-orbit_13s_linear_infinite]" aria-hidden="true">
-                      <span className="absolute -top-1 left-1/2 size-2 -translate-x-1/2 rounded-full bg-sky shadow-[0_0_12px_rgba(139,220,255,0.75)]" />
+                    <span className="relative size-9" aria-hidden="true">
+                      <span className="absolute inset-0 rounded-full border border-dashed border-sky/35 motion-safe:animate-[service-orbit_13s_linear_infinite]">
+                        <span className="absolute -top-1 left-1/2 size-2 -translate-x-1/2 rounded-full bg-sky shadow-[0_0_12px_rgba(139,220,255,0.75)]" />
+                      </span>
+                      {group.icon ? (
+                        <img
+                          alt=""
+                          className="absolute left-1/2 top-1/2 size-[1.125rem] -translate-x-1/2 -translate-y-1/2 object-contain"
+                          loading="lazy"
+                          src={group.icon}
+                        />
+                      ) : null}
                     </span>
                   </div>
                   <h3 className="mb-0 mt-8 break-words font-display text-[2rem] leading-none tracking-[-0.03em] text-white">
@@ -544,6 +659,8 @@ export function CompanyRegistrationPage({
           </div>
         </div>
       </section>
+
+      {content.resultsSection ? <ResultsSection section={content.resultsSection} /> : null}
 
       {content.tickerCta ? (
         <section

@@ -78,6 +78,11 @@
       "repeatable": false,
       "required": true
     },
+    "resultsSection": {
+      "type": "component",
+      "component": "registration.results-section",
+      "repeatable": false
+    },
     "tickerCta": {
       "type": "component",
       "component": "home.cta-band",
