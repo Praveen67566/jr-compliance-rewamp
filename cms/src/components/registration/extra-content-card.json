@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_registration_extra_content_cards",
+  "info": {
+    "displayName": "Extra content card"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "richtext",
+      "required": true
+    }
+  }
+}

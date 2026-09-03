@@ -28,6 +28,7 @@ Challenges
 Advantages
 Process
 Why JR
+Extra Content cards (optional)
 YouTube Videos (optional)
 Breakdown
 Results Section (optional)
@@ -81,6 +82,9 @@ optional image icon. The frontend renders each icon decoratively and stationary
 inside that section's themed circular artwork; only the surrounding ring or
 node may animate. Empty results or icon fields preserve the existing page
 exactly; they are not populated in fallback or historical seed content.
+The optional repeatable `extraContent` field sits immediately after Why JR and
+uses `registration.extra-content-card`; each card contains only a required
+title and Markdown Rich Text description. It has no fallback or seed content.
 
 ## Implementation workflow
 

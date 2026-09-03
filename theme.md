@@ -144,11 +144,13 @@ those shared components before adding route-specific CSS.
 - All `/corporate/[slug]` Company Registration pages share one fixed visual and
   content sequence: bluefield hero, optional trusted-brands marquee, ice
   overview, dark challenges, ice advantages, numbered process, cobalt Why JR
-  field, optional navy YouTube video grid, ice breakdown, optional navy/cobalt
-  results proof panel, optional ticker CTA, FAQ, and the shared closing
+  field, optional ice Extra Content card grid, optional navy YouTube video grid,
+  ice breakdown, optional navy/cobalt results proof panel, optional ticker CTA,
+  FAQ, and the shared closing
   CTA/footer. The trusted-brands marquee renders immediately after the hero,
-  the video grid renders immediately after Why JR, the results panel renders
-  immediately after Breakdown, and the ticker renders immediately before FAQ.
+  Extra Content renders immediately after Why JR, the video grid follows Extra
+  Content when present, the results panel renders immediately after Breakdown,
+  and the ticker renders immediately before FAQ.
 - Use Tailwind utilities for the complete detail-page composition. The network
   grid and orbit treatment may also use Tailwind arbitrary gradients; do not
   add a page stylesheet when utilities remain readable.
@@ -167,6 +169,7 @@ those shared components before adding route-specific CSS.
 | Trusted brands | Navy network rail with visible approved logo artwork, sky-blue label, quiet marquee, and blue hover elevation. |
 | Service Stack | Canonical reference: navy grid, cobalt cards, orbit icons, route line, status dots, and electric tab control. |
 | Ticker | Cobalt/electric-blue system alert with cool-white text and sky separators; never a warm accent. |
+| Extra Content | Optional ice reading surface containing only responsive numbered title-and-rich-text cards, with blue route details and no separate editor heading. |
 | YouTube videos | Navy section with a responsive one-column/two-column grid, visible titles, and 16:9 privacy-enhanced embeds. |
 | Why JR and recognition | Bluefields with network routes and dark blue-glass cards. |
 | Metrics and testimonials | Dark cobalt data cards and pale-blue type; the optional fixed-service results panel combines editor-managed rating copy, up to three metrics, and semantic testimonial attribution. Vary opacity/elevation, not colour families. |

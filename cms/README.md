@@ -116,12 +116,19 @@ this rollout.
 ## Schema and editor policy
 
 The committed schemas define five single types, thirty-six collection types,
-and sixty components (forty-one content types total), including nineteen
+and sixty-one components (forty-one content types total), including nineteen
 fixed service-detail collections. The fixed service-detail count remains
 unchanged; the dedicated Legal Page collection and the two Global collections
 are separate contracts. All editorial types use Draft & Publish.
 Page-selected relations are intentionally unidirectional, ordered selections; the inverse
 pairs are only Service Category → Service and FAQ Category → FAQ.
+
+Every fixed Corporate and Approval service record has an optional repeatable
+**Extra Content** field immediately after **Why Choose**. Each card requires
+only a title and Rich Text description. Use the Rich Text toolbar or valid
+Markdown for headings, emphasis, lists, quotes, links, code, tables, images,
+and line breaks; the frontend renders and sanitizes that formatting. Leaving
+Extra Content empty preserves the current page and requires no backfill.
 
 The shared navbar is edited under **Site Setting → Header Menu**:
 

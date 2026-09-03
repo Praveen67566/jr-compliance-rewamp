@@ -559,10 +559,16 @@ export type RegistrationDetail = {
   icon?: string;
 };
 
+/** One title-and-rich-description card in the optional extra-content section. */
+export type RegistrationExtraContentCard = {
+  title: string;
+  description: RegistrationRichText;
+};
+
 /** One named group in the service breakdown (for example, Documents). */
 export type RegistrationBreakdownGroup = {
   title: string;
-  items: string[];
+  items: RegistrationRichText[];
   /** Optional CMS artwork displayed inside the group's decorative signal ring. */
   icon?: string;
 };
@@ -644,6 +650,8 @@ export type CompanyRegistrationPageData = {
     title: string;
     items: RegistrationDetail[];
   };
+  /** Optional editor-ordered cards rendered immediately after Why JR. */
+  extraContent?: RegistrationExtraContentCard[];
   youtubeVideos?: YouTubeVideoSection;
   breakdown: {
     eyebrow: string;

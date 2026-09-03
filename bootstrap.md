@@ -105,72 +105,11 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Corporate collections:
+Read Adding_Service_Sections And Add one More Section After Why JR Compliance.
 
-- `company-registration-page`
-- `mca-service-page`
-- `import-export-service-page`
-- `government-license-certification-page`
-- `ipr-service-page`
-- `fssai-service-page`
-- `sebi-business-registration-page`
-- `tax-accounting-page`
-- `labour-compliance-page`
-- `fund-raising-page`
+1. There is going to only cards and i want cards to contain a title and a description which is like rich text. Nothing else like this is for extra content so it should like anything can be added and give me the improved ui matched with the theme.
 
-Approval collections:
-
-- `bureau-indian-standards-page`
-- `pollution-advisory-page`
-- `telecommunication-engineering-centre-page`
-- `wireless-planning-coordination-page`
-- `bureau-energy-efficiency-page`
-- `cdsco-registration-page`
-- `aerb-approval-page`
-- `lmpc-certification-page`
-- `stqc-page`
-
-in these two
-
-{
-  "collectionName": "components_registration_detail_items",
-  "info": {
-    "displayName": "Detail item"
-  },
-  "options": {},
-  "attributes": {
-    "title": {
-      "type": "string",
-      "required": true
-    },
-    "description": {
-      "type": "richtext",
-      "required": true
-    },
-    "icon": {
-      "type": "media",
-      "multiple": false,
-      "allowedTypes": ["images"]
-    }
-  }
-}
-
-{
-  "collectionName": "components_registration_text_items",
-  "info": {
-    "displayName": "Text item"
-  },
-  "options": {},
-  "attributes": {
-    "text": {
-      "type": "richtext",
-      "required": true
-    }
-  }
-}
-
-type is rich text but its not visible exactly in frontend  first tell me why?
-
+2. Improve the ui of rich Text Viewer like it should show exactly added from the cms.
 
 
 

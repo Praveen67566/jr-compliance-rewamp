@@ -66,6 +66,11 @@
       "repeatable": false,
       "required": true
     },
+    "extraContent": {
+      "type": "component",
+      "component": "registration.extra-content-card",
+      "repeatable": true
+    },
     "youtubeVideos": {
       "type": "component",
       "component": "registration.youtube-video-section",

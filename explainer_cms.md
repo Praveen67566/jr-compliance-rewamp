@@ -40,15 +40,16 @@ The CMS provides content for:
 - shared header/footer and global consultation-form copy through the `site-setting` single type
 
 The committed model contains five single types, thirty-six collection types,
-and sixty components: forty-one content types in total, including
+and sixty-one components: forty-one content types in total, including
 nineteen fixed service-detail collections. That fixed service-detail count is
 unchanged; the Legal Page collection and two Global collections use separate
 fixed contracts. The seven empty Approval collections and both Global
 collections are schema integrations only and contain no bundled records.
 
 Every fixed service-detail collection also exposes an optional `trustedLogos`
-relation plus three optional top-level components. Trusted logos follow the
-hero, `youtubeVideos` follows Why JR, `resultsSection` follows the breakdown,
+relation plus four optional top-level components. Trusted logos follow the
+hero, `extraContent` follows Why JR, `youtubeVideos` follows Extra Content,
+`resultsSection` follows the breakdown,
 and `tickerCta` follows Results and precedes FAQ. Detail items in Challenges,
 Advantages, Process, and Why Choose, plus Breakdown groups, also accept optional
 image icons. Leaving any of these fields empty preserves the existing page and
@@ -237,10 +238,11 @@ There are likewise no seed JSON files, fallback mirrors, or initial records for
 created and published directly through Strapi Content Manager after schema and
 token permissions are deployed.
 
-The optional `trustedLogos`, `youtubeVideos`, `resultsSection`, `tickerCta`,
-detail-item icon, and Breakdown group icon service fields are also not added to
-historical seed JSON or frontend fallback data, and bootstrap performs no
-backfill. Editors opt records into these fields after the schema is deployed.
+The optional `trustedLogos`, `extraContent`, `youtubeVideos`, `resultsSection`,
+`tickerCta`, detail-item icon, and Breakdown group icon service fields are also
+not added to historical seed JSON or frontend fallback data, and bootstrap
+performs no backfill. Editors opt records into these fields after the schema is
+deployed.
 
 ## API content types
 
@@ -284,15 +286,17 @@ Each content type folder follows the Strapi pattern:
 `cms/src/api/company-registration-page/`
 : Dedicated detail-page records for the nineteen Company Registration slugs.
 Each record uses the fixed hero, optional trusted logos, overview, challenges,
-advantages, process, Why JR, optional YouTube videos, breakdown, optional
-results proof, optional ticker CTA, FAQ, closing CTA, and SEO fields; it is not
+advantages, process, Why JR, optional Extra Content cards, optional YouTube
+videos, breakdown, optional results proof, optional ticker CTA, FAQ, closing
+CTA, and SEO fields; it is not
 a generic page builder.
 
 `cms/src/api/mca-service-page/`
 : Dedicated detail-page records for approved MCA Services slugs. The first DSC
 record uses the same fixed hero, optional trusted logos, overview, challenges,
-advantages, process, Why JR, optional YouTube videos, breakdown, optional
-results proof, optional ticker CTA, FAQ, closing CTA, and SEO fields without
+advantages, process, Why JR, optional Extra Content cards, optional YouTube
+videos, breakdown, optional results proof, optional ticker CTA, FAQ, closing
+CTA, and SEO fields without
 widening the Company Registration collection into a generic page builder.
 
 `cms/src/api/import-export-service-page/`
@@ -456,13 +460,17 @@ Strapi components are reusable field groups stored as JSON schemas in `cms/src/c
 
 `cms/src/components/registration/`
 : Fixed Company Registration field groups for hero copy, overview paragraphs,
-  detail cards, ordered titled YouTube videos, breakdown groups, FAQs, and
-  their section wrappers. Detail-item icons render in Challenges, Advantages,
-  Process, and Why Choose, while breakdown-group icons render in Breakdown.
+  detail cards, Extra Content cards, ordered titled YouTube videos, breakdown
+  groups, FAQs, and their section wrappers. Detail-item icons render in
+  Challenges, Advantages, Process, and Why Choose, while breakdown-group icons
+  render in Breakdown.
   `registration.youtube-video` stores a title and URL;
   `registration.youtube-video-section` stores its heading, optional description,
   and one or more videos. `registration.results-section` stores required rating
   copy, heading/body, one to three ordered metrics, and testimonial attribution.
+  `registration.extra-content-card` stores only a required title and Markdown
+  Rich Text description. Registration Rich Text is rendered with formatting
+  intact and sanitized by the frontend.
 
 `cms/src/components/global/`
 : Eleven fixed Global field groups: `country-hero`, `certificate-card`,
@@ -556,11 +564,12 @@ PostgreSQL variables for local and deployed CMS environments are defined in
   from a verified transfer; use the reviewed export/import workflow for another
   target rather than a seed or backfill.
 - On any fixed service record, editors may optionally select client Brand Logo
-  records under **Trusted Logos**, add one or more titled HTTPS single-video
-  YouTube URLs under **YouTube Videos**, add a **Results Section**, add a
-  **Ticker CTA**, and select icons for Challenges, Advantages, Process, Why
-  Choose, or Breakdown. Leave these fields empty for the backwards-compatible
-  rollout; no seed, fallback, or database backfill is required.
+  records under **Trusted Logos**, add ordered title-and-description cards under
+  **Extra Content**, add one or more titled HTTPS single-video YouTube URLs under
+  **YouTube Videos**, add a **Results Section**, add a **Ticker CTA**, and select
+  icons for Challenges, Advantages, Process, Why Choose, or Breakdown. Leave
+  these fields empty for the backwards-compatible rollout; no seed, fallback,
+  or database backfill is required.
 - Deploying `legal-page` does not populate the active PostgreSQL database.
   Review and publish exactly the three allowed records through Content Manager,
   or use the reviewed `content,files` transfer workflow after backups. Grant the

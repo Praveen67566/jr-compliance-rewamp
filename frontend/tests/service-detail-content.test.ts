@@ -129,6 +129,11 @@ describe("service-detail content mirrors", () => {
         component: "registration.youtube-video-section",
         repeatable: false,
       });
+      assert.deepEqual(attributes.extraContent, {
+        type: "component",
+        component: "registration.extra-content-card",
+        repeatable: true,
+      });
       assert.deepEqual(attributes.resultsSection, {
         type: "component",
         component: "registration.results-section",
@@ -143,12 +148,27 @@ describe("service-detail content mirrors", () => {
       const fields = Object.keys(attributes);
       assert.ok(fields.indexOf("hero") < fields.indexOf("trustedLogos"));
       assert.ok(fields.indexOf("trustedLogos") < fields.indexOf("overview"));
-      assert.ok(fields.indexOf("whyChoose") < fields.indexOf("youtubeVideos"));
+      assert.ok(fields.indexOf("whyChoose") < fields.indexOf("extraContent"));
+      assert.ok(fields.indexOf("extraContent") < fields.indexOf("youtubeVideos"));
       assert.ok(fields.indexOf("youtubeVideos") < fields.indexOf("breakdown"));
       assert.ok(fields.indexOf("breakdown") < fields.indexOf("resultsSection"));
       assert.ok(fields.indexOf("resultsSection") < fields.indexOf("tickerCta"));
       assert.ok(fields.indexOf("tickerCta") < fields.indexOf("faqs"));
     }
+  });
+
+  it("keeps extra-content cards limited to a title and rich description", () => {
+    const extraContentCard = readJson(
+      "cms/src/components/registration/extra-content-card.json",
+    );
+    const attributes = extraContentCard.attributes as Record<
+      string,
+      Record<string, unknown>
+    >;
+
+    assert.deepEqual(Object.keys(attributes), ["title", "description"]);
+    assert.deepEqual(attributes.title, { type: "string", required: true });
+    assert.deepEqual(attributes.description, { type: "richtext", required: true });
   });
 
   it("keeps results content bounded and both service icon fields optional", () => {
@@ -243,6 +263,7 @@ describe("service-detail content mirrors", () => {
     const trustedLogosIndex = component.indexOf("{content.trustedLogos ?");
     const overviewIndex = component.indexOf('id="overview"');
     const whyChooseIndex = component.indexOf("{content.whyChoose.items.map");
+    const extraContentIndex = component.indexOf("{content.extraContent?.length ?");
     const youtubeIndex = component.indexOf("{content.youtubeVideos ?");
     const breakdownIndex = component.indexOf('id="breakdown"');
     const resultsIndex = component.indexOf("{content.resultsSection ?");
@@ -258,7 +279,8 @@ describe("service-detail content mirrors", () => {
     );
     assert.match(component, /<TrustedBrandsMarquee logos=\{content\.trustedLogos\} \/>/);
     assert.ok(whyChooseIndex >= 0);
-    assert.ok(whyChooseIndex < youtubeIndex);
+    assert.ok(whyChooseIndex < extraContentIndex);
+    assert.ok(extraContentIndex < youtubeIndex);
     assert.ok(youtubeIndex < breakdownIndex);
     assert.ok(breakdownIndex < resultsIndex);
     assert.ok(resultsIndex < tickerIndex);
@@ -296,9 +318,11 @@ describe("service-detail content mirrors", () => {
       cmsOnlyMapper.indexOf("return {"),
     );
     assert.doesNotMatch(cmsOnlyCompletenessGate, /trustedLogos/);
+    assert.doesNotMatch(cmsOnlyCompletenessGate, /extraContent/);
     assert.doesNotMatch(cmsOnlyCompletenessGate, /resultsSection/);
     assert.doesNotMatch(cmsOnlyCompletenessGate, /icon/);
     assert.match(strapiAdapter, /youtubeVideos: \{ videos: true \}/);
+    assert.match(strapiAdapter, /extraContent: true/);
     assert.match(strapiAdapter, /resultsSection: \{ stats: true \}/);
     assert.match(strapiAdapter, /tickerCta: \{ cta: true \}/);
     assert.equal(
@@ -312,6 +336,30 @@ describe("service-detail content mirrors", () => {
       2,
     );
     assert.match(strapiAdapter, /resultsSection: _fallbackResultsSection/);
+    assert.equal(
+      strapiAdapter.match(
+        /const extraContent = mapRegistrationExtraContent\(page\.extraContent\);/g,
+      )?.length,
+      2,
+    );
+    assert.equal(
+      strapiAdapter.match(/\.\.\.\(extraContent \? \{ extraContent \} : \{\}\)/g)?.length,
+      2,
+    );
+    assert.match(strapiAdapter, /extraContent: _fallbackExtraContent/);
+    const extraContentSection = sourceBetween(
+      component,
+      "{content.extraContent?.length ?",
+      "{content.youtubeVideos ?",
+    );
+    assert.match(extraContentSection, /aria-label="Additional service information"/);
+    assert.match(extraContentSection, /id="extra-content"/);
+    assert.match(extraContentSection, /content\.extraContent\.map\(\(item, index\)/);
+    assert.match(extraContentSection, /<h2 className=/);
+    assert.match(
+      extraContentSection,
+      /<RegistrationRichTextView[\s\S]*?value=\{item\.description\}/,
+    );
     const resultsMapper = strapiAdapter.slice(
       strapiAdapter.indexOf("function mapFixedServiceResultsSection"),
       strapiAdapter.indexOf("function strictTextList"),
@@ -500,7 +548,7 @@ describe("service-detail content mirrors", () => {
     const whyChooseSection = sourceBetween(
       component,
       "{content.whyChoose.items.map",
-      "{content.youtubeVideos ?",
+      "{content.extraContent?.length ?",
     );
     assert.match(
       whyChooseSection,
@@ -520,6 +568,52 @@ describe("service-detail content mirrors", () => {
     );
     assert.match(breakdownSection, /z-0[\s\S]*?motion-safe:animate/);
     assert.match(breakdownSection, /String\(groupIndex \+ 1\)\.padStart\(2, "0"\)/);
+  });
+
+  it("preserves registration rich text in overview, cards, and breakdown items", () => {
+    const component = readFileSync(
+      repositoryFile(
+        "frontend/components/company-registration/company-registration-page.tsx",
+      ),
+      "utf8",
+    );
+    const strapiAdapter = readFileSync(repositoryFile("frontend/lib/strapi.ts"), "utf8");
+    const fallbackBreakdownMapper = sourceBetween(
+      strapiAdapter,
+      "function mapRegistrationBreakdown",
+      "function mapRegistrationFaqSection",
+    );
+    const strictBreakdownMapper = sourceBetween(
+      strapiAdapter,
+      "function strictFixedServiceBreakdown",
+      "function strictFixedServiceFaqSection",
+    );
+    const cmsOnlyMapper = sourceBetween(
+      strapiAdapter,
+      "function mapCmsOnlyFixedServiceDetailPage",
+      "function mapFixedServiceDetailPage",
+    );
+    const breakdownSection = sourceBetween(
+      component,
+      'id="breakdown"',
+      "{content.resultsSection ?",
+    );
+
+    assert.match(
+      fallbackBreakdownMapper,
+      /mapRegistrationRichTextList\(group\.items, fallbackGroup\?\.items \?\? \[\]\)/,
+    );
+    assert.match(
+      strictBreakdownMapper,
+      /strictRegistrationRichTextList\(group\.items\)/,
+    );
+    assert.match(
+      cmsOnlyMapper,
+      /const overviewParagraphs = strictRegistrationRichTextList\(overview\.paragraphs\);/,
+    );
+    assert.match(breakdownSection, /<RegistrationRichTextView/);
+    assert.match(breakdownSection, /value=\{item\}/);
+    assert.doesNotMatch(breakdownSection, /<span className="min-w-0 break-words">\{item\}<\/span>/);
   });
 
   it("keeps all 19 service collections on the existing cache and media revalidation path", () => {

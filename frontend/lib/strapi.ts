@@ -57,6 +57,7 @@ import type {
   Recognition,
   RegistrationBreakdownGroup,
   RegistrationDetail,
+  RegistrationExtraContentCard,
   RegistrationResultStat,
   RegistrationRichText,
   RegistrationResultsSection,
@@ -250,6 +251,7 @@ const fixedServiceDetailPopulateTree: PopulateTree = {
   advantages: { items: { icon: true } },
   process: { items: { icon: true } },
   whyChoose: { items: { icon: true } },
+  extraContent: true,
   youtubeVideos: { videos: true },
   breakdown: { groups: { icon: true, items: true } },
   resultsSection: { stats: true },
@@ -1583,6 +1585,21 @@ function mapRegistrationCardSection(
   };
 }
 
+function mapRegistrationExtraContent(
+  value: unknown,
+): RegistrationExtraContentCard[] | undefined {
+  const items = orderedEntries(value)
+    .map((entry) => {
+      const item = record(entry);
+      const title = text(item.title);
+      const description = registrationRichText(item.description);
+      return title && description ? { title, description } : null;
+    })
+    .filter((item): item is RegistrationExtraContentCard => Boolean(item));
+
+  return items.length ? items : undefined;
+}
+
 function mapRegistrationBreakdown(
   value: unknown,
   fallback: CompanyRegistrationPageContent["breakdown"],
@@ -1599,7 +1616,7 @@ function mapRegistrationBreakdown(
       const fallbackGroup = fallback.groups.find(
         (candidate) => candidate.title.toLowerCase() === title.toLowerCase(),
       );
-      const items = mapTextList(group.items, fallbackGroup?.items ?? []);
+      const items = mapRegistrationRichTextList(group.items, fallbackGroup?.items ?? []);
       const icon = mediaUrl(group.icon);
       return items.length ? { title, items, ...(icon ? { icon } : {}) } : null;
     })
@@ -1767,7 +1784,7 @@ function strictFixedServiceBreakdown(
   const groups = source.map((entry) => {
     const group = record(entry);
     const groupTitle = text(group.title);
-    const items = strictTextList(group.items);
+    const items = strictRegistrationRichTextList(group.items);
     const icon = mediaUrl(group.icon);
     return groupTitle && items
       ? { title: groupTitle, items, ...(icon ? { icon } : {}) }
@@ -2242,11 +2259,12 @@ function mapCmsOnlyFixedServiceDetailPage<T extends CompanyRegistrationPageConte
   const trustedLogos = mapLogos(page.trustedLogos, []);
   const overviewEyebrow = text(overview.eyebrow);
   const overviewTitle = text(overview.title);
-  const overviewParagraphs = strictTextList(overview.paragraphs);
+  const overviewParagraphs = strictRegistrationRichTextList(overview.paragraphs);
   const challenges = strictFixedServiceCardSection(page.challenges);
   const advantages = strictFixedServiceCardSection(page.advantages);
   const process = strictFixedServiceCardSection(page.process);
   const whyChoose = strictFixedServiceCardSection(page.whyChoose);
+  const extraContent = mapRegistrationExtraContent(page.extraContent);
   const breakdown = strictFixedServiceBreakdown(page.breakdown);
   const resultsSection = mapFixedServiceResultsSection(page.resultsSection);
   const faqs = strictFixedServiceFaqSection(page.faqs);
@@ -2302,6 +2320,7 @@ function mapCmsOnlyFixedServiceDetailPage<T extends CompanyRegistrationPageConte
     advantages,
     process,
     whyChoose,
+    ...(extraContent ? { extraContent } : {}),
     ...(youtubeVideos ? { youtubeVideos } : {}),
     breakdown,
     ...(resultsSection ? { resultsSection } : {}),
@@ -2326,11 +2345,13 @@ function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
   const overview = record(page.overview);
   const finalCta = record(page.finalCta);
   const trustedLogos = mapLogos(page.trustedLogos, []);
+  const extraContent = mapRegistrationExtraContent(page.extraContent);
   const youtubeVideos = mapFixedServiceYouTubeVideos(page.youtubeVideos);
   const resultsSection = mapFixedServiceResultsSection(page.resultsSection);
   const tickerCta = mapFixedServiceTickerCta(page.tickerCta);
   const {
     trustedLogos: _fallbackTrustedLogos,
+    extraContent: _fallbackExtraContent,
     youtubeVideos: _fallbackYoutubeVideos,
     resultsSection: _fallbackResultsSection,
     tickerCta: _fallbackTickerCta,
@@ -2359,6 +2380,7 @@ function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
     advantages: mapRegistrationCardSection(page.advantages, fallback.advantages),
     process: mapRegistrationCardSection(page.process, fallback.process),
     whyChoose: mapRegistrationCardSection(page.whyChoose, fallback.whyChoose),
+    ...(extraContent ? { extraContent } : {}),
     ...(youtubeVideos ? { youtubeVideos } : {}),
     breakdown: mapRegistrationBreakdown(page.breakdown, fallback.breakdown),
     ...(resultsSection ? { resultsSection } : {}),
