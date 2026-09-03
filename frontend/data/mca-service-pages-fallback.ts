@@ -12,6 +12,7 @@ export const fallbackMcaServicePages: McaServicePageData[] = [
       title: "Apply For Digital Signature Certificate Online | DSC Registration | DSC Provider",
       description:
         "Looking for an easy way to obtain a DSC certificate? Click here to know about how to apply for Digital Signature Certificate online. Get your Digital Signature Certificate now from best DSC service provider.",
+      robots: "index,follow",
     },
     hero: {
       eyebrow: "MCA Services",

@@ -414,10 +414,22 @@ function hasLink(value: unknown): boolean {
   return Boolean(text(source.label) && text(source.href));
 }
 
+function hasNoIndexRobotsDirective(robots: string | undefined): boolean {
+  return Boolean(
+    robots
+      ?.split(",")
+      .some((directive) => directive.trim().toLowerCase() === "noindex"),
+  );
+}
+
 function mapSeo(value: unknown, fallback: Seo, rawDefaultSeo?: unknown): Seo {
   const seo = record(value);
   const defaultSeo = record(rawDefaultSeo);
-  const noIndex = boolean(seo.noIndex) ?? boolean(defaultSeo.noIndex) ?? fallback.noIndex;
+  const legacyNoIndex = boolean(seo.noIndex) ?? boolean(defaultSeo.noIndex) ?? fallback.noIndex;
+  const configuredRobots =
+    text(seo.robots) ?? text(defaultSeo.robots) ?? fallback.robots;
+  const robots = legacyNoIndex ? "noindex,nofollow" : configuredRobots;
+  const noIndex = Boolean(legacyNoIndex) || hasNoIndexRobotsDirective(robots);
   const canonicalUrl = text(seo.canonicalUrl) ?? text(defaultSeo.canonicalUrl) ?? fallback.canonicalUrl;
   const shareImage = mediaUrl(seo.shareImage) ?? mediaUrl(defaultSeo.shareImage) ?? fallback.shareImage;
 
@@ -425,7 +437,8 @@ function mapSeo(value: unknown, fallback: Seo, rawDefaultSeo?: unknown): Seo {
     title: text(seo.metaTitle) ?? text(defaultSeo.metaTitle) ?? fallback.title,
     description: text(seo.metaDescription) ?? text(defaultSeo.metaDescription) ?? fallback.description,
     ...(canonicalUrl ? { canonicalUrl } : {}),
-    ...(noIndex !== undefined ? { noIndex } : {}),
+    ...(robots ? { robots } : {}),
+    ...(noIndex ? { noIndex: true } : legacyNoIndex !== undefined ? { noIndex: false } : {}),
     ...(shareImage ? { shareImage } : {}),
   };
 }
@@ -1790,7 +1803,10 @@ function strictFixedServiceSeo(value: unknown): Seo | null {
   const title = text(seo.metaTitle);
   const description = text(seo.metaDescription);
   const canonicalUrl = text(seo.canonicalUrl);
-  const noIndex = boolean(seo.noIndex);
+  const legacyNoIndex = boolean(seo.noIndex);
+  const configuredRobots = text(seo.robots);
+  const robots = legacyNoIndex ? "noindex,nofollow" : configuredRobots;
+  const noIndex = Boolean(legacyNoIndex) || hasNoIndexRobotsDirective(robots);
   const shareImage = mediaUrl(seo.shareImage);
 
   return title && description
@@ -1798,7 +1814,8 @@ function strictFixedServiceSeo(value: unknown): Seo | null {
         title,
         description,
         ...(canonicalUrl ? { canonicalUrl } : {}),
-        ...(noIndex !== undefined ? { noIndex } : {}),
+        ...(robots ? { robots } : {}),
+        ...(noIndex ? { noIndex: true } : legacyNoIndex !== undefined ? { noIndex: false } : {}),
         ...(shareImage ? { shareImage } : {}),
       }
     : null;

@@ -14,6 +14,7 @@ export const fallbackAboutPage: AboutPageContent = {
     title: "About Us | JR Compliance",
     description:
       "Since 2013, JR Compliance has been providing 360-degree compliance services to startups, firms and establishments with the motive to make compliance services unchallenging for everyone.",
+    robots: "index,follow",
   },
   hero: {
     eyebrow: "About JR Compliance",

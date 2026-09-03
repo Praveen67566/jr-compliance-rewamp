@@ -9,6 +9,7 @@ export const fallbackTaxAccountingPages: TaxAccountingPageData[] = [
       title: "GST registration service provider in Delhi | GST Registration Consultants",
       description:
         "Looking for the best GST registration service provider in Delhi? Our expert GST Registration Consultants in Delhi offer seamless and efficient GST registration services, ensuring compliance and accuracy",
+      robots: "index,follow",
     },
     hero: {
       eyebrow: "Tax and Accounting",

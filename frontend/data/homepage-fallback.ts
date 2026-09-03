@@ -243,6 +243,7 @@ export const fallbackHomepage: HomepageContent = {
     title: "JR Compliance | Global Compliance Consultants",
     description:
       "Global compliance, certification, and corporate services from JR Compliance.",
+    robots: "index,follow",
   },
   hero: {
     prefix: "Bridging",

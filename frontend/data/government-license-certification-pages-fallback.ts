@@ -12,6 +12,7 @@ export const fallbackGovernmentLicenseCertificationPages: GovernmentLicenseCerti
       title: "Ayush License | Ayush Manufacturing License - Registration Consultants Online",
       description:
         "Searching for quick AYUSH license registration? Click here to know about how to get AYUSH license. A License For Ayurvedic Products, Get your Ayush manufacturing license registration online from best consultants.",
+      robots: "index,follow",
     },
     hero: {
       eyebrow: "Government License & Certification",

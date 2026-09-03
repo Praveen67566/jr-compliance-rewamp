@@ -10,6 +10,7 @@ export const fallbackContactPage: ContactPageContent = {
     title: "Contact Us | JR Compliance",
     description:
       "Our mantra is to provide technical compliance certifications with click access and at a reasonable cost.",
+    robots: "index,follow",
   },
   hero: {
     eyebrow: "Contact JR Compliance",

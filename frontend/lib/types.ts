@@ -134,6 +134,7 @@ export type Seo = {
   title: string;
   description: string;
   canonicalUrl?: string;
+  robots?: string;
   noIndex?: boolean;
   shareImage?: string;
 };

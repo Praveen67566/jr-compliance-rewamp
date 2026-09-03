@@ -9,6 +9,7 @@ export const fallbackBureauIndianStandardsPages: BureauIndianStandardsPageData[]
       title: "ISI Certification Online | ISI Certification Consultant in India",
       description:
         "JR Compliance guarantees to provide you with complete support in acquiring the ISI mark-a mark for safety. Click to learn more about ISI Certification Online, ISI Certification Consultant in India",
+      robots: "index,follow",
     },
     hero: {
       eyebrow: "Bureau of Indian Standards (BIS)",

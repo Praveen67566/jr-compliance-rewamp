@@ -10,6 +10,7 @@ export const fallbackPollutionAdvisoryPages: PollutionAdvisoryPageData[] = [
         "EPR Certificate | EPR Registration - A Certificate For E-Waste Management | Extended Producer Responsibility",
       description:
         "We make the EPR certification procedure hassle-free to ensure customer satisfaction. Click here to know how to get an EPR certificate. Get your EPR Registration today. EPR stands for Extended Producer Responsibility",
+      robots: "index,follow",
     },
     hero: {
       eyebrow: "Pollution Advisory",

@@ -420,6 +420,7 @@ function serviceDetailPageData(
     seo: {
       metaTitle: page.seo.title,
       metaDescription: page.seo.description,
+      robots: "index,follow",
       noIndex: false,
     },
     sortOrder,
@@ -436,6 +437,7 @@ function legalPageData(page: LegalSeedPage, sortOrder: number): Record<string, u
     seo: {
       metaTitle: page.seo.title,
       metaDescription: page.seo.description,
+      robots: page.seo.robots,
       noIndex: page.seo.noIndex,
     },
     sortOrder,
@@ -1335,6 +1337,7 @@ export async function seedInitialContent(strapi: Core.Strapi): Promise<void> {
     seo: {
       metaTitle: "JR Compliance | Global Compliance Consultants",
       metaDescription: "Global compliance, certification, and corporate services from JR Compliance.",
+      robots: "index,follow",
       shareImage: homeHeroImage,
       noIndex: false,
     },
@@ -1453,6 +1456,7 @@ export async function seedInitialContent(strapi: Core.Strapi): Promise<void> {
       metaTitle: "About Us | JR Compliance",
       metaDescription:
         "Since 2013, JR Compliance has been providing 360-degree compliance services to startups, firms and establishments with the motive to make compliance services unchallenging for everyone.",
+      robots: "index,follow",
       shareImage: aboutHeroImage,
       noIndex: false,
     },
@@ -1552,6 +1556,7 @@ export async function seedInitialContent(strapi: Core.Strapi): Promise<void> {
       metaTitle: "Work with the best compliance consultants | JR Compliance",
       metaDescription:
         "Join JR Compliance and help businesses move through compliance with confidence, accuracy, and care.",
+      robots: "index,follow",
       noIndex: false,
     },
   });
@@ -1615,6 +1620,7 @@ export async function seedInitialContent(strapi: Core.Strapi): Promise<void> {
       metaTitle: "Contact Us | JR Compliance",
       metaDescription:
         "Our mantra is to provide technical compliance certifications with click access and at a reasonable cost.",
+      robots: "index,follow",
       noIndex: false,
     },
   });

@@ -14,6 +14,7 @@ export function pageMetadata(
   { forcePathnameCanonical = false }: PageMetadataOptions = {},
 ): Metadata {
   const image = seo.shareImage ? [seo.shareImage] : undefined;
+  const robots = seo.robots ?? (seo.noIndex ? "noindex,nofollow" : "index,follow");
   const configuredMetadataBase = configuredSiteUrl();
   const metadataBase =
     configuredMetadataBase ?? (forcePathnameCanonical ? publicSiteUrl() : undefined);
@@ -28,7 +29,7 @@ export function pageMetadata(
     description: seo.description,
     ...(metadataBase ? { metadataBase } : {}),
     ...(canonical ? { alternates: { canonical } } : {}),
-    ...(seo.noIndex ? { robots: { index: false, follow: false } } : {}),
+    robots,
     openGraph: {
       title: seo.title,
       description: seo.description,

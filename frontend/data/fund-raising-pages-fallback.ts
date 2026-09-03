@@ -9,6 +9,7 @@ export const fallbackFundRaisingPages: FundRaisingPageData[] = [
       title: "MSME Registration Online | MSME Certification Consultant Near me",
       description:
         "We make MSME registration unchallenging without compromising our client's time constraints and do MSME Registration online. Get MSME Certificate Online. Contact us to know the benefits and process of MSME registration.",
+      robots: "index,follow",
     },
     hero: {
       eyebrow: "Fund Raising",

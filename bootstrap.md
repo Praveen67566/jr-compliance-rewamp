@@ -105,52 +105,10 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-## Collections using the fixed contract
+Now in Seo section of all the pages i want one meta tag to be added named via strapi cms:-
 
-Corporate collections:
+  <meta name="robots" content="index,follow">
 
-- `company-registration-page`
-- `mca-service-page`
-- `import-export-service-page`
-- `government-license-certification-page`
-- `ipr-service-page`
-- `fssai-service-page`
-- `sebi-business-registration-page`
-- `tax-accounting-page`
-- `labour-compliance-page`
-- `fund-raising-page`
-
-Approval collections:
-
-- `bureau-indian-standards-page`
-- `pollution-advisory-page`
-- `telecommunication-engineering-centre-page`
-- `wireless-planning-coordination-page`
-- `bureau-energy-efficiency-page`
-- `cdsco-registration-page`
-- `aerb-approval-page`
-- `lmpc-certification-page`
-- `stqc-page`
-
-Now in these collection
-
-Hero
-Trusted brands (optional)
-Overview
-Challenges
-Advantages
-Process
-Why JR
-YouTube Videos (optional)
-Breakdown
-Results Section (optional)
-Ticker CTA (optional)
-FAQ
-Closing CTA
-```
-1. Here in overview in paragaph i want the type rich text not only text so that link can be added or heading.
-2. in Process section cards i want the description type to be rich text.
-3. in Why JR also i want the cards description type to be rich text.
 
 
 

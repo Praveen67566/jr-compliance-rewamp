@@ -10,6 +10,7 @@ export const fallbackCareersPage: CareersPageContent = {
     title: "Work with the best compliance consultants | JR Compliance",
     description:
       "Join JR Compliance and help businesses move through compliance with confidence, accuracy, and care.",
+    robots: "index,follow",
   },
   hero: {
     eyebrow: "Careers at JR Compliance",

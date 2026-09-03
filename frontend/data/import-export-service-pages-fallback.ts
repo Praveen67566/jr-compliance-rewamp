@@ -12,6 +12,7 @@ export const fallbackImportExportServicePages: ImportExportServicePageData[] = [
       title: "IEC Registration | IEC Code - Apply For Import Export Code Online",
       description:
         "We make IEC registration hassle-free to ensure customer satisfaction. Click here to know all about how to apply for import export code or IEC Code. Get your import export code ( IEC ) registration online.",
+      robots: "index,follow",
     },
     hero: {
       eyebrow: "Import Export Service",

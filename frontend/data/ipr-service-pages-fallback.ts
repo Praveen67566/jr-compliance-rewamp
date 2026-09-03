@@ -9,6 +9,7 @@ export const fallbackIprServicePages: IprServicePageData[] = [
       title: "Trademark registration consultants in Delhi | Trademark registration service provider near me",
       description:
         "Looking for Trademark Registration consultants in Delhi & trademark registration service provider near me than Jr Compliance Best Trademark Registration service Provider in Delhi NCR",
+      robots: "index,follow",
     },
     hero: {
       eyebrow: "IPR Services",

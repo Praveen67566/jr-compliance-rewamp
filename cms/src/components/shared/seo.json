@@ -21,6 +21,10 @@
     "canonicalUrl": {
       "type": "string"
     },
+    "robots": {
+      "type": "string",
+      "default": "index,follow"
+    },
     "noIndex": {
       "type": "boolean",
       "default": false

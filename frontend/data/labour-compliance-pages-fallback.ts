@@ -9,6 +9,7 @@ export const fallbackLabourCompliancePages: LabourCompliancePageData[] = [
       title: "Shop and Establishment Act Registration | Certificate | License",
       description:
         "Get Your Shop and Establishment act registration or you can say certificate or license today. Click here to know about Shop and Establishment registration.",
+      robots: "index,follow",
     },
     hero: {
       eyebrow: "Labour Compliance",

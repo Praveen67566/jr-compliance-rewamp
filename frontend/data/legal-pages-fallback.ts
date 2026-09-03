@@ -443,6 +443,7 @@ export const fallbackLegalPages = [
     "seo": {
       "title": "Privacy Policy | JR Compliance",
       "description": "This Privacy Policy explains the types of information collected and recorded by JR Compliance and how we use it.",
+      "robots": "index,follow",
       "noIndex": false
     }
   },
@@ -1127,6 +1128,7 @@ export const fallbackLegalPages = [
     "seo": {
       "title": "Terms and Conditions | JR Compliance",
       "description": "These Terms and Conditions govern the use of JR Compliance services and establish the rights and obligations of all users.",
+      "robots": "index,follow",
       "noIndex": false
     }
   },
@@ -5599,6 +5601,7 @@ export const fallbackLegalPages = [
     "seo": {
       "title": "Purchase and Billing | JR Compliance",
       "description": "General Terms and Conditions of purchase for JR Compliance services and products.",
+      "robots": "index,follow",
       "noIndex": false
     }
   }
@@ -5609,4 +5612,3 @@ export const legalPageSlugs: LegalPageSlug[] = fallbackLegalPages.map(({ slug })
 export function legalPageFallback(slug: string): LegalPageData | undefined {
   return fallbackLegalPages.find((page) => page.slug === slug);
 }
-

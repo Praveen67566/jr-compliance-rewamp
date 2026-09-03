@@ -9,6 +9,7 @@ export const fallbackSebiBusinessRegistrationPages: SebiBusinessRegistrationPage
       title: "Portfolio Manager Registration - Types, Requirement, and Process",
       description:
         "We make Portfolio Manager Registration easy and hassle-free. Click here to know its type, requirements, and process. Get Portfolio manager registration now from best consultants with SEBI rules.",
+      robots: "index,follow",
     },
     hero: {
       eyebrow: "SEBI Business Registration",

@@ -44,6 +44,7 @@ const registrationPage = (source: RegistrationPageSource): CompanyRegistrationPa
   seo: {
     title: source.seoTitle,
     description: source.seoDescription,
+    robots: "index,follow",
   },
   hero: {
     eyebrow: "Company Registration",

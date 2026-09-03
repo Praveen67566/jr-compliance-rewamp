@@ -339,6 +339,7 @@ export const initialSite = {
   defaultSeo: {
     metaTitle: "JR Compliance | Global Compliance Consultants",
     metaDescription: "Global compliance, certification, and corporate services from JR Compliance.",
+    robots: "index,follow",
     noIndex: false,
   },
 };

@@ -9,6 +9,7 @@ export const fallbackFssaiServicePages: FssaiServicePageData[] = [
       title: "FSSAI License Consultant Near Me | Food License Online Process",
       description:
         "Looking to get an FSSAI Registration for your food products? Click here to learn about how to get FSSAI license. So get your FSSAI Certification from the best consultants.",
+      robots: "index,follow",
     },
     hero: {
       eyebrow: "FSSAI",
