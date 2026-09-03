@@ -105,8 +105,15 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Only Ui Changes:-
+Only Ui changes:-
 
-In all 19 collection pages ui of resultsSection is so bad i dont want to put that in bule card atleast copy the design from given image the ui i want for it to be simple and text to be small
-inhace the ui only of the section don't change anything else
+Don't Change Anything else these are the frontend changes only:-
+
+1. In Home Page At Client Stories Icon Not Placed correctly i am giving a reference image to follow.
+2. In Home Page also the Icons Placement is Not Correct and it should be big
+3. In Legal Pages the heading at sidebar text color is not visible.
+
+So No Content Change Only the Ui Change and No CMS Change Also.
+
+
 

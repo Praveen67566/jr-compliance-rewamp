@@ -271,7 +271,11 @@ export function HomePage({ content }: HomePageProps) {
               {content.testimonials.items.map((testimonial) => (
                 <article className="testimonial-card" key={`${testimonial.name}-${testimonial.quote}`}>
                   <span className="keychain-card-anchor" aria-hidden="true" />
-                  <span className="quote-mark">“</span>
+                  {testimonial.companyLogo ? (
+                    <img className="testimonial-company-logo" src={testimonial.companyLogo} alt={testimonial.company} />
+                  ) : (
+                    <span className="quote-mark">“</span>
+                  )}
                   <p>{testimonial.quote}</p>
                   <footer>
                     <div className="testimonial-avatar">
@@ -281,7 +285,6 @@ export function HomePage({ content }: HomePageProps) {
                       <strong>{testimonial.name}</strong>
                       <span>{[testimonial.role, testimonial.company].filter(Boolean).join(" · ")}</span>
                     </div>
-                    {testimonial.companyLogo ? <img className="testimonial-company-logo" src={testimonial.companyLogo} alt={testimonial.company} /> : null}
                     <small>{testimonial.publishedOn}</small>
                   </footer>
                 </article>
@@ -315,14 +318,14 @@ export function HomePage({ content }: HomePageProps) {
                   {recognition.coverImage ? <img className="recognition-cover" src={recognition.coverImage} alt="" /> : null}
                   <span className="recognition-index">0{index + 1}</span>
                   {recognition.category ? <span className="recognition-category">{recognition.category}</span> : null}
-                  <h3>{recognition.title}</h3>
-                  <p>{recognition.summary}</p>
                   {recognition.sourceName || recognition.sourceLogo ? (
                     <span className="recognition-source">
                       {recognition.sourceLogo ? <img src={recognition.sourceLogo} alt={recognition.sourceName ?? ""} /> : null}
                       {recognition.sourceName ? <span>{recognition.sourceName}</span> : null}
                     </span>
                   ) : null}
+                  <h3>{recognition.title}</h3>
+                  <p>{recognition.summary}</p>
                   <span className="recognition-link">{recognition.linkLabel ?? "Read more"} <b aria-hidden="true">↗</b></span>
                 </a>
               ))}

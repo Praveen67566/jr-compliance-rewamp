@@ -185,7 +185,7 @@ export function LegalPage({ content }: LegalPageProps) {
               {sections.map((section, index) => (
                 <li key={section.anchor}>
                   <a
-                    className="block rounded-lg px-3 py-2.5 text-[0.84rem] font-bold leading-5 text-navy-700/80 transition-colors hover:bg-ice hover:text-cobalt-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-600"
+                    className="block rounded-lg px-3 py-2.5 text-[0.84rem] font-bold leading-5 text-navy-700/80! transition-colors hover:bg-ice hover:text-cobalt-700! focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-600"
                     href={`#${section.anchor}`}
                   >
                     <span className="mr-2 text-[0.66rem] tracking-[0.1em] text-cobalt-600" aria-hidden="true">

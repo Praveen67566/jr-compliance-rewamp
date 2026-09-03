@@ -2025,10 +2025,12 @@
 }
 
 .testimonial-company-logo {
-  align-self: center;
-  max-height: 24px;
-  max-width: 72px;
+  align-self: flex-start;
+  height: 52px;
+  max-width: min(156px, 72%);
   object-fit: contain;
+  object-position: left center;
+  width: auto;
 }
 
 .testimonial-card footer strong,
@@ -2173,17 +2175,25 @@
 .recognition-source {
   align-items: center;
   color: #b8d9ef;
-  display: inline-flex;
-  font-size: 0.7rem;
+  display: flex;
+  font-size: 1rem;
+  font-weight: 800;
   gap: 8px;
-  margin-top: 13px;
+  margin-top: 28px;
+  min-height: 52px;
   position: relative;
 }
 
 .recognition-source img {
-  max-height: 22px;
-  max-width: 72px;
+  height: 52px;
+  max-width: min(190px, 80%);
   object-fit: contain;
+  object-position: left center;
+  width: auto;
+}
+
+.recognition-source + h3 {
+  margin-top: 22px;
 }
 
 .recognition-link {
