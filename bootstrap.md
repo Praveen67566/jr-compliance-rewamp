@@ -105,9 +105,73 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Now in Seo section of all the pages i want one meta tag to be added named via strapi cms:-
+Corporate collections:
 
-  <meta name="robots" content="index,follow">
+- `company-registration-page`
+- `mca-service-page`
+- `import-export-service-page`
+- `government-license-certification-page`
+- `ipr-service-page`
+- `fssai-service-page`
+- `sebi-business-registration-page`
+- `tax-accounting-page`
+- `labour-compliance-page`
+- `fund-raising-page`
+
+Approval collections:
+
+- `bureau-indian-standards-page`
+- `pollution-advisory-page`
+- `telecommunication-engineering-centre-page`
+- `wireless-planning-coordination-page`
+- `bureau-energy-efficiency-page`
+- `cdsco-registration-page`
+- `aerb-approval-page`
+- `lmpc-certification-page`
+- `stqc-page`
+
+in these two
+
+{
+  "collectionName": "components_registration_detail_items",
+  "info": {
+    "displayName": "Detail item"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "richtext",
+      "required": true
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}
+
+{
+  "collectionName": "components_registration_text_items",
+  "info": {
+    "displayName": "Text item"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "richtext",
+      "required": true
+    }
+  }
+}
+
+type is rich text but its not visible exactly in frontend  first tell me why?
+
+
 
 
 

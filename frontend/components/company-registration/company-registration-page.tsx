@@ -105,7 +105,9 @@ function markedRegistrationText(node: LegalTextNode, key: string): ReactNode {
   if (node.italic) content = <em>{content}</em>;
   if (node.bold) content = <strong className="font-extrabold">{content}</strong>;
 
-  return <span key={key}>{content}</span>;
+  // Strapi rich-text text nodes can contain explicit line breaks. HTML normally
+  // collapses those breaks into spaces, so preserve them without changing the data.
+  return <span className="whitespace-pre-line" key={key}>{content}</span>;
 }
 
 function registrationInlineContent(nodes: LegalInlineNode[], keyPrefix: string, light: boolean): ReactNode[] {
@@ -148,7 +150,7 @@ function RegistrationRichTextView({
   light?: boolean;
 }) {
   if (typeof value === "string") {
-    return <p className={className}>{value}</p>;
+    return <p className={`${className} whitespace-pre-line`}>{value}</p>;
   }
 
   return value.map((block: LegalContentBlock, index) => {
