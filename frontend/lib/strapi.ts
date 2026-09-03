@@ -58,6 +58,7 @@ import type {
   RegistrationBreakdownGroup,
   RegistrationDetail,
   RegistrationResultStat,
+  RegistrationRichText,
   RegistrationResultsSection,
   SebiBusinessRegistrationPageContent,
   Service,
@@ -1104,6 +1105,26 @@ function mapTextList(value: unknown, fallback: string[]): string[] {
   return items.length ? items : fallback;
 }
 
+function registrationRichText(value: unknown): RegistrationRichText | undefined {
+  const plainText = text(value);
+  if (plainText) {
+    return plainText;
+  }
+
+  return strictLegalBlocks(value) ?? undefined;
+}
+
+function mapRegistrationRichTextList(
+  value: unknown,
+  fallback: RegistrationRichText[],
+): RegistrationRichText[] {
+  const items = orderedEntries(value)
+    .map((item) => registrationRichText(record(item).text) ?? registrationRichText(item))
+    .filter((item): item is RegistrationRichText => Boolean(item));
+
+  return items.length ? items : fallback;
+}
+
 function mapHomepage(
   fallback: HomepageContent,
   rawPage: unknown,
@@ -1525,7 +1546,7 @@ function mapRegistrationDetails(
     .map((entry) => {
       const item = record(entry);
       const title = text(item.title);
-      const description = text(item.description);
+      const description = registrationRichText(item.description);
       const icon = mediaUrl(item.icon);
       return title && description
         ? { title, description, ...(icon ? { icon } : {}) }
@@ -1690,12 +1711,19 @@ function strictTextList(value: unknown): string[] | null {
   return items.length && items.every((item): item is string => Boolean(item)) ? items : null;
 }
 
+function strictRegistrationRichTextList(value: unknown): RegistrationRichText[] | null {
+  const source = orderedEntries(value);
+  const items = source.map((item) => registrationRichText(record(item).text) ?? registrationRichText(item));
+
+  return items.length && items.every((item): item is RegistrationRichText => Boolean(item)) ? items : null;
+}
+
 function strictRegistrationDetails(value: unknown): RegistrationDetail[] | null {
   const source = orderedEntries(value);
   const items = source.map((entry) => {
     const item = record(entry);
     const title = text(item.title);
-    const description = text(item.description);
+    const description = registrationRichText(item.description);
     const icon = mediaUrl(item.icon);
     return title && description
       ? { title, description, ...(icon ? { icon } : {}) }
@@ -2308,7 +2336,7 @@ function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
     overview: {
       eyebrow: text(overview.eyebrow) ?? fallback.overview.eyebrow,
       title: text(overview.title) ?? fallback.overview.title,
-      paragraphs: mapTextList(overview.paragraphs, fallback.overview.paragraphs),
+      paragraphs: mapRegistrationRichTextList(overview.paragraphs, fallback.overview.paragraphs),
     },
     challenges: mapRegistrationCardSection(page.challenges, fallback.challenges),
     advantages: mapRegistrationCardSection(page.advantages, fallback.advantages),

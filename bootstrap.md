@@ -105,15 +105,52 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Only Ui changes:-
+## Collections using the fixed contract
 
-Don't Change Anything else these are the frontend changes only:-
+Corporate collections:
 
-1. In Home Page At Client Stories Icon Not Placed correctly i am giving a reference image to follow.
-2. In Home Page also the Icons Placement is Not Correct and it should be big
-3. In Legal Pages the heading at sidebar text color is not visible.
+- `company-registration-page`
+- `mca-service-page`
+- `import-export-service-page`
+- `government-license-certification-page`
+- `ipr-service-page`
+- `fssai-service-page`
+- `sebi-business-registration-page`
+- `tax-accounting-page`
+- `labour-compliance-page`
+- `fund-raising-page`
 
-So No Content Change Only the Ui Change and No CMS Change Also.
+Approval collections:
+
+- `bureau-indian-standards-page`
+- `pollution-advisory-page`
+- `telecommunication-engineering-centre-page`
+- `wireless-planning-coordination-page`
+- `bureau-energy-efficiency-page`
+- `cdsco-registration-page`
+- `aerb-approval-page`
+- `lmpc-certification-page`
+- `stqc-page`
+
+Now in these collection
+
+Hero
+Trusted brands (optional)
+Overview
+Challenges
+Advantages
+Process
+Why JR
+YouTube Videos (optional)
+Breakdown
+Results Section (optional)
+Ticker CTA (optional)
+FAQ
+Closing CTA
+```
+1. Here in overview in paragaph i want the type rich text not only text so that link can be added or heading.
+2. in Process section cards i want the description type to be rich text.
+3. in Why JR also i want the cards description type to be rich text.
 
 
 

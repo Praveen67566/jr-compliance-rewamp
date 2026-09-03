@@ -662,10 +662,10 @@ settings, colour pickers, Webflow IDs, or public form endpoints.
 | `contact.enquiry` | `eyebrow` short text, `title` short text*, `description` long text*, `topics` repeatable `contact.topic` component, `directCta` `shared.cta`*, `formNote` long text* |
 | `contact.response-step` | `title` short text*, `description` long text* |
 | `contact.response` | `eyebrow` short text, `title` short text*, `steps` repeatable `contact.response-step`* |
-| `registration.text-item` | `text` long text* |
-| `registration.detail-item` | `title` short text*, `description` long text*, `icon` single image media; the shared picker is optional and the frontend renders it in Challenges, Advantages, Process, and Why Choose cards |
+| `registration.text-item` | `text` Rich Text (Blocks)* |
+| `registration.detail-item` | `title` short text*, `description` Rich Text (Blocks)*, `icon` single image media; the shared picker is optional and the frontend renders it in Challenges, Advantages, Process, and Why Choose cards |
 | `registration.hero` | `eyebrow` short text*, `description` long text*, `cta` `shared.cta`*; page H1 comes from the parent `title` |
-| `registration.overview` | `eyebrow` short text*, `title` short text*, `paragraphs` repeatable `registration.text-item`* |
+| `registration.overview` | `eyebrow` short text*, `title` short text*, `paragraphs` repeatable `registration.text-item`*; each paragraph supports headings, links, lists, and text marks |
 | `registration.card-section` | `eyebrow` short text*, `title` short text*, `items` repeatable `registration.detail-item`* |
 | `registration.youtube-video` | `title` short text*, `youtubeUrl` short text* |
 | `registration.youtube-video-section` | `eyebrow` short text*, `title` short text*, `description` long text, `videos` repeatable `registration.youtube-video`* (minimum 1) |

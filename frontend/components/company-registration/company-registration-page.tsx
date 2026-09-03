@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import { RouteClosingCta } from "@/components/editorial/route-closing-cta";
 import { ConsultationForm } from "@/components/forms/consultation-form";
 import { TrustedBrandsMarquee } from "@/components/home/trusted-brands-marquee";
@@ -12,8 +14,12 @@ import type {
   ImportExportServicePageContent,
   IprServicePageContent,
   LabourCompliancePageContent,
+  LegalContentBlock,
+  LegalInlineNode,
+  LegalTextNode,
   McaServicePageContent,
   RegistrationDetail,
+  RegistrationRichText,
   RegistrationResultsSection,
   SebiBusinessRegistrationPageContent,
   TaxAccountingPageContent,
@@ -75,6 +81,108 @@ function SectionHeading({
       </h2>
     </div>
   );
+}
+
+function safeRegistrationHref(value: string): string | null {
+  if ((value.startsWith("/") && !value.startsWith("//")) || value.startsWith("#")) {
+    return value;
+  }
+
+  try {
+    const url = new URL(value);
+    return ["http:", "https:", "mailto:", "tel:"].includes(url.protocol) ? value : null;
+  } catch {
+    return null;
+  }
+}
+
+function markedRegistrationText(node: LegalTextNode, key: string): ReactNode {
+  let content: ReactNode = node.text;
+
+  if (node.code) content = <code className="rounded bg-ice px-1 py-0.5 text-[0.92em]">{content}</code>;
+  if (node.strikethrough) content = <s>{content}</s>;
+  if (node.underline) content = <u className="underline-offset-2">{content}</u>;
+  if (node.italic) content = <em>{content}</em>;
+  if (node.bold) content = <strong className="font-extrabold">{content}</strong>;
+
+  return <span key={key}>{content}</span>;
+}
+
+function registrationInlineContent(nodes: LegalInlineNode[], keyPrefix: string, light: boolean): ReactNode[] {
+  return nodes.map((node, index) => {
+    const key = `${keyPrefix}-${index}`;
+    if (node.type === "text") {
+      return markedRegistrationText(node, key);
+    }
+
+    const href = safeRegistrationHref(node.url);
+    const children = node.children.map((child, childIndex) =>
+      markedRegistrationText(child, `${key}-${childIndex}`),
+    );
+
+    return href ? (
+      <a
+        className={`rounded-sm font-bold underline decoration-sky/55 underline-offset-4 transition-colors hover:text-sky focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky focus-visible:ring-offset-2 ${
+          light ? "text-sky" : "text-cobalt-700 hover:text-cobalt-600"
+        }`}
+        href={href}
+        key={key}
+        rel={href.startsWith("http") ? "noreferrer" : undefined}
+        target={href.startsWith("http") ? "_blank" : undefined}
+      >
+        {children}
+      </a>
+    ) : (
+      <span key={key}>{children}</span>
+    );
+  });
+}
+
+function RegistrationRichTextView({
+  value,
+  className,
+  light = false,
+}: {
+  value: RegistrationRichText;
+  className: string;
+  light?: boolean;
+}) {
+  if (typeof value === "string") {
+    return <p className={className}>{value}</p>;
+  }
+
+  return value.map((block: LegalContentBlock, index) => {
+    const key = `registration-rich-text-${index}`;
+
+    if (block.type === "paragraph") {
+      const children = registrationInlineContent(block.children, key, light);
+      return <p className={className} key={key}>{children}</p>;
+    }
+
+    if (block.type === "list") {
+      const List = block.format === "ordered" ? "ol" : "ul";
+      return (
+        <List className={`${className} pl-6 ${block.format === "ordered" ? "list-decimal" : "list-disc"}`} key={key}>
+          {block.children.map((item, itemIndex) => (
+            <li className="pl-2" key={`${key}-${itemIndex}`}>
+              {registrationInlineContent(item.children, `${key}-${itemIndex}`, light)}
+            </li>
+          ))}
+        </List>
+      );
+    }
+
+    const Heading = block.level === 2 ? "h2" : block.level === 3 ? "h3" : "h4";
+    const children = registrationInlineContent(block.children, key, light);
+    return (
+      <Heading
+        className={`${className} font-display ${block.level === 2 ? "text-2xl" : block.level === 3 ? "text-xl" : "text-lg"}`}
+        key={key}
+      >
+        {children}
+      </Heading>
+    );
+  });
 }
 
 type DecorativeCardIconProps = {
@@ -149,9 +257,11 @@ function DetailCard({ item, index, light = false }: { item: RegistrationDetail; 
       >
         {item.title}
       </h3>
-      <p className={`mt-4 break-words text-[0.94rem] leading-7 ${light ? "text-ice/72" : "text-navy-700/75"}`}>
-        {item.description}
-      </p>
+      <RegistrationRichTextView
+        className={`mt-4 break-words text-[0.94rem] leading-7 ${light ? "text-ice/72" : "text-navy-700/75"}`}
+        light={light}
+        value={item.description}
+      />
     </article>
   );
 }
@@ -188,9 +298,11 @@ function PlanningCard({ item, index }: { item: RegistrationDetail; index: number
       <h3 className="relative mb-0 mt-8 max-w-[22rem] break-words font-display text-[1.9rem] leading-[1.02] tracking-[-0.03em] text-white">
         {item.title}
       </h3>
-      <p className="relative mb-0 mt-4 break-words text-[0.94rem] leading-7 text-ice/72">
-        {item.description}
-      </p>
+      <RegistrationRichTextView
+        className="relative mb-0 mt-4 break-words text-[0.94rem] leading-7 text-ice/72"
+        light
+        value={item.description}
+      />
     </article>
   );
 }
@@ -216,9 +328,10 @@ function AdvantageCard({ item, index }: { item: RegistrationDetail; index: numbe
       <h3 className="relative mb-0 mt-9 max-w-[22rem] break-words font-display text-[1.9rem] leading-[1.02] tracking-[-0.03em] text-navy-950">
         {item.title}
       </h3>
-      <p className="relative mb-0 mt-4 break-words text-[0.94rem] leading-7 text-navy-700/76">
-        {item.description}
-      </p>
+      <RegistrationRichTextView
+        className="relative mb-0 mt-4 break-words text-[0.94rem] leading-7 text-navy-700/76"
+        value={item.description}
+      />
       <div className="absolute inset-x-6 bottom-0 h-px overflow-hidden bg-cobalt-700/10 md:inset-x-8" aria-hidden="true">
         <span
           className="block h-full w-full origin-left bg-[linear-gradient(90deg,transparent,var(--blue-electric),transparent)] motion-safe:animate-[service-route-sweep_4.8s_ease-in-out_infinite]"
@@ -488,14 +601,15 @@ export function CompanyRegistrationPage({
               {content.overview.paragraphs.map((paragraph, index) => (
                 <div
                   className="grid min-w-0 grid-cols-1 gap-3 border-b border-cobalt-700/12 py-5 first:pt-0 last:border-0 last:pb-0 min-[560px]:grid-cols-[2.65rem_minmax(0,1fr)] min-[560px]:gap-4"
-                  key={`${index}-${paragraph}`}
+                  key={`${index}-${typeof paragraph === "string" ? paragraph : index}`}
                 >
                   <span className="flex size-10 items-center justify-center rounded-xl border border-cobalt-600/18 bg-ice text-[0.65rem] font-extrabold tracking-[0.12em] text-cobalt-600">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <p className="mb-0 min-w-0 break-words text-base leading-8 text-navy-700/80 md:text-lg">
-                    {paragraph}
-                  </p>
+                  <RegistrationRichTextView
+                    className="mb-0 min-w-0 break-words text-base leading-8 text-navy-700/80 md:text-lg"
+                    value={paragraph}
+                  />
                 </div>
               ))}
             </div>
@@ -569,7 +683,11 @@ export function CompanyRegistrationPage({
                   </span>
                 )}
                 <h3 className="mt-8 break-words font-display text-[1.75rem] leading-[1.05] text-white">{item.title}</h3>
-                <p className="mt-4 break-words text-sm leading-7 text-ice/70">{item.description}</p>
+                <RegistrationRichTextView
+                  className="mt-4 break-words text-sm leading-7 text-ice/70"
+                  light
+                  value={item.description}
+                />
               </li>
             ))}
           </ol>

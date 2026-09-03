@@ -528,6 +528,8 @@ export type LegalContentBlock =
   | LegalHeadingBlock
   | LegalListBlock;
 
+export type RegistrationRichText = string | LegalContentBlock[];
+
 export type LegalSection = {
   title: string;
   body: LegalContentBlock[];
@@ -551,7 +553,7 @@ export type LegalPageContent = PageChromeContent & LegalPageData;
 /** A title-and-description pair used by the fixed registration-page sections. */
 export type RegistrationDetail = {
   title: string;
-  description: string;
+  description: RegistrationRichText;
   /** Optional CMS artwork displayed inside the card's decorative signal ring. */
   icon?: string;
 };
@@ -619,7 +621,7 @@ export type CompanyRegistrationPageData = {
   overview: {
     eyebrow: string;
     title: string;
-    paragraphs: string[];
+    paragraphs: RegistrationRichText[];
   };
   challenges: {
     eyebrow: string;
