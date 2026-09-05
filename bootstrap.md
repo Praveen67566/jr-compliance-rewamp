@@ -104,19 +104,12 @@ If a command cannot be run, clearly explain why.
 - Tell me what validation passed or failed.
 
 ## Prompt:-
- In Home Page At this Regulatory expertise section what i want 
- dont use the brand-logo because here both image and name are required but create a different schema for this section only where only name is required not the logo.
 
- for frontend like i want in some only the logos not name so if there is logo present show the logo in center and make size little big . and if there is name only then show the name in center little big.
+Only Ui Changes:-
 
- "regulatorLogos": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::brand-logo.brand-logo"
- },
+1. Header in mobiles like i have to scroll for too much and it feels like a glitch so fix that.
 
- dont change anything else.
+2. the floating whatsapp icon i want you to make same like the given html on hover but don't change its side its perfect on right side only.
 
-
-
+Dont change anything else these are just simple ui changes reference image and html is given.
 

@@ -21,11 +21,13 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileSection, setMobileSection] = useState<string | null>(null);
 
   const closeAll = () => {
     setOpenMenu(null);
     setActiveCategory(null);
     setMobileOpen(false);
+    setMobileSection(null);
   };
 
   return (
@@ -284,7 +286,13 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
             type="button"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
-            onClick={() => setMobileOpen((isOpen) => !isOpen)}
+            aria-controls="mobile-navigation"
+            onClick={() => {
+              setMobileOpen(!mobileOpen);
+              if (mobileOpen) {
+                setMobileSection(null);
+              }
+            }}
           >
             <span />
             <span />
@@ -293,49 +301,96 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
       </div>
 
       {mobileOpen ? (
-        <nav className="mobile-navigation site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]" aria-label="Mobile navigation">
-          {navigation.map((item) => (
-            <div className="mobile-nav-group" key={item.label}>
-              <a href={sharedHref(item.href)} {...linkTargetProps(item)} onClick={closeAll}>
-                {item.label}
-                <span aria-hidden="true">↗</span>
-              </a>
-              {item.categories?.map((category) => (
-                <details className="border-t border-sky/15 py-1 first:border-t-0" key={category.title}>
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-3 py-2 pl-3 text-[0.82rem] font-bold text-[#c7e7fb] marker:content-none">
-                    {category.title}
-                    <span className="text-sky" aria-hidden="true">+</span>
-                  </summary>
-                  <div className="grid gap-1 pb-2 pl-3">
-                    {category.links.map((link) => (
-                      <a
-                        className="py-1 text-[0.77rem] text-[#b7daf2] hover:text-cloud focus-visible:rounded focus-visible:outline-2 focus-visible:outline-sky"
-                        href={sharedHref(link.href)}
-                        key={link.label}
-                        {...linkTargetProps(link)}
-                        onClick={closeAll}
+        <nav
+          id="mobile-navigation"
+          className="mobile-navigation site-container mx-auto max-h-[calc(100dvh-108px)] w-full max-w-[1320px] overflow-y-auto overscroll-contain px-8 [scrollbar-gutter:stable] max-[820px]:px-[22px] max-[560px]:px-[18px]"
+          aria-label="Mobile navigation"
+        >
+          {navigation.map((item) => {
+            const hasCategories = Boolean(item.categories?.length);
+            const isMobileSectionOpen = mobileSection === item.label;
+            const mobileSectionId = `mobile-menu-${item.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+
+            return (
+              <div className="mobile-nav-group" key={item.label}>
+                {hasCategories ? (
+                  <button
+                    className="flex w-full cursor-pointer appearance-none items-center justify-between border-0 bg-transparent py-[9px] text-left text-[0.96rem] font-bold text-cloud focus-visible:rounded focus-visible:outline-2 focus-visible:outline-sky"
+                    type="button"
+                    aria-label={`${isMobileSectionOpen ? "Collapse" : "Expand"} ${item.label} menu`}
+                    aria-expanded={isMobileSectionOpen}
+                    aria-controls={mobileSectionId}
+                    onClick={() => setMobileSection(isMobileSectionOpen ? null : item.label)}
+                  >
+                    <span>{item.label}</span>
+                    <span
+                      className={`text-xl leading-none text-sky transition-transform duration-200 ${isMobileSectionOpen ? "rotate-45" : ""}`}
+                      aria-hidden="true"
+                    >
+                      +
+                    </span>
+                  </button>
+                ) : (
+                  <a
+                    className="flex items-center justify-between py-[9px] text-[0.96rem] font-bold text-cloud focus-visible:rounded focus-visible:outline-2 focus-visible:outline-sky"
+                    href={sharedHref(item.href)}
+                    {...linkTargetProps(item)}
+                    onClick={closeAll}
+                  >
+                    {item.label}
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                )}
+                {hasCategories && isMobileSectionOpen ? (
+                  <div id={mobileSectionId}>
+                    {item.categories?.map((category) => (
+                      <details
+                        className="group/mobile-category border-t border-sky/15 py-1 first:border-t-0"
+                        key={category.title}
+                        name={`${mobileSectionId}-categories`}
                       >
-                        {link.label}
-                      </a>
+                        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 py-2 pl-3 text-[0.82rem] font-bold text-[#c7e7fb] marker:content-none [&::-webkit-details-marker]:hidden">
+                          {category.title}
+                          <span
+                            className="text-sky transition-transform duration-200 group-open/mobile-category:rotate-45"
+                            aria-hidden="true"
+                          >
+                            +
+                          </span>
+                        </summary>
+                        <div className="grid gap-1 pb-2 pl-3">
+                          {category.links.map((link) => (
+                            <a
+                              className="py-1 text-[0.77rem] text-[#b7daf2] hover:text-cloud focus-visible:rounded focus-visible:outline-2 focus-visible:outline-sky"
+                              href={sharedHref(link.href)}
+                              key={link.label}
+                              {...linkTargetProps(link)}
+                              onClick={closeAll}
+                            >
+                              {link.label}
+                            </a>
+                          ))}
+                        </div>
+                      </details>
                     ))}
                   </div>
-                </details>
-              ))}
-              {!item.categories?.length
-                ? item.children?.map((child) => (
-                    <a
-                      className="mobile-subnav-link"
-                      href={sharedHref(child.href)}
-                      key={child.label}
-                      {...linkTargetProps(child)}
-                      onClick={closeAll}
-                    >
-                      {child.label}
-                    </a>
-                  ))
-                : null}
-            </div>
-          ))}
+                ) : null}
+                {!hasCategories
+                  ? item.children?.map((child) => (
+                      <a
+                        className="mobile-subnav-link"
+                        href={sharedHref(child.href)}
+                        key={child.label}
+                        {...linkTargetProps(child)}
+                        onClick={closeAll}
+                      >
+                        {child.label}
+                      </a>
+                    ))
+                  : null}
+              </div>
+            );
+          })}
           {site.loginButton.enabled ? (
             <a
               className="mr-2 mt-4 inline-flex items-center justify-center rounded-full border border-sky/50 bg-ice px-[17px] py-3 text-[0.85rem] font-extrabold text-[#0b315f] transition-[background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-sky-strong hover:bg-cloud focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky"

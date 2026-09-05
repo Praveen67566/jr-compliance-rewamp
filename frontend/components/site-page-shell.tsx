@@ -25,7 +25,7 @@ export function SitePageShell({ children, footer, navigation, site }: SitePageSh
           <span
             id="whatsapp-contact-preview"
             role="tooltip"
-            className="pointer-events-none absolute bottom-[calc(100%+1rem)] right-0 z-[2] block w-[290px] max-w-[calc(100vw_-_2rem_-_env(safe-area-inset-left)_-_env(safe-area-inset-right))] origin-bottom-right translate-y-3 scale-[0.96] rounded-[18px] border border-sky/20 bg-[linear-gradient(155deg,var(--blue-navy-800),var(--blue-navy-950))] px-[1.1rem] pb-[1.1rem] pt-4 text-left text-ice opacity-0 shadow-[0_26px_60px_rgba(0,8,34,0.5)] transition-[opacity,translate,scale] duration-[350ms] ease-[cubic-bezier(.22,1,.36,1)] before:absolute before:-bottom-2 before:right-[22px] before:size-4 before:rotate-45 before:rounded-br-[3px] before:border-b before:border-r before:border-sky/20 before:bg-navy-950 before:content-[''] after:absolute after:inset-x-0 after:-bottom-4 after:h-4 after:content-[''] pointer-fine:group-hover/whatsapp:pointer-events-auto pointer-fine:group-hover/whatsapp:translate-y-0 pointer-fine:group-hover/whatsapp:scale-100 pointer-fine:group-hover/whatsapp:opacity-100 group-focus-visible/whatsapp:pointer-events-auto group-focus-visible/whatsapp:translate-y-0 group-focus-visible/whatsapp:scale-100 group-focus-visible/whatsapp:opacity-100 motion-reduce:translate-y-0 motion-reduce:scale-100 motion-reduce:transition-none"
+            className="pointer-events-none absolute bottom-[calc(100%+2.5rem)] right-0 z-[2] block w-[290px] max-w-[calc(100vw_-_2rem_-_env(safe-area-inset-left)_-_env(safe-area-inset-right))] origin-bottom-right translate-y-3 scale-[0.96] rounded-[18px] border border-sky/20 bg-[linear-gradient(155deg,var(--blue-navy-800),var(--blue-navy-950))] px-[1.1rem] pb-[1.1rem] pt-4 text-left text-ice opacity-0 shadow-[0_26px_60px_rgba(0,8,34,0.5)] transition-[opacity,translate,scale] duration-[350ms] ease-[cubic-bezier(.22,1,.36,1)] before:absolute before:-bottom-2 before:right-[22px] before:size-4 before:rotate-45 before:rounded-br-[3px] before:border-b before:border-r before:border-sky/20 before:bg-navy-950 before:content-[''] after:absolute after:inset-x-0 after:-bottom-10 after:h-10 after:content-[''] pointer-fine:group-hover/whatsapp:pointer-events-auto pointer-fine:group-hover/whatsapp:translate-y-0 pointer-fine:group-hover/whatsapp:scale-100 pointer-fine:group-hover/whatsapp:opacity-100 group-focus-visible/whatsapp:pointer-events-auto group-focus-visible/whatsapp:translate-y-0 group-focus-visible/whatsapp:scale-100 group-focus-visible/whatsapp:opacity-100 motion-reduce:translate-y-0 motion-reduce:scale-100 motion-reduce:transition-none"
           >
             <span className="mb-3 flex items-center gap-2.5">
               <span
@@ -35,15 +35,23 @@ export function SitePageShell({ children, footer, navigation, site }: SitePageSh
                 JR
               </span>
               <span className="min-w-0">
-                <span className="block truncate text-[0.82rem] font-bold text-white">{site.name}</span>
+                <span className="block truncate text-[0.82rem] font-bold text-white">{site.name} Assistant</span>
                 <span className="mt-0.5 flex items-center gap-1.5 text-[0.68rem] font-semibold text-[#25d366]">
                   <span
                     className="size-1.5 flex-none rounded-full bg-[#25d366] shadow-[0_0_6px_#25d366] motion-safe:animate-pulse"
                     aria-hidden="true"
                   />
-                  Available on WhatsApp
+                  Online now · 24/7
                 </span>
               </span>
+            </span>
+            <span
+              className="mb-2.5 flex w-fit items-center gap-1 py-2 pb-[0.2rem]"
+              aria-hidden="true"
+            >
+              <span className="size-1.5 rounded-full bg-[#a9c8e5]/65 motion-safe:animate-bounce motion-safe:[animation-duration:1.1s]" />
+              <span className="size-1.5 rounded-full bg-[#a9c8e5]/65 motion-safe:animate-bounce motion-safe:[animation-delay:150ms] motion-safe:[animation-duration:1.1s]" />
+              <span className="size-1.5 rounded-full bg-[#a9c8e5]/65 motion-safe:animate-bounce motion-safe:[animation-delay:300ms] motion-safe:[animation-duration:1.1s]" />
             </span>
             <span className="mb-3.5 block text-[0.82rem] leading-[1.55] text-ice">
               {site.footerTagline}
@@ -54,6 +62,13 @@ export function SitePageShell({ children, footer, navigation, site }: SitePageSh
               </svg>
               Chat on WhatsApp
             </span>
+          </span>
+          <span
+            className="pointer-events-none absolute -top-[38px] left-1/2 z-[3] flex -translate-x-1/2 items-center gap-[0.35rem] whitespace-nowrap rounded-full bg-[linear-gradient(135deg,#1b95ff,#376bed)] py-[0.4rem] pl-[0.55rem] pr-[0.7rem] text-[0.68rem] font-bold tracking-[0.01em] text-white shadow-[0_8px_18px_rgba(15,113,241,0.45),inset_0_1px_rgba(255,255,255,0.25)] after:absolute after:-bottom-1 after:left-1/2 after:size-[9px] after:-translate-x-1/2 after:rotate-45 after:rounded-br-[2px] after:bg-[#2e7ff0] after:content-['']"
+            aria-hidden="true"
+          >
+            <span className="size-[5px] rounded-full bg-[#5fe3b0] shadow-[0_0_6px_#5fe3b0] motion-safe:animate-pulse" />
+            24/7 AI
           </span>
           <span className="relative isolate grid size-[60px] place-items-center rounded-full bg-[linear-gradient(150deg,#25d366,#128c7e)] text-white shadow-[0_12px_28px_rgba(18,140,126,0.45),inset_0_1px_rgba(255,255,255,0.3)] transition-[translate,scale] duration-250 ease-[cubic-bezier(.22,1,.36,1)] pointer-fine:group-hover/whatsapp:-translate-y-[3px] pointer-fine:group-hover/whatsapp:scale-[1.04] group-focus-visible/whatsapp:-translate-y-[3px] group-focus-visible/whatsapp:scale-[1.04] motion-reduce:transition-none">
             <span
