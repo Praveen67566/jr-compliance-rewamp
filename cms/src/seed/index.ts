@@ -75,6 +75,8 @@ const CONTENT_TYPES = {
   pollutionAdvisoryPage: "api::pollution-advisory-page.pollution-advisory-page",
   serviceCategory: "api::service-category.service-category",
   service: "api::service.service",
+  regulatoryExpertiseItem:
+    "api::regulatory-expertise-item.regulatory-expertise-item",
   brandLogo: "api::brand-logo.brand-logo",
   testimonial: "api::testimonial.testimonial",
   recognition: "api::recognition.recognition",
@@ -1059,9 +1061,8 @@ export async function seedInitialContent(strapi: Core.Strapi): Promise<void> {
   const regulators: SeedDocument[] = [];
   for (const [name, source] of regulatorLogos) {
     regulators.push(
-      await createPublished(strapi, CONTENT_TYPES.brandLogo, {
+      await createPublished(strapi, CONTENT_TYPES.regulatoryExpertiseItem, {
         name,
-        kind: "regulator",
         logo: await mediaId(source, `${name} regulatory mark`),
         sortOrder: regulators.length,
       }),

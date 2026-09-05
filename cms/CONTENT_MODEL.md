@@ -29,8 +29,8 @@ existing `shared.legal-notice` component, mirror the approved legacy wording in
 typed frontend fallback data and a historical CMS JSON source, and do not widen
 the model into a generic page builder.
 
-The committed schema contains five single types, thirty-six collection types,
-and sixty-one components: forty-one content types in total. Nineteen of the
+The committed schema contains five single types, thirty-seven collection types,
+and sixty-one components: forty-two content types in total. Nineteen of the
 collections use the fixed service-detail contract; that count does not include
 the legal collection or the two Global collections.
 
@@ -83,7 +83,7 @@ One editorially ordered homepage record.
 | `serviceCategories` | Relation | **Many-way** to `service-category`; editor order is tab order |
 | `whyUs` | `home.why-us` component | Required |
 | `regulatorsHeading` | `shared.section-heading` component | Required |
-| `regulatorLogos` | Relation | **Many-way** to `brand-logo`; use `kind=regulator` |
+| `regulatorLogos` | Relation | **Many-way** to `regulatory-expertise-item`; editor order is display order |
 | `story` | `home.story` component | Required |
 | `tickerCta` | `home.cta-band` component | Optional; the animated “Let’s Talk Compliance” band |
 | `testimonialsHeading` | `shared.section-heading` component | Required |
@@ -592,7 +592,8 @@ content.
 | --- | --- | --- |
 | **Service Category** (`service-category`, `service-categories`) | `name` short text*, `slug` UID from `name`*, `description` long text, `sortOrder` integer* | `services`: **one-to-many** to Service (inverse of `serviceCategory`) |
 | **Service** (`service`, `services`) | `title` short text*, `slug` UID from `title`*, `summary` long text, `icon` single image media*, `link` `shared.link`*, `sortOrder` integer* | `serviceCategory`: **many-to-one** to Service Category* |
-| **Brand Logo** (`brand-logo`, `brand-logos`) | `name` short text*, `kind` enum `client` / `regulator`*, `logo` single image media*, `sortOrder` integer*, `websiteUrl` short text | Selected by the Home Page logo relations and the optional fixed-service `trustedLogos` relations; no inverse field |
+| **Brand Logo** (`brand-logo`, `brand-logos`) | `name` short text*, `kind` enum `client` / `regulator`*, `logo` single image media*, `sortOrder` integer*, `websiteUrl` short text | Selected by the Home Page and optional fixed-service `trustedLogos` relations; no inverse field |
+| **Regulatory Expertise Item** (`regulatory-expertise-item`, `regulatory-expertise-items`) | `name` short text*, `logo` single image media, `websiteUrl` short text, `sortOrder` integer | Selected only by `home-page.regulatorLogos`; the frontend shows the logo alone when present and otherwise shows the required name |
 | **Testimonial** (`testimonial`, `testimonials`) | `quote` long text*, `personName` short text*, `personRole` short text, `companyName` short text, `personPhoto` single image media, `companyLogo` single image media, `publishedOn` date, `sortOrder` integer* | Selected by Home Page |
 | **Recognition** (`recognition`, `recognitions`) | `category` short text*, `title` short text*, `excerpt` long text*, `sourceName` short text, `sourceLogo` single image media, `coverImage` single image media, `link` `shared.link`*, `sortOrder` integer* | Selected by Home Page |
 | **FAQ Category** (`faq-category`, `faq-categories`) | `name` short text*, `slug` UID from `name`*, `icon` single image media, `sortOrder` integer* | `faqs`: **one-to-many** to FAQ (inverse of `faqCategory`) |
@@ -795,14 +796,15 @@ attributes are flattened and documents use `documentId`; do not copy v4
 | Consumer | Allowed permissions |
 | --- | --- |
 | **Public role** | None for these content types or Upload. The browser never receives a Strapi token. |
-| **`next-site-reader` API token** | Custom, read-only: `find` for `site-setting`, `home-page`, `about-page`, `careers-page`, and `contact-page`; `find` and `findOne` for `legal-page`, all nineteen fixed service-detail collections, including `bureau-indian-standards-page`, `pollution-advisory-page`, `telecommunication-engineering-centre-page`, `wireless-planning-coordination-page`, `bureau-energy-efficiency-page`, `cdsco-registration-page`, `aerb-approval-page`, `lmpc-certification-page`, and `stqc-page`; `find` and `findOne` for `global-country-page` and `global-certificate-page`; plus every listed supporting collection type and Upload `find`. No create, update, delete, publish, or admin access. Store only as `STRAPI_API_TOKEN` on the Next server. |
+| **`next-site-reader` API token** | Custom, read-only: `find` for `site-setting`, `home-page`, `about-page`, `careers-page`, and `contact-page`; `find` and `findOne` for `legal-page`, all nineteen fixed service-detail collections, including `bureau-indian-standards-page`, `pollution-advisory-page`, `telecommunication-engineering-centre-page`, `wireless-planning-coordination-page`, `bureau-energy-efficiency-page`, `cdsco-registration-page`, `aerb-approval-page`, `lmpc-certification-page`, and `stqc-page`; `find` and `findOne` for `global-country-page` and `global-certificate-page`; plus every listed supporting collection type—including `regulatory-expertise-item`—and Upload `find`. No create, update, delete, publish, or admin access. Store only as `STRAPI_API_TOKEN` on the Next server. |
 | **Content Editor admin role** | Content Manager create/read/update for the listed types and Media Library upload/edit. No schema access and no delete permission. |
 | **Publisher/Admin role** | Editor permissions plus publish. Content Type Builder remains development-only and developer-owned. |
 
 Deploying a schema does not extend an existing custom API token automatically.
-Grant `find` and `findOne` for the `legal-page` API, both Global collection
-APIs, and the seven empty Approval collection APIs before an editor expects
-newly deployed collection records to render. Public access remains disabled.
+Grant `find` for `regulatory-expertise-item`, and grant `find` plus `findOne`
+for the `legal-page` API, both Global collection APIs, and the seven empty
+Approval collection APIs before an editor expects newly deployed collection
+records to render. Public access remains disabled.
 
 Use these generated endpoints:
 
@@ -852,8 +854,9 @@ no route.
 
 Signed publish/unpublish/delete revalidation maps `legal-page` to
 `jr-legal-pages`, `global-country-page` to `jr-global-country-pages`, and
-`global-certificate-page` to `jr-global-certificate-pages`. Brand Logo changes
-invalidate the homepage and all nineteen fixed-service cache tags. These tags
+`global-certificate-page` to `jr-global-certificate-pages`. Regulatory
+Expertise Item changes invalidate the homepage. Brand Logo changes invalidate
+the homepage and all nineteen fixed-service cache tags. These tags
 are recognized by the frontend receiver and included when a shared Site
 Setting or media change requires broad page invalidation. The normal 60-second
 cache window remains a fallback.
@@ -878,7 +881,7 @@ cache window remains a fallback.
    `telecommunication-engineering-centre-page`,
    `wireless-planning-coordination-page`, `bureau-energy-efficiency-page`,
    `cdsco-registration-page`, `aerb-approval-page`,
-   `lmpc-certification-page`, `stqc-page`, `legal-page`,
+   `lmpc-certification-page`, `stqc-page`, `regulatory-expertise-item`, `legal-page`,
    `global-country-page`, and `global-certificate-page` collections. Enable
    Draft & Publish on all of them. Commit Strapi’s generated schemas to git; do
    not create schema changes directly in production.

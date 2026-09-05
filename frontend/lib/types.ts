@@ -25,6 +25,13 @@ export type Logo = {
   href?: string;
 };
 
+/** A homepage Regulatory Expertise entry whose visual mark is optional. */
+export type RegulatoryExpertiseItem = {
+  name: string;
+  src?: string;
+  href?: string;
+};
+
 export type Service = Link & {
   shortLabel: string;
   summary?: string;
@@ -233,7 +240,7 @@ export type HomepageContent = PageChromeContent & {
   };
   regulators: SectionHeading & {
     eyebrow: string;
-    logos: Logo[];
+    logos: RegulatoryExpertiseItem[];
   };
   metrics: SectionHeading & {
     eyebrow: string;

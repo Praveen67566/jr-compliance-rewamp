@@ -55,6 +55,7 @@ import type {
   NavigationItem,
   PageChromeContent,
   Recognition,
+  RegulatoryExpertiseItem,
   RegistrationBreakdownGroup,
   RegistrationDetail,
   RegistrationExtraContentCard,
@@ -526,6 +527,26 @@ function mapLogos(value: unknown, fallback: Logo[]): Logo[] {
     .filter((logo): logo is Logo => Boolean(logo));
 
   return logos.length ? logos : fallback;
+}
+
+function mapRegulatoryExpertiseItems(
+  value: unknown,
+  fallback: RegulatoryExpertiseItem[],
+): RegulatoryExpertiseItem[] {
+  const items = orderedEntries(value)
+    .map((entry) => {
+      const item = record(entry);
+      const name = text(item.name);
+      const src = mediaUrl(item.logo);
+      const href = text(item.websiteUrl);
+
+      return name
+        ? { name, ...(src ? { src } : {}), ...(href ? { href } : {}) }
+        : null;
+    })
+    .filter((item): item is RegulatoryExpertiseItem => Boolean(item));
+
+  return items.length ? items : fallback;
 }
 
 function mapServiceCategories(
@@ -1236,7 +1257,10 @@ function mapHomepage(
       eyebrow: text(regulatorsHeading.eyebrow) ?? fallback.regulators.eyebrow,
       title: titleFromHeading(regulatorsHeading, fallback.regulators.title),
       description: text(regulatorsHeading.description) ?? fallback.regulators.description,
-      logos: mapLogos(page.regulatorLogos, fallback.regulators.logos),
+      logos: mapRegulatoryExpertiseItems(
+        page.regulatorLogos,
+        fallback.regulators.logos,
+      ),
     },
     metrics: {
       ...fallback.metrics,

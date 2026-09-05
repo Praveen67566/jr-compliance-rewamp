@@ -49,7 +49,7 @@
     "regulatorLogos": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::brand-logo.brand-logo"
+      "target": "api::regulatory-expertise-item.regulatory-expertise-item"
     },
     "story": {
       "type": "component",

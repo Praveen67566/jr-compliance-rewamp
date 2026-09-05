@@ -104,13 +104,18 @@ If a command cannot be run, clearly explain why.
 - Tell me what validation passed or failed.
 
 ## Prompt:-
+ In Home Page At this Regulatory expertise section what i want 
+ dont use the brand-logo because here both image and name are required but create a different schema for this section only where only name is required not the logo.
 
-Read Adding_Service_Sections And Add one More Section After Why JR Compliance.
+ for frontend like i want in some only the logos not name so if there is logo present show the logo in center and make size little big . and if there is name only then show the name in center little big.
 
-1. There is going to only cards and i want cards to contain a title and a description which is like rich text. Nothing else like this is for extra content so it should like anything can be added and give me the improved ui matched with the theme.
+ "regulatorLogos": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::brand-logo.brand-logo"
+ },
 
-2. Improve the ui of rich Text Viewer like it should show exactly added from the cms.
-
+ dont change anything else.
 
 
 

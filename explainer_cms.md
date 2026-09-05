@@ -39,8 +39,8 @@ The CMS provides content for:
   `global-certificate-page`
 - shared header/footer and global consultation-form copy through the `site-setting` single type
 
-The committed model contains five single types, thirty-six collection types,
-and sixty-one components: forty-one content types in total, including
+The committed model contains five single types, thirty-seven collection types,
+and sixty-one components: forty-two content types in total, including
 nineteen fixed service-detail collections. That fixed service-detail count is
 unchanged; the Legal Page collection and two Global collections use separate
 fixed contracts. The seven empty Approval collections and both Global
@@ -146,8 +146,9 @@ The main CMS flow is:
 : Signed webhook sender for Next.js cache revalidation. It watches Strapi document and media lifecycle events, maps changed CMS models to frontend cache tags, signs the payload with HMAC SHA-256, and sends it to `NEXT_REVALIDATE_URL`.
   Legal Page changes map to `jr-legal-pages`, Global country changes map to
   `jr-global-country-pages`, and Global certificate changes map to
-  `jr-global-certificate-pages`. Brand Logo changes invalidate the homepage
-  and all fixed service-detail page tags. Shared Site Setting and media changes
+  `jr-global-certificate-pages`. Regulatory Expertise Item changes invalidate
+  the homepage. Brand Logo changes invalidate the homepage and all fixed
+  service-detail page tags. Shared Site Setting and media changes
   continue to invalidate all applicable page tags.
 
 ## Historical content-source files
@@ -398,7 +399,11 @@ route.
 : Individual service cards with labels, summaries, icons, links, and ordering.
 
 `cms/src/api/brand-logo/`
-: Client/regulator logos selected by homepage and fixed-service logo bands.
+: Required-logo records selected by homepage and fixed-service trusted-logo bands.
+
+`cms/src/api/regulatory-expertise-item/`
+: Homepage-only Regulatory Expertise entries with a required name and optional
+  logo, website URL, and sort order.
 
 `cms/src/api/testimonial/`
 : Home page testimonials.
@@ -563,6 +568,11 @@ PostgreSQL variables for local and deployed CMS environments are defined in
 - Keep every `SEED_*` flag disabled. The current local PostgreSQL content came
   from a verified transfer; use the reviewed export/import workflow for another
   target rather than a seed or backfill.
+- Regulatory Expertise uses its dedicated collection rather than Brand Logo.
+  Only `name` is required; `logo`, `websiteUrl`, and `sortOrder` are optional.
+  Grant the server-side reader token `find` access after deployment and keep
+  Public access disabled. Existing regulator Brand Logo records are not
+  migrated or backfilled.
 - On any fixed service record, editors may optionally select client Brand Logo
   records under **Trusted Logos**, add ordered title-and-description cards under
   **Extra Content**, add one or more titled HTTPS single-video YouTube URLs under

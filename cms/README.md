@@ -115,8 +115,8 @@ this rollout.
 
 ## Schema and editor policy
 
-The committed schemas define five single types, thirty-six collection types,
-and sixty-one components (forty-one content types total), including nineteen
+The committed schemas define five single types, thirty-seven collection types,
+and sixty-one components (forty-two content types total), including nineteen
 fixed service-detail collections. The fixed service-detail count remains
 unchanged; the dedicated Legal Page collection and the two Global collections
 are separate contracts. All editorial types use Draft & Publish.
@@ -223,16 +223,17 @@ Set permissions deliberately:
   `wireless-planning-coordination-page`, `bureau-energy-efficiency-page`,
   `cdsco-registration-page`, `aerb-approval-page`,
   `lmpc-certification-page`, `stqc-page`, `global-country-page`, and
-  `global-certificate-page` collections, listed supporting collections, and
-  Upload `find` only.
+  `global-certificate-page` collections; listed supporting collections,
+  including `regulatory-expertise-item`; and Upload `find` only.
 - Content Editor: create/read/update listed content and media, but no schema or
   delete access.
 - Publisher/Admin: editor access plus publish.
 
 After deploying the schemas, update every existing `next-site-reader` token
-policy to include `find` and `findOne` for `legal-page`, both Global
-collections, and the seven empty Approval collections before relying on a new
-CMS record. Leave the Public role with no access.
+policy to include `find` for `regulatory-expertise-item` and `find` plus
+`findOne` for `legal-page`, both Global collections, and the seven empty
+Approval collections before relying on a new CMS record. Leave the Public role
+with no access.
 
 The frontend receives only these server-side environment variables:
 

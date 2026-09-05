@@ -99,6 +99,7 @@ const cacheTagsByUid: Record<string, readonly string[]> = {
   "api::stqc-page.stqc-page": ["jr-stqc-pages"],
   "api::service-category.service-category": ["jr-homepage"],
   "api::service.service": ["jr-homepage"],
+  "api::regulatory-expertise-item.regulatory-expertise-item": ["jr-homepage"],
   "api::brand-logo.brand-logo": [
     "jr-homepage",
     "jr-company-registration-pages",

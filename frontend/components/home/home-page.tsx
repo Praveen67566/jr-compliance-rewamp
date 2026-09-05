@@ -6,7 +6,7 @@ import { KeychainRevealSection } from "@/components/home/keychain-reveal-section
 import { ServiceStack } from "@/components/home/service-stack";
 import { TrustedBrandsMarquee } from "@/components/home/trusted-brands-marquee";
 import { linkTargetProps } from "@/lib/link-props";
-import type { HomepageContent, Logo } from "@/lib/types";
+import type { HomepageContent, RegulatoryExpertiseItem } from "@/lib/types";
 
 type HomePageProps = {
   content: HomepageContent;
@@ -14,7 +14,7 @@ type HomePageProps = {
 
 type RegulatorLogoEntry = {
   isFiller: boolean;
-  logo: Logo;
+  logo: RegulatoryExpertiseItem;
   sourceIndex: number;
 };
 
@@ -28,7 +28,7 @@ type RegulatorLogoListProps = {
 
 const MINIMUM_REGULATOR_MARQUEE_ITEMS = 18;
 
-function buildRegulatorLogoEntries(logos: Logo[]): RegulatorLogoEntry[] {
+function buildRegulatorLogoEntries(logos: RegulatoryExpertiseItem[]): RegulatorLogoEntry[] {
   if (!logos.length) {
     return [];
   }
@@ -60,8 +60,14 @@ function RegulatorLogoList({
         const isCardDecorative = isDecorative || isFiller;
         const logoContent = (
           <>
-            <img src={logo.src} alt="" />
-            <span className="regulator-logo-name">{logo.name}</span>
+            {logo.src ? (
+              <img
+                src={logo.src}
+                alt={logo.href || isCardDecorative ? "" : logo.name}
+              />
+            ) : (
+              <span className="regulator-logo-name">{logo.name}</span>
+            )}
             {logo.href && !isCardDecorative ? (
               <span className="regulator-logo-arrow" aria-hidden="true">
                 ↗
@@ -113,7 +119,13 @@ function RegulatorHeadingTitle({ title }: { title: string }) {
   );
 }
 
-function RegulatorLogoMarquee({ label, logos }: { label: string; logos: Logo[] }) {
+function RegulatorLogoMarquee({
+  label,
+  logos,
+}: {
+  label: string;
+  logos: RegulatoryExpertiseItem[];
+}) {
   if (!logos.length) {
     return null;
   }
