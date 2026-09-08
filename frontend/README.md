@@ -78,7 +78,8 @@ canonical URL absolute in generated metadata and is the strict origin allow-list
 for `/api/leads`; production lead intake fails closed if it is missing or
 invalid. Each legal route passes its fixed pathname to `pageMetadata`, so the
 helper emits the route canonical when `SITE_URL` is configured while preserving
-an editor-provided absolute canonical override. Corporate and Approval pages
+an editor-provided absolute canonical override. The effective canonical is also
+used for `og:url`. Corporate and Approval pages
 force their categorized route path as canonical, including when the CMS still
 contains a flat canonical value. It does not expose credentials.
 
@@ -133,7 +134,10 @@ configuration or the Strapi token.
   rejects incomplete data rather than borrowing another page's content.
 - CMS link targets, collection `sortOrder` values, shared footer groups, and
   shared SEO are carried through the typed adapter rather than hard-coded in
-  individual routes.
+  individual routes. Optional page-specific SEO keywords are entered as
+  comma-separated text. Optional schema markup is entered as JSON without a
+  script wrapper and is safely rendered once by the shared page shell; neither
+  field inherits from Site Setting `defaultSeo`.
 - `app/privacy-policy/page.tsx`, `app/terms-and-conditions/page.tsx`, and
   `app/purchase-and-billing/page.tsx` are static route modules that load their
   fixed record, reuse `pageMetadata` for SEO/canonical handling, and render the

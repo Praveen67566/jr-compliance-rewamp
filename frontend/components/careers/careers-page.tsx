@@ -10,7 +10,12 @@ type CareersPageProps = {
 
 export function CareersPage({ content }: CareersPageProps) {
   return (
-    <SitePageShell footer={content.footer} navigation={content.navigation} site={content.site}>
+    <SitePageShell
+      footer={content.footer}
+      navigation={content.navigation}
+      seo={content.seo}
+      site={content.site}
+    >
       <RouteHero
         {...content.hero}
         leadForm={content.site.leadForm}

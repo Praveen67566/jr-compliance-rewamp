@@ -148,7 +148,12 @@ export function LegalPage({ content }: LegalPageProps) {
   }));
 
   return (
-    <SitePageShell footer={content.footer} navigation={content.navigation} site={content.site}>
+    <SitePageShell
+      footer={content.footer}
+      navigation={content.navigation}
+      seo={content.seo}
+      site={content.site}
+    >
       <section
         aria-labelledby="legal-page-title"
         className="relative isolate overflow-hidden border-b border-sky/15 bg-[radial-gradient(circle_at_78%_18%,rgba(22,140,245,0.3),transparent_34%),linear-gradient(145deg,var(--blue-navy-950),var(--blue-navy-700))]"

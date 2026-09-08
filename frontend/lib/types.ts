@@ -137,10 +137,22 @@ export type HeaderLoginButton =
   | { enabled: false; label: string }
   | { enabled: true; label: string; href: string };
 
+export type JsonLdValue =
+  | string
+  | number
+  | boolean
+  | null
+  | JsonLdValue[]
+  | { [key: string]: JsonLdValue };
+
+export type JsonLdSchema = JsonLdValue[] | { [key: string]: JsonLdValue };
+
 export type Seo = {
   title: string;
   description: string;
   canonicalUrl?: string;
+  keywords?: string[];
+  schemaMarkup?: JsonLdSchema;
   robots?: string;
   noIndex?: boolean;
   shareImage?: string;

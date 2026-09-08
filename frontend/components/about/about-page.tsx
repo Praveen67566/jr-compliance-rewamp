@@ -53,7 +53,12 @@ function TeamCard({ member }: { member: TeamMember }) {
 
 export function AboutPage({ content }: AboutPageProps) {
   return (
-    <SitePageShell footer={content.footer} navigation={content.navigation} site={content.site}>
+    <SitePageShell
+      footer={content.footer}
+      navigation={content.navigation}
+      seo={content.seo}
+      site={content.site}
+    >
       <RouteHero
         {...content.hero}
         leadForm={content.site.leadForm}

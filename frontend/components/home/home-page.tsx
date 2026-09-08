@@ -163,7 +163,12 @@ function RegulatorLogoMarquee({
 
 export function HomePage({ content }: HomePageProps) {
   return (
-    <SitePageShell footer={content.footer} navigation={content.navigation} site={content.site}>
+    <SitePageShell
+      footer={content.footer}
+      navigation={content.navigation}
+      seo={content.seo}
+      site={content.site}
+    >
         <Hero
           hero={content.hero}
           leadForm={content.site.leadForm}

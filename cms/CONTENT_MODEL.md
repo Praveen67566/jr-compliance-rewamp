@@ -629,7 +629,7 @@ service `trustedLogos`—or the two parent/child collection pairs above.
 | `shared.link` | `label` short text*, `href` short text* (absolute URL or site-relative path), `target` enum `same_tab` / `new_tab`* (default `same_tab`) |
 | `shared.cta` | `label` short text*, `href` short text*, `target` enum `same_tab` / `new_tab`* (default `same_tab`) |
 | `shared.section-heading` | `eyebrow` short text, `titleBefore` short text, `titleHighlight` short text, `titleAfter` short text, `description` long text, `alignment` enum `left` / `center`* (default `left`) |
-| `shared.seo` | `metaTitle` short text*, `metaDescription` long text*, `shareImage` single image media, `canonicalUrl` short text, `robots` short text (default `index,follow`), `noIndex` boolean (default `false`) |
+| `shared.seo` | `metaTitle` short text*, `metaDescription` long text*, `shareImage` single image media, `canonicalUrl` short text, `keywords` optional comma-separated long text, `schemaMarkup` optional JSON object/array, `robots` short text (default `index,follow`), `noIndex` boolean (default `false`) |
 | `shared.contact` | `phoneDisplay` short text*, `phoneE164` short text*, `email` email*, `whatsAppUrl` short text* |
 | `shared.social-link` | `network` enum `linkedin` / `facebook` / `x` / `youtube` / `instagram`*, `url` short text* |
 | `shared.legal-notice` | `title` short text*, `body` Rich Text (Blocks)*; reused for Site Setting footer notices and ordered `legal-page.sections` |
@@ -646,6 +646,13 @@ service `trustedLogos`—or the two parent/child collection pairs above.
 | `home.stat` | `value` integer*, `suffix` short text, `label` short text*, `icon` single image media, `sortOrder` integer* |
 | `home.story` | `heading` `shared.section-heading`*, `stats` repeatable `home.stat` component*, `featureImage` single image media, `featureTitle` short text, `cta` `shared.cta` component |
 | `home.cta-band` | `title` short text*, `description` long text, `cta` `shared.cta` component* |
+
+For page SEO, enter `keywords` as a comma-separated list. Enter
+`schemaMarkup` as JSON only, without a `<script>` wrapper; the frontend emits
+the `application/ld+json` script safely. Both fields are page-specific and are
+not inherited from Site Setting `defaultSeo`. The effective canonical URL is
+also emitted as `og:url`; Corporate and Approval pages continue to force their
+categorized canonical route.
 
 ### Editorial-route components
 

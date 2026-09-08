@@ -446,7 +446,10 @@ Strapi components are reusable field groups stored as JSON schemas in `cms/src/c
 : Cross-page primitives: `link`, `cta`, `seo`, `section-heading`, `contact`,
   `social-link`, and `legal-notice`. The existing `legal-notice` title/Blocks
   body component is reused by Site Setting footer notices and ordered Legal
-  Page sections, so this feature adds no new component schema.
+  Page sections. SEO also accepts optional comma-separated page keywords and
+  JSON-only schema markup; the frontend supplies and safely serializes the
+  JSON-LD script wrapper. These two fields are not inherited from Site Setting
+  `defaultSeo`.
 
 `cms/src/components/navigation/`
 : Header/footer navigation structures: `menu-item`, nested `menu-category`, and `link-group`.

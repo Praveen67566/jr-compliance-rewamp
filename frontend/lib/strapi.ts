@@ -77,6 +77,7 @@ import type {
   YouTubeVideo,
   YouTubeVideoSection,
 } from "@/lib/types";
+import { normalizeSchemaMarkup, normalizeSeoKeywords } from "@/lib/seo";
 import { youtubeEmbedUrl } from "@/lib/youtube";
 
 type UnknownRecord = Record<string, unknown>;
@@ -435,11 +436,15 @@ function mapSeo(value: unknown, fallback: Seo, rawDefaultSeo?: unknown): Seo {
   const noIndex = Boolean(legacyNoIndex) || hasNoIndexRobotsDirective(robots);
   const canonicalUrl = text(seo.canonicalUrl) ?? text(defaultSeo.canonicalUrl) ?? fallback.canonicalUrl;
   const shareImage = mediaUrl(seo.shareImage) ?? mediaUrl(defaultSeo.shareImage) ?? fallback.shareImage;
+  const keywords = normalizeSeoKeywords(seo.keywords);
+  const schemaMarkup = normalizeSchemaMarkup(seo.schemaMarkup);
 
   return {
     title: text(seo.metaTitle) ?? text(defaultSeo.metaTitle) ?? fallback.title,
     description: text(seo.metaDescription) ?? text(defaultSeo.metaDescription) ?? fallback.description,
     ...(canonicalUrl ? { canonicalUrl } : {}),
+    ...(keywords ? { keywords } : {}),
+    ...(schemaMarkup ? { schemaMarkup } : {}),
     ...(robots ? { robots } : {}),
     ...(noIndex ? { noIndex: true } : legacyNoIndex !== undefined ? { noIndex: false } : {}),
     ...(shareImage ? { shareImage } : {}),
@@ -1849,12 +1854,16 @@ function strictFixedServiceSeo(value: unknown): Seo | null {
   const robots = legacyNoIndex ? "noindex,nofollow" : configuredRobots;
   const noIndex = Boolean(legacyNoIndex) || hasNoIndexRobotsDirective(robots);
   const shareImage = mediaUrl(seo.shareImage);
+  const keywords = normalizeSeoKeywords(seo.keywords);
+  const schemaMarkup = normalizeSchemaMarkup(seo.schemaMarkup);
 
   return title && description
     ? {
         title,
         description,
         ...(canonicalUrl ? { canonicalUrl } : {}),
+        ...(keywords ? { keywords } : {}),
+        ...(schemaMarkup ? { schemaMarkup } : {}),
         ...(robots ? { robots } : {}),
         ...(noIndex ? { noIndex: true } : legacyNoIndex !== undefined ? { noIndex: false } : {}),
         ...(shareImage ? { shareImage } : {}),

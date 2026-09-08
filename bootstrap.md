@@ -105,11 +105,158 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Only Ui Changes:-
+In cms seo section i need to add more things:-
 
-1. Header in mobiles like i have to scroll for too much and it feels like a glitch so fix that.
+data is example only don't add any dummy data this all going to added by cms manager.
 
-2. the floating whatsapp icon i want you to make same like the given html on hover but don't change its side its perfect on right side only.
+1. URL = https://www.jrcompliance.com/approval/aerb-license
+2. Keywords =  AERB License, AERB Certificate, AERB License Consultant, AERB Certification, AERB Approval, AERB Registration, AERB Certificate For X Ray
+3. Schema markup :
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.jrcompliance.com/#organization",
+      "name": "JR Compliance",
+      "url": "https://www.jrcompliance.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.jrcompliance.com/JRlogo2.png"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+91-1800-121-410-410",
+        "contactType": "Customer Service",
+        "email": "info@jrcompliance.com",
+        "areaServed": "IN",
+        "availableLanguage": [
+          "English",
+          "Hindi"
+        ]
+      },
+      "sameAs": [
+        "	",
+        "https://x.com/JrCompliance",
+        "https://www.linkedin.com/company/jr-compliance-%26-testing-labs",
+        "https://www.instagram.com/jrcompliance"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.jrcompliance.com/#website",
+      "url": "https://www.jrcompliance.com/",
+      "name": "JR Compliance",
+      "publisher": {
+        "@id": "https://www.jrcompliance.com/#organization"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://www.jrcompliance.com/approval/aerb-license/#webpage",
+      "url": "https://www.jrcompliance.com/approval/aerb-license",
+      "name": "AERB License Consultant | AERB Certificate for X-Ray",
+      "description": "Looking for an AERB Certificate for X-ray? Our AERB License Consultants handle registration, certification, approvals, renewals and amendments across India.",
+      "keywords": [
+        "AERB License",
+        "AERB Certificate",
+        "AERB Registration",
+        "AERB Approval",
+        "AERB License Consultant",
+        "AERB Certificate for X-Ray"
+      ],
+      "inLanguage": "en-IN",
+      "image": "https://www.jrcompliance.com/images/aerb-license.jpg",
+      "isPartOf": {
+        "@id": "https://www.jrcompliance.com/#website"
+      },
+      "about": {
+        "@id": "https://www.jrcompliance.com/approval/aerb-license/#service"
+      },
+      "breadcrumb": {
+        "@id": "https://www.jrcompliance.com/approval/aerb-license/#breadcrumb"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://www.jrcompliance.com/approval/aerb-license/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.jrcompliance.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "AERB License",
+          "item": "https://www.jrcompliance.com/approval/aerb-license"
+        }
+      ]
+    },
+    {
+      "@type": "Service",
+      "@id": "https://www.jrcompliance.com/approval/aerb-license/#service",
+      "name": "AERB License Consultant",
+      "serviceType": "AERB Licensing & Registration Consultancy",
+      "description": "JR Compliance provides consultancy for AERB registration, certification, approvals, renewals and amendments for hospitals, diagnostic centres, dental clinics and industrial radiography facilities across India.",
+      "url": "https://www.jrcompliance.com/approval/aerb-license",
+      "image": "https://www.jrcompliance.com/images/aerb-license.jpg",
+      "provider": {
+        "@id": "https://www.jrcompliance.com/#organization"
+      },
+      "mainEntityOfPage": {
+        "@id": "https://www.jrcompliance.com/approval/aerb-license/#webpage"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "India"
+      },
+      "offers": {
+        "@type": "Offer",
+        "url": "https://www.jrcompliance.com/approval/aerb-license",
+        "availability": "https://schema.org/InStock",
+        "priceCurrency": "INR"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "AERB Licensing Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "AERB Certificate for X-Ray"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "AERB Registration for Medical Radiation Equipment"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Industrial Radiography AERB License"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "AERB License Renewal & Amendment"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+</script>
 
-Dont change anything else these are just simple ui changes reference image and html is given.
-
+these three things need to be added in seo section and don't add any dummy or seed data also this is going to be for seo so place where it is going to be placed.

@@ -21,6 +21,12 @@
     "canonicalUrl": {
       "type": "string"
     },
+    "keywords": {
+      "type": "text"
+    },
+    "schemaMarkup": {
+      "type": "json"
+    },
     "robots": {
       "type": "string",
       "default": "index,follow"

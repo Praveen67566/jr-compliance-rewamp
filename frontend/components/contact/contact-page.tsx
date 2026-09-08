@@ -10,7 +10,12 @@ type ContactPageProps = {
 
 export function ContactPage({ content }: ContactPageProps) {
   return (
-    <SitePageShell footer={content.footer} navigation={content.navigation} site={content.site}>
+    <SitePageShell
+      footer={content.footer}
+      navigation={content.navigation}
+      seo={content.seo}
+      site={content.site}
+    >
       <RouteHero {...content.hero} leadForm={content.site.leadForm} pageTitle={content.seo.title} />
 
       <section className="contact-points-section section" id="contact-options">

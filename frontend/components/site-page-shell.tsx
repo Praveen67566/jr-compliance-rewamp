@@ -2,14 +2,16 @@ import type { PropsWithChildren } from "react";
 
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import type { PageChromeContent } from "@/lib/types";
+import { SeoJsonLd } from "@/components/seo-json-ld";
+import type { PageChromeContent, Seo } from "@/lib/types";
 
-type SitePageShellProps = PropsWithChildren<PageChromeContent>;
+type SitePageShellProps = PropsWithChildren<PageChromeContent & { seo?: Seo }>;
 
 /** Shared, content-driven chrome for the home page and every editorial route. */
-export function SitePageShell({ children, footer, navigation, site }: SitePageShellProps) {
+export function SitePageShell({ children, footer, navigation, seo, site }: SitePageShellProps) {
   return (
     <div className="site-shell">
+      <SeoJsonLd schemaMarkup={seo?.schemaMarkup} />
       <SiteHeader navigation={navigation} site={site} />
       <main>{children}</main>
       <SiteFooter footer={footer} site={site} />

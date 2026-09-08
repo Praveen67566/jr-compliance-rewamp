@@ -27,6 +27,7 @@ export function pageMetadata(
   return {
     title: seo.title,
     description: seo.description,
+    ...(seo.keywords?.length ? { keywords: seo.keywords } : {}),
     ...(metadataBase ? { metadataBase } : {}),
     ...(canonical ? { alternates: { canonical } } : {}),
     robots,
@@ -34,6 +35,7 @@ export function pageMetadata(
       title: seo.title,
       description: seo.description,
       type: "website",
+      ...(canonical ? { url: canonical } : {}),
       ...(image ? { images: image } : {}),
     },
     twitter: {

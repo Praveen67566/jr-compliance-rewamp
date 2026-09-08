@@ -219,7 +219,8 @@ The main flow is:
 ## Shared components
 
 `frontend/components/site-page-shell.tsx`
-: Shared page wrapper. Adds `SiteHeader`, page content, and `SiteFooter`.
+: Shared page wrapper. Adds the page's optional, safely serialized CMS JSON-LD,
+  `SiteHeader`, page content, and `SiteFooter`.
 
 `frontend/components/site-header.tsx`
 : Shared navbar/header. It renders the JR logo, desktop navigation, a two-pane category/link mega menu, contact CTA, and mobile navigation. Layout and responsive styling use Tailwind utilities; it consumes CMS/fallback navigation data.
@@ -520,7 +521,8 @@ cached Global country and certificate loaders as `getGlobalCountryPage`,
   absolute canonical from that path or a site-relative CMS override, while an
   editor-provided absolute canonical remains authoritative. Corporate and
   Approval canonical routes force their categorized pathname so legacy CMS
-  canonical values cannot reintroduce a flat service URL.
+  canonical values cannot reintroduce a flat service URL. It also emits
+  page-specific keywords and uses the effective canonical URL for `og:url`.
 
 `frontend/lib/site-url.ts`
 : Resolves the public site URL from environment values, used for canonical URLs and sitemap metadata.

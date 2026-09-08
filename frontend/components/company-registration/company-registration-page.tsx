@@ -455,7 +455,12 @@ export function CompanyRegistrationPage({
   showHeroGlobe = false,
 }: CompanyRegistrationPageProps) {
   return (
-    <SitePageShell footer={content.footer} navigation={content.navigation} site={content.site}>
+    <SitePageShell
+      footer={content.footer}
+      navigation={content.navigation}
+      seo={content.seo}
+      site={content.site}
+    >
       <section
         className="relative isolate overflow-hidden border-b border-sky/15 bg-navy-950 pb-16 pt-10 text-white min-[560px]:pb-20 min-[560px]:pt-12 min-[821px]:pb-24 min-[821px]:pt-14"
         id="top"
