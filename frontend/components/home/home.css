@@ -2185,7 +2185,7 @@
 }
 
 .recognition-source img {
-  height: 52px;
+  height: 80px;
   max-width: min(190px, 80%);
   object-fit: contain;
   object-position: left center;
