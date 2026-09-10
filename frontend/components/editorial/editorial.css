@@ -269,6 +269,7 @@
   isolation: isolate;
   overflow: hidden;
   padding-bottom: 78px;
+  padding-top: 72px;
   position: relative;
 }
 
@@ -281,7 +282,7 @@
   display: grid;
   gap: 50px;
   grid-template-columns: minmax(270px, 0.85fr) minmax(510px, 1.15fr);
-  margin-top: -50px;
+  margin-top: 0;
   padding-bottom: 42px;
   padding-top: 42px;
   position: relative;
@@ -546,6 +547,16 @@
   52% {
     opacity: 0.92;
     transform: scale(1);
+  }
+}
+
+@keyframes about-timeline-auto-rotate {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(calc(-50% - 7px), 0, 0);
   }
 }
 
@@ -826,18 +837,60 @@
 }
 
 .about-timeline {
-  display: grid;
-  gap: 14px;
-  grid-template-columns: repeat(6, minmax(245px, 1fr));
-  overflow-x: auto;
-  padding-bottom: 9px;
+  --about-timeline-gap: 14px;
+  overflow: hidden;
+  padding-bottom: 13px;
+  position: relative;
   scrollbar-color: rgba(13, 92, 184, 0.46) transparent;
+}
+
+.about-timeline::before,
+.about-timeline::after {
+  bottom: 13px;
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  width: 72px;
+  z-index: 2;
+}
+
+.about-timeline::before {
+  background: linear-gradient(90deg, #f7fcff, rgba(247, 252, 255, 0));
+  left: 0;
+}
+
+.about-timeline::after {
+  background: linear-gradient(270deg, #e1f2ff, rgba(225, 242, 255, 0));
+  right: 0;
+}
+
+.about-timeline-track,
+.about-timeline-set {
+  display: flex;
+  gap: var(--about-timeline-gap);
+}
+
+.about-timeline-track {
+  width: max-content;
+  will-change: transform;
+  animation: about-timeline-auto-rotate 44s linear infinite;
+}
+
+.about-timeline-set {
+  flex: 0 0 auto;
+}
+
+.about-timeline:hover .about-timeline-track,
+.about-timeline:focus-within .about-timeline-track {
+  animation-play-state: paused;
 }
 
 .about-timeline-card {
   background: linear-gradient(145deg, #fff, #eaf6ff);
   border: 1px solid rgba(35, 117, 199, 0.2);
   border-radius: 20px;
+  flex: 0 0 245px;
   min-height: 260px;
   overflow: hidden;
   padding: 21px;
@@ -964,7 +1017,19 @@
   margin: 57px 0 14px;
 }
 
-.about-reason-image,
+.about-reason-image {
+  background: rgba(234, 246, 255, 0.12);
+  border: 1px solid rgba(170, 229, 255, 0.38);
+  border-radius: 15px;
+  height: 58px;
+  object-fit: contain;
+  padding: 9px;
+  position: absolute;
+  right: 22px;
+  top: 22px;
+  width: 58px;
+}
+
 .careers-value-image,
 .careers-benefit-image {
   border: 1px solid rgba(170, 229, 255, 0.38);
@@ -1212,9 +1277,9 @@
 }
 
 .about-achievement-card > img {
-  height: 40px;
-  margin: 33px 0 21px;
-  max-width: 108px;
+  height: 62px;
+  margin: 31px 0 24px;
+  max-width: 154px;
   object-fit: contain;
   object-position: left center;
 }
@@ -2075,6 +2140,24 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .about-timeline {
+    overflow-x: auto;
+  }
+
+  .about-timeline::before,
+  .about-timeline::after {
+    display: none;
+  }
+
+  .about-timeline-track {
+    animation: none;
+    transform: none;
+  }
+
+  .about-timeline-set--duplicate {
+    display: none;
+  }
+
   .route-closing-cta.is-reveal-ready .route-closing-surface,
   .route-closing-cta.is-reveal-ready .route-closing-grid,
   .route-closing-cta.is-reveal-ready .route-closing-inner {

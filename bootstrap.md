@@ -107,7 +107,32 @@ If a command cannot be run, clearly explain why.
 
 Only Ui Changes:-
 
-In the home page section media the logo is so small its not visible properly fix that 
-make it big
+Corporate collections:
 
-don't Do anything else
+- `company-registration-page`
+- `mca-service-page`
+- `import-export-service-page`
+- `government-license-certification-page`
+- `ipr-service-page`
+- `fssai-service-page`
+- `sebi-business-registration-page`
+- `tax-accounting-page`
+- `labour-compliance-page`
+- `fund-raising-page`
+
+Approval collections:
+
+- `bureau-indian-standards-page`
+- `pollution-advisory-page`
+- `telecommunication-engineering-centre-page`
+- `wireless-planning-coordination-page`
+- `bureau-energy-efficiency-page`
+- `cdsco-registration-page`
+- `aerb-approval-page`
+- `lmpc-certification-page`
+- `stqc-page`
+
+changes in given above collection pages:-
+
+1 . In Review Section Ui still look so bad firstly i dont want corners and a light color in backgrounf and test to be small not to big right side text is too big stats are to big make it professonal.
+

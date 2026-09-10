@@ -119,15 +119,30 @@ export function AboutPage({ content }: AboutPageProps) {
             </div>
             {content.story.description ? <p>{content.story.description}</p> : null}
           </div>
-          <div className="about-timeline" role="list">
-            {content.story.milestones.map((milestone, index) => (
-              <article className="about-timeline-card" key={`${milestone.period}-${milestone.title}`} role="listitem">
-                <span className="about-timeline-index">0{index + 1}</span>
-                <span className="about-timeline-period">{milestone.period}</span>
-                <h3>{milestone.title}</h3>
-                <p>{milestone.description}</p>
-              </article>
-            ))}
+          <div className="about-timeline" aria-label={content.story.title}>
+            <div className="about-timeline-track">
+              {[false, true].map((isDuplicate) => (
+                <div
+                  aria-hidden={isDuplicate ? "true" : undefined}
+                  className={`about-timeline-set${isDuplicate ? " about-timeline-set--duplicate" : ""}`}
+                  key={isDuplicate ? "timeline-duplicate" : "timeline-primary"}
+                  role={isDuplicate ? undefined : "list"}
+                >
+                  {content.story.milestones.map((milestone, index) => (
+                    <article
+                      className="about-timeline-card"
+                      key={`${isDuplicate ? "duplicate" : "primary"}-${milestone.period}-${milestone.title}`}
+                      role={isDuplicate ? undefined : "listitem"}
+                    >
+                      <span className="about-timeline-index">0{index + 1}</span>
+                      <span className="about-timeline-period">{milestone.period}</span>
+                      <h3>{milestone.title}</h3>
+                      <p>{milestone.description}</p>
+                    </article>
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

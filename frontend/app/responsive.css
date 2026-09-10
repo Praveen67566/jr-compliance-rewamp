@@ -778,12 +778,13 @@
 
   .about-proof-section {
     padding-bottom: 60px;
+    padding-top: 60px;
   }
 
   .about-proof-grid {
     gap: 30px;
     grid-template-columns: 1fr;
-    margin-top: -35px;
+    margin-top: 0;
     padding-bottom: 29px;
     padding-top: 29px;
   }
@@ -899,7 +900,7 @@
 
   .about-proof-grid {
     border-radius: 21px;
-    margin-top: -24px;
+    margin-top: 0;
   }
 
   .about-proof-stats,
@@ -932,8 +933,11 @@
   }
 
   .about-timeline {
-    grid-template-columns: repeat(6, minmax(238px, 1fr));
     margin-right: -18px;
+  }
+
+  .about-timeline-card {
+    flex-basis: 238px;
   }
 
   .about-pioneers-stats {

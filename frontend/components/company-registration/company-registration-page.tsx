@@ -368,82 +368,92 @@ function ResultsSection({ section }: { section: RegistrationResultsSection }) {
   return (
     <section
       aria-labelledby="service-results-heading"
-      className="relative isolate scroll-mt-28 overflow-hidden border-t border-cobalt-700/10 bg-ice py-14 text-navy-950 min-[560px]:py-18 min-[821px]:py-28"
+      className="relative isolate scroll-mt-28 overflow-hidden border-y border-sky/14 bg-[linear-gradient(145deg,var(--blue-navy-900),var(--blue-navy-950))] py-12 text-white min-[560px]:py-16 min-[821px]:py-24"
       id="results"
     >
       <div
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_82%_18%,rgba(22,140,245,0.09),transparent_30%),radial-gradient(circle_at_8%_88%,rgba(13,92,184,0.06),transparent_30%)]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_82%_18%,rgba(22,140,245,0.18),transparent_32%),radial-gradient(circle_at_10%_88%,rgba(139,220,255,0.1),transparent_30%)]"
         aria-hidden="true"
       />
-      <div className="mx-auto w-full max-w-[1180px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
-        <div className="grid min-w-0 items-start gap-5 min-[821px]:gap-6 min-[1100px]:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)]">
-          <div className="relative flex min-w-0 flex-col overflow-hidden rounded-[22px] border border-cobalt-700/12 bg-cloud p-5 shadow-[0_20px_55px_rgba(3,19,47,0.08)] min-[560px]:p-7 min-[821px]:p-8">
-            <span
-              className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-[linear-gradient(90deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))]"
-              aria-hidden="true"
-            />
-            <div className="flex w-fit max-w-full flex-wrap items-center gap-x-3 gap-y-2 rounded-full border border-cobalt-700/10 bg-ice/70 px-3 py-2 text-xs text-navy-700/80">
-              <strong className="font-extrabold text-navy-950">{section.rating.label}</strong>
-              <span className="flex items-center gap-1" aria-hidden="true">
-                {Array.from({ length: 5 }, (_, index) => (
-                  <span
-                    className="flex size-[18px] items-center justify-center rounded-[4px] border border-cobalt-700/15 bg-electric text-[0.58rem] leading-none text-white shadow-[0_3px_8px_rgba(22,140,245,0.16)]"
-                    key={index}
-                  >
-                    ★
-                  </span>
-                ))}
-              </span>
-              <span className="font-bold text-cobalt-700">{section.rating.source}</span>
-            </div>
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 opacity-30 [background-image:linear-gradient(rgba(139,220,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(139,220,255,0.08)_1px,transparent_1px)] [background-size:44px_44px] [mask-image:linear-gradient(90deg,transparent,black_14%,black_86%,transparent)]"
+        aria-hidden="true"
+      />
+      <div className="mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
+        <article className="relative min-w-0 overflow-hidden border-y border-sky/18 bg-[linear-gradient(135deg,rgba(4,26,67,0.82),rgba(3,15,43,0.9))] p-5 shadow-[0_24px_70px_rgba(0,8,34,0.32)] min-[560px]:p-7 min-[821px]:p-9">
+          <div
+            className="pointer-events-none absolute inset-0 opacity-[0.24] [background-image:linear-gradient(rgba(139,220,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(139,220,255,0.08)_1px,transparent_1px)] [background-size:40px_40px] [mask-image:linear-gradient(112deg,black,transparent_74%)]"
+            aria-hidden="true"
+          />
+          <div
+            className="pointer-events-none absolute bottom-7 left-[52%] hidden h-px w-[38%] bg-[linear-gradient(90deg,rgba(139,220,255,0.38),transparent)] min-[981px]:block"
+            aria-hidden="true"
+          />
 
-            <h2
-              className="mb-0 mt-6 max-w-[540px] break-words font-sans text-[clamp(1.75rem,2.2vw,2.4rem)] font-bold leading-[1.08] tracking-[-0.035em] text-navy-950"
-              id="service-results-heading"
-            >
-              {section.title}
-            </h2>
-            <p className="mb-0 mt-3 max-w-[540px] break-words text-sm leading-6 text-navy-700/75">
-              {section.description}
-            </p>
-
-            <dl className={`mt-8 grid gap-5 border-t border-cobalt-700/10 pt-6 ${statsGrid}`}>
-              {section.stats.map((stat, index) => (
-                <div className="flex min-w-0 flex-col border-l-2 border-electric/25 pl-4" key={`${stat.label}-${index}`}>
-                  <dt className="order-2 mt-1.5 break-words text-[0.7rem] font-semibold leading-5 text-navy-700/75">
-                    {stat.label}
-                  </dt>
-                  <dd className="order-1 m-0 break-words font-display text-[1.75rem] leading-none tracking-[-0.02em] text-navy-950">
-                    {stat.value}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-
-          <blockquote className="relative mx-0 mb-0 flex min-w-0 flex-col overflow-hidden rounded-[22px] border border-cobalt-700/12 bg-cloud p-5 shadow-[0_20px_55px_rgba(3,19,47,0.08)] min-[560px]:p-7 min-[821px]:p-8">
-            <div className="flex items-center gap-4" aria-hidden="true">
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-full border border-cobalt-700/12 bg-cloud font-display text-[1.8rem] leading-none text-cobalt-600/55 shadow-[0_8px_20px_rgba(13,92,184,0.08)]">
-                “
-              </span>
-              <span className="h-px flex-1 bg-[linear-gradient(90deg,rgba(13,92,184,0.2),transparent)]" />
-            </div>
-            <p className="mb-0 mt-5 max-w-[60ch] break-words text-[0.95rem] font-normal leading-7 text-navy-800">
-              {section.quote}
-            </p>
-            <footer className="mt-7 border-t border-cobalt-700/10 pt-5 text-xs leading-5 text-navy-700/75">
-              <cite className="not-italic">
-                <span className="flex items-start gap-3">
-                  <span className="mt-1.5 size-2 shrink-0 rounded-full bg-electric shadow-[0_0_10px_rgba(22,140,245,0.35)]" aria-hidden="true" />
-                  <span className="min-w-0">
-                    <strong className="block break-words text-sm font-bold text-cobalt-700">{section.name}</strong>
-                    {attribution ? <span className="mt-0.5 block break-words">{attribution}</span> : null}
-                  </span>
+          <div className="relative grid min-w-0 gap-8 min-[981px]:grid-cols-[minmax(0,1fr)_minmax(340px,0.82fr)] min-[981px]:items-center min-[1100px]:gap-12">
+            <div className="min-w-0">
+              <div className="flex w-fit max-w-full flex-wrap items-center gap-x-3 gap-y-2 text-[0.76rem] text-ice/76">
+                <strong className="font-extrabold text-white">{section.rating.label}</strong>
+                <span className="flex items-center gap-1" aria-hidden="true">
+                  {Array.from({ length: 5 }, (_, index) => (
+                    <span
+                      className="flex size-4 items-center justify-center border border-sky/20 bg-electric text-[0.5rem] leading-none text-white shadow-[0_4px_10px_rgba(22,140,245,0.22)]"
+                      key={index}
+                    >
+                      ★
+                    </span>
+                  ))}
                 </span>
-              </cite>
-            </footer>
-          </blockquote>
-        </div>
+                <span className="inline-flex items-center gap-1.5 font-bold text-sky">
+                  <span className="size-1.5 rounded-full bg-electric shadow-[0_0_10px_rgba(22,140,245,0.55)]" aria-hidden="true" />
+                  {section.rating.source}
+                </span>
+              </div>
+
+              <h2
+                className="relative mb-0 mt-5 max-w-[680px] break-words font-sans text-[clamp(1.9rem,3vw,3rem)] font-extrabold leading-[1.04] tracking-normal text-white"
+                id="service-results-heading"
+              >
+                {section.title}
+              </h2>
+              <p className="relative mb-0 mt-3 max-w-[620px] break-words text-sm leading-6 text-ice/70 min-[560px]:text-[0.95rem]">
+                {section.description}
+              </p>
+
+              <dl className={`relative mt-9 grid gap-x-6 gap-y-5 ${statsGrid}`}>
+                {section.stats.map((stat, index) => (
+                  <div className="min-w-0 border-l border-sky/18 pl-4" key={`${stat.label}-${index}`}>
+                    <dd className="m-0 break-words font-sans text-[clamp(1.65rem,2.1vw,2.15rem)] font-extrabold leading-none tracking-normal text-white">
+                      {stat.value}
+                    </dd>
+                    <dt className="mt-2 break-words text-[0.7rem] font-semibold uppercase leading-5 tracking-[0.08em] text-ice/62">
+                      {stat.label}
+                    </dt>
+                  </div>
+                ))}
+              </dl>
+            </div>
+
+            <blockquote className="relative mx-0 mb-0 min-w-0 border-t border-sky/18 pt-7 min-[981px]:border-l min-[981px]:border-t-0 min-[981px]:py-6 min-[981px]:pl-9">
+              <p className="mb-0 max-w-[54ch] break-words text-[clamp(0.98rem,1.25vw,1.16rem)] font-semibold leading-7 tracking-normal text-ice/88">
+                <span aria-hidden="true">“</span>
+                {section.quote}
+                <span aria-hidden="true">”</span>
+              </p>
+              <footer className="mt-5 text-xs leading-5 text-ice/62 min-[560px]:text-[0.82rem]">
+                <cite className="not-italic">
+                  <span className="flex items-start gap-3">
+                    <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-electric shadow-[0_0_10px_rgba(22,140,245,0.55)]" aria-hidden="true" />
+                    <span className="min-w-0 break-words">
+                      <strong className="font-semibold text-white">{section.name}</strong>
+                      {attribution ? <span> · {attribution}</span> : null}
+                    </span>
+                  </span>
+                </cite>
+              </footer>
+            </blockquote>
+          </div>
+        </article>
       </div>
     </section>
   );
@@ -454,6 +464,14 @@ export function CompanyRegistrationPage({
   content,
   showHeroGlobe = false,
 }: CompanyRegistrationPageProps) {
+  const whyChooseGridClass =
+    content.whyChoose.items.length === 1
+      ? "mx-auto grid w-full max-w-[860px] grid-cols-1 gap-4"
+      : "grid grid-cols-1 gap-4 md:grid-cols-2";
+  const extraContentGridClass = `relative mx-auto grid w-full max-w-[1320px] list-none grid-cols-1 gap-6 px-[18px] min-[560px]:px-[22px] min-[821px]:px-8 ${
+    content.extraContent?.length === 1 ? "min-[821px]:max-w-[1040px]" : "min-[981px]:grid-cols-2"
+  }`;
+
   return (
     <SitePageShell
       footer={content.footer}
@@ -720,7 +738,7 @@ export function CompanyRegistrationPage({
         />
         <div className="relative mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
           <SectionHeading eyebrow={content.whyChoose.eyebrow} title={content.whyChoose.title} tone="light" />
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className={whyChooseGridClass}>
             {content.whyChoose.items.map((item, index) => (
               <DetailCard item={item} index={index} key={item.title} light />
             ))}
@@ -742,34 +760,33 @@ export function CompanyRegistrationPage({
             className="pointer-events-none absolute -right-28 top-16 -z-10 size-80 rounded-full bg-electric/10 blur-3xl"
             aria-hidden="true"
           />
-          <ol
-            className={`relative mx-auto grid w-full max-w-[1320px] list-none grid-cols-1 gap-5 px-[18px] min-[560px]:px-[22px] min-[821px]:px-8 ${
-              content.extraContent.length === 1 ? "min-[821px]:max-w-[960px]" : "min-[981px]:grid-cols-2"
-            }`}
-          >
+          <ol className={extraContentGridClass}>
             {content.extraContent.map((item, index) => (
               <li className="min-w-0" key={`${item.title}-${index}`}>
-                <article className="group relative h-full min-w-0 overflow-hidden rounded-[28px] border border-cobalt-700/16 bg-cloud p-7 shadow-[0_22px_60px_rgba(3,19,47,0.1)] transition-[transform,border-color,box-shadow] duration-300 hover:border-cobalt-600/42 hover:shadow-[0_30px_76px_rgba(13,92,184,0.16)] motion-safe:hover:-translate-y-2 min-[560px]:p-9">
+                <article className="group relative h-full min-w-0 overflow-hidden rounded-[30px] border border-cobalt-700/18 bg-[linear-gradient(145deg,var(--blue-cloud),rgba(234,246,255,0.84))] p-7 shadow-[0_26px_70px_rgba(3,19,47,0.11)] transition-[transform,border-color,box-shadow] duration-300 hover:border-cobalt-600/45 hover:shadow-[0_34px_86px_rgba(13,92,184,0.16)] motion-safe:hover:-translate-y-2 min-[560px]:p-9 min-[821px]:min-h-[420px] min-[821px]:p-10">
                   <span
-                    className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-[linear-gradient(90deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))]"
+                    className="pointer-events-none absolute inset-x-0 top-0 h-1.5 bg-[linear-gradient(90deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))]"
                     aria-hidden="true"
                   />
                   <span
-                    className="pointer-events-none absolute -right-20 -top-20 size-52 rounded-full border border-cobalt-600/10 shadow-[0_0_0_28px_rgba(22,140,245,0.025)] transition-transform duration-500 motion-safe:group-hover:scale-110"
+                    className="pointer-events-none absolute -right-24 -top-24 size-64 rounded-full border border-cobalt-600/10 shadow-[0_0_0_34px_rgba(22,140,245,0.03)] transition-transform duration-500 motion-safe:group-hover:scale-110"
+                    aria-hidden="true"
+                  />
+                  <span
+                    className="pointer-events-none absolute right-8 top-8 size-2.5 rounded-full bg-electric shadow-[0_0_16px_rgba(22,140,245,0.68)]"
                     aria-hidden="true"
                   />
                   <div className="relative flex items-center gap-3" aria-hidden="true">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-full border border-cobalt-600/20 bg-ice text-[0.65rem] font-extrabold tracking-[0.12em] text-cobalt-700 shadow-[0_8px_22px_rgba(13,92,184,0.12)]">
+                    <span className="flex size-11 shrink-0 items-center justify-center rounded-full border border-cobalt-600/20 bg-ice text-[0.66rem] font-extrabold tracking-[0.12em] text-cobalt-700 shadow-[0_8px_22px_rgba(13,92,184,0.12)]">
                       {String(index + 1).padStart(2, "0")}
                     </span>
                     <span className="h-px flex-1 bg-[linear-gradient(90deg,rgba(22,140,245,0.34),transparent)]" />
-                    <span className="size-2 rounded-full bg-electric shadow-[0_0_13px_rgba(22,140,245,0.7)]" />
                   </div>
-                  <h2 className="relative mt-8 break-words font-display text-[clamp(2rem,3vw,2.75rem)] leading-[1.02] tracking-[-0.035em] text-navy-950">
+                  <h2 className="relative mt-8 max-w-[760px] break-words font-display text-[clamp(2.15rem,3.4vw,3.25rem)] leading-[1] tracking-[-0.045em] text-navy-950">
                     {item.title}
                   </h2>
                   <RegistrationRichTextView
-                    className="relative mt-6 break-words text-[0.98rem] leading-7 text-navy-700/80 md:text-base md:leading-8"
+                    className="relative mt-7 max-w-[78ch] break-words text-base leading-8 text-navy-700/80 [&_li::marker]:text-cobalt-600 md:text-[1.03rem] md:leading-8"
                     value={item.description}
                   />
                 </article>
