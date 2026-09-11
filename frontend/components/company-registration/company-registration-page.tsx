@@ -145,12 +145,22 @@ function RegistrationRichTextView({
   value,
   className,
   light = false,
+  variant = "default",
 }: {
   value: RegistrationRichText;
   className: string;
   light?: boolean;
+  variant?: "default" | "article";
 }) {
-  const richTextClassName = `${className} min-w-0 [&>*+*]:mt-4 [&_a]:rounded-sm [&_a]:font-bold [&_a]:underline [&_a]:decoration-sky/55 [&_a]:underline-offset-4 [&_a]:transition-colors [&_a]:focus-visible:outline-none [&_a]:focus-visible:ring-2 [&_a]:focus-visible:ring-sky [&_a]:focus-visible:ring-offset-2 [&_blockquote]:rounded-r-xl [&_blockquote]:border-l-2 [&_blockquote]:px-4 [&_blockquote]:py-2 [&_blockquote]:italic [&_code]:break-words [&_code]:rounded [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-[0.88em] [&_h1]:font-display [&_h1]:text-[1.8rem] [&_h1]:leading-[1.05] [&_h2]:font-display [&_h2]:text-[1.55rem] [&_h2]:leading-[1.08] [&_h3]:font-display [&_h3]:text-[1.3rem] [&_h3]:leading-[1.12] [&_h4]:text-[1.05rem] [&_h4]:font-extrabold [&_h5]:text-[1rem] [&_h5]:font-extrabold [&_h6]:text-[0.92rem] [&_h6]:font-extrabold [&_hr]:border-0 [&_hr]:border-t [&_img]:h-auto [&_img]:max-w-full [&_img]:rounded-xl [&_img]:border [&_img]:object-contain [&_li]:pl-1 [&_mark]:rounded [&_mark]:bg-sky/35 [&_mark]:px-1 [&_ol]:list-decimal [&_ol]:space-y-2 [&_ol]:pl-6 [&_p]:whitespace-pre-line [&_pre]:max-w-full [&_pre]:overflow-x-auto [&_pre]:rounded-xl [&_pre]:border [&_pre]:p-4 [&_pre]:text-sm [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_strong]:font-extrabold [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto [&_table]:border-collapse [&_td]:border [&_td]:p-2.5 [&_th]:border [&_th]:p-2.5 [&_th]:text-left [&_th]:font-extrabold [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-6 ${
+  const isArticle = variant === "article";
+  const spacingClassName = isArticle ? "[&>*+*]:mt-5" : "[&>*+*]:mt-4";
+  const listClassName = isArticle
+    ? "[&_ol]:list-decimal [&_ol]:space-y-3 [&_ol]:pl-6 [&_ul]:list-none [&_ul]:space-y-3 [&_ul]:pl-0 [&_ul>li]:relative [&_ul>li]:pl-9 [&_ul>li]:before:absolute [&_ul>li]:before:left-0 [&_ul>li]:before:top-[0.28rem] [&_ul>li]:before:flex [&_ul>li]:before:size-5 [&_ul>li]:before:items-center [&_ul>li]:before:justify-center [&_ul>li]:before:rounded-full [&_ul>li]:before:border [&_ul>li]:before:border-cobalt-600/30 [&_ul>li]:before:bg-ice [&_ul>li]:before:text-[0.68rem] [&_ul>li]:before:font-extrabold [&_ul>li]:before:leading-none [&_ul>li]:before:text-cobalt-600 [&_ul>li]:before:content-['✓']"
+    : "[&_li]:pl-1 [&_ol]:list-decimal [&_ol]:space-y-2 [&_ol]:pl-6 [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-6";
+  const articleClassName = isArticle
+    ? "[&_h2]:border-b [&_h2]:border-cobalt-700/14 [&_h2]:pb-3 [&_h3]:border-b [&_h3]:border-cobalt-700/12 [&_h3]:pb-3 [&_hr]:my-7 [&_p]:max-w-none [&_strong]:font-extrabold"
+    : "";
+  const richTextClassName = `${className} min-w-0 ${spacingClassName} ${listClassName} ${articleClassName} [&_a]:rounded-sm [&_a]:font-bold [&_a]:underline [&_a]:decoration-sky/55 [&_a]:underline-offset-4 [&_a]:transition-colors [&_a]:focus-visible:outline-none [&_a]:focus-visible:ring-2 [&_a]:focus-visible:ring-sky [&_a]:focus-visible:ring-offset-2 [&_blockquote]:rounded-r-xl [&_blockquote]:border-l-2 [&_blockquote]:px-4 [&_blockquote]:py-2 [&_blockquote]:italic [&_code]:break-words [&_code]:rounded [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-[0.88em] [&_h1]:font-display [&_h1]:text-[1.8rem] [&_h1]:leading-[1.05] [&_h2]:font-display [&_h2]:text-[1.55rem] [&_h2]:leading-[1.08] [&_h3]:font-display [&_h3]:text-[1.3rem] [&_h3]:leading-[1.12] [&_h4]:text-[1.05rem] [&_h4]:font-extrabold [&_h5]:text-[1rem] [&_h5]:font-extrabold [&_h6]:text-[0.92rem] [&_h6]:font-extrabold [&_hr]:border-0 [&_hr]:border-t [&_img]:h-auto [&_img]:max-w-full [&_img]:rounded-xl [&_img]:border [&_img]:object-contain [&_mark]:rounded [&_mark]:bg-sky/35 [&_mark]:px-1 [&_p]:whitespace-pre-line [&_pre]:max-w-full [&_pre]:overflow-x-auto [&_pre]:rounded-xl [&_pre]:border [&_pre]:p-4 [&_pre]:text-sm [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_strong]:font-extrabold [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto [&_table]:border-collapse [&_td]:border [&_td]:p-2.5 [&_th]:border [&_th]:p-2.5 [&_th]:text-left [&_th]:font-extrabold ${
     light
       ? "[&_a]:text-sky [&_a:hover]:text-white [&_blockquote]:border-sky/50 [&_blockquote]:bg-white/[0.045] [&_code]:bg-navy-950/60 [&_h1]:text-white [&_h2]:text-white [&_h3]:text-white [&_h4]:text-ice [&_h5]:text-ice [&_h6]:text-ice [&_hr]:border-sky/25 [&_img]:border-sky/20 [&_pre]:border-sky/20 [&_pre]:bg-navy-950/80 [&_strong]:text-white [&_td]:border-sky/20 [&_th]:border-sky/25 [&_th]:text-white"
       : "[&_a]:text-cobalt-700 [&_a:hover]:text-cobalt-600 [&_blockquote]:border-cobalt-600/45 [&_blockquote]:bg-ice/75 [&_code]:bg-ice [&_h1]:text-navy-950 [&_h2]:text-navy-950 [&_h3]:text-navy-900 [&_h4]:text-navy-800 [&_h5]:text-navy-800 [&_h6]:text-navy-700 [&_hr]:border-cobalt-700/15 [&_img]:border-cobalt-700/15 [&_pre]:border-cobalt-700/18 [&_pre]:bg-navy-950 [&_pre]:text-ice [&_strong]:text-navy-950 [&_td]:border-cobalt-700/15 [&_th]:border-cobalt-700/20 [&_th]:text-navy-950"
@@ -468,9 +478,6 @@ export function CompanyRegistrationPage({
     content.whyChoose.items.length === 1
       ? "mx-auto grid w-full max-w-[860px] grid-cols-1 gap-4"
       : "grid grid-cols-1 gap-4 md:grid-cols-2";
-  const extraContentGridClass = `relative mx-auto grid w-full max-w-[1320px] list-none grid-cols-1 gap-6 px-[18px] min-[560px]:px-[22px] min-[821px]:px-8 ${
-    content.extraContent?.length === 1 ? "min-[821px]:max-w-[1040px]" : "min-[981px]:grid-cols-2"
-  }`;
 
   return (
     <SitePageShell
@@ -760,39 +767,49 @@ export function CompanyRegistrationPage({
             className="pointer-events-none absolute -right-28 top-16 -z-10 size-80 rounded-full bg-electric/10 blur-3xl"
             aria-hidden="true"
           />
-          <ol className={extraContentGridClass}>
-            {content.extraContent.map((item, index) => (
-              <li className="min-w-0" key={`${item.title}-${index}`}>
-                <article className="group relative h-full min-w-0 overflow-hidden rounded-[30px] border border-cobalt-700/18 bg-[linear-gradient(145deg,var(--blue-cloud),rgba(234,246,255,0.84))] p-7 shadow-[0_26px_70px_rgba(3,19,47,0.11)] transition-[transform,border-color,box-shadow] duration-300 hover:border-cobalt-600/45 hover:shadow-[0_34px_86px_rgba(13,92,184,0.16)] motion-safe:hover:-translate-y-2 min-[560px]:p-9 min-[821px]:min-h-[420px] min-[821px]:p-10">
-                  <span
-                    className="pointer-events-none absolute inset-x-0 top-0 h-1.5 bg-[linear-gradient(90deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))]"
-                    aria-hidden="true"
-                  />
-                  <span
-                    className="pointer-events-none absolute -right-24 -top-24 size-64 rounded-full border border-cobalt-600/10 shadow-[0_0_0_34px_rgba(22,140,245,0.03)] transition-transform duration-500 motion-safe:group-hover:scale-110"
-                    aria-hidden="true"
-                  />
-                  <span
-                    className="pointer-events-none absolute right-8 top-8 size-2.5 rounded-full bg-electric shadow-[0_0_16px_rgba(22,140,245,0.68)]"
-                    aria-hidden="true"
-                  />
-                  <div className="relative flex items-center gap-3" aria-hidden="true">
-                    <span className="flex size-11 shrink-0 items-center justify-center rounded-full border border-cobalt-600/20 bg-ice text-[0.66rem] font-extrabold tracking-[0.12em] text-cobalt-700 shadow-[0_8px_22px_rgba(13,92,184,0.12)]">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <span className="h-px flex-1 bg-[linear-gradient(90deg,rgba(22,140,245,0.34),transparent)]" />
-                  </div>
-                  <h2 className="relative mt-8 max-w-[760px] break-words font-display text-[clamp(2.15rem,3.4vw,3.25rem)] leading-[1] tracking-[-0.045em] text-navy-950">
-                    {item.title}
-                  </h2>
-                  <RegistrationRichTextView
-                    className="relative mt-7 max-w-[78ch] break-words text-base leading-8 text-navy-700/80 [&_li::marker]:text-cobalt-600 md:text-[1.03rem] md:leading-8"
-                    value={item.description}
-                  />
-                </article>
-              </li>
-            ))}
-          </ol>
+          <div className="relative mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
+            <article className="relative min-w-0 overflow-hidden rounded-[30px] border border-cobalt-700/14 bg-cloud p-6 shadow-[0_28px_80px_rgba(3,19,47,0.1)] min-[560px]:p-8 min-[821px]:p-12">
+              <span
+                className="pointer-events-none absolute inset-x-0 top-0 h-1.5 bg-[linear-gradient(90deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))]"
+                aria-hidden="true"
+              />
+              <span
+                className="pointer-events-none absolute -right-28 -top-28 size-72 rounded-full border border-cobalt-600/10 shadow-[0_0_0_38px_rgba(22,140,245,0.03),0_0_0_82px_rgba(22,140,245,0.02)]"
+                aria-hidden="true"
+              />
+              <span
+                className="pointer-events-none absolute right-8 top-8 size-2.5 rounded-full bg-electric shadow-[0_0_16px_rgba(22,140,245,0.68)]"
+                aria-hidden="true"
+              />
+              <ol className="relative m-0 list-none divide-y divide-cobalt-700/12 p-0">
+                {content.extraContent.map((item, index) => (
+                  <li
+                    className="min-w-0 py-8 first:pt-0 last:pb-0 min-[821px]:py-10"
+                    key={`${item.title}-${index}`}
+                  >
+                    <div className="grid min-w-0 gap-5 min-[821px]:grid-cols-[3.5rem_minmax(0,1fr)] min-[821px]:gap-7">
+                      <span
+                        className="flex size-11 shrink-0 items-center justify-center rounded-full border border-cobalt-600/24 bg-ice text-[0.66rem] font-extrabold tracking-[0.12em] text-cobalt-700 shadow-[0_8px_22px_rgba(13,92,184,0.1)]"
+                        aria-hidden="true"
+                      >
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <div className="min-w-0">
+                        <h2 className="mb-0 border-b border-cobalt-700/14 pb-4 break-words font-sans text-[clamp(1.65rem,2.8vw,2.35rem)] font-extrabold leading-tight tracking-normal text-navy-950">
+                          {item.title}
+                        </h2>
+                        <RegistrationRichTextView
+                          className="mt-6 max-w-none break-words text-base leading-8 text-navy-700/78 md:text-[1.04rem]"
+                          value={item.description}
+                          variant="article"
+                        />
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </article>
+          </div>
         </section>
       ) : null}
 

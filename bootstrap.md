@@ -134,5 +134,6 @@ Approval collections:
 
 changes in given above collection pages:-
 
-1 . In Review Section Ui still look so bad firstly i dont want corners and a light color in backgrounf and test to be small not to big right side text is too big stats are to big make it professonal.
-
+1. I want the extraContent section ui to be improved refernce like the image see how clean it looks an if needed change RegistrationRichTextView inhance this also so its easy to add content and make it look professonal the ui don't 
+look professonal.
+2. add only single one card so it looks professonal.
