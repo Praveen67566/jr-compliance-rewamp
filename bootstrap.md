@@ -105,8 +105,6 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Only Ui Changes:-
-
 Corporate collections:
 
 - `company-registration-page`
@@ -134,6 +132,9 @@ Approval collections:
 
 changes in given above collection pages:-
 
-1. I want the extraContent section ui to be improved refernce like the image see how clean it looks an if needed change RegistrationRichTextView inhance this also so its easy to add content and make it look professonal the ui don't 
-look professonal.
-2. add only single one card so it looks professonal.
+see the reference images one is current website image and second one is the reference image you can see the differnce the refernce look far better that the current one because its so clean and perfect now i want to acheive that so build extra content section that way.
+
+The differences are:-
+
+title or text is so big and use the same font given in image the startup india image.
+and also there can be h2 it can be in start the startup image ndia looks so profession.

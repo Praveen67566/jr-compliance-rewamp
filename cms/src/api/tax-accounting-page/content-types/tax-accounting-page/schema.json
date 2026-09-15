@@ -45,26 +45,22 @@
     "challenges": {
       "type": "component",
       "component": "registration.card-section",
-      "repeatable": false,
-      "required": true
+      "repeatable": false
     },
     "advantages": {
       "type": "component",
       "component": "registration.card-section",
-      "repeatable": false,
-      "required": true
+      "repeatable": false
     },
     "process": {
       "type": "component",
       "component": "registration.card-section",
-      "repeatable": false,
-      "required": true
+      "repeatable": false
     },
     "whyChoose": {
       "type": "component",
       "component": "registration.card-section",
-      "repeatable": false,
-      "required": true
+      "repeatable": false
     },
     "extraContent": {
       "type": "component",

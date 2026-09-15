@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { renderRegistrationMarkdown } from "@/lib/registration-markdown";
+import {
+  renderRegistrationArticleMarkdown,
+  renderRegistrationMarkdown,
+} from "@/lib/registration-markdown";
 
 describe("registration rich-text markdown", () => {
   it("renders the formatting exposed by the Strapi rich-text editor", () => {
@@ -56,5 +59,58 @@ Second line
     assert.match(html, /href="https:\/\/cms\.example\.com\/uploads\/guide\.pdf"/);
     assert.match(html, /src="https:\/\/cms\.example\.com\/uploads\/diagram\.png"/);
     assert.match(html, /href="\/contact-us"/);
+  });
+
+  it("normalizes pasted check lines only for article rich text", () => {
+    const value = `Introductory paragraph
+
+Supporting paragraph.
+
+Types of registrations
+
+✓ First benefit
+✔ Second benefit — Supporting detail
+☑ Third benefit`;
+    const html = renderRegistrationArticleMarkdown(value);
+
+    assert.match(html, /<p>Introductory paragraph<\/p>/);
+    assert.match(html, /<p>Supporting paragraph\.<\/p>/);
+    assert.match(html, /<h2>Types of registrations<\/h2>/);
+    assert.match(
+      html,
+      /<ul>[\s\S]*?<li>First benefit<\/li>[\s\S]*?<li><strong>Second benefit<\/strong> — Supporting detail<\/li>[\s\S]*?<li>Third benefit<\/li>[\s\S]*?<\/ul>/,
+    );
+    assert.doesNotMatch(html, /[✓✔☑]/);
+  });
+
+  it("promotes a standalone pasted question after body copy to an article heading", () => {
+    const html = renderRegistrationArticleMarkdown(`Opening paragraph.
+
+What happens next?
+
+Answer paragraph.`);
+
+    assert.match(html, /<p>Opening paragraph\.<\/p>/);
+    assert.match(html, /<h2>What happens next\?<\/h2>/);
+    assert.match(html, /<p>Answer paragraph\.<\/p>/);
+  });
+
+  it("omits only a duplicated leading article heading", () => {
+    const duplicate = renderRegistrationArticleMarkdown(
+      `# Startup India Registration Online in India
+
+Opening paragraph.`,
+      { articleTitle: "Startup India Registration Online in India" },
+    );
+    const different = renderRegistrationArticleMarkdown(
+      `# Eligibility overview
+
+Opening paragraph.`,
+      { articleTitle: "Startup India Registration Online in India" },
+    );
+
+    assert.doesNotMatch(duplicate, /<h1>/);
+    assert.match(duplicate, /<p>Opening paragraph\.<\/p>/);
+    assert.match(different, /<h1>Eligibility overview<\/h1>/);
   });
 });

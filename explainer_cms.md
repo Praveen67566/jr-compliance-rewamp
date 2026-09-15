@@ -46,14 +46,16 @@ unchanged; the Legal Page collection and two Global collections use separate
 fixed contracts. The seven empty Approval collections and both Global
 collections are schema integrations only and contain no bundled records.
 
-Every fixed service-detail collection also exposes an optional `trustedLogos`
-relation plus four optional top-level components. Trusted logos follow the
-hero, `extraContent` follows Why JR, `youtubeVideos` follows Extra Content,
-`resultsSection` follows the breakdown,
-and `tickerCta` follows Results and precedes FAQ. Detail items in Challenges,
-Advantages, Process, and Why Choose, plus Breakdown groups, also accept optional
-image icons. Leaving any of these fields empty preserves the existing page and
-does not make an otherwise complete record invalid.
+Every fixed service-detail collection exposes nine optional top-level fields:
+`trustedLogos`, `challenges`, `advantages`, `process`, `whyChoose`,
+`extraContent`, `youtubeVideos`, `resultsSection`, and `tickerCta`. Trusted
+logos follow the hero; each available card section retains its fixed order;
+Extra Content follows the last available card section; YouTube videos follow
+Extra Content; Results follows the breakdown; and the ticker precedes FAQ.
+Detail items in the four optional card sections, plus Breakdown groups, also
+accept optional image icons. Leaving any optional field empty does not make an
+otherwise complete record invalid or cause the frontend to borrow that section
+from another record.
 
 The frontend reads published CMS content using a server-only API token. If
 Strapi is unavailable, fallback-backed routes use local data from
@@ -286,16 +288,16 @@ Each content type folder follows the Strapi pattern:
 
 `cms/src/api/company-registration-page/`
 : Dedicated detail-page records for the nineteen Company Registration slugs.
-Each record uses the fixed hero, optional trusted logos, overview, challenges,
-advantages, process, Why JR, optional Extra Content cards, optional YouTube
+Each record uses the fixed hero, optional trusted logos, overview, optional
+Challenges, Advantages, Process, Why JR, and Extra Content, optional YouTube
 videos, breakdown, optional results proof, optional ticker CTA, FAQ, closing
 CTA, and SEO fields; it is not
 a generic page builder.
 
 `cms/src/api/mca-service-page/`
 : Dedicated detail-page records for approved MCA Services slugs. The first DSC
-record uses the same fixed hero, optional trusted logos, overview, challenges,
-advantages, process, Why JR, optional Extra Content cards, optional YouTube
+record uses the same fixed hero, optional trusted logos, overview, optional
+Challenges, Advantages, Process, Why JR, and Extra Content, optional YouTube
 videos, breakdown, optional results proof, optional ticker CTA, FAQ, closing
 CTA, and SEO fields without
 widening the Company Registration collection into a generic page builder.
@@ -576,13 +578,13 @@ PostgreSQL variables for local and deployed CMS environments are defined in
   Grant the server-side reader token `find` access after deployment and keep
   Public access disabled. Existing regulator Brand Logo records are not
   migrated or backfilled.
-- On any fixed service record, editors may optionally select client Brand Logo
-  records under **Trusted Logos**, add ordered title-and-description cards under
-  **Extra Content**, add one or more titled HTTPS single-video YouTube URLs under
-  **YouTube Videos**, add a **Results Section**, add a **Ticker CTA**, and select
-  icons for Challenges, Advantages, Process, Why Choose, or Breakdown. Leave
-  these fields empty for the backwards-compatible rollout; no seed, fallback,
-  or database backfill is required.
+- On any fixed service record, editors may optionally add **Challenges**,
+  **Advantages**, **Process**, and **Why Choose**; select client Brand Logo
+  records under **Trusted Logos**; add ordered title-and-description entries
+  under **Extra Content**; add one or more titled HTTPS single-video YouTube
+  URLs under **YouTube Videos**; add a **Results Section** or **Ticker CTA**;
+  and select icons for card details or Breakdown. Missing optional CMS sections
+  stay omitted, while the approved local fallback records remain unchanged.
 - Deploying `legal-page` does not populate the active PostgreSQL database.
   Review and publish exactly the three allowed records through Content Manager,
   or use the reviewed `content,files` transfer workflow after backups. Grant the

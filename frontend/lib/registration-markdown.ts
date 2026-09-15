@@ -118,3 +118,83 @@ export function renderRegistrationMarkdown(
     },
   });
 }
+
+/**
+ * Keeps common pasted Extra Content visually consistent with structured
+ * Markdown: check-prefixed lines become lists, while standalone questions and
+ * short labels immediately introducing those lists become section headings.
+ */
+export function renderRegistrationArticleMarkdown(
+  value: string,
+  options: {
+    articleTitle?: string;
+    strapiUrl?: string;
+  } = {},
+): string {
+  const sourceLines = value.split(/\r?\n/);
+  const firstContentIndex = sourceLines.findIndex((line) => Boolean(line.trim()));
+  const firstHeading = sourceLines[firstContentIndex]?.trim().match(/^#{1,6}\s+(.+?)\s*#*$/);
+  const normalizeHeading = (heading: string) =>
+    heading
+      .replace(/[*_`~]/g, "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLocaleLowerCase();
+
+  if (
+    firstContentIndex >= 0 &&
+    firstHeading?.[1] &&
+    options.articleTitle &&
+    normalizeHeading(firstHeading[1]) === normalizeHeading(options.articleTitle)
+  ) {
+    sourceLines[firstContentIndex] = "";
+  }
+
+  const checkLines = sourceLines.map((line) => /^(\s*)[✓✔☑]\s+/.test(line));
+  const normalizedLines = sourceLines.map((line) => {
+    const match = line.match(/^(\s*)[✓✔☑]\s+(.+)$/);
+    if (!match) {
+      return line;
+    }
+
+    const [, indentation, content] = match;
+    const dashIndex = content.indexOf(" — ");
+    const listContent =
+      dashIndex > 0
+        ? `**${content.slice(0, dashIndex)}**${content.slice(dashIndex)}`
+        : content;
+    return `${indentation}- ${listContent}`;
+  });
+
+  const normalizedValue = normalizedLines
+    .map((line, index) => {
+      const trimmedLine = line.trim();
+      const isAlreadyStructured =
+        !trimmedLine ||
+        /^(?:#{1,6}\s|[-*+]\s|\d+[.)]\s|>|```|<)/.test(trimmedLine);
+      if (isAlreadyStructured || checkLines[index]) {
+        return line;
+      }
+
+      const previousLineIsBlank = index === 0 || !sourceLines[index - 1]?.trim();
+      const nextLineIsBlank =
+        index === sourceLines.length - 1 || !sourceLines[index + 1]?.trim();
+      const hasEarlierContent = sourceLines.slice(0, index).some((item) => item.trim());
+      const nextContentIndex = sourceLines.findIndex(
+        (item, candidateIndex) => candidateIndex > index && Boolean(item.trim()),
+      );
+      const introducesCheckList =
+        nextContentIndex > index && checkLines[nextContentIndex] === true;
+      const isQuestionHeading = trimmedLine.endsWith("?") && trimmedLine.length <= 90;
+
+      return previousLineIsBlank &&
+        nextLineIsBlank &&
+        hasEarlierContent &&
+        (introducesCheckList || isQuestionHeading)
+        ? `## ${trimmedLine}`
+        : line;
+    })
+    .join("\n");
+
+  return renderRegistrationMarkdown(normalizedValue, options.strapiUrl);
+}

@@ -134,6 +134,13 @@ describe("service-detail content mirrors", () => {
         component: "registration.extra-content-card",
         repeatable: true,
       });
+      for (const field of ["challenges", "advantages", "process", "whyChoose"]) {
+        assert.deepEqual(attributes[field], {
+          type: "component",
+          component: "registration.card-section",
+          repeatable: false,
+        });
+      }
       assert.deepEqual(attributes.resultsSection, {
         type: "component",
         component: "registration.results-section",
@@ -321,6 +328,13 @@ describe("service-detail content mirrors", () => {
     assert.doesNotMatch(cmsOnlyCompletenessGate, /extraContent/);
     assert.doesNotMatch(cmsOnlyCompletenessGate, /resultsSection/);
     assert.doesNotMatch(cmsOnlyCompletenessGate, /icon/);
+    for (const field of ["challenges", "advantages", "process", "whyChoose"]) {
+      assert.doesNotMatch(cmsOnlyCompletenessGate, new RegExp(`!${field}`));
+      assert.match(
+        cmsOnlyMapper,
+        new RegExp(`\\.\\.\\.\\(${field} \\? \\{ ${field} \\} : \\{\\}\\)`),
+      );
+    }
     assert.match(strapiAdapter, /youtubeVideos: \{ videos: true \}/);
     assert.match(strapiAdapter, /extraContent: true/);
     assert.match(strapiAdapter, /resultsSection: \{ stats: true \}/);
@@ -356,6 +370,23 @@ describe("service-detail content mirrors", () => {
     assert.match(extraContentSection, /id="extra-content"/);
     assert.match(extraContentSection, /content\.extraContent\.map\(\(item, index\)/);
     assert.match(extraContentSection, /<h2 className=/);
+    assert.equal(extraContentSection.match(/<article/g)?.length, 1);
+    assert.doesNotMatch(extraContentSection, /String\(index \+ 1\)\.padStart/);
+    assert.doesNotMatch(extraContentSection, /<ol|<li/);
+    assert.match(extraContentSection, /text-center/);
+    assert.match(extraContentSection, /h-0\.5 w-16 rounded-full bg-electric/);
+    assert.match(extraContentSection, /text-\[clamp\(1\.5rem,2\.2vw,2rem\)\]/);
+    assert.match(extraContentSection, /fontFamily: EXTRA_CONTENT_FONT_FAMILY/);
+    assert.match(extraContentSection, /fontKerning: "normal"/);
+    assert.match(extraContentSection, /fontOpticalSizing: "auto"/);
+    assert.match(
+      extraContentSection,
+      /text-base font-normal leading-\[26px\] tracking-\[0px\] text-\[#475569\]/,
+    );
+    assert.match(extraContentSection, /max-w-\[1400px\]/);
+    assert.match(extraContentSection, /articleTitle=\{item\.title\}/);
+    assert.doesNotMatch(extraContentSection, /inset-x-0 top-0 h-1/);
+    assert.doesNotMatch(extraContentSection, /rounded-\[18px\]|shadow-\[/);
     assert.match(
       extraContentSection,
       /<RegistrationRichTextView[\s\S]*?value=\{item\.description\}/,
@@ -397,23 +428,22 @@ describe("service-detail content mirrors", () => {
     assert.match(mediaUrlMapper, /\^https\?:\\\/\\\//);
     assert.match(mediaUrlMapper, /new URL\(url, strapiUrl\)\.toString\(\)/);
 
-    const fallbackDetailMapper = sourceBetween(
+    const optionalCardSectionMapper = sourceBetween(
       strapiAdapter,
-      "function mapRegistrationDetails",
       "function mapRegistrationCardSection",
+      "function mapRegistrationExtraContent",
     );
     const strictDetailMapper = sourceBetween(
       strapiAdapter,
       "function strictRegistrationDetails",
       "function strictFixedServiceCardSection",
     );
-    for (const mapper of [fallbackDetailMapper, strictDetailMapper]) {
-      assert.match(mapper, /const icon = mediaUrl\(item\.icon\);/);
-      assert.match(
-        mapper,
-        /title && description[\s\S]*?\{ title, description, \.\.\.\(icon \? \{ icon \} : \{\}\) \}/,
-      );
-    }
+    assert.match(optionalCardSectionMapper, /strictRegistrationDetails\(section\.items\)/);
+    assert.match(strictDetailMapper, /const icon = mediaUrl\(item\.icon\);/);
+    assert.match(
+      strictDetailMapper,
+      /title && description[\s\S]*?\{ title, description, \.\.\.\(icon \? \{ icon \} : \{\}\) \}/,
+    );
 
     const fallbackBreakdownMapper = sourceBetween(
       strapiAdapter,
@@ -447,7 +477,11 @@ describe("service-detail content mirrors", () => {
       );
       assert.match(
         fallbackMapper,
-        new RegExp(`${field}: mapRegistrationCardSection\\(page\\.${field}, fallback\\.${field}\\)`),
+        new RegExp(`const ${field} = mapRegistrationCardSection\\(page\\.${field}\\);`),
+      );
+      assert.match(
+        fallbackMapper,
+        new RegExp(`\\.\\.\\.\\(${field} \\? \\{ ${field} \\} : \\{\\}\\)`),
       );
     }
     assert.match(
@@ -731,6 +765,10 @@ describe("service-detail content mirrors", () => {
     ] as const) {
       assert.ok(page);
       assert.ok(page.overview.paragraphs.length >= 1);
+      assert.ok(page.challenges);
+      assert.ok(page.advantages);
+      assert.ok(page.process);
+      assert.ok(page.whyChoose);
       assert.ok(page.challenges.items.length >= 4);
       assert.ok(page.advantages.items.length >= 4);
       assert.equal(page.process.items.length, 6);
@@ -742,6 +780,10 @@ describe("service-detail content mirrors", () => {
     const gst = fallbackTaxAccountingPages[0];
     assert.ok(gst);
     assert.ok(gst.overview.paragraphs.length >= 1);
+    assert.ok(gst.challenges);
+    assert.ok(gst.advantages);
+    assert.ok(gst.process);
+    assert.ok(gst.whyChoose);
     assert.equal(gst.challenges.items.length, 4);
     assert.equal(gst.advantages.items.length, 3);
     assert.equal(gst.process.items.length, 6);

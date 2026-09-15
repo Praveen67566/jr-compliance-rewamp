@@ -104,10 +104,10 @@ architecture:
 
 1. Hero
 2. Overview
-3. Challenges
-4. Advantages
-5. Process
-6. Why Choose JR Compliance
+3. Challenges (optional)
+4. Advantages (optional)
+5. Process (optional)
+6. Why Choose JR Compliance (optional)
 7. Service Breakdown
 8. FAQs
 9. Closing CTA
@@ -121,10 +121,10 @@ The collection schema contains these top-level fields:
 | `slug` | UID from `title` | Required; exact flat or nested Approval path |
 | `hero` | `registration.hero` | Required |
 | `overview` | `registration.overview` | Required |
-| `challenges` | `registration.card-section` | Required |
-| `advantages` | `registration.card-section` | Required |
-| `process` | `registration.card-section` | Required |
-| `whyChoose` | `registration.card-section` | Required |
+| `challenges` | `registration.card-section` | Optional |
+| `advantages` | `registration.card-section` | Optional |
+| `process` | `registration.card-section` | Optional |
+| `whyChoose` | `registration.card-section` | Optional |
 | `breakdown` | `registration.breakdown-section` | Required |
 | `faqs` | `registration.faq-section` | Required |
 | `finalCta` | `home.cta-band` | Required |
@@ -150,8 +150,8 @@ fragments in the stored slug.
 Every nested item must also be complete:
 
 - each overview paragraph needs non-empty `text`;
-- every challenge, advantage, process, and Why Choose item needs both `title`
-  and `description`;
+- when a challenge, advantage, process, or Why Choose section is present, every
+  item needs both `title` and `description`;
 - every breakdown group needs a `title` and at least one non-empty text item;
 - every FAQ needs both `question` and `answer`;
 - hero and closing CTAs need `label`, `href`, and `target`; and

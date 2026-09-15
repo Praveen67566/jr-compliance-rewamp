@@ -199,16 +199,18 @@ customized or partially migrated legal-link list is preserved.
 One published record per approved `/corporate/[slug]` route. This is a fixed
 service-detail contract, not a generic page builder.
 
-Across all nineteen fixed service-detail collections, five additions are
-optional for backwards-compatible rollout. `trustedLogos` renders immediately
-after `hero`, `extraContent` renders immediately after `whyChoose`,
-`youtubeVideos` renders immediately after `extraContent`,
-`resultsSection` renders after `breakdown`, and `tickerCta` renders after the
-results section and immediately before `faqs`. Detail items in Challenges,
-Advantages, Process, and Why Choose, plus Breakdown groups, also accept optional
-image icons rendered as decorative artwork inside their themed circular
-holders. None changes the existing required sections, and no seed, fallback,
-or database backfill populates them.
+Across all nineteen fixed service-detail collections, nine top-level fields are
+optional. `challenges`, `advantages`, `process`, and `whyChoose` render only
+when an editor supplies their complete card section. `trustedLogos` renders
+immediately after `hero`, `extraContent` renders after `whyChoose` when present
+(otherwise after the preceding available section), `youtubeVideos` renders
+immediately after `extraContent`, `resultsSection` renders after `breakdown`,
+and `tickerCta` renders after the results section and immediately before
+`faqs`. Detail items in the four optional card sections, plus Breakdown groups,
+also accept optional image icons rendered as decorative artwork inside their
+themed circular holders. Existing local fallbacks retain their approved
+sections; published CMS records may intentionally omit any of the four optional
+card sections without borrowing fallback copy.
 
 | Field | Strapi field | Rules |
 | --- | --- | --- |
@@ -218,11 +220,11 @@ or database backfill populates them.
 | `hero` | `registration.hero` | Required |
 | `trustedLogos` | Relation | Optional many-to-many selection of client `brand-logo` records; editor order is display order |
 | `overview` | `registration.overview` | Required |
-| `challenges` | `registration.card-section` | Required; ordered page-specific cards |
-| `advantages` | `registration.card-section` | Required; ordered page-specific cards |
-| `process` | `registration.card-section` | Required; ordered six-step process |
-| `whyChoose` | `registration.card-section` | Required; ordered JR Compliance reasons |
-| `extraContent` | Repeatable `registration.extra-content-card` | Optional; unlimited editor-ordered title-and-rich-text cards |
+| `challenges` | `registration.card-section` | Optional; ordered page-specific cards |
+| `advantages` | `registration.card-section` | Optional; ordered page-specific cards |
+| `process` | `registration.card-section` | Optional; ordered process cards |
+| `whyChoose` | `registration.card-section` | Optional; ordered JR Compliance reasons |
+| `extraContent` | Repeatable `registration.extra-content-card` | Optional; editor-ordered title-and-rich-text entries rendered inside one clean reading card |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
@@ -249,11 +251,11 @@ required fixed field is complete.
 | `hero` | `registration.hero` | Required |
 | `trustedLogos` | Relation | Optional many-to-many selection of client `brand-logo` records; editor order is display order |
 | `overview` | `registration.overview` | Required |
-| `challenges` | `registration.card-section` | Required; ordered page-specific cards |
-| `advantages` | `registration.card-section` | Required; ordered page-specific cards |
-| `process` | `registration.card-section` | Required; ordered service process |
-| `whyChoose` | `registration.card-section` | Required; ordered JR Compliance reasons |
-| `extraContent` | Repeatable `registration.extra-content-card` | Optional; unlimited editor-ordered title-and-rich-text cards |
+| `challenges` | `registration.card-section` | Optional; ordered page-specific cards |
+| `advantages` | `registration.card-section` | Optional; ordered page-specific cards |
+| `process` | `registration.card-section` | Optional; ordered process cards |
+| `whyChoose` | `registration.card-section` | Optional; ordered JR Compliance reasons |
+| `extraContent` | Repeatable `registration.extra-content-card` | Optional; editor-ordered title-and-rich-text entries rendered inside one clean reading card |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
@@ -278,11 +280,11 @@ service-detail template without a new React route or local fallback.
 | `hero` | `registration.hero` | Required |
 | `trustedLogos` | Relation | Optional many-to-many selection of client `brand-logo` records; editor order is display order |
 | `overview` | `registration.overview` | Required |
-| `challenges` | `registration.card-section` | Required; ordered page-specific cards |
-| `advantages` | `registration.card-section` | Required; ordered page-specific cards |
-| `process` | `registration.card-section` | Required; ordered service process |
-| `whyChoose` | `registration.card-section` | Required; ordered JR Compliance reasons |
-| `extraContent` | Repeatable `registration.extra-content-card` | Optional; unlimited editor-ordered title-and-rich-text cards |
+| `challenges` | `registration.card-section` | Optional; ordered page-specific cards |
+| `advantages` | `registration.card-section` | Optional; ordered page-specific cards |
+| `process` | `registration.card-section` | Optional; ordered process cards |
+| `whyChoose` | `registration.card-section` | Optional; ordered JR Compliance reasons |
+| `extraContent` | Repeatable `registration.extra-content-card` | Optional; editor-ordered title-and-rich-text entries rendered inside one clean reading card |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
@@ -307,11 +309,11 @@ the same fixed service-detail template without borrowing Ayush content.
 | `hero` | `registration.hero` | Required |
 | `trustedLogos` | Relation | Optional many-to-many selection of client `brand-logo` records; editor order is display order |
 | `overview` | `registration.overview` | Required |
-| `challenges` | `registration.card-section` | Required; ordered page-specific cards |
-| `advantages` | `registration.card-section` | Required; ordered page-specific cards |
-| `process` | `registration.card-section` | Required; ordered service process |
-| `whyChoose` | `registration.card-section` | Required; ordered JR Compliance reasons |
-| `extraContent` | Repeatable `registration.extra-content-card` | Optional; unlimited editor-ordered title-and-rich-text cards |
+| `challenges` | `registration.card-section` | Optional; ordered page-specific cards |
+| `advantages` | `registration.card-section` | Optional; ordered page-specific cards |
+| `process` | `registration.card-section` | Optional; ordered process cards |
+| `whyChoose` | `registration.card-section` | Optional; ordered JR Compliance reasons |
+| `extraContent` | Repeatable `registration.extra-content-card` | Optional; editor-ordered title-and-rich-text entries rendered inside one clean reading card |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
@@ -336,11 +338,11 @@ template without borrowing Trademark Registration content.
 | `hero` | `registration.hero` | Required |
 | `trustedLogos` | Relation | Optional many-to-many selection of client `brand-logo` records; editor order is display order |
 | `overview` | `registration.overview` | Required |
-| `challenges` | `registration.card-section` | Required; ordered page-specific cards |
-| `advantages` | `registration.card-section` | Required; ordered page-specific cards |
-| `process` | `registration.card-section` | Required; ordered service process |
-| `whyChoose` | `registration.card-section` | Required; ordered fixed-slot cards (Trademark currently uses its six source pricing packages) |
-| `extraContent` | Repeatable `registration.extra-content-card` | Optional; unlimited editor-ordered title-and-rich-text cards |
+| `challenges` | `registration.card-section` | Optional; ordered page-specific cards |
+| `advantages` | `registration.card-section` | Optional; ordered page-specific cards |
+| `process` | `registration.card-section` | Optional; ordered process cards |
+| `whyChoose` | `registration.card-section` | Optional; ordered fixed-slot cards (Trademark currently uses its six source pricing packages) |
+| `extraContent` | Repeatable `registration.extra-content-card` | Optional; editor-ordered title-and-rich-text entries rendered inside one clean reading card |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
@@ -365,11 +367,11 @@ without borrowing FSSAI Basic Registration content.
 | `hero` | `registration.hero` | Required |
 | `trustedLogos` | Relation | Optional many-to-many selection of client `brand-logo` records; editor order is display order |
 | `overview` | `registration.overview` | Required |
-| `challenges` | `registration.card-section` | Required; ordered page-specific cards |
-| `advantages` | `registration.card-section` | Required; ordered page-specific cards |
-| `process` | `registration.card-section` | Required; ordered service process |
-| `whyChoose` | `registration.card-section` | Required; ordered JR Compliance reasons |
-| `extraContent` | Repeatable `registration.extra-content-card` | Optional; unlimited editor-ordered title-and-rich-text cards |
+| `challenges` | `registration.card-section` | Optional; ordered page-specific cards |
+| `advantages` | `registration.card-section` | Optional; ordered page-specific cards |
+| `process` | `registration.card-section` | Optional; ordered process cards |
+| `whyChoose` | `registration.card-section` | Optional; ordered JR Compliance reasons |
+| `extraContent` | Repeatable `registration.extra-content-card` | Optional; editor-ordered title-and-rich-text entries rendered inside one clean reading card |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
@@ -395,11 +397,11 @@ without borrowing Portfolio Manager Registration content.
 | `hero` | `registration.hero` | Required |
 | `trustedLogos` | Relation | Optional many-to-many selection of client `brand-logo` records; editor order is display order |
 | `overview` | `registration.overview` | Required |
-| `challenges` | `registration.card-section` | Required; ordered page-specific cards |
-| `advantages` | `registration.card-section` | Required; ordered page-specific cards |
-| `process` | `registration.card-section` | Required; ordered service process |
-| `whyChoose` | `registration.card-section` | Required; ordered JR Compliance reasons |
-| `extraContent` | Repeatable `registration.extra-content-card` | Optional; unlimited editor-ordered title-and-rich-text cards |
+| `challenges` | `registration.card-section` | Optional; ordered page-specific cards |
+| `advantages` | `registration.card-section` | Optional; ordered page-specific cards |
+| `process` | `registration.card-section` | Optional; ordered process cards |
+| `whyChoose` | `registration.card-section` | Optional; ordered JR Compliance reasons |
+| `extraContent` | Repeatable `registration.extra-content-card` | Optional; editor-ordered title-and-rich-text entries rendered inside one clean reading card |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
@@ -413,33 +415,34 @@ without borrowing Portfolio Manager Registration content.
 
 One published record per approved Tax and Accounting `/corporate/[slug]`
 route. The first approved record is `gst-registration`. Later complete records
-can be published only in Strapi and use the same fixed required fields and
-validation rules as `mca-service-page`, with `menuLabel` matching the Tax and
-Accounting navbar label.
+can be published only in Strapi and use the same fixed field and validation
+rules as `mca-service-page`, including the four optional card sections, with
+`menuLabel` matching the Tax and Accounting navbar label.
 
 ### `labour-compliance-page` — API: `api::labour-compliance-page.labour-compliance-page`
 
 One published record per approved Labour Compliance `/corporate/[slug]` route.
 The first approved record is `shop-and-establishment-act-registration`. Later
-complete records can be published only in Strapi and use the same fixed required
-fields and validation rules as `mca-service-page`, with `menuLabel` matching the
-Labour Compliance navbar label.
+complete records can be published only in Strapi and use the same fixed field
+and validation rules as `mca-service-page`, including the four optional card
+sections, with `menuLabel` matching the Labour Compliance navbar label.
 
 ### `fund-raising-page` — API: `api::fund-raising-page.fund-raising-page`
 
 One published record per approved Fund Raising `/corporate/[slug]` route. The
 first approved record is `msme-registration`. Later complete records can be
-published only in Strapi and use the same fixed required fields and validation
-rules as `mca-service-page`, with `menuLabel` matching the Fund Raising navbar
-label.
+published only in Strapi and use the same fixed field and validation rules as
+`mca-service-page`, including the four optional card sections, with `menuLabel`
+matching the Fund Raising navbar label.
 
 ### `bureau-indian-standards-page` — API: `api::bureau-indian-standards-page.bureau-indian-standards-page`
 
 One published record per approved Bureau of Indian Standards
 `/approval/[...slug]` path. The first approved record is `isi-certificate`.
 Later complete records can be published only in Strapi and use the same fixed
-required fields and validation rules as `mca-service-page`, with `menuLabel`
-matching the Bureau of Indian Standards navbar label. The stored `slug` may be
+field and validation rules as `mca-service-page`, including the four optional
+card sections, with `menuLabel` matching the Bureau of Indian Standards navbar
+label. The stored `slug` may be
 a flat route segment or a slash-separated nested Approval path and must be
 globally unique across all nine Approval service collections.
 
@@ -452,11 +455,11 @@ characters.
 
 One published record per approved Pollution Advisory `/approval/[...slug]`
 path. The first approved record is `epr-certification`. Later complete records
-can be published only in Strapi and use the same fixed required fields and
-validation rules as `mca-service-page`, with `menuLabel` matching the Pollution
-Advisory navbar label. The stored `slug` may be a flat route segment or a
-slash-separated nested Approval path and must be globally unique across all
-nine Approval service collections.
+can be published only in Strapi and use the same fixed field and validation
+rules as `mca-service-page`, including the four optional card sections, with
+`menuLabel` matching the Pollution Advisory navbar label. The stored `slug` may
+be a flat route segment or a slash-separated nested Approval path and must be
+globally unique across all nine Approval service collections.
 
 ### Empty CMS-only Approval collections
 
@@ -482,12 +485,12 @@ detail-page families, not records in the separate Home Service Stack
 
 All nine Approval collections use the same fixed fields as the other
 service-detail collections: required `title`, `menuLabel`, route-safe `slug`,
-`hero`, optional `trustedLogos`, `overview`, `challenges`, `advantages`,
-`process`, `whyChoose`, optional `extraContent`, optional `youtubeVideos`,
-`breakdown`, optional `resultsSection`, optional `tickerCta`, `faqs`, `finalCta`, `seo`, and
-`sortOrder`. Every CMS-only record must complete all required nested
-content before publication; the frontend returns 404 for an incomplete record
-and never copies content from another page or category.
+`hero`, and `overview`; optional `trustedLogos`, `challenges`, `advantages`,
+`process`, `whyChoose`, `extraContent`, and `youtubeVideos`; required
+`breakdown`; optional `resultsSection` and `tickerCta`; and required `faqs`,
+`finalCta`, `seo`, and `sortOrder`. Every CMS-only record must complete all
+required nested content before publication; the frontend returns 404 for an
+incomplete record and never copies content from another page or category.
 
 For each optional video item, enter a visible title and an HTTPS single-video
 URL using `youtube.com/watch`, `/shorts`, `/embed`, or `/live`, `youtu.be`, or
@@ -499,10 +502,10 @@ is omitted without invalidating the rest of the service record.
 
 1. Open the intended family collection in Strapi Content Manager.
 2. Create a record and complete `title`, `menuLabel`, every required fixed
-   content section, SEO, and `sortOrder`. Add **Trusted Logos**, **Extra
-   Content**, **YouTube Videos**, **Results Section**, **Ticker CTA**, and optional icons for
-   Challenges, Advantages, Process, Why Choose, or Breakdown only when approved
-   content is available.
+   content section, SEO, and `sortOrder`. Add **Trusted Logos**, **Challenges**,
+   **Advantages**, **Process**, **Why Choose**, **Extra Content**, **YouTube
+   Videos**, **Results Section**, **Ticker CTA**, and optional icons only when
+   approved content is available.
 3. Enter a route-safe relative `slug` with no leading slash. Manually verify
    that the full path is unique across all nine Approval collections because a
    Strapi UID is unique only within its own collection.
@@ -680,7 +683,7 @@ settings, colour pickers, Webflow IDs, or public form endpoints.
 | `contact.response` | `eyebrow` short text, `title` short text*, `steps` repeatable `contact.response-step`* |
 | `registration.text-item` | `text` Rich Text (Markdown)* |
 | `registration.detail-item` | `title` short text*, `description` Rich Text (Markdown)*, `icon` single image media; the shared picker is optional and the frontend renders it in Challenges, Advantages, Process, and Why Choose cards |
-| `registration.extra-content-card` | `title` short text*, `description` Rich Text (Markdown)*; used only by the optional `extraContent` card section |
+| `registration.extra-content-card` | `title` short text*, `description` Rich Text (Markdown)*; repeatable entries are presented as sections inside one optional, unnumbered reading card |
 | `registration.hero` | `eyebrow` short text*, `description` long text*, `cta` `shared.cta`*; page H1 comes from the parent `title` |
 | `registration.overview` | `eyebrow` short text*, `title` short text*, `paragraphs` repeatable `registration.text-item`*; each paragraph supports headings, links, lists, and text marks |
 | `registration.card-section` | `eyebrow` short text*, `title` short text*, `items` repeatable `registration.detail-item`* |
@@ -697,7 +700,16 @@ renderer preserves headings, paragraphs and line breaks, emphasis, underline,
 strikethrough, lists, quotes, links, code, tables, and images while sanitizing
 editor HTML and unsafe URL schemes before rendering. The same renderer is used
 for Overview, detail-card descriptions, Extra Content descriptions, and
-Breakdown text items.
+Breakdown text items. For Extra Content, put the article headline in the
+component's **Title** field and use the editor's **Heading 2** control (or `##`)
+for left-aligned subsection headings in **Description**; do not repeat the
+article title as the first description heading. For backwards compatibility,
+the renderer safely removes that leading heading when it exactly duplicates the
+Title field. Check-prefixed lines pasted into Extra Content are normalized to
+the section's styled checklist. For
+backwards compatibility with pasted article copy, standalone questions and
+short labels immediately introducing those checklists are rendered as section
+headings; editors should still use the Heading 2 control for new content.
 
 ### Global-route components
 

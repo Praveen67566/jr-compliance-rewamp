@@ -578,7 +578,14 @@ export type RegistrationDetail = {
   icon?: string;
 };
 
-/** One title-and-rich-description card in the optional extra-content section. */
+/** One optional fixed card section shared by Corporate and Approval pages. */
+export type RegistrationCardSection = {
+  eyebrow: string;
+  title: string;
+  items: RegistrationDetail[];
+};
+
+/** One title-and-rich-description entry in the optional Extra Content card. */
 export type RegistrationExtraContentCard = {
   title: string;
   description: RegistrationRichText;
@@ -649,27 +656,11 @@ export type CompanyRegistrationPageData = {
     title: string;
     paragraphs: RegistrationRichText[];
   };
-  challenges: {
-    eyebrow: string;
-    title: string;
-    items: RegistrationDetail[];
-  };
-  advantages: {
-    eyebrow: string;
-    title: string;
-    items: RegistrationDetail[];
-  };
-  process: {
-    eyebrow: string;
-    title: string;
-    items: RegistrationDetail[];
-  };
-  whyChoose: {
-    eyebrow: string;
-    title: string;
-    items: RegistrationDetail[];
-  };
-  /** Optional editor-ordered cards rendered immediately after Why JR. */
+  challenges?: RegistrationCardSection;
+  advantages?: RegistrationCardSection;
+  process?: RegistrationCardSection;
+  whyChoose?: RegistrationCardSection;
+  /** Optional editor-ordered entries rendered in one shared reading card. */
   extraContent?: RegistrationExtraContentCard[];
   youtubeVideos?: YouTubeVideoSection;
   breakdown: {

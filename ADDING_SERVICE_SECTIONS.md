@@ -24,11 +24,11 @@ The shared service page currently renders:
 Hero
 Trusted brands (optional)
 Overview
-Challenges
-Advantages
-Process
-Why JR
-Extra Content cards (optional)
+Challenges (optional)
+Advantages (optional)
+Process (optional)
+Why JR (optional)
+Extra Content reading card (optional)
 YouTube Videos (optional)
 Breakdown
 Results Section (optional)
@@ -73,18 +73,24 @@ section applies to the complete shared template, keep its field name, component
 type, repeatability, optionality, and relative order identical across all
 nineteen schemas.
 
-The current shared contract also supports two optional, CMS-only visual
-enhancements. `resultsSection` sits between `breakdown` and `tickerCta`, and
-uses editor-owned rating text, heading/body copy, one to three ordered
-`about.stat` metrics, and testimonial attribution. Detail items in Challenges,
-Advantages, Process, and Why Choose, plus Breakdown groups, may each select one
-optional image icon. The frontend renders each icon decoratively and stationary
-inside that section's themed circular artwork; only the surrounding ring or
-node may animate. Empty results or icon fields preserve the existing page
-exactly; they are not populated in fallback or historical seed content.
-The optional repeatable `extraContent` field sits immediately after Why JR and
-uses `registration.extra-content-card`; each card contains only a required
-title and Markdown Rich Text description. It has no fallback or seed content.
+The current shared contract also supports optional CMS-managed sections and
+visual enhancements. Challenges, Advantages, Process, and Why Choose are
+optional top-level card sections. `resultsSection` sits between `breakdown` and
+`tickerCta`, and uses editor-owned rating text, heading/body copy, one to three
+ordered `about.stat` metrics, and testimonial attribution. Detail items in the
+four optional card sections, plus Breakdown groups, may each select one optional
+image icon. The frontend renders each icon decoratively and stationary inside
+that section's themed circular artwork; only the surrounding ring or node may
+animate. Missing optional CMS sections stay omitted; approved fallback content
+still renders when Strapi is unavailable.
+
+The optional repeatable `extraContent` field sits after the last available card
+section and uses `registration.extra-content-card`. Each entry contains only a
+required title and Markdown Rich Text description; all entries render inside
+one clean, unnumbered reading card. Use the Title field for the centered article
+headline and the Markdown editor's Heading 2 control for left-aligned subsection
+headings in Description. Check-prefixed lines render as the themed checklist.
+It has no fallback or seed content.
 
 ## Implementation workflow
 
@@ -109,9 +115,10 @@ Required fields may still be used inside the optional component. This means an
 editor who adds the component must complete it, while existing published
 records remain valid.
 
-Do not change the requiredness or definition of existing fields. Preserve Draft
-& Publish settings, UID validation, collection names, routes, controllers,
-services, permissions, and sort-order rules.
+Do not change the requiredness or definition of existing fields unless the
+request explicitly calls for it. Preserve Draft & Publish settings, UID
+validation, collection names, routes, controllers, services, permissions, and
+sort-order rules.
 
 ### 2. Update the relevant Strapi schemas
 

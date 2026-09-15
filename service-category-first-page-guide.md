@@ -76,10 +76,10 @@ approved to follow that design:
 
 1. Hero
 2. Overview
-3. Challenges
-4. Advantages
-5. Process
-6. Why Choose JR Compliance
+3. Challenges (optional)
+4. Advantages (optional)
+5. Process (optional)
+6. Why Choose JR Compliance (optional)
 7. Service Breakdown
 8. FAQs
 9. Closing CTA
@@ -93,10 +93,10 @@ The dedicated Strapi collection should contain these fields:
 | `slug` | UID from `title` | Required; exact route segment |
 | `hero` | `registration.hero` | Required |
 | `overview` | `registration.overview` | Required |
-| `challenges` | `registration.card-section` | Required |
-| `advantages` | `registration.card-section` | Required |
-| `process` | `registration.card-section` | Required |
-| `whyChoose` | `registration.card-section` | Required |
+| `challenges` | `registration.card-section` | Optional |
+| `advantages` | `registration.card-section` | Optional |
+| `process` | `registration.card-section` | Optional |
+| `whyChoose` | `registration.card-section` | Optional |
 | `breakdown` | `registration.breakdown-section` | Required |
 | `faqs` | `registration.faq-section` | Required |
 | `finalCta` | `home.cta-band` | Required |

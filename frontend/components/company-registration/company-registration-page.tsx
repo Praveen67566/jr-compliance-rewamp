@@ -6,7 +6,10 @@ import { TrustedBrandsMarquee } from "@/components/home/trusted-brands-marquee";
 import { SitePageShell } from "@/components/site-page-shell";
 import { RotatingEarthBackground } from "@/components/visuals/rotating-earth-background";
 import { linkTargetProps } from "@/lib/link-props";
-import { renderRegistrationMarkdown } from "@/lib/registration-markdown";
+import {
+  renderRegistrationArticleMarkdown,
+  renderRegistrationMarkdown,
+} from "@/lib/registration-markdown";
 import type {
   CompanyRegistrationPageContent,
   FssaiServicePageContent,
@@ -44,6 +47,9 @@ type CompanyRegistrationPageProps = {
   };
   showHeroGlobe?: boolean;
 };
+
+const EXTRA_CONTENT_FONT_FAMILY =
+  'var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif';
 
 type SectionHeadingProps = {
   eyebrow: string;
@@ -146,21 +152,26 @@ function RegistrationRichTextView({
   className,
   light = false,
   variant = "default",
+  articleTitle,
 }: {
   value: RegistrationRichText;
   className: string;
   light?: boolean;
   variant?: "default" | "article";
+  articleTitle?: string;
 }) {
   const isArticle = variant === "article";
-  const spacingClassName = isArticle ? "[&>*+*]:mt-5" : "[&>*+*]:mt-4";
+  const spacingClassName = isArticle ? "[&>*+*]:mt-6" : "[&>*+*]:mt-4";
   const listClassName = isArticle
-    ? "[&_ol]:list-decimal [&_ol]:space-y-3 [&_ol]:pl-6 [&_ul]:list-none [&_ul]:space-y-3 [&_ul]:pl-0 [&_ul>li]:relative [&_ul>li]:pl-9 [&_ul>li]:before:absolute [&_ul>li]:before:left-0 [&_ul>li]:before:top-[0.28rem] [&_ul>li]:before:flex [&_ul>li]:before:size-5 [&_ul>li]:before:items-center [&_ul>li]:before:justify-center [&_ul>li]:before:rounded-full [&_ul>li]:before:border [&_ul>li]:before:border-cobalt-600/30 [&_ul>li]:before:bg-ice [&_ul>li]:before:text-[0.68rem] [&_ul>li]:before:font-extrabold [&_ul>li]:before:leading-none [&_ul>li]:before:text-cobalt-600 [&_ul>li]:before:content-['✓']"
+    ? "[&_ol]:list-decimal [&_ol]:space-y-3 [&_ol]:pl-6 [&_ul]:list-none [&_ul]:space-y-3 [&_ul]:py-1 [&_ul]:pl-0 [&_ul>li]:relative [&_ul>li]:pl-8 [&_ul>li]:before:absolute [&_ul>li]:before:left-0 [&_ul>li]:before:top-[0.22rem] [&_ul>li]:before:flex [&_ul>li]:before:size-[1.2rem] [&_ul>li]:before:items-center [&_ul>li]:before:justify-center [&_ul>li]:before:rounded-full [&_ul>li]:before:border [&_ul>li]:before:border-cobalt-600/40 [&_ul>li]:before:bg-white/70 [&_ul>li]:before:text-[0.62rem] [&_ul>li]:before:font-extrabold [&_ul>li]:before:leading-none [&_ul>li]:before:text-cobalt-600 [&_ul>li]:before:shadow-[0_2px_8px_rgba(22,140,245,0.08)] [&_ul>li]:before:content-['✓']"
     : "[&_li]:pl-1 [&_ol]:list-decimal [&_ol]:space-y-2 [&_ol]:pl-6 [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-6";
+  const headingClassName = isArticle
+    ? "[&_h1]:text-[clamp(1.45rem,2vw,1.75rem)] [&_h1]:font-medium [&_h1]:leading-[1.2] [&_h1]:tracking-[-0.02em] [&_h2]:text-[clamp(1.2rem,1.6vw,1.375rem)] [&_h2]:font-medium [&_h2]:leading-[1.3] [&_h2]:tracking-[-0.01em] [&_h3]:text-[clamp(1.1rem,1.4vw,1.25rem)] [&_h3]:font-medium [&_h3]:leading-[1.35]"
+    : "[&_h1]:font-display [&_h1]:text-[1.8rem] [&_h1]:leading-[1.05] [&_h2]:font-display [&_h2]:text-[1.55rem] [&_h2]:leading-[1.08] [&_h3]:font-display [&_h3]:text-[1.3rem] [&_h3]:leading-[1.12]";
   const articleClassName = isArticle
-    ? "[&_h2]:border-b [&_h2]:border-cobalt-700/14 [&_h2]:pb-3 [&_h3]:border-b [&_h3]:border-cobalt-700/12 [&_h3]:pb-3 [&_hr]:my-7 [&_p]:max-w-none [&_strong]:font-extrabold"
+    ? "[&>p:first-of-type]:text-[1.0625rem] [&>p:first-of-type]:leading-7 [&>p:first-of-type]:text-navy-800/78 [&_h2]:text-balance [&_h2]:border-b [&_h2]:border-cobalt-700/14 [&_h2]:pb-2.5 [&_h3]:text-balance [&_h3]:border-b [&_h3]:border-cobalt-700/12 [&_h3]:pb-2.5 [&_hr]:my-7 [&_p]:max-w-none [&_p]:text-pretty [&_strong]:font-semibold"
     : "";
-  const richTextClassName = `${className} min-w-0 ${spacingClassName} ${listClassName} ${articleClassName} [&_a]:rounded-sm [&_a]:font-bold [&_a]:underline [&_a]:decoration-sky/55 [&_a]:underline-offset-4 [&_a]:transition-colors [&_a]:focus-visible:outline-none [&_a]:focus-visible:ring-2 [&_a]:focus-visible:ring-sky [&_a]:focus-visible:ring-offset-2 [&_blockquote]:rounded-r-xl [&_blockquote]:border-l-2 [&_blockquote]:px-4 [&_blockquote]:py-2 [&_blockquote]:italic [&_code]:break-words [&_code]:rounded [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-[0.88em] [&_h1]:font-display [&_h1]:text-[1.8rem] [&_h1]:leading-[1.05] [&_h2]:font-display [&_h2]:text-[1.55rem] [&_h2]:leading-[1.08] [&_h3]:font-display [&_h3]:text-[1.3rem] [&_h3]:leading-[1.12] [&_h4]:text-[1.05rem] [&_h4]:font-extrabold [&_h5]:text-[1rem] [&_h5]:font-extrabold [&_h6]:text-[0.92rem] [&_h6]:font-extrabold [&_hr]:border-0 [&_hr]:border-t [&_img]:h-auto [&_img]:max-w-full [&_img]:rounded-xl [&_img]:border [&_img]:object-contain [&_mark]:rounded [&_mark]:bg-sky/35 [&_mark]:px-1 [&_p]:whitespace-pre-line [&_pre]:max-w-full [&_pre]:overflow-x-auto [&_pre]:rounded-xl [&_pre]:border [&_pre]:p-4 [&_pre]:text-sm [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_strong]:font-extrabold [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto [&_table]:border-collapse [&_td]:border [&_td]:p-2.5 [&_th]:border [&_th]:p-2.5 [&_th]:text-left [&_th]:font-extrabold ${
+  const richTextClassName = `${className} min-w-0 ${spacingClassName} ${listClassName} ${headingClassName} ${articleClassName} [&_a]:rounded-sm [&_a]:font-bold [&_a]:underline [&_a]:decoration-sky/55 [&_a]:underline-offset-4 [&_a]:transition-colors [&_a]:focus-visible:outline-none [&_a]:focus-visible:ring-2 [&_a]:focus-visible:ring-sky [&_a]:focus-visible:ring-offset-2 [&_blockquote]:rounded-r-xl [&_blockquote]:border-l-2 [&_blockquote]:px-4 [&_blockquote]:py-2 [&_blockquote]:italic [&_code]:break-words [&_code]:rounded [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-[0.88em] [&_h4]:text-[1.05rem] [&_h4]:font-extrabold [&_h5]:text-[1rem] [&_h5]:font-extrabold [&_h6]:text-[0.92rem] [&_h6]:font-extrabold [&_hr]:border-0 [&_hr]:border-t [&_img]:h-auto [&_img]:max-w-full [&_img]:rounded-xl [&_img]:border [&_img]:object-contain [&_mark]:rounded [&_mark]:bg-sky/35 [&_mark]:px-1 [&_p]:whitespace-pre-line [&_pre]:max-w-full [&_pre]:overflow-x-auto [&_pre]:rounded-xl [&_pre]:border [&_pre]:p-4 [&_pre]:text-sm [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_strong]:font-extrabold [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto [&_table]:border-collapse [&_td]:border [&_td]:p-2.5 [&_th]:border [&_th]:p-2.5 [&_th]:text-left [&_th]:font-extrabold ${
     light
       ? "[&_a]:text-sky [&_a:hover]:text-white [&_blockquote]:border-sky/50 [&_blockquote]:bg-white/[0.045] [&_code]:bg-navy-950/60 [&_h1]:text-white [&_h2]:text-white [&_h3]:text-white [&_h4]:text-ice [&_h5]:text-ice [&_h6]:text-ice [&_hr]:border-sky/25 [&_img]:border-sky/20 [&_pre]:border-sky/20 [&_pre]:bg-navy-950/80 [&_strong]:text-white [&_td]:border-sky/20 [&_th]:border-sky/25 [&_th]:text-white"
       : "[&_a]:text-cobalt-700 [&_a:hover]:text-cobalt-600 [&_blockquote]:border-cobalt-600/45 [&_blockquote]:bg-ice/75 [&_code]:bg-ice [&_h1]:text-navy-950 [&_h2]:text-navy-950 [&_h3]:text-navy-900 [&_h4]:text-navy-800 [&_h5]:text-navy-800 [&_h6]:text-navy-700 [&_hr]:border-cobalt-700/15 [&_img]:border-cobalt-700/15 [&_pre]:border-cobalt-700/18 [&_pre]:bg-navy-950 [&_pre]:text-ice [&_strong]:text-navy-950 [&_td]:border-cobalt-700/15 [&_th]:border-cobalt-700/20 [&_th]:text-navy-950"
@@ -170,7 +181,11 @@ function RegistrationRichTextView({
     return (
       <div
         className={richTextClassName}
-        dangerouslySetInnerHTML={{ __html: renderRegistrationMarkdown(value) }}
+        dangerouslySetInnerHTML={{
+          __html: isArticle
+            ? renderRegistrationArticleMarkdown(value, { articleTitle })
+            : renderRegistrationMarkdown(value),
+        }}
       />
     );
   }
@@ -475,7 +490,7 @@ export function CompanyRegistrationPage({
   showHeroGlobe = false,
 }: CompanyRegistrationPageProps) {
   const whyChooseGridClass =
-    content.whyChoose.items.length === 1
+    content.whyChoose?.items.length === 1
       ? "mx-auto grid w-full max-w-[860px] grid-cols-1 gap-4"
       : "grid grid-cols-1 gap-4 md:grid-cols-2";
 
@@ -661,153 +676,145 @@ export function CompanyRegistrationPage({
         </div>
       </section>
 
-      <section className="relative isolate overflow-hidden bg-navy-950 py-14 min-[560px]:py-18 min-[821px]:py-28">
-        <div
-          className="pointer-events-none absolute inset-0 -z-10 opacity-30 [background-image:linear-gradient(rgba(139,220,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(139,220,255,0.1)_1px,transparent_1px)] [background-size:52px_52px] [mask-image:linear-gradient(115deg,black,transparent_78%)]"
-          aria-hidden="true"
-        />
-        <div
-          className="pointer-events-none absolute -left-32 bottom-[-180px] -z-10 size-[460px] rounded-full border border-sky/12 shadow-[0_0_0_52px_rgba(22,140,245,0.03)]"
-          aria-hidden="true"
-        />
-        <div className="relative mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
-          <SectionHeading eyebrow={content.challenges.eyebrow} title={content.challenges.title} tone="light" compact />
-          <div className="relative grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {content.challenges.items.map((item, index) => (
-              <PlanningCard item={item} index={index} key={item.title} />
-            ))}
+      {content.challenges ? (
+        <section className="relative isolate overflow-hidden bg-navy-950 py-14 min-[560px]:py-18 min-[821px]:py-28">
+          <div
+            className="pointer-events-none absolute inset-0 -z-10 opacity-30 [background-image:linear-gradient(rgba(139,220,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(139,220,255,0.1)_1px,transparent_1px)] [background-size:52px_52px] [mask-image:linear-gradient(115deg,black,transparent_78%)]"
+            aria-hidden="true"
+          />
+          <div
+            className="pointer-events-none absolute -left-32 bottom-[-180px] -z-10 size-[460px] rounded-full border border-sky/12 shadow-[0_0_0_52px_rgba(22,140,245,0.03)]"
+            aria-hidden="true"
+          />
+          <div className="relative mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
+            <SectionHeading eyebrow={content.challenges.eyebrow} title={content.challenges.title} tone="light" compact />
+            <div className="relative grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+              {content.challenges.items.map((item, index) => (
+                <PlanningCard item={item} index={index} key={item.title} />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
 
-      <section className="relative isolate overflow-hidden bg-ice py-14 min-[560px]:py-18 min-[821px]:py-28">
-        <div
-          className="pointer-events-none absolute inset-0 -z-10 opacity-40 [background-image:linear-gradient(rgba(13,92,184,0.07)_1px,transparent_1px),linear-gradient(90deg,rgba(13,92,184,0.07)_1px,transparent_1px)] [background-size:48px_48px] [mask-image:radial-gradient(circle_at_center,black,transparent_78%)]"
-          aria-hidden="true"
-        />
-        <div
-          className="pointer-events-none absolute -right-20 top-[12%] -z-10 size-72 rounded-full bg-electric/10 blur-3xl motion-safe:animate-[service-ambient-drift_16s_ease-in-out_infinite_alternate]"
-          aria-hidden="true"
-        />
-        <div className="relative mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
-          <SectionHeading eyebrow={content.advantages.eyebrow} title={content.advantages.title} compact />
-          <div className="relative grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
-            <div
-              className="pointer-events-none absolute left-[7%] right-[7%] top-5 hidden h-px bg-[linear-gradient(90deg,transparent,rgba(22,140,245,0.28),transparent)] xl:block"
-              aria-hidden="true"
-            />
-            {content.advantages.items.map((item, index) => (
-              <AdvantageCard item={item} index={index} key={item.title} />
-            ))}
+      {content.advantages ? (
+        <section className="relative isolate overflow-hidden bg-ice py-14 min-[560px]:py-18 min-[821px]:py-28">
+          <div
+            className="pointer-events-none absolute inset-0 -z-10 opacity-40 [background-image:linear-gradient(rgba(13,92,184,0.07)_1px,transparent_1px),linear-gradient(90deg,rgba(13,92,184,0.07)_1px,transparent_1px)] [background-size:48px_48px] [mask-image:radial-gradient(circle_at_center,black,transparent_78%)]"
+            aria-hidden="true"
+          />
+          <div
+            className="pointer-events-none absolute -right-20 top-[12%] -z-10 size-72 rounded-full bg-electric/10 blur-3xl motion-safe:animate-[service-ambient-drift_16s_ease-in-out_infinite_alternate]"
+            aria-hidden="true"
+          />
+          <div className="relative mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
+            <SectionHeading eyebrow={content.advantages.eyebrow} title={content.advantages.title} compact />
+            <div className="relative grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+              <div
+                className="pointer-events-none absolute left-[7%] right-[7%] top-5 hidden h-px bg-[linear-gradient(90deg,transparent,rgba(22,140,245,0.28),transparent)] xl:block"
+                aria-hidden="true"
+              />
+              {content.advantages.items.map((item, index) => (
+                <AdvantageCard item={item} index={index} key={item.title} />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
 
-      <section className="scroll-mt-28 bg-navy-800 py-14 min-[560px]:py-18 min-[821px]:py-28" id="process">
-        <div className="mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
-          <SectionHeading eyebrow={content.process.eyebrow} title={content.process.title} tone="light" />
-          <ol className="grid grid-cols-1 gap-px overflow-hidden rounded-[26px] border border-sky/15 bg-sky/15 md:grid-cols-2 lg:grid-cols-3">
-            {content.process.items.map((item, index) => (
-              <li className="min-w-0 min-h-[230px] bg-navy-950 p-7 md:p-9" key={`${item.title}-${index}`}>
-                {item.icon ? (
-                  <div className="flex items-center gap-3">
-                    <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-full border border-sky/35 text-xs font-extrabold text-sky">
+      {content.process ? (
+        <section className="scroll-mt-28 bg-navy-800 py-14 min-[560px]:py-18 min-[821px]:py-28" id="process">
+          <div className="mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
+            <SectionHeading eyebrow={content.process.eyebrow} title={content.process.title} tone="light" />
+            <ol className="grid grid-cols-1 gap-px overflow-hidden rounded-[26px] border border-sky/15 bg-sky/15 md:grid-cols-2 lg:grid-cols-3">
+              {content.process.items.map((item, index) => (
+                <li className="min-w-0 min-h-[230px] bg-navy-950 p-7 md:p-9" key={`${item.title}-${index}`}>
+                  {item.icon ? (
+                    <div className="flex items-center gap-3">
+                      <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-full border border-sky/35 text-xs font-extrabold text-sky">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <span className="pointer-events-none relative size-10 shrink-0" aria-hidden="true">
+                        <span className="absolute inset-0 z-0 rounded-full border border-dashed border-sky/35 motion-safe:animate-[service-orbit_12s_linear_infinite]">
+                          <span className="absolute -top-0.5 left-1/2 size-1.5 -translate-x-1/2 rounded-full bg-sky shadow-[0_0_10px_rgba(139,220,255,0.72)]" />
+                        </span>
+                        <DecorativeCardIcon size="compact" src={item.icon} surface="light" />
+                      </span>
+                    </div>
+                  ) : (
+                    <span className="inline-flex size-11 items-center justify-center rounded-full border border-sky/35 text-xs font-extrabold text-sky">
                       {String(index + 1).padStart(2, "0")}
                     </span>
-                    <span className="pointer-events-none relative size-10 shrink-0" aria-hidden="true">
-                      <span className="absolute inset-0 z-0 rounded-full border border-dashed border-sky/35 motion-safe:animate-[service-orbit_12s_linear_infinite]">
-                        <span className="absolute -top-0.5 left-1/2 size-1.5 -translate-x-1/2 rounded-full bg-sky shadow-[0_0_10px_rgba(139,220,255,0.72)]" />
-                      </span>
-                      <DecorativeCardIcon size="compact" src={item.icon} surface="light" />
-                    </span>
-                  </div>
-                ) : (
-                  <span className="inline-flex size-11 items-center justify-center rounded-full border border-sky/35 text-xs font-extrabold text-sky">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                )}
-                <h3 className="mt-8 break-words font-display text-[1.75rem] leading-[1.05] text-white">{item.title}</h3>
-                <RegistrationRichTextView
-                  className="mt-4 break-words text-sm leading-7 text-ice/70"
-                  light
-                  value={item.description}
-                />
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      <section className="relative overflow-hidden bg-cobalt-700 py-14 min-[560px]:py-18 min-[821px]:py-28">
-        <div
-          className="absolute inset-0 opacity-25 [background-image:linear-gradient(rgba(139,220,255,0.18)_1px,transparent_1px),linear-gradient(90deg,rgba(139,220,255,0.18)_1px,transparent_1px)] [background-size:46px_46px]"
-          aria-hidden="true"
-        />
-        <div className="relative mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
-          <SectionHeading eyebrow={content.whyChoose.eyebrow} title={content.whyChoose.title} tone="light" />
-          <div className={whyChooseGridClass}>
-            {content.whyChoose.items.map((item, index) => (
-              <DetailCard item={item} index={index} key={item.title} light />
-            ))}
+                  )}
+                  <h3 className="mt-8 break-words font-display text-[1.75rem] leading-[1.05] text-white">{item.title}</h3>
+                  <RegistrationRichTextView
+                    className="mt-4 break-words text-sm leading-7 text-ice/70"
+                    light
+                    value={item.description}
+                  />
+                </li>
+              ))}
+            </ol>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
+
+      {content.whyChoose ? (
+        <section className="relative overflow-hidden bg-cobalt-700 py-14 min-[560px]:py-18 min-[821px]:py-28">
+          <div
+            className="absolute inset-0 opacity-25 [background-image:linear-gradient(rgba(139,220,255,0.18)_1px,transparent_1px),linear-gradient(90deg,rgba(139,220,255,0.18)_1px,transparent_1px)] [background-size:46px_46px]"
+            aria-hidden="true"
+          />
+          <div className="relative mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
+            <SectionHeading eyebrow={content.whyChoose.eyebrow} title={content.whyChoose.title} tone="light" />
+            <div className={whyChooseGridClass}>
+              {content.whyChoose.items.map((item, index) => (
+                <DetailCard item={item} index={index} key={item.title} light />
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       {content.extraContent?.length ? (
         <section
           aria-label="Additional service information"
-          className="relative isolate overflow-hidden border-y border-cobalt-700/10 bg-[linear-gradient(155deg,var(--blue-cloud),var(--blue-ice))] py-14 text-navy-950 min-[560px]:py-18 min-[821px]:py-28"
+          className="relative border-y border-cobalt-700/10 bg-cloud py-4 text-navy-950"
           id="extra-content"
         >
-          <div
-            className="pointer-events-none absolute inset-0 -z-10 opacity-45 [background-image:linear-gradient(rgba(13,92,184,0.07)_1px,transparent_1px),linear-gradient(90deg,rgba(13,92,184,0.07)_1px,transparent_1px)] [background-size:46px_46px] [mask-image:radial-gradient(circle_at_center,black,transparent_84%)]"
-            aria-hidden="true"
-          />
-          <div
-            className="pointer-events-none absolute -right-28 top-16 -z-10 size-80 rounded-full bg-electric/10 blur-3xl"
-            aria-hidden="true"
-          />
-          <div className="relative mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
-            <article className="relative min-w-0 overflow-hidden rounded-[30px] border border-cobalt-700/14 bg-cloud p-6 shadow-[0_28px_80px_rgba(3,19,47,0.1)] min-[560px]:p-8 min-[821px]:p-12">
-              <span
-                className="pointer-events-none absolute inset-x-0 top-0 h-1.5 bg-[linear-gradient(90deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))]"
-                aria-hidden="true"
-              />
-              <span
-                className="pointer-events-none absolute -right-28 -top-28 size-72 rounded-full border border-cobalt-600/10 shadow-[0_0_0_38px_rgba(22,140,245,0.03),0_0_0_82px_rgba(22,140,245,0.02)]"
-                aria-hidden="true"
-              />
-              <span
-                className="pointer-events-none absolute right-8 top-8 size-2.5 rounded-full bg-electric shadow-[0_0_16px_rgba(22,140,245,0.68)]"
-                aria-hidden="true"
-              />
-              <ol className="relative m-0 list-none divide-y divide-cobalt-700/12 p-0">
+          <div className="mx-auto w-full max-w-[1760px] px-[18px]">
+            <article
+              className="mx-auto min-w-0 max-w-[1680px] border-x border-cobalt-700/10 bg-white/30 px-5 antialiased min-[560px]:px-7 min-[821px]:px-8"
+              style={{
+                fontFamily: EXTRA_CONTENT_FONT_FAMILY,
+                fontKerning: "normal",
+                fontOpticalSizing: "auto",
+              }}
+            >
+              <div className="relative divide-y divide-cobalt-700/12">
                 {content.extraContent.map((item, index) => (
-                  <li
-                    className="min-w-0 py-8 first:pt-0 last:pb-0 min-[821px]:py-10"
+                  <section
+                    className="min-w-0 py-10 first:pt-0 last:pb-0 min-[821px]:py-12"
                     key={`${item.title}-${index}`}
                   >
-                    <div className="grid min-w-0 gap-5 min-[821px]:grid-cols-[3.5rem_minmax(0,1fr)] min-[821px]:gap-7">
+                    <header className="mx-auto max-w-[1120px] text-center">
+                      <h2 className="mb-0 text-balance break-words text-[clamp(1.5rem,2.2vw,2rem)] font-medium leading-[1.2] tracking-[-0.02em] text-navy-950">
+                        {item.title}
+                      </h2>
                       <span
-                        className="flex size-11 shrink-0 items-center justify-center rounded-full border border-cobalt-600/24 bg-ice text-[0.66rem] font-extrabold tracking-[0.12em] text-cobalt-700 shadow-[0_8px_22px_rgba(13,92,184,0.1)]"
+                        className="mx-auto mt-3 block h-0.5 w-16 rounded-full bg-electric"
                         aria-hidden="true"
-                      >
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                      <div className="min-w-0">
-                        <h2 className="mb-0 border-b border-cobalt-700/14 pb-4 break-words font-sans text-[clamp(1.65rem,2.8vw,2.35rem)] font-extrabold leading-tight tracking-normal text-navy-950">
-                          {item.title}
-                        </h2>
-                        <RegistrationRichTextView
-                          className="mt-6 max-w-none break-words text-base leading-8 text-navy-700/78 md:text-[1.04rem]"
-                          value={item.description}
-                          variant="article"
-                        />
-                      </div>
-                    </div>
-                  </li>
+                      />
+                    </header>
+                    <RegistrationRichTextView
+                      articleTitle={item.title}
+                      className="mx-auto mt-6 max-w-[1400px] break-words text-base font-normal leading-[26px] tracking-[0px] text-[#475569] selection:bg-sky/45 selection:text-navy-950"
+                      value={item.description}
+                      variant="article"
+                    />
+                  </section>
                 ))}
-              </ol>
+              </div>
             </article>
           </div>
         </section>

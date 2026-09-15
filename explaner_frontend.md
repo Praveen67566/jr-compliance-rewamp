@@ -310,14 +310,15 @@ The main flow is:
 `frontend/components/company-registration/company-registration-page.tsx`
 : One fixed Tailwind-first service template for every Company Registration
   route and every fixed category detail route. It renders the bluefield hero,
-  optional trusted-brand rail, overview, challenges, advantages, process, Why
-  JR, optional Extra Content cards, an optional YouTube video grid, service
-  breakdown, an optional results proof panel, an optional ticker CTA,
+  optional trusted-brand rail, overview, optional Challenges, Advantages,
+  Process, and Why JR sections, optional Extra Content, an optional YouTube
+  video grid, service breakdown, an optional results proof panel, an optional ticker CTA,
   native-details FAQ, and shared closing
   CTA without page-specific CSS or legacy markup. The trusted-brand rail reuses
-  the homepage design and renders immediately after the hero. Extra Content is
-  an unlimited responsive title-and-rich-text card grid immediately after Why
-  JR; YouTube videos follow it in a one-column/two-column navy grid. Each visible
+  the homepage design and renders immediately after the hero. Repeatable Extra
+  Content entries share one clean, unnumbered ice reading card with centered
+  underlined sans headings and reference-style rich prose; YouTube videos follow
+  it in a one-column/two-column navy grid. Each visible
   title labels a lazy 16:9 `youtube-nocookie.com` iframe with no autoplay,
   `allowFullScreen`, and `strict-origin-when-cross-origin` referrer policy. The
   results panel renders immediately after Breakdown and uses a responsive
@@ -444,10 +445,12 @@ they render no local or placeholder content.
 
 The existing fallback files keep their implemented routes working when Strapi
 is offline. They also document the expected content shape for
-editors/developers. Optional service-page trusted logos, Extra Content, YouTube
-videos, results content, ticker content, detail-item icons, and Breakdown
-group icons are not added to fallback or seed mirrors; existing pages remain
-unchanged until editors populate and publish those CMS fields.
+editors/developers. Their approved Challenges, Advantages, Process, and Why
+Choose data remains intact even though those fields are optional for published
+CMS records. Optional service-page trusted logos, Extra Content, YouTube videos,
+results content, ticker content, detail-item icons, and Breakdown group icons
+are not added to fallback or seed mirrors; existing pages remain unchanged
+until editors populate and publish those CMS fields.
 
 ## Library files
 
@@ -461,8 +464,9 @@ unchanged until editors populate and publish those CMS fields.
   Indian Standards, Pollution Advisory, Telecommunication Engineering Centre,
   Wireless Planning and Coordination, Bureau of Energy Efficiency, CDSCO
   Registration, AERB Approval, LMPC Certification, and STQC service-detail
-  models, including optional trusted logos, the service-page YouTube video
-  section, optional Extra Content cards, optional results proof, optional
+  models, including optional trusted logos; optional Challenges, Advantages,
+  Process, and Why Choose sections; the service-page YouTube video section;
+  optional Extra Content entries; optional results proof; optional
   detail-item and Breakdown group icon URLs, and ticker CTA. It also defines the
   separate
   `GlobalCountryPageData` /
@@ -475,8 +479,8 @@ unchanged until editors populate and publish those CMS fields.
   fetches published single types or exact-slug entries from all nineteen fixed
   service-detail collections, converts media URLs, and safely falls back when
   known local fallback data is available. It omits missing or malformed
-  optional trusted-logo, Extra Content, service-video, results, icon, and ticker
-  fields,
+  optional card sections, trusted-logo, Extra Content, service-video, results,
+  icon, and ticker fields,
   explicitly populates their nested media/components, and normalizes accepted
   HTTPS single-video YouTube URLs to `youtube-nocookie.com` embed URLs. The
   separate legal-page query allows
@@ -496,6 +500,9 @@ unchanged until editors populate and publish those CMS fields.
   It allow-lists links and images, rejects unsafe URL schemes, and adds safe
   external-link and lazy-image attributes before rendering. Relative Strapi
   Media Library `/uploads/` URLs resolve against the server-only `STRAPI_URL`.
+  Its Extra Content article path also converts pasted check-prefixed lines into
+  semantic unordered lists and preserves the common pasted-article hierarchy by
+  promoting standalone questions and short labels that introduce those lists.
 
 `frontend/lib/content.ts`
 : Small route-facing content loader. Exposes functions used by pages to get
@@ -555,9 +562,9 @@ cached Global country and certificate loaders as `getGlobalCountryPage`,
 
 `frontend/tests/service-detail-content.test.ts`
 : Preserves the existing service fallback/seed parity checks and verifies that
-  all nineteen schemas expose the optional trusted-logo relation, Extra Content,
-  and the other optional top-level components in the fixed order, including the
-  bounded results contract, optional icon media across the five intended card
+  all nineteen schemas expose the four optional card sections, trusted-logo
+  relation, Extra Content, and the other optional top-level components in the
+  fixed order, including the bounded results contract, optional icon media across the five intended card
   sections, explicit population, safe mapper behavior, semantic results markup,
   shared marquee reuse, and accessible lazy iframe attributes.
 

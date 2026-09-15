@@ -137,11 +137,17 @@ responsive legal template; they are not a generic page builder.
   optional editor-ordered trusted-logo relation immediately after the hero.
   Populated records reuse the homepage marquee design and motion; no fallback,
   seed mirror, or database backfill is added for the optional field.
-- Those collections also expose optional, unlimited Extra Content cards
-  immediately after Why JR. Each card contains only a required title and
-  Markdown-rich description; the shared sanitized renderer preserves the
-  formatting entered in Strapi across service card, Overview, and Breakdown
-  rich-text fields. Existing records remain unchanged until editors add cards.
+- Challenges, Advantages, Process, and Why Choose are also optional across all
+  nineteen collections. A published CMS record may omit any of them without
+  becoming invalid or borrowing that section from a local fallback; local
+  fallback records retain their approved content when Strapi is unavailable.
+- Those collections also expose optional, repeatable Extra Content entries
+  immediately after the last available card section. The entries render inside
+  one clean, unnumbered ice reading card with centered underlined titles and
+  reference-style long-form typography. Each entry contains only a required
+  title and Markdown-rich description; the shared sanitized renderer preserves
+  the formatting entered in Strapi across service cards, Overview, Extra
+  Content, and Breakdown rich-text fields.
 - Those same fixed collections expose an optional results panel between the
   breakdown and ticker CTA. Its rating copy, one to three ordered metrics, and
   testimonial attribution are CMS managed. Detail items in Challenges,
@@ -321,13 +327,14 @@ to `/#services` until validated detail pages are migrated.
 3. `frontend/lib/strapi.ts` explicitly populates only the nested relations and
    media each route requires. Legal pages explicitly populate `sections` and
    `seo.shareImage`. Do not replace this with `populate=deep`.
-4. The adapter maps the documented Strapi v5 fields to typed page contracts; it
-   keeps fallback values for any unpublished or incomplete field so editors
-   cannot blank the live site accidentally. Later CMS-only records in the
-   eighteen extensible service categories are strictly validated and return a 404
-   when a required fixed field is missing, so they never borrow their
-   category’s first-page copy. Global records have no fallback at all and must
-   pass their own complete country or certificate contract before rendering.
+4. The adapter maps the documented Strapi v5 fields to typed page contracts. It
+   keeps fallback values for required fields so editors cannot blank the live
+   site accidentally, while intentionally absent optional service sections stay
+   omitted. Later CMS-only records in the eighteen extensible service categories
+   are strictly validated and return a 404 when a required fixed field is
+   missing, so they never borrow their category’s first-page copy. Global
+   records have no fallback at all and must pass their own complete country or
+   certificate contract before rendering.
 5. Strapi media URLs are converted to absolute CMS URLs. The current frontend
    uses standard image elements so local and CDN media both work without an
    image-domain configuration change.

@@ -57,6 +57,7 @@ import type {
   Recognition,
   RegulatoryExpertiseItem,
   RegistrationBreakdownGroup,
+  RegistrationCardSection,
   RegistrationDetail,
   RegistrationExtraContentCard,
   RegistrationResultStat,
@@ -1580,38 +1581,13 @@ function mapContactPage(
   };
 }
 
-type RegistrationCardSection = CompanyRegistrationPageContent["challenges"];
-
-function mapRegistrationDetails(
-  value: unknown,
-  fallback: RegistrationDetail[],
-): RegistrationDetail[] {
-  const items = orderedEntries(value)
-    .map((entry) => {
-      const item = record(entry);
-      const title = text(item.title);
-      const description = registrationRichText(item.description);
-      const icon = mediaUrl(item.icon);
-      return title && description
-        ? { title, description, ...(icon ? { icon } : {}) }
-        : null;
-    })
-    .filter((item): item is RegistrationDetail => Boolean(item));
-
-  return items.length ? items : fallback;
-}
-
-function mapRegistrationCardSection(
-  value: unknown,
-  fallback: RegistrationCardSection,
-): RegistrationCardSection {
+function mapRegistrationCardSection(value: unknown): RegistrationCardSection | undefined {
   const section = record(value);
+  const eyebrow = text(section.eyebrow);
+  const title = text(section.title);
+  const items = strictRegistrationDetails(section.items);
 
-  return {
-    eyebrow: text(section.eyebrow) ?? fallback.eyebrow,
-    title: text(section.title) ?? fallback.title,
-    items: mapRegistrationDetails(section.items, fallback.items),
-  };
+  return eyebrow && title && items ? { eyebrow, title, items } : undefined;
 }
 
 function mapRegistrationExtraContent(
@@ -1794,7 +1770,7 @@ function strictRegistrationDetails(value: unknown): RegistrationDetail[] | null 
 
 function strictFixedServiceCardSection(
   value: unknown,
-): CompanyRegistrationPageContent["challenges"] | null {
+): RegistrationCardSection | null {
   const section = record(value);
   const eyebrow = text(section.eyebrow);
   const title = text(section.title);
@@ -2319,10 +2295,6 @@ function mapCmsOnlyFixedServiceDetailPage<T extends CompanyRegistrationPageConte
     !overviewEyebrow ||
     !overviewTitle ||
     !overviewParagraphs ||
-    !challenges ||
-    !advantages ||
-    !process ||
-    !whyChoose ||
     !breakdown ||
     !faqs ||
     !closingTitle ||
@@ -2349,10 +2321,10 @@ function mapCmsOnlyFixedServiceDetailPage<T extends CompanyRegistrationPageConte
       title: overviewTitle,
       paragraphs: overviewParagraphs,
     },
-    challenges,
-    advantages,
-    process,
-    whyChoose,
+    ...(challenges ? { challenges } : {}),
+    ...(advantages ? { advantages } : {}),
+    ...(process ? { process } : {}),
+    ...(whyChoose ? { whyChoose } : {}),
     ...(extraContent ? { extraContent } : {}),
     ...(youtubeVideos ? { youtubeVideos } : {}),
     breakdown,
@@ -2378,12 +2350,20 @@ function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
   const overview = record(page.overview);
   const finalCta = record(page.finalCta);
   const trustedLogos = mapLogos(page.trustedLogos, []);
+  const challenges = mapRegistrationCardSection(page.challenges);
+  const advantages = mapRegistrationCardSection(page.advantages);
+  const process = mapRegistrationCardSection(page.process);
+  const whyChoose = mapRegistrationCardSection(page.whyChoose);
   const extraContent = mapRegistrationExtraContent(page.extraContent);
   const youtubeVideos = mapFixedServiceYouTubeVideos(page.youtubeVideos);
   const resultsSection = mapFixedServiceResultsSection(page.resultsSection);
   const tickerCta = mapFixedServiceTickerCta(page.tickerCta);
   const {
     trustedLogos: _fallbackTrustedLogos,
+    challenges: _fallbackChallenges,
+    advantages: _fallbackAdvantages,
+    process: _fallbackProcess,
+    whyChoose: _fallbackWhyChoose,
     extraContent: _fallbackExtraContent,
     youtubeVideos: _fallbackYoutubeVideos,
     resultsSection: _fallbackResultsSection,
@@ -2409,10 +2389,10 @@ function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
       title: text(overview.title) ?? fallback.overview.title,
       paragraphs: mapRegistrationRichTextList(overview.paragraphs, fallback.overview.paragraphs),
     },
-    challenges: mapRegistrationCardSection(page.challenges, fallback.challenges),
-    advantages: mapRegistrationCardSection(page.advantages, fallback.advantages),
-    process: mapRegistrationCardSection(page.process, fallback.process),
-    whyChoose: mapRegistrationCardSection(page.whyChoose, fallback.whyChoose),
+    ...(challenges ? { challenges } : {}),
+    ...(advantages ? { advantages } : {}),
+    ...(process ? { process } : {}),
+    ...(whyChoose ? { whyChoose } : {}),
     ...(extraContent ? { extraContent } : {}),
     ...(youtubeVideos ? { youtubeVideos } : {}),
     breakdown: mapRegistrationBreakdown(page.breakdown, fallback.breakdown),
