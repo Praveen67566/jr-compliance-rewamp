@@ -385,7 +385,10 @@ describe("service-detail content mirrors", () => {
     );
     assert.match(extraContentSection, /max-w-\[1400px\]/);
     assert.match(extraContentSection, /articleTitle=\{item\.title\}/);
-    assert.doesNotMatch(extraContentSection, /inset-x-0 top-0 h-1/);
+    assert.match(extraContentSection, /rounded-\[24px\]/);
+    assert.match(extraContentSection, /pb-10.*min-\[821px\]:pb-12/);
+    assert.match(extraContentSection, /inset-x-0 top-0 h-1/);
+    assert.match(extraContentSection, /blue-cobalt-700.*blue-electric.*blue-sky/);
     assert.doesNotMatch(extraContentSection, /rounded-\[18px\]|shadow-\[/);
     assert.match(
       extraContentSection,

@@ -779,22 +779,26 @@ export function CompanyRegistrationPage({
       {content.extraContent?.length ? (
         <section
           aria-label="Additional service information"
-          className="relative border-y border-cobalt-700/10 bg-cloud py-4 text-navy-950"
+          className="relative border-y border-cobalt-700/10 bg-[linear-gradient(180deg,var(--blue-ice)_0,var(--blue-cloud)_8rem)] pb-10 pt-10 text-navy-950 min-[821px]:pb-12"
           id="extra-content"
         >
           <div className="mx-auto w-full max-w-[1760px] px-[18px]">
             <article
-              className="mx-auto min-w-0 max-w-[1680px] border-x border-cobalt-700/10 bg-white/30 px-5 antialiased min-[560px]:px-7 min-[821px]:px-8"
+              className="relative mx-auto min-w-0 max-w-[1680px] overflow-hidden rounded-[24px] border border-cobalt-700/12 bg-cloud px-5 antialiased min-[560px]:px-7 min-[821px]:px-8"
               style={{
                 fontFamily: EXTRA_CONTENT_FONT_FAMILY,
                 fontKerning: "normal",
                 fontOpticalSizing: "auto",
               }}
             >
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-[linear-gradient(90deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))]"
+              />
               <div className="relative divide-y divide-cobalt-700/12">
                 {content.extraContent.map((item, index) => (
                   <section
-                    className="min-w-0 py-10 first:pt-0 last:pb-0 min-[821px]:py-12"
+                    className="min-w-0 py-10 min-[821px]:py-12"
                     key={`${item.title}-${index}`}
                   >
                     <header className="mx-auto max-w-[1120px] text-center">
