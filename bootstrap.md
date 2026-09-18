@@ -130,6 +130,6 @@ Approval collections:
 - `lmpc-certification-page`
 - `stqc-page`
 
-Only Ui Changes
+Changes in all collection pages :-
 
-1. the faq section in all above collection pages if there is more that 5 faq then show like this if more than 10 then a load mre question so perfect the ui of faq section.
+1. need to add a section just after extra content section same as image provided named as written by ui same as the reference image given.

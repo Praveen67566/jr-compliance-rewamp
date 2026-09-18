@@ -82,6 +82,11 @@
       "component": "registration.extra-content-sidebar-links",
       "repeatable": false
     },
+    "writtenBy": {
+      "type": "component",
+      "component": "registration.written-by",
+      "repeatable": false
+    },
     "youtubeVideos": {
       "type": "component",
       "component": "registration.youtube-video-section",

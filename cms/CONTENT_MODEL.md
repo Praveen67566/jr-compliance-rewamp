@@ -30,7 +30,7 @@ typed frontend fallback data and a historical CMS JSON source, and do not widen
 the model into a generic page builder.
 
 The committed schema contains five single types, thirty-seven collection types,
-and sixty-three components: forty-two content types in total. Nineteen of the
+and sixty-four components: forty-two content types in total. Nineteen of the
 collections use the fixed service-detail contract; that count does not include
 the legal collection or the two Global collections.
 
@@ -199,15 +199,15 @@ customized or partially migrated legal-link list is preserved.
 One published record per approved `/corporate/[slug]` route. This is a fixed
 service-detail contract, not a generic page builder.
 
-Across all nineteen fixed service-detail collections, twelve top-level fields are
+Across all nineteen fixed service-detail collections, thirteen top-level fields are
 optional. `challenges`, `advantages`, `process`, and `whyChoose` render only
 when an editor supplies their complete card section. `trustedLogos` renders
 immediately after `hero`, `extraContent` renders after `whyChoose` when present
 (otherwise after the preceding available section). Its adjacent
 `extraContentSidebarHeader`, `extraContentSidebarGuides`, and
 `extraContentSidebarServices` fields form one sticky desktop rail beside the
-article. `youtubeVideos` renders immediately after the complete Extra Content
-area, `resultsSection` renders after `breakdown`, and `tickerCta` renders after
+article. `writtenBy` renders immediately after the complete Extra Content area,
+followed by `youtubeVideos`; `resultsSection` renders after `breakdown`, and `tickerCta` renders after
 the results section and immediately before `faqs`. Detail items in the four
 optional card sections, plus Breakdown groups, also accept optional image icons
 rendered as decorative artwork inside their
@@ -231,6 +231,7 @@ card sections without borrowing fallback copy.
 | `extraContentSidebarHeader` | `registration.extra-content-sidebar-header` | Optional; expert label, up to three displayed avatars, and CTA above the sticky rail |
 | `extraContentSidebarGuides` | `registration.extra-content-sidebar-links` | Optional; heading and ordered Related Guides links |
 | `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
+| `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, and biography |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
@@ -265,6 +266,7 @@ required fixed field is complete.
 | `extraContentSidebarHeader` | `registration.extra-content-sidebar-header` | Optional; expert label, up to three displayed avatars, and CTA above the sticky rail |
 | `extraContentSidebarGuides` | `registration.extra-content-sidebar-links` | Optional; heading and ordered Related Guides links |
 | `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
+| `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, and biography |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
@@ -297,6 +299,7 @@ service-detail template without a new React route or local fallback.
 | `extraContentSidebarHeader` | `registration.extra-content-sidebar-header` | Optional; expert label, up to three displayed avatars, and CTA above the sticky rail |
 | `extraContentSidebarGuides` | `registration.extra-content-sidebar-links` | Optional; heading and ordered Related Guides links |
 | `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
+| `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, and biography |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
@@ -329,6 +332,7 @@ the same fixed service-detail template without borrowing Ayush content.
 | `extraContentSidebarHeader` | `registration.extra-content-sidebar-header` | Optional; expert label, up to three displayed avatars, and CTA above the sticky rail |
 | `extraContentSidebarGuides` | `registration.extra-content-sidebar-links` | Optional; heading and ordered Related Guides links |
 | `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
+| `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, and biography |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
@@ -361,6 +365,7 @@ template without borrowing Trademark Registration content.
 | `extraContentSidebarHeader` | `registration.extra-content-sidebar-header` | Optional; expert label, up to three displayed avatars, and CTA above the sticky rail |
 | `extraContentSidebarGuides` | `registration.extra-content-sidebar-links` | Optional; heading and ordered Related Guides links |
 | `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
+| `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, and biography |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
@@ -393,6 +398,7 @@ without borrowing FSSAI Basic Registration content.
 | `extraContentSidebarHeader` | `registration.extra-content-sidebar-header` | Optional; expert label, up to three displayed avatars, and CTA above the sticky rail |
 | `extraContentSidebarGuides` | `registration.extra-content-sidebar-links` | Optional; heading and ordered Related Guides links |
 | `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
+| `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, and biography |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
@@ -426,6 +432,7 @@ without borrowing Portfolio Manager Registration content.
 | `extraContentSidebarHeader` | `registration.extra-content-sidebar-header` | Optional; expert label, up to three displayed avatars, and CTA above the sticky rail |
 | `extraContentSidebarGuides` | `registration.extra-content-sidebar-links` | Optional; heading and ordered Related Guides links |
 | `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
+| `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, and biography |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
@@ -511,7 +518,7 @@ All nine Approval collections use the same fixed fields as the other
 service-detail collections: required `title`, `menuLabel`, route-safe `slug`,
 `hero`, and `overview`; optional `trustedLogos`, `challenges`, `advantages`,
 `process`, `whyChoose`, `extraContent`, `extraContentSidebarHeader`,
-`extraContentSidebarGuides`, `extraContentSidebarServices`, and
+`extraContentSidebarGuides`, `extraContentSidebarServices`, `writtenBy`, and
 `youtubeVideos`; required `breakdown`; optional `resultsSection` and
 `tickerCta`; and required `faqs`, `finalCta`, `seo`, and `sortOrder`. Every
 CMS-only record must complete all
@@ -530,7 +537,7 @@ is omitted without invalidating the rest of the service record.
 2. Create a record and complete `title`, `menuLabel`, every required fixed
    content section, SEO, and `sortOrder`. Add **Trusted Logos**, **Challenges**,
    **Advantages**, **Process**, **Why Choose**, **Extra Content**, its three
-   **Extra Content Sidebar** fields, **YouTube Videos**, **Results Section**,
+   **Extra Content Sidebar** fields, **Written By**, **YouTube Videos**, **Results Section**,
    **Ticker CTA**, and optional icons only when approved content is available.
 3. Enter a route-safe relative `slug` with no leading slash. Manually verify
    that the full path is unique across all nine Approval collections because a
@@ -712,6 +719,7 @@ settings, colour pickers, Webflow IDs, or public form endpoints.
 | `registration.extra-content-card` | `title` short text*, `description` Rich Text (Markdown)*; repeatable entries are presented as sections inside one optional, unnumbered reading card |
 | `registration.extra-content-sidebar-header` | `label` short text*, `avatars` multiple image media, `cta` `shared.cta`*; the frontend displays at most the first three avatars |
 | `registration.extra-content-sidebar-links` | `title` short text*, `links` repeatable `shared.link`* (minimum 1); reused by the fixed Related Guides and related-services fields |
+| `registration.written-by` | `label` short text* (default “Written By”), `name` short text*, `role` short text*, `avatar` single image media*, `experience` short text*, `biography` long text*, `verified` boolean* (default true) |
 | `registration.hero` | `eyebrow` short text*, `description` long text*, `cta` `shared.cta`*; page H1 comes from the parent `title` |
 | `registration.overview` | `eyebrow` short text*, `title` short text*, `paragraphs` repeatable `registration.text-item`*; each paragraph supports headings, links, lists, and text marks |
 | `registration.card-section` | `eyebrow` short text*, `title` short text*, `items` repeatable `registration.detail-item`* |
@@ -805,7 +813,7 @@ invent claims or silently repair source inconsistencies.
 | `/approval/isi-certificate` (Bureau of Indian Standards) | `site/approval/isi-certificate.html` | Page-specific ISI Certification SEO, hero and overview, four challenges, four advantages, six service steps, four Why JR cards, Eligibility/Documents/Who Needs It breakdown, five FAQs, and shared final CTA. Exclude duplicated template sections, hidden placeholders, unrelated testimonials/resources, Webflow forms, and all legacy UI/transport code. |
 | `/approval/epr-certification` (Pollution Advisory) | `site/approval/epr-certification.html` | Page-specific EPR SEO, hero and overview, five service-scope items, four benefits, four service steps, three Why JR cards, Documents Required breakdown, five FAQs, and shared final CTA. Exclude duplicated template sections, hidden placeholders, unrelated testimonials/resources, Webflow forms, and all legacy UI/transport code. |
 
-The optional service-page trusted-logo, extra-content, YouTube, results, ticker,
+The optional service-page trusted-logo, extra-content, Written By, YouTube, results, ticker,
 detail-item icon, and Breakdown group icon fields are not sourced from these legacy pages
 and are not added to frontend fallbacks or historical seed JSON. Deploying the
 schema performs no record backfill; editors populate the fields selectively

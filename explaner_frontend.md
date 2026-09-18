@@ -311,8 +311,8 @@ The main flow is:
 : One fixed Tailwind-first service template for every Company Registration
   route and every fixed category detail route. It renders the bluefield hero,
   optional trusted-brand rail, overview, optional Challenges, Advantages,
-  Process, and Why JR sections, optional Extra Content, an optional YouTube
-  video grid, service breakdown, an optional results proof panel, an optional ticker CTA,
+  Process, and Why JR sections, optional Extra Content, an optional Written By
+  attribution card, an optional YouTube video grid, service breakdown, an optional results proof panel, an optional ticker CTA,
   native-details FAQ, and shared closing
   CTA without page-specific CSS or legacy markup. The trusted-brand rail reuses
   the homepage design and renders immediately after the hero. Repeatable Extra
@@ -320,7 +320,8 @@ The main flow is:
   underlined sans headings and reference-style rich prose. When configured, an
   expert CTA header, Related Guides card, and collapsible related-services card
   form a sticky desktop sidebar beside the article and stack below it on smaller
-  screens; YouTube videos follow the complete Extra Content area in a
+  screens. The content-managed Written By card follows Extra Content and
+  precedes YouTube videos, which render in a
   one-column/two-column navy grid. Each visible
   title labels a lazy 16:9 `youtube-nocookie.com` iframe with no autoplay,
   `allowFullScreen`, and `strict-origin-when-cross-origin` referrer policy. The
@@ -458,7 +459,7 @@ is offline. They also document the expected content shape for
 editors/developers. Their approved Challenges, Advantages, Process, and Why
 Choose data remains intact even though those fields are optional for published
 CMS records. Optional service-page trusted logos, Extra Content and its three
-sidebar fields, YouTube videos, results content, ticker content, detail-item
+sidebar fields, Written By attribution, YouTube videos, results content, ticker content, detail-item
 icons, and Breakdown group icons are not added to fallback or seed mirrors;
 existing pages remain unchanged until editors populate and publish those CMS
 fields.
@@ -478,6 +479,7 @@ fields.
   models, including optional trusted logos; optional Challenges, Advantages,
   Process, and Why Choose sections; the service-page YouTube video section;
   optional Extra Content entries and its expert-header/guide/service sidebar;
+  optional Written By attribution;
   optional results proof; optional
   detail-item and Breakdown group icon URLs, and ticker CTA. It also defines the
   separate
@@ -491,7 +493,7 @@ fields.
   fetches published single types or exact-slug entries from all nineteen fixed
   service-detail collections, converts media URLs, and safely falls back when
   known local fallback data is available. It omits missing or malformed
-  optional card sections, trusted-logo, Extra Content, sidebar, service-video,
+  optional card sections, trusted-logo, Extra Content, sidebar, Written By, service-video,
   results, icon, and ticker fields,
   explicitly populates their nested media/components, and normalizes accepted
   HTTPS single-video YouTube URLs to `youtube-nocookie.com` embed URLs. The
@@ -575,7 +577,7 @@ cached Global country and certificate loaders as `getGlobalCountryPage`,
 `frontend/tests/service-detail-content.test.ts`
 : Preserves the existing service fallback/seed parity checks and verifies that
   all nineteen schemas expose the four optional card sections, trusted-logo
-  relation, Extra Content and its three sidebar fields, and the other optional
+  relation, Extra Content and its three sidebar fields, Written By, and the other optional
   top-level components in the fixed order, including the bounded results
   contract, optional icon media across the five intended card
   sections, explicit population, safe mapper behavior, semantic results markup,

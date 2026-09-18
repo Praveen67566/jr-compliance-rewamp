@@ -604,6 +604,17 @@ export type RegistrationExtraContentSidebarLinks = {
   links: Link[];
 };
 
+/** Optional author attribution displayed after Extra Content. */
+export type RegistrationWrittenBy = {
+  label: string;
+  name: string;
+  role: string;
+  avatar: string;
+  experience: string;
+  biography: string;
+  verified: boolean;
+};
+
 /** One named group in the service breakdown (for example, Documents). */
 export type RegistrationBreakdownGroup = {
   title: string;
@@ -678,6 +689,7 @@ export type CompanyRegistrationPageData = {
   extraContentSidebarHeader?: RegistrationExtraContentSidebarHeader;
   extraContentSidebarGuides?: RegistrationExtraContentSidebarLinks;
   extraContentSidebarServices?: RegistrationExtraContentSidebarLinks;
+  writtenBy?: RegistrationWrittenBy;
   youtubeVideos?: YouTubeVideoSection;
   breakdown: {
     eyebrow: string;

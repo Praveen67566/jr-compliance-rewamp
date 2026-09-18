@@ -145,11 +145,12 @@ those shared components before adding route-specific CSS.
   content sequence: bluefield hero, optional trusted-brands marquee, ice
   overview, optional dark challenges, optional ice advantages, optional
   numbered process, optional cobalt Why JR field, optional ice Extra Content
-  reading card with an optional sticky reference sidebar, optional navy YouTube
-  video grid, ice breakdown, optional navy/cobalt results proof panel, optional
-  ticker CTA, FAQ, and the shared closing CTA/footer. The trusted-brands marquee
-  renders immediately after the hero, Extra Content renders after the last
-  available card section, the video grid follows Extra Content when present,
+  reading card with an optional sticky reference sidebar, optional Written By
+  attribution card, optional navy YouTube video grid, ice breakdown, optional
+  navy/cobalt results proof panel, optional ticker CTA, FAQ, and the shared
+  closing CTA/footer. The trusted-brands marquee renders immediately after the
+  hero, Extra Content renders after the last available card section, Written By
+  follows Extra Content, and the video grid follows Written By when present,
   the results panel renders immediately after Breakdown, and the ticker renders
   immediately before FAQ.
 - Use Tailwind utilities for the complete detail-page composition. The network
@@ -171,6 +172,7 @@ those shared components before adding route-specific CSS.
 | Service Stack | Canonical reference: navy grid, cobalt cards, orbit icons, route line, status dots, and electric tab control. |
 | Ticker | Cobalt/electric-blue system alert with cool-white text and sky separators; never a warm accent. |
 | Extra Content | Optional cool-white reading surface with a restrained, unnumbered editorial frame, subtle border, and low-contrast elevation. Center each entry title in the self-hosted Inter/system stack with a short electric-blue underline; render rich prose and lists at `15px` with `1.75` line height, zero tracking, and `#475569`; constrain no-sidebar pages to the shared `1320px` shell, keep prose left aligned, and use compact nested headings. Rich-text tables must retain native full-width table layout so columns cover the complete frame; use a rounded frame, electric-blue top rule, structured ice header, alternating cool rows, clean single-width column dividers, and an electric full-row hover marker. Preserve a clear block gap after every table. Use compact check-style unordered lists. When configured, place the editor-managed expert header, Related Guides, and related-services cards in one sticky desktop sidebar; stack it below the article under `1100px`, preserve keyboard focus, and constrain the long services list with its own vertical scroll. Suppress a leading rich-text heading only when it exactly duplicates the entry Title. |
+| Written By | Optional full-width cool-white attribution card after Extra Content. Use a cobalt/electric/sky top rule, circular editor-managed portrait, verified badge, experience pill, restrained divider, and readable biography. Stack identity details cleanly on small screens and keep all author copy and media in Strapi. |
 | YouTube videos | Navy section with a responsive one-column/two-column grid, visible titles, and 16:9 privacy-enhanced embeds. |
 | Why JR and recognition | Bluefields with network routes and dark blue-glass cards. |
 | Metrics and testimonials | Dark cobalt data cards and pale-blue type; the optional fixed-service results panel combines editor-managed rating copy, up to three metrics, and semantic testimonial attribution. Vary opacity/elevation, not colour families. |

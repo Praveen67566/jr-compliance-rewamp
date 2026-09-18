@@ -1,0 +1,41 @@
+{
+  "collectionName": "components_registration_written_by",
+  "info": {
+    "displayName": "Written by"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true,
+      "default": "Written By"
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "role": {
+      "type": "string",
+      "required": true
+    },
+    "avatar": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images"]
+    },
+    "experience": {
+      "type": "string",
+      "required": true
+    },
+    "biography": {
+      "type": "text",
+      "required": true
+    },
+    "verified": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    }
+  }
+}

@@ -116,7 +116,7 @@ this rollout.
 ## Schema and editor policy
 
 The committed schemas define five single types, thirty-seven collection types,
-and sixty-three components (forty-two content types total), including nineteen
+and sixty-four components (forty-two content types total), including nineteen
 fixed service-detail collections. The fixed service-detail count remains
 unchanged; the dedicated Legal Page collection and the two Global collections
 are separate contracts. All editorial types use Draft & Publish.
@@ -137,6 +137,11 @@ Services** each store a heading and ordered links. The frontend makes the rail
 sticky on large screens, stacks it below the article on smaller screens, and
 gives the services list its own bounded scroll. These fields have no fallback,
 seed content, or automatic backfill.
+
+The optional **Written By** component follows Extra Content and precedes
+YouTube Videos. Editors provide its label, portrait, name, role, experience,
+verification state, and biography. The card is omitted when the component is
+empty; there is no fallback, seed content, or automatic author backfill.
 
 The shared navbar is edited under **Site Setting → Header Menu**:
 

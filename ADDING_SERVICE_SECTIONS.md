@@ -29,6 +29,7 @@ Advantages (optional)
 Process (optional)
 Why JR (optional)
 Extra Content reading card + three-part sticky sidebar (optional)
+Written By (optional)
 YouTube Videos (optional)
 Breakdown
 Results Section (optional)

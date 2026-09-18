@@ -71,7 +71,7 @@ responsive legal template; they are not a generic page builder.
 | `frontend/postcss.config.mjs` | Tailwind v4 PostCSS integration. |
 | `frontend/public/images/` | Small selected copy of approved legacy logo/photo assets. `images/services/` preserves the 15 exact legacy service/flag SVGs; `images/services-blue/` holds their blue-theme derivatives used by the home fallback. Do not point new UI at `site/assets/`. |
 | `cms/` | Active Strapi v5 TypeScript project: schemas, core REST APIs, CMS-to-Next revalidation, editor setup, and PostgreSQL configuration for local and deployed environments. |
-| `cms/CONTENT_MODEL.md` | Definitive editorial contract: five single types, thirty-seven collections, and sixty-three components. Change it deliberately alongside the schemas and Next mapper. |
+| `cms/CONTENT_MODEL.md` | Definitive editorial contract: five single types, thirty-seven collections, and sixty-four components. Change it deliberately alongside the schemas and Next mapper. |
 | `cms/README.md` | CMS local PostgreSQL workflow, editor permissions, REST contract, transfer policy, and revalidation behavior. |
 | `ecosystem.config.js` | PM2 process definition for the 24/7 Linux/VPS deployment: one frontend and one CMS process, bound to loopback-only private ports with no secrets in source. |
 | `prod.md` | Required production deployment and launch runbook for the frontend, CMS, PM2, Nginx/TLS, database, media, migration, secrets, and cache invalidation. |
@@ -151,6 +151,10 @@ responsive legal template; they are not a generic page builder.
   contains only a required title and Markdown-rich description; the shared
   sanitized renderer preserves the formatting entered in Strapi across service
   cards, Overview, Extra Content, and Breakdown rich-text fields.
+- An optional editor-managed Written By card follows Extra Content and precedes
+  videos across the same nineteen collections. It stores the author label,
+  portrait, name, role, experience, verification state, and biography; no
+  fallback, seed mirror, or automatic backfill supplies author data.
 - Those same fixed collections expose an optional results panel between the
   breakdown and ticker CTA. Its rating copy, one to three ordered metrics, and
   testimonial attribution are CMS managed. Detail items in Challenges,
@@ -213,7 +217,7 @@ responsive legal template; they are not a generic page builder.
   links to their certificate records.
 - The Strapi v5 CMS is implemented in `cms/`: five single types (`site-setting`,
   `home-page`, `about-page`, `careers-page`, `contact-page`), thirty-seven
-  collections, sixty-three components, and core REST route/controller/service
+  collections, sixty-four components, and core REST route/controller/service
   files for all forty-two types. The fixed service-detail collection count
   remains nineteen; the two Global collections and fixed `legal-page`
   collection are separate contracts. All editorial content uses Draft &

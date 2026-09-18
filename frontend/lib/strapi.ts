@@ -65,6 +65,7 @@ import type {
   RegistrationResultStat,
   RegistrationRichText,
   RegistrationResultsSection,
+  RegistrationWrittenBy,
   SebiBusinessRegistrationPageContent,
   Service,
   ServiceCategory,
@@ -260,6 +261,7 @@ const fixedServiceDetailPopulateTree: PopulateTree = {
   extraContentSidebarHeader: { avatars: true, cta: true },
   extraContentSidebarGuides: { links: true },
   extraContentSidebarServices: { links: true },
+  writtenBy: { avatar: true },
   youtubeVideos: { videos: true },
   breakdown: { groups: { icon: true, items: true } },
   resultsSection: { stats: true },
@@ -1636,6 +1638,21 @@ function mapRegistrationExtraContentSidebarLinks(
   return title && links.length ? { title, links } : undefined;
 }
 
+function mapRegistrationWrittenBy(value: unknown): RegistrationWrittenBy | undefined {
+  const section = record(value);
+  const label = text(section.label);
+  const name = text(section.name);
+  const role = text(section.role);
+  const avatar = mediaUrl(section.avatar);
+  const experience = text(section.experience);
+  const biography = text(section.biography);
+  const verified = boolean(section.verified) ?? false;
+
+  return label && name && role && avatar && experience && biography
+    ? { label, name, role, avatar, experience, biography, verified }
+    : undefined;
+}
+
 function mapRegistrationBreakdown(
   value: unknown,
   fallback: CompanyRegistrationPageContent["breakdown"],
@@ -2314,6 +2331,7 @@ function mapCmsOnlyFixedServiceDetailPage<T extends CompanyRegistrationPageConte
   const extraContentSidebarServices = mapRegistrationExtraContentSidebarLinks(
     page.extraContentSidebarServices,
   );
+  const writtenBy = mapRegistrationWrittenBy(page.writtenBy);
   const breakdown = strictFixedServiceBreakdown(page.breakdown);
   const resultsSection = mapFixedServiceResultsSection(page.resultsSection);
   const faqs = strictFixedServiceFaqSection(page.faqs);
@@ -2369,6 +2387,7 @@ function mapCmsOnlyFixedServiceDetailPage<T extends CompanyRegistrationPageConte
     ...(extraContentSidebarHeader ? { extraContentSidebarHeader } : {}),
     ...(extraContentSidebarGuides ? { extraContentSidebarGuides } : {}),
     ...(extraContentSidebarServices ? { extraContentSidebarServices } : {}),
+    ...(writtenBy ? { writtenBy } : {}),
     ...(youtubeVideos ? { youtubeVideos } : {}),
     breakdown,
     ...(resultsSection ? { resultsSection } : {}),
@@ -2407,6 +2426,7 @@ function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
   const extraContentSidebarServices = mapRegistrationExtraContentSidebarLinks(
     page.extraContentSidebarServices,
   );
+  const writtenBy = mapRegistrationWrittenBy(page.writtenBy);
   const youtubeVideos = mapFixedServiceYouTubeVideos(page.youtubeVideos);
   const resultsSection = mapFixedServiceResultsSection(page.resultsSection);
   const tickerCta = mapFixedServiceTickerCta(page.tickerCta);
@@ -2420,6 +2440,7 @@ function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
     extraContentSidebarHeader: _fallbackExtraContentSidebarHeader,
     extraContentSidebarGuides: _fallbackExtraContentSidebarGuides,
     extraContentSidebarServices: _fallbackExtraContentSidebarServices,
+    writtenBy: _fallbackWrittenBy,
     youtubeVideos: _fallbackYoutubeVideos,
     resultsSection: _fallbackResultsSection,
     tickerCta: _fallbackTickerCta,
@@ -2452,6 +2473,7 @@ function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
     ...(extraContentSidebarHeader ? { extraContentSidebarHeader } : {}),
     ...(extraContentSidebarGuides ? { extraContentSidebarGuides } : {}),
     ...(extraContentSidebarServices ? { extraContentSidebarServices } : {}),
+    ...(writtenBy ? { writtenBy } : {}),
     ...(youtubeVideos ? { youtubeVideos } : {}),
     breakdown: mapRegistrationBreakdown(page.breakdown, fallback.breakdown),
     ...(resultsSection ? { resultsSection } : {}),

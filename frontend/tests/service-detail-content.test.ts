@@ -139,6 +139,11 @@ describe("service-detail content mirrors", () => {
         component: "registration.extra-content-sidebar-header",
         repeatable: false,
       });
+      assert.deepEqual(attributes.writtenBy, {
+        type: "component",
+        component: "registration.written-by",
+        repeatable: false,
+      });
       for (const field of ["extraContentSidebarGuides", "extraContentSidebarServices"]) {
         assert.deepEqual(attributes[field], {
           type: "component",
@@ -180,8 +185,9 @@ describe("service-detail content mirrors", () => {
           fields.indexOf("extraContentSidebarServices"),
       );
       assert.ok(
-        fields.indexOf("extraContentSidebarServices") < fields.indexOf("youtubeVideos"),
+        fields.indexOf("extraContentSidebarServices") < fields.indexOf("writtenBy"),
       );
+      assert.ok(fields.indexOf("writtenBy") < fields.indexOf("youtubeVideos"));
       assert.ok(fields.indexOf("youtubeVideos") < fields.indexOf("breakdown"));
       assert.ok(fields.indexOf("breakdown") < fields.indexOf("resultsSection"));
       assert.ok(fields.indexOf("resultsSection") < fields.indexOf("tickerCta"));
@@ -232,6 +238,44 @@ describe("service-detail content mirrors", () => {
       repeatable: true,
       required: true,
       min: 1,
+    });
+  });
+
+  it("keeps Written By author details editor managed", () => {
+    const writtenBy = readJson("cms/src/components/registration/written-by.json");
+    const attributes = writtenBy.attributes as Record<
+      string,
+      Record<string, unknown>
+    >;
+
+    assert.deepEqual(Object.keys(attributes), [
+      "label",
+      "name",
+      "role",
+      "avatar",
+      "experience",
+      "biography",
+      "verified",
+    ]);
+    assert.deepEqual(attributes.label, {
+      type: "string",
+      required: true,
+      default: "Written By",
+    });
+    for (const field of ["name", "role", "experience"]) {
+      assert.deepEqual(attributes[field], { type: "string", required: true });
+    }
+    assert.deepEqual(attributes.avatar, {
+      type: "media",
+      multiple: false,
+      required: true,
+      allowedTypes: ["images"],
+    });
+    assert.deepEqual(attributes.biography, { type: "text", required: true });
+    assert.deepEqual(attributes.verified, {
+      type: "boolean",
+      required: true,
+      default: true,
     });
   });
 
@@ -334,6 +378,7 @@ describe("service-detail content mirrors", () => {
     const overviewIndex = component.indexOf('id="overview"');
     const whyChooseIndex = component.indexOf("{content.whyChoose.items.map");
     const extraContentIndex = component.indexOf("{content.extraContent?.length ?");
+    const writtenByIndex = component.indexOf("{content.writtenBy ?");
     const youtubeIndex = component.indexOf("{content.youtubeVideos ?");
     const breakdownIndex = component.indexOf('id="breakdown"');
     const resultsIndex = component.indexOf("{content.resultsSection ?");
@@ -350,7 +395,8 @@ describe("service-detail content mirrors", () => {
     assert.match(component, /<TrustedBrandsMarquee logos=\{content\.trustedLogos\} \/>/);
     assert.ok(whyChooseIndex >= 0);
     assert.ok(whyChooseIndex < extraContentIndex);
-    assert.ok(extraContentIndex < youtubeIndex);
+    assert.ok(extraContentIndex < writtenByIndex);
+    assert.ok(writtenByIndex < youtubeIndex);
     assert.ok(youtubeIndex < breakdownIndex);
     assert.ok(breakdownIndex < resultsIndex);
     assert.ok(resultsIndex < tickerIndex);
@@ -411,6 +457,7 @@ describe("service-detail content mirrors", () => {
     assert.doesNotMatch(cmsOnlyCompletenessGate, /trustedLogos/);
     assert.doesNotMatch(cmsOnlyCompletenessGate, /extraContent/);
     assert.doesNotMatch(cmsOnlyCompletenessGate, /extraContentSidebar/);
+    assert.doesNotMatch(cmsOnlyCompletenessGate, /writtenBy/);
     assert.doesNotMatch(cmsOnlyCompletenessGate, /resultsSection/);
     assert.doesNotMatch(cmsOnlyCompletenessGate, /icon/);
     for (const field of ["challenges", "advantages", "process", "whyChoose"]) {
@@ -428,6 +475,7 @@ describe("service-detail content mirrors", () => {
     );
     assert.match(strapiAdapter, /extraContentSidebarGuides: \{ links: true \}/);
     assert.match(strapiAdapter, /extraContentSidebarServices: \{ links: true \}/);
+    assert.match(strapiAdapter, /writtenBy: \{ avatar: true \}/);
     assert.match(strapiAdapter, /resultsSection: \{ stats: true \}/);
     assert.match(strapiAdapter, /tickerCta: \{ cta: true \}/);
     assert.equal(
@@ -473,10 +521,21 @@ describe("service-detail content mirrors", () => {
       );
       assert.match(strapiAdapter, new RegExp(`${field}: _fallback`));
     }
+    assert.equal(
+      strapiAdapter.match(
+        /const writtenBy = mapRegistrationWrittenBy\(page\.writtenBy\);/g,
+      )?.length,
+      2,
+    );
+    assert.equal(
+      strapiAdapter.match(/\.\.\.\(writtenBy \? \{ writtenBy \} : \{\}\)/g)?.length,
+      2,
+    );
+    assert.match(strapiAdapter, /writtenBy: _fallbackWrittenBy/);
     const extraContentSection = sourceBetween(
       component,
       "{content.extraContent?.length ?",
-      "{content.youtubeVideos ?",
+      "{content.writtenBy ?",
     );
     assert.match(extraContentSection, /aria-label="Additional service information"/);
     assert.match(extraContentSection, /id="extra-content"/);
@@ -523,7 +582,7 @@ describe("service-detail content mirrors", () => {
     const extraContentSidebar = sourceBetween(
       component,
       "function ExtraContentSidebar",
-      "export function CompanyRegistrationPage",
+      "function WrittenBySection",
     );
     assert.match(extraContentSidebar, /<aside/);
     assert.match(extraContentSidebar, /min-\[1100px\]:sticky/);
@@ -540,6 +599,20 @@ describe("service-detail content mirrors", () => {
       extraContentSection,
       /<RegistrationRichTextView[\s\S]*?value=\{item\.description\}/,
     );
+    const writtenBySection = sourceBetween(
+      component,
+      "function WrittenBySection",
+      "export function CompanyRegistrationPage",
+    );
+    assert.match(writtenBySection, /aria-labelledby="service-author-heading"/);
+    assert.match(writtenBySection, /id="written-by"/);
+    assert.match(writtenBySection, /src=\{section\.avatar\}/);
+    assert.match(writtenBySection, /section\.verified/);
+    assert.match(writtenBySection, /aria-label="Verified author"/);
+    assert.match(writtenBySection, /section\.experience/);
+    assert.match(writtenBySection, /section\.biography/);
+    assert.match(writtenBySection, /min-\[560px\]:flex-row/);
+    assert.match(writtenBySection, /blue-cobalt-700.*blue-electric.*blue-sky/);
     const resultsMapper = strapiAdapter.slice(
       strapiAdapter.indexOf("function mapFixedServiceResultsSection"),
       strapiAdapter.indexOf("function strictTextList"),
