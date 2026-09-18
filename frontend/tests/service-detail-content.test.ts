@@ -477,6 +477,22 @@ describe("service-detail content mirrors", () => {
     assert.match(extraContentSection, /shadow-\[0_16px_44px_rgba\(3,19,47,0\.06\)\]/);
     assert.match(extraContentSection, /min-\[1100px\]:grid-cols/);
     assert.match(extraContentSection, /<ExtraContentSidebar/);
+    assert.match(component, /const tableLayoutClassName = isArticle/);
+    assert.match(component, /\[&_table\]:table /);
+    assert.match(component, /\[&_table\]:table-auto/);
+    assert.match(component, /\[&_table\]:border-separate/);
+    assert.match(component, /\[&_table\]:mb-10/);
+    assert.doesNotMatch(component, /\[&_table\+\*\]:mt-10/);
+    assert.match(component, /\[&_table\]:rounded-\[16px\]/);
+    assert.match(component, /inset_0_4px_0_var\(--blue-electric\)/);
+    assert.match(component, /\[&_table_th\]:bg-ice\/90/);
+    assert.match(component, /\[&_table_th\]:px-4/);
+    assert.match(component, /\[&_table_td\]:py-3\.5/);
+    assert.match(component, /\[&_table_th:first-child\]:w-1\/4/);
+    assert.match(component, /\[&_table_tr>\*:last-child\]:border-r-0/);
+    assert.match(component, /\[&_table_tbody_tr:last-child_td\]:border-b-0/);
+    assert.match(component, /\[&_tbody_tr:nth-child\(even\)_td\]:bg-ice\/25/);
+    assert.match(component, /\[&_tbody_tr:hover_td:first-child\]:shadow-/);
     const extraContentSidebar = sourceBetween(
       component,
       "function ExtraContentSidebar",
