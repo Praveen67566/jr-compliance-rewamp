@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_registration_extra_content_sidebar_headers",
+  "info": {
+    "displayName": "Extra content sidebar header"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "avatars": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": ["images"]
+    },
+    "cta": {
+      "type": "component",
+      "component": "shared.cta",
+      "repeatable": false,
+      "required": true
+    }
+  }
+}

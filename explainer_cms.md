@@ -40,18 +40,20 @@ The CMS provides content for:
 - shared header/footer and global consultation-form copy through the `site-setting` single type
 
 The committed model contains five single types, thirty-seven collection types,
-and sixty-one components: forty-two content types in total, including
+and sixty-three components: forty-two content types in total, including
 nineteen fixed service-detail collections. That fixed service-detail count is
 unchanged; the Legal Page collection and two Global collections use separate
 fixed contracts. The seven empty Approval collections and both Global
 collections are schema integrations only and contain no bundled records.
 
-Every fixed service-detail collection exposes nine optional top-level fields:
+Every fixed service-detail collection exposes twelve optional top-level fields:
 `trustedLogos`, `challenges`, `advantages`, `process`, `whyChoose`,
-`extraContent`, `youtubeVideos`, `resultsSection`, and `tickerCta`. Trusted
-logos follow the hero; each available card section retains its fixed order;
-Extra Content follows the last available card section; YouTube videos follow
-Extra Content; Results follows the breakdown; and the ticker precedes FAQ.
+`extraContent`, `extraContentSidebarHeader`, `extraContentSidebarGuides`,
+`extraContentSidebarServices`, `youtubeVideos`, `resultsSection`, and
+`tickerCta`. Trusted logos follow the hero; each available card section retains
+its fixed order; Extra Content and its optional sticky sidebar follow the last
+available card section; YouTube videos follow Extra Content; Results follows
+the breakdown; and the ticker precedes FAQ.
 Detail items in the four optional card sections, plus Breakdown groups, also
 accept optional image icons. Leaving any optional field empty does not make an
 otherwise complete record invalid or cause the frontend to borrow that section
@@ -241,11 +243,12 @@ There are likewise no seed JSON files, fallback mirrors, or initial records for
 created and published directly through Strapi Content Manager after schema and
 token permissions are deployed.
 
-The optional `trustedLogos`, `extraContent`, `youtubeVideos`, `resultsSection`,
-`tickerCta`, detail-item icon, and Breakdown group icon service fields are also
-not added to historical seed JSON or frontend fallback data, and bootstrap
-performs no backfill. Editors opt records into these fields after the schema is
-deployed.
+The optional `trustedLogos`, `extraContent`, `extraContentSidebarHeader`,
+`extraContentSidebarGuides`, `extraContentSidebarServices`, `youtubeVideos`,
+`resultsSection`, `tickerCta`, detail-item icon, and Breakdown group icon
+service fields are also not added to historical seed JSON or frontend fallback
+data, and bootstrap performs no backfill. Editors opt records into these fields
+after the schema is deployed.
 
 ## API content types
 
@@ -289,17 +292,17 @@ Each content type folder follows the Strapi pattern:
 `cms/src/api/company-registration-page/`
 : Dedicated detail-page records for the nineteen Company Registration slugs.
 Each record uses the fixed hero, optional trusted logos, overview, optional
-Challenges, Advantages, Process, Why JR, and Extra Content, optional YouTube
-videos, breakdown, optional results proof, optional ticker CTA, FAQ, closing
-CTA, and SEO fields; it is not
+Challenges, Advantages, Process, Why JR, Extra Content and its sidebar,
+optional YouTube videos, breakdown, optional results proof, optional ticker
+CTA, FAQ, closing CTA, and SEO fields; it is not
 a generic page builder.
 
 `cms/src/api/mca-service-page/`
 : Dedicated detail-page records for approved MCA Services slugs. The first DSC
 record uses the same fixed hero, optional trusted logos, overview, optional
-Challenges, Advantages, Process, Why JR, and Extra Content, optional YouTube
-videos, breakdown, optional results proof, optional ticker CTA, FAQ, closing
-CTA, and SEO fields without
+Challenges, Advantages, Process, Why JR, Extra Content and its sidebar,
+optional YouTube videos, breakdown, optional results proof, optional ticker
+CTA, FAQ, closing CTA, and SEO fields without
 widening the Company Registration collection into a generic page builder.
 
 `cms/src/api/import-export-service-page/`
@@ -470,8 +473,8 @@ Strapi components are reusable field groups stored as JSON schemas in `cms/src/c
 
 `cms/src/components/registration/`
 : Fixed Company Registration field groups for hero copy, overview paragraphs,
-  detail cards, Extra Content cards, ordered titled YouTube videos, breakdown
-  groups, FAQs, and their section wrappers. Detail-item icons render in
+  detail cards, Extra Content cards and sidebar content, ordered titled YouTube
+  videos, breakdown groups, FAQs, and their section wrappers. Detail-item icons render in
   Challenges, Advantages, Process, and Why Choose, while breakdown-group icons
   render in Breakdown.
   `registration.youtube-video` stores a title and URL;
@@ -479,8 +482,11 @@ Strapi components are reusable field groups stored as JSON schemas in `cms/src/c
   and one or more videos. `registration.results-section` stores required rating
   copy, heading/body, one to three ordered metrics, and testimonial attribution.
   `registration.extra-content-card` stores only a required title and Markdown
-  Rich Text description. Registration Rich Text is rendered with formatting
-  intact and sanitized by the frontend.
+  Rich Text description. `registration.extra-content-sidebar-header` stores the
+  expert label, optional avatars, and CTA; the reusable
+  `registration.extra-content-sidebar-links` stores a heading and ordered links
+  for each of the two fixed sidebar cards. Registration Rich Text is rendered
+  with formatting intact and sanitized by the frontend.
 
 `cms/src/components/global/`
 : Eleven fixed Global field groups: `country-hero`, `certificate-card`,
@@ -581,7 +587,8 @@ PostgreSQL variables for local and deployed CMS environments are defined in
 - On any fixed service record, editors may optionally add **Challenges**,
   **Advantages**, **Process**, and **Why Choose**; select client Brand Logo
   records under **Trusted Logos**; add ordered title-and-description entries
-  under **Extra Content**; add one or more titled HTTPS single-video YouTube
+  under **Extra Content**; configure its **Sidebar Header**, **Sidebar Guides**,
+  and **Sidebar Services**; add one or more titled HTTPS single-video YouTube
   URLs under **YouTube Videos**; add a **Results Section** or **Ticker CTA**;
   and select icons for card details or Breakdown. Missing optional CMS sections
   stay omitted, while the approved local fallback records remain unchanged.

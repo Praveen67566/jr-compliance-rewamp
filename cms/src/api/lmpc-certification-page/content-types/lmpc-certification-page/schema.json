@@ -68,6 +68,21 @@
       "component": "registration.extra-content-card",
       "repeatable": true
     },
+    "extraContentSidebarHeader": {
+      "type": "component",
+      "component": "registration.extra-content-sidebar-header",
+      "repeatable": false
+    },
+    "extraContentSidebarGuides": {
+      "type": "component",
+      "component": "registration.extra-content-sidebar-links",
+      "repeatable": false
+    },
+    "extraContentSidebarServices": {
+      "type": "component",
+      "component": "registration.extra-content-sidebar-links",
+      "repeatable": false
+    },
     "youtubeVideos": {
       "type": "component",
       "component": "registration.youtube-video-section",

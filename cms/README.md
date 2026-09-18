@@ -116,7 +116,7 @@ this rollout.
 ## Schema and editor policy
 
 The committed schemas define five single types, thirty-seven collection types,
-and sixty-one components (forty-two content types total), including nineteen
+and sixty-three components (forty-two content types total), including nineteen
 fixed service-detail collections. The fixed service-detail count remains
 unchanged; the dedicated Legal Page collection and the two Global collections
 are separate contracts. All editorial types use Draft & Publish.
@@ -129,6 +129,14 @@ only a title and Rich Text description. Use the Rich Text toolbar or valid
 Markdown for headings, emphasis, lists, quotes, links, code, tables, images,
 and line breaks; the frontend renders and sanitizes that formatting. Leaving
 Extra Content empty preserves the current page and requires no backfill.
+
+Three adjacent optional fields configure the Extra Content sidebar: **Extra
+Content Sidebar Header** stores the expert label, up to three displayed avatar
+images, and CTA; **Extra Content Sidebar Guides** and **Extra Content Sidebar
+Services** each store a heading and ordered links. The frontend makes the rail
+sticky on large screens, stacks it below the article on smaller screens, and
+gives the services list its own bounded scroll. These fields have no fallback,
+seed content, or automatic backfill.
 
 The shared navbar is edited under **Site Setting → Header Menu**:
 

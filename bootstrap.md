@@ -130,11 +130,5 @@ Approval collections:
 - `lmpc-certification-page`
 - `stqc-page`
 
-changes in given above collection pages:-
+Only Ui Changes
 
-see the reference images one is current website image and second one is the reference image you can see the differnce the refernce look far better that the current one because its so clean and perfect now i want to acheive that so build extra content section that way.
-
-The differences are:-
-
-title or text is so big and use the same font given in image the startup india image.
-and also there can be h2 it can be in start the startup image ndia looks so profession.

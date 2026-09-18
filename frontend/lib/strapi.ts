@@ -60,6 +60,8 @@ import type {
   RegistrationCardSection,
   RegistrationDetail,
   RegistrationExtraContentCard,
+  RegistrationExtraContentSidebarHeader,
+  RegistrationExtraContentSidebarLinks,
   RegistrationResultStat,
   RegistrationRichText,
   RegistrationResultsSection,
@@ -255,6 +257,9 @@ const fixedServiceDetailPopulateTree: PopulateTree = {
   process: { items: { icon: true } },
   whyChoose: { items: { icon: true } },
   extraContent: true,
+  extraContentSidebarHeader: { avatars: true, cta: true },
+  extraContentSidebarGuides: { links: true },
+  extraContentSidebarServices: { links: true },
   youtubeVideos: { videos: true },
   breakdown: { groups: { icon: true, items: true } },
   resultsSection: { stats: true },
@@ -1605,6 +1610,32 @@ function mapRegistrationExtraContent(
   return items.length ? items : undefined;
 }
 
+function mapRegistrationExtraContentSidebarHeader(
+  value: unknown,
+): RegistrationExtraContentSidebarHeader | undefined {
+  const header = record(value);
+  const label = text(header.label);
+  const cta = strictLink(header.cta);
+  const avatars = orderedEntries(header.avatars)
+    .map(mediaUrl)
+    .filter((url): url is string => Boolean(url))
+    .slice(0, 3);
+
+  return label && cta ? { label, avatars, cta } : undefined;
+}
+
+function mapRegistrationExtraContentSidebarLinks(
+  value: unknown,
+): RegistrationExtraContentSidebarLinks | undefined {
+  const section = record(value);
+  const title = text(section.title);
+  const links = orderedEntries(section.links)
+    .map(strictLink)
+    .filter((item): item is Link => Boolean(item));
+
+  return title && links.length ? { title, links } : undefined;
+}
+
 function mapRegistrationBreakdown(
   value: unknown,
   fallback: CompanyRegistrationPageContent["breakdown"],
@@ -2274,6 +2305,15 @@ function mapCmsOnlyFixedServiceDetailPage<T extends CompanyRegistrationPageConte
   const process = strictFixedServiceCardSection(page.process);
   const whyChoose = strictFixedServiceCardSection(page.whyChoose);
   const extraContent = mapRegistrationExtraContent(page.extraContent);
+  const extraContentSidebarHeader = mapRegistrationExtraContentSidebarHeader(
+    page.extraContentSidebarHeader,
+  );
+  const extraContentSidebarGuides = mapRegistrationExtraContentSidebarLinks(
+    page.extraContentSidebarGuides,
+  );
+  const extraContentSidebarServices = mapRegistrationExtraContentSidebarLinks(
+    page.extraContentSidebarServices,
+  );
   const breakdown = strictFixedServiceBreakdown(page.breakdown);
   const resultsSection = mapFixedServiceResultsSection(page.resultsSection);
   const faqs = strictFixedServiceFaqSection(page.faqs);
@@ -2326,6 +2366,9 @@ function mapCmsOnlyFixedServiceDetailPage<T extends CompanyRegistrationPageConte
     ...(process ? { process } : {}),
     ...(whyChoose ? { whyChoose } : {}),
     ...(extraContent ? { extraContent } : {}),
+    ...(extraContentSidebarHeader ? { extraContentSidebarHeader } : {}),
+    ...(extraContentSidebarGuides ? { extraContentSidebarGuides } : {}),
+    ...(extraContentSidebarServices ? { extraContentSidebarServices } : {}),
     ...(youtubeVideos ? { youtubeVideos } : {}),
     breakdown,
     ...(resultsSection ? { resultsSection } : {}),
@@ -2355,6 +2398,15 @@ function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
   const process = mapRegistrationCardSection(page.process);
   const whyChoose = mapRegistrationCardSection(page.whyChoose);
   const extraContent = mapRegistrationExtraContent(page.extraContent);
+  const extraContentSidebarHeader = mapRegistrationExtraContentSidebarHeader(
+    page.extraContentSidebarHeader,
+  );
+  const extraContentSidebarGuides = mapRegistrationExtraContentSidebarLinks(
+    page.extraContentSidebarGuides,
+  );
+  const extraContentSidebarServices = mapRegistrationExtraContentSidebarLinks(
+    page.extraContentSidebarServices,
+  );
   const youtubeVideos = mapFixedServiceYouTubeVideos(page.youtubeVideos);
   const resultsSection = mapFixedServiceResultsSection(page.resultsSection);
   const tickerCta = mapFixedServiceTickerCta(page.tickerCta);
@@ -2365,6 +2417,9 @@ function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
     process: _fallbackProcess,
     whyChoose: _fallbackWhyChoose,
     extraContent: _fallbackExtraContent,
+    extraContentSidebarHeader: _fallbackExtraContentSidebarHeader,
+    extraContentSidebarGuides: _fallbackExtraContentSidebarGuides,
+    extraContentSidebarServices: _fallbackExtraContentSidebarServices,
     youtubeVideos: _fallbackYoutubeVideos,
     resultsSection: _fallbackResultsSection,
     tickerCta: _fallbackTickerCta,
@@ -2394,6 +2449,9 @@ function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
     ...(process ? { process } : {}),
     ...(whyChoose ? { whyChoose } : {}),
     ...(extraContent ? { extraContent } : {}),
+    ...(extraContentSidebarHeader ? { extraContentSidebarHeader } : {}),
+    ...(extraContentSidebarGuides ? { extraContentSidebarGuides } : {}),
+    ...(extraContentSidebarServices ? { extraContentSidebarServices } : {}),
     ...(youtubeVideos ? { youtubeVideos } : {}),
     breakdown: mapRegistrationBreakdown(page.breakdown, fallback.breakdown),
     ...(resultsSection ? { resultsSection } : {}),

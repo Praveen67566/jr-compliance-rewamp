@@ -30,7 +30,7 @@ typed frontend fallback data and a historical CMS JSON source, and do not widen
 the model into a generic page builder.
 
 The committed schema contains five single types, thirty-seven collection types,
-and sixty-one components: forty-two content types in total. Nineteen of the
+and sixty-three components: forty-two content types in total. Nineteen of the
 collections use the fixed service-detail contract; that count does not include
 the legal collection or the two Global collections.
 
@@ -199,15 +199,18 @@ customized or partially migrated legal-link list is preserved.
 One published record per approved `/corporate/[slug]` route. This is a fixed
 service-detail contract, not a generic page builder.
 
-Across all nineteen fixed service-detail collections, nine top-level fields are
+Across all nineteen fixed service-detail collections, twelve top-level fields are
 optional. `challenges`, `advantages`, `process`, and `whyChoose` render only
 when an editor supplies their complete card section. `trustedLogos` renders
 immediately after `hero`, `extraContent` renders after `whyChoose` when present
-(otherwise after the preceding available section), `youtubeVideos` renders
-immediately after `extraContent`, `resultsSection` renders after `breakdown`,
-and `tickerCta` renders after the results section and immediately before
-`faqs`. Detail items in the four optional card sections, plus Breakdown groups,
-also accept optional image icons rendered as decorative artwork inside their
+(otherwise after the preceding available section). Its adjacent
+`extraContentSidebarHeader`, `extraContentSidebarGuides`, and
+`extraContentSidebarServices` fields form one sticky desktop rail beside the
+article. `youtubeVideos` renders immediately after the complete Extra Content
+area, `resultsSection` renders after `breakdown`, and `tickerCta` renders after
+the results section and immediately before `faqs`. Detail items in the four
+optional card sections, plus Breakdown groups, also accept optional image icons
+rendered as decorative artwork inside their
 themed circular holders. Existing local fallbacks retain their approved
 sections; published CMS records may intentionally omit any of the four optional
 card sections without borrowing fallback copy.
@@ -225,6 +228,9 @@ card sections without borrowing fallback copy.
 | `process` | `registration.card-section` | Optional; ordered process cards |
 | `whyChoose` | `registration.card-section` | Optional; ordered JR Compliance reasons |
 | `extraContent` | Repeatable `registration.extra-content-card` | Optional; editor-ordered title-and-rich-text entries rendered inside one clean reading card |
+| `extraContentSidebarHeader` | `registration.extra-content-sidebar-header` | Optional; expert label, up to three displayed avatars, and CTA above the sticky rail |
+| `extraContentSidebarGuides` | `registration.extra-content-sidebar-links` | Optional; heading and ordered Related Guides links |
+| `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
@@ -256,6 +262,9 @@ required fixed field is complete.
 | `process` | `registration.card-section` | Optional; ordered process cards |
 | `whyChoose` | `registration.card-section` | Optional; ordered JR Compliance reasons |
 | `extraContent` | Repeatable `registration.extra-content-card` | Optional; editor-ordered title-and-rich-text entries rendered inside one clean reading card |
+| `extraContentSidebarHeader` | `registration.extra-content-sidebar-header` | Optional; expert label, up to three displayed avatars, and CTA above the sticky rail |
+| `extraContentSidebarGuides` | `registration.extra-content-sidebar-links` | Optional; heading and ordered Related Guides links |
+| `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
@@ -285,6 +294,9 @@ service-detail template without a new React route or local fallback.
 | `process` | `registration.card-section` | Optional; ordered process cards |
 | `whyChoose` | `registration.card-section` | Optional; ordered JR Compliance reasons |
 | `extraContent` | Repeatable `registration.extra-content-card` | Optional; editor-ordered title-and-rich-text entries rendered inside one clean reading card |
+| `extraContentSidebarHeader` | `registration.extra-content-sidebar-header` | Optional; expert label, up to three displayed avatars, and CTA above the sticky rail |
+| `extraContentSidebarGuides` | `registration.extra-content-sidebar-links` | Optional; heading and ordered Related Guides links |
+| `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
@@ -314,6 +326,9 @@ the same fixed service-detail template without borrowing Ayush content.
 | `process` | `registration.card-section` | Optional; ordered process cards |
 | `whyChoose` | `registration.card-section` | Optional; ordered JR Compliance reasons |
 | `extraContent` | Repeatable `registration.extra-content-card` | Optional; editor-ordered title-and-rich-text entries rendered inside one clean reading card |
+| `extraContentSidebarHeader` | `registration.extra-content-sidebar-header` | Optional; expert label, up to three displayed avatars, and CTA above the sticky rail |
+| `extraContentSidebarGuides` | `registration.extra-content-sidebar-links` | Optional; heading and ordered Related Guides links |
+| `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
@@ -343,6 +358,9 @@ template without borrowing Trademark Registration content.
 | `process` | `registration.card-section` | Optional; ordered process cards |
 | `whyChoose` | `registration.card-section` | Optional; ordered fixed-slot cards (Trademark currently uses its six source pricing packages) |
 | `extraContent` | Repeatable `registration.extra-content-card` | Optional; editor-ordered title-and-rich-text entries rendered inside one clean reading card |
+| `extraContentSidebarHeader` | `registration.extra-content-sidebar-header` | Optional; expert label, up to three displayed avatars, and CTA above the sticky rail |
+| `extraContentSidebarGuides` | `registration.extra-content-sidebar-links` | Optional; heading and ordered Related Guides links |
+| `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
@@ -372,6 +390,9 @@ without borrowing FSSAI Basic Registration content.
 | `process` | `registration.card-section` | Optional; ordered process cards |
 | `whyChoose` | `registration.card-section` | Optional; ordered JR Compliance reasons |
 | `extraContent` | Repeatable `registration.extra-content-card` | Optional; editor-ordered title-and-rich-text entries rendered inside one clean reading card |
+| `extraContentSidebarHeader` | `registration.extra-content-sidebar-header` | Optional; expert label, up to three displayed avatars, and CTA above the sticky rail |
+| `extraContentSidebarGuides` | `registration.extra-content-sidebar-links` | Optional; heading and ordered Related Guides links |
+| `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
@@ -402,6 +423,9 @@ without borrowing Portfolio Manager Registration content.
 | `process` | `registration.card-section` | Optional; ordered process cards |
 | `whyChoose` | `registration.card-section` | Optional; ordered JR Compliance reasons |
 | `extraContent` | Repeatable `registration.extra-content-card` | Optional; editor-ordered title-and-rich-text entries rendered inside one clean reading card |
+| `extraContentSidebarHeader` | `registration.extra-content-sidebar-header` | Optional; expert label, up to three displayed avatars, and CTA above the sticky rail |
+| `extraContentSidebarGuides` | `registration.extra-content-sidebar-links` | Optional; heading and ordered Related Guides links |
+| `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
@@ -486,9 +510,11 @@ detail-page families, not records in the separate Home Service Stack
 All nine Approval collections use the same fixed fields as the other
 service-detail collections: required `title`, `menuLabel`, route-safe `slug`,
 `hero`, and `overview`; optional `trustedLogos`, `challenges`, `advantages`,
-`process`, `whyChoose`, `extraContent`, and `youtubeVideos`; required
-`breakdown`; optional `resultsSection` and `tickerCta`; and required `faqs`,
-`finalCta`, `seo`, and `sortOrder`. Every CMS-only record must complete all
+`process`, `whyChoose`, `extraContent`, `extraContentSidebarHeader`,
+`extraContentSidebarGuides`, `extraContentSidebarServices`, and
+`youtubeVideos`; required `breakdown`; optional `resultsSection` and
+`tickerCta`; and required `faqs`, `finalCta`, `seo`, and `sortOrder`. Every
+CMS-only record must complete all
 required nested content before publication; the frontend returns 404 for an
 incomplete record and never copies content from another page or category.
 
@@ -503,9 +529,9 @@ is omitted without invalidating the rest of the service record.
 1. Open the intended family collection in Strapi Content Manager.
 2. Create a record and complete `title`, `menuLabel`, every required fixed
    content section, SEO, and `sortOrder`. Add **Trusted Logos**, **Challenges**,
-   **Advantages**, **Process**, **Why Choose**, **Extra Content**, **YouTube
-   Videos**, **Results Section**, **Ticker CTA**, and optional icons only when
-   approved content is available.
+   **Advantages**, **Process**, **Why Choose**, **Extra Content**, its three
+   **Extra Content Sidebar** fields, **YouTube Videos**, **Results Section**,
+   **Ticker CTA**, and optional icons only when approved content is available.
 3. Enter a route-safe relative `slug` with no leading slash. Manually verify
    that the full path is unique across all nine Approval collections because a
    Strapi UID is unique only within its own collection.
@@ -684,6 +710,8 @@ settings, colour pickers, Webflow IDs, or public form endpoints.
 | `registration.text-item` | `text` Rich Text (Markdown)* |
 | `registration.detail-item` | `title` short text*, `description` Rich Text (Markdown)*, `icon` single image media; the shared picker is optional and the frontend renders it in Challenges, Advantages, Process, and Why Choose cards |
 | `registration.extra-content-card` | `title` short text*, `description` Rich Text (Markdown)*; repeatable entries are presented as sections inside one optional, unnumbered reading card |
+| `registration.extra-content-sidebar-header` | `label` short text*, `avatars` multiple image media, `cta` `shared.cta`*; the frontend displays at most the first three avatars |
+| `registration.extra-content-sidebar-links` | `title` short text*, `links` repeatable `shared.link`* (minimum 1); reused by the fixed Related Guides and related-services fields |
 | `registration.hero` | `eyebrow` short text*, `description` long text*, `cta` `shared.cta`*; page H1 comes from the parent `title` |
 | `registration.overview` | `eyebrow` short text*, `title` short text*, `paragraphs` repeatable `registration.text-item`*; each paragraph supports headings, links, lists, and text marks |
 | `registration.card-section` | `eyebrow` short text*, `title` short text*, `items` repeatable `registration.detail-item`* |

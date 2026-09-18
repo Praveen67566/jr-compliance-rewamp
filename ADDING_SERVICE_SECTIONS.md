@@ -28,7 +28,7 @@ Challenges (optional)
 Advantages (optional)
 Process (optional)
 Why JR (optional)
-Extra Content reading card (optional)
+Extra Content reading card + three-part sticky sidebar (optional)
 YouTube Videos (optional)
 Breakdown
 Results Section (optional)
@@ -87,10 +87,12 @@ still renders when Strapi is unavailable.
 The optional repeatable `extraContent` field sits after the last available card
 section and uses `registration.extra-content-card`. Each entry contains only a
 required title and Markdown Rich Text description; all entries render inside
-one clean, unnumbered reading card. Use the Title field for the centered article
-headline and the Markdown editor's Heading 2 control for left-aligned subsection
-headings in Description. Check-prefixed lines render as the themed checklist.
-It has no fallback or seed content.
+one clean, unnumbered reading card. Three adjacent optional fields add the
+expert CTA header, Related Guides, and related-services cards in one sticky
+desktop sidebar. Use the Title field for the centered article headline and the
+Markdown editor's Heading 2 control for left-aligned subsection headings in
+Description. Check-prefixed lines render as the themed checklist. These fields
+have no fallback or seed content.
 
 ## Implementation workflow
 

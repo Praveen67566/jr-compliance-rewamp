@@ -591,6 +591,19 @@ export type RegistrationExtraContentCard = {
   description: RegistrationRichText;
 };
 
+/** Optional expert CTA displayed at the top of the Extra Content sidebar. */
+export type RegistrationExtraContentSidebarHeader = {
+  label: string;
+  avatars: string[];
+  cta: Link;
+};
+
+/** One titled, editor-ordered link group in the Extra Content sidebar. */
+export type RegistrationExtraContentSidebarLinks = {
+  title: string;
+  links: Link[];
+};
+
 /** One named group in the service breakdown (for example, Documents). */
 export type RegistrationBreakdownGroup = {
   title: string;
@@ -662,6 +675,9 @@ export type CompanyRegistrationPageData = {
   whyChoose?: RegistrationCardSection;
   /** Optional editor-ordered entries rendered in one shared reading card. */
   extraContent?: RegistrationExtraContentCard[];
+  extraContentSidebarHeader?: RegistrationExtraContentSidebarHeader;
+  extraContentSidebarGuides?: RegistrationExtraContentSidebarLinks;
+  extraContentSidebarServices?: RegistrationExtraContentSidebarLinks;
   youtubeVideos?: YouTubeVideoSection;
   breakdown: {
     eyebrow: string;

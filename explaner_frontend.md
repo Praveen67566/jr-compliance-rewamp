@@ -317,8 +317,11 @@ The main flow is:
   CTA without page-specific CSS or legacy markup. The trusted-brand rail reuses
   the homepage design and renders immediately after the hero. Repeatable Extra
   Content entries share one clean, unnumbered ice reading card with centered
-  underlined sans headings and reference-style rich prose; YouTube videos follow
-  it in a one-column/two-column navy grid. Each visible
+  underlined sans headings and reference-style rich prose. When configured, an
+  expert CTA header, Related Guides card, and collapsible related-services card
+  form a sticky desktop sidebar beside the article and stack below it on smaller
+  screens; YouTube videos follow the complete Extra Content area in a
+  one-column/two-column navy grid. Each visible
   title labels a lazy 16:9 `youtube-nocookie.com` iframe with no autoplay,
   `allowFullScreen`, and `strict-origin-when-cross-origin` referrer policy. The
   results panel renders immediately after Breakdown and uses a responsive
@@ -447,10 +450,11 @@ The existing fallback files keep their implemented routes working when Strapi
 is offline. They also document the expected content shape for
 editors/developers. Their approved Challenges, Advantages, Process, and Why
 Choose data remains intact even though those fields are optional for published
-CMS records. Optional service-page trusted logos, Extra Content, YouTube videos,
-results content, ticker content, detail-item icons, and Breakdown group icons
-are not added to fallback or seed mirrors; existing pages remain unchanged
-until editors populate and publish those CMS fields.
+CMS records. Optional service-page trusted logos, Extra Content and its three
+sidebar fields, YouTube videos, results content, ticker content, detail-item
+icons, and Breakdown group icons are not added to fallback or seed mirrors;
+existing pages remain unchanged until editors populate and publish those CMS
+fields.
 
 ## Library files
 
@@ -466,7 +470,8 @@ until editors populate and publish those CMS fields.
   Registration, AERB Approval, LMPC Certification, and STQC service-detail
   models, including optional trusted logos; optional Challenges, Advantages,
   Process, and Why Choose sections; the service-page YouTube video section;
-  optional Extra Content entries; optional results proof; optional
+  optional Extra Content entries and its expert-header/guide/service sidebar;
+  optional results proof; optional
   detail-item and Breakdown group icon URLs, and ticker CTA. It also defines the
   separate
   `GlobalCountryPageData` /
@@ -479,8 +484,8 @@ until editors populate and publish those CMS fields.
   fetches published single types or exact-slug entries from all nineteen fixed
   service-detail collections, converts media URLs, and safely falls back when
   known local fallback data is available. It omits missing or malformed
-  optional card sections, trusted-logo, Extra Content, service-video, results,
-  icon, and ticker fields,
+  optional card sections, trusted-logo, Extra Content, sidebar, service-video,
+  results, icon, and ticker fields,
   explicitly populates their nested media/components, and normalizes accepted
   HTTPS single-video YouTube URLs to `youtube-nocookie.com` embed URLs. The
   separate legal-page query allows
@@ -563,8 +568,9 @@ cached Global country and certificate loaders as `getGlobalCountryPage`,
 `frontend/tests/service-detail-content.test.ts`
 : Preserves the existing service fallback/seed parity checks and verifies that
   all nineteen schemas expose the four optional card sections, trusted-logo
-  relation, Extra Content, and the other optional top-level components in the
-  fixed order, including the bounded results contract, optional icon media across the five intended card
+  relation, Extra Content and its three sidebar fields, and the other optional
+  top-level components in the fixed order, including the bounded results
+  contract, optional icon media across the five intended card
   sections, explicit population, safe mapper behavior, semantic results markup,
   shared marquee reuse, and accessible lazy iframe attributes.
 

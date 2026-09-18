@@ -134,6 +134,18 @@ describe("service-detail content mirrors", () => {
         component: "registration.extra-content-card",
         repeatable: true,
       });
+      assert.deepEqual(attributes.extraContentSidebarHeader, {
+        type: "component",
+        component: "registration.extra-content-sidebar-header",
+        repeatable: false,
+      });
+      for (const field of ["extraContentSidebarGuides", "extraContentSidebarServices"]) {
+        assert.deepEqual(attributes[field], {
+          type: "component",
+          component: "registration.extra-content-sidebar-links",
+          repeatable: false,
+        });
+      }
       for (const field of ["challenges", "advantages", "process", "whyChoose"]) {
         assert.deepEqual(attributes[field], {
           type: "component",
@@ -156,7 +168,20 @@ describe("service-detail content mirrors", () => {
       assert.ok(fields.indexOf("hero") < fields.indexOf("trustedLogos"));
       assert.ok(fields.indexOf("trustedLogos") < fields.indexOf("overview"));
       assert.ok(fields.indexOf("whyChoose") < fields.indexOf("extraContent"));
-      assert.ok(fields.indexOf("extraContent") < fields.indexOf("youtubeVideos"));
+      assert.ok(
+        fields.indexOf("extraContent") < fields.indexOf("extraContentSidebarHeader"),
+      );
+      assert.ok(
+        fields.indexOf("extraContentSidebarHeader") <
+          fields.indexOf("extraContentSidebarGuides"),
+      );
+      assert.ok(
+        fields.indexOf("extraContentSidebarGuides") <
+          fields.indexOf("extraContentSidebarServices"),
+      );
+      assert.ok(
+        fields.indexOf("extraContentSidebarServices") < fields.indexOf("youtubeVideos"),
+      );
       assert.ok(fields.indexOf("youtubeVideos") < fields.indexOf("breakdown"));
       assert.ok(fields.indexOf("breakdown") < fields.indexOf("resultsSection"));
       assert.ok(fields.indexOf("resultsSection") < fields.indexOf("tickerCta"));
@@ -176,6 +201,38 @@ describe("service-detail content mirrors", () => {
     assert.deepEqual(Object.keys(attributes), ["title", "description"]);
     assert.deepEqual(attributes.title, { type: "string", required: true });
     assert.deepEqual(attributes.description, { type: "richtext", required: true });
+  });
+
+  it("keeps the three Extra Content sidebar fields focused and editor managed", () => {
+    const header = readJson(
+      "cms/src/components/registration/extra-content-sidebar-header.json",
+    );
+    const linkSection = readJson(
+      "cms/src/components/registration/extra-content-sidebar-links.json",
+    );
+    const headerAttributes = header.attributes as Record<string, Record<string, unknown>>;
+    const linkAttributes = linkSection.attributes as Record<string, Record<string, unknown>>;
+
+    assert.deepEqual(headerAttributes.label, { type: "string", required: true });
+    assert.deepEqual(headerAttributes.avatars, {
+      type: "media",
+      multiple: true,
+      allowedTypes: ["images"],
+    });
+    assert.deepEqual(headerAttributes.cta, {
+      type: "component",
+      component: "shared.cta",
+      repeatable: false,
+      required: true,
+    });
+    assert.deepEqual(linkAttributes.title, { type: "string", required: true });
+    assert.deepEqual(linkAttributes.links, {
+      type: "component",
+      component: "shared.link",
+      repeatable: true,
+      required: true,
+      min: 1,
+    });
   });
 
   it("keeps results content bounded and both service icon fields optional", () => {
@@ -326,6 +383,7 @@ describe("service-detail content mirrors", () => {
     );
     assert.doesNotMatch(cmsOnlyCompletenessGate, /trustedLogos/);
     assert.doesNotMatch(cmsOnlyCompletenessGate, /extraContent/);
+    assert.doesNotMatch(cmsOnlyCompletenessGate, /extraContentSidebar/);
     assert.doesNotMatch(cmsOnlyCompletenessGate, /resultsSection/);
     assert.doesNotMatch(cmsOnlyCompletenessGate, /icon/);
     for (const field of ["challenges", "advantages", "process", "whyChoose"]) {
@@ -337,6 +395,12 @@ describe("service-detail content mirrors", () => {
     }
     assert.match(strapiAdapter, /youtubeVideos: \{ videos: true \}/);
     assert.match(strapiAdapter, /extraContent: true/);
+    assert.match(
+      strapiAdapter,
+      /extraContentSidebarHeader: \{ avatars: true, cta: true \}/,
+    );
+    assert.match(strapiAdapter, /extraContentSidebarGuides: \{ links: true \}/);
+    assert.match(strapiAdapter, /extraContentSidebarServices: \{ links: true \}/);
     assert.match(strapiAdapter, /resultsSection: \{ stats: true \}/);
     assert.match(strapiAdapter, /tickerCta: \{ cta: true \}/);
     assert.equal(
@@ -361,6 +425,27 @@ describe("service-detail content mirrors", () => {
       2,
     );
     assert.match(strapiAdapter, /extraContent: _fallbackExtraContent/);
+    for (const field of [
+      "extraContentSidebarHeader",
+      "extraContentSidebarGuides",
+      "extraContentSidebarServices",
+    ]) {
+      const mapperName =
+        field === "extraContentSidebarHeader"
+          ? "mapRegistrationExtraContentSidebarHeader"
+          : "mapRegistrationExtraContentSidebarLinks";
+      assert.equal(
+        strapiAdapter.match(new RegExp(`const ${field} = ${mapperName}\\(`, "g"))?.length,
+        2,
+      );
+      assert.equal(
+        strapiAdapter.match(
+          new RegExp(`\\.\\.\\.\\(${field} \\? \\{ ${field} \\} : \\{\\}\\)`, "g"),
+        )?.length,
+        2,
+      );
+      assert.match(strapiAdapter, new RegExp(`${field}: _fallback`));
+    }
     const extraContentSection = sourceBetween(
       component,
       "{content.extraContent?.length ?",
@@ -372,24 +457,42 @@ describe("service-detail content mirrors", () => {
     assert.match(extraContentSection, /<h2 className=/);
     assert.equal(extraContentSection.match(/<article/g)?.length, 1);
     assert.doesNotMatch(extraContentSection, /String\(index \+ 1\)\.padStart/);
-    assert.doesNotMatch(extraContentSection, /<ol|<li/);
     assert.match(extraContentSection, /text-center/);
     assert.match(extraContentSection, /h-0\.5 w-16 rounded-full bg-electric/);
-    assert.match(extraContentSection, /text-\[clamp\(1\.5rem,2\.2vw,2rem\)\]/);
+    assert.match(extraContentSection, /text-\[clamp\(1\.35rem,1\.7vw,1\.7rem\)\]/);
     assert.match(extraContentSection, /fontFamily: EXTRA_CONTENT_FONT_FAMILY/);
     assert.match(extraContentSection, /fontKerning: "normal"/);
     assert.match(extraContentSection, /fontOpticalSizing: "auto"/);
     assert.match(
       extraContentSection,
-      /text-base font-normal leading-\[26px\] tracking-\[0px\] text-\[#475569\]/,
+      /text-\[0\.9375rem\] font-normal leading-\[1\.75\] tracking-\[0px\] text-\[#475569\]/,
     );
-    assert.match(extraContentSection, /max-w-\[1400px\]/);
+    assert.match(extraContentSection, /max-w-\[1160px\]/);
     assert.match(extraContentSection, /articleTitle=\{item\.title\}/);
-    assert.match(extraContentSection, /rounded-\[24px\]/);
-    assert.match(extraContentSection, /pb-10.*min-\[821px\]:pb-12/);
-    assert.match(extraContentSection, /inset-x-0 top-0 h-1/);
+    assert.match(extraContentSection, /rounded-\[20px\]/);
+    assert.match(extraContentSection, /max-w-\[1320px\]/);
+    assert.match(extraContentSection, /py-10.*min-\[821px\]:py-12/);
+    assert.match(extraContentSection, /inset-x-0 top-0 h-\[3px\]/);
     assert.match(extraContentSection, /blue-cobalt-700.*blue-electric.*blue-sky/);
-    assert.doesNotMatch(extraContentSection, /rounded-\[18px\]|shadow-\[/);
+    assert.match(extraContentSection, /shadow-\[0_16px_44px_rgba\(3,19,47,0\.06\)\]/);
+    assert.match(extraContentSection, /min-\[1100px\]:grid-cols/);
+    assert.match(extraContentSection, /<ExtraContentSidebar/);
+    const extraContentSidebar = sourceBetween(
+      component,
+      "function ExtraContentSidebar",
+      "export function CompanyRegistrationPage",
+    );
+    assert.match(extraContentSidebar, /<aside/);
+    assert.match(extraContentSidebar, /min-\[1100px\]:sticky/);
+    assert.match(extraContentSidebar, /min-\[1100px\]:top-\[118px\]/);
+    assert.match(extraContentSidebar, /aria-label="Related service information"/);
+    assert.match(extraContentSidebar, /header\.avatars/);
+    assert.match(extraContentSidebar, /guides\.links\.map/);
+    assert.match(extraContentSidebar, /services\.links\.map/);
+    assert.match(extraContentSidebar, /<details/);
+    assert.match(extraContentSidebar, /<summary/);
+    assert.match(extraContentSidebar, /max-h-\[420px\] overflow-y-auto/);
+    assert.match(extraContentSidebar, /focus-visible:outline/);
     assert.match(
       extraContentSection,
       /<RegistrationRichTextView[\s\S]*?value=\{item\.description\}/,

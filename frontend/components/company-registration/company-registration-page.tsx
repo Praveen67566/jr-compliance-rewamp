@@ -23,6 +23,8 @@ import type {
   LegalTextNode,
   McaServicePageContent,
   RegistrationDetail,
+  RegistrationExtraContentSidebarHeader,
+  RegistrationExtraContentSidebarLinks,
   RegistrationRichText,
   RegistrationResultsSection,
   SebiBusinessRegistrationPageContent,
@@ -161,15 +163,15 @@ function RegistrationRichTextView({
   articleTitle?: string;
 }) {
   const isArticle = variant === "article";
-  const spacingClassName = isArticle ? "[&>*+*]:mt-6" : "[&>*+*]:mt-4";
+  const spacingClassName = isArticle ? "[&>*+*]:mt-5" : "[&>*+*]:mt-4";
   const listClassName = isArticle
-    ? "[&_ol]:list-decimal [&_ol]:space-y-3 [&_ol]:pl-6 [&_ul]:list-none [&_ul]:space-y-3 [&_ul]:py-1 [&_ul]:pl-0 [&_ul>li]:relative [&_ul>li]:pl-8 [&_ul>li]:before:absolute [&_ul>li]:before:left-0 [&_ul>li]:before:top-[0.22rem] [&_ul>li]:before:flex [&_ul>li]:before:size-[1.2rem] [&_ul>li]:before:items-center [&_ul>li]:before:justify-center [&_ul>li]:before:rounded-full [&_ul>li]:before:border [&_ul>li]:before:border-cobalt-600/40 [&_ul>li]:before:bg-white/70 [&_ul>li]:before:text-[0.62rem] [&_ul>li]:before:font-extrabold [&_ul>li]:before:leading-none [&_ul>li]:before:text-cobalt-600 [&_ul>li]:before:shadow-[0_2px_8px_rgba(22,140,245,0.08)] [&_ul>li]:before:content-['✓']"
+    ? "[&_ol]:list-decimal [&_ol]:space-y-2.5 [&_ol]:pl-6 [&_ul]:list-none [&_ul]:space-y-2.5 [&_ul]:py-0.5 [&_ul]:pl-0 [&_ul>li]:relative [&_ul>li]:pl-7 [&_ul>li]:before:absolute [&_ul>li]:before:left-0 [&_ul>li]:before:top-[0.3rem] [&_ul>li]:before:flex [&_ul>li]:before:size-[1.05rem] [&_ul>li]:before:items-center [&_ul>li]:before:justify-center [&_ul>li]:before:rounded-full [&_ul>li]:before:border [&_ul>li]:before:border-cobalt-600/35 [&_ul>li]:before:bg-cloud [&_ul>li]:before:text-[0.56rem] [&_ul>li]:before:font-extrabold [&_ul>li]:before:leading-none [&_ul>li]:before:text-cobalt-600 [&_ul>li]:before:content-['✓']"
     : "[&_li]:pl-1 [&_ol]:list-decimal [&_ol]:space-y-2 [&_ol]:pl-6 [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-6";
   const headingClassName = isArticle
-    ? "[&_h1]:text-[clamp(1.45rem,2vw,1.75rem)] [&_h1]:font-medium [&_h1]:leading-[1.2] [&_h1]:tracking-[-0.02em] [&_h2]:text-[clamp(1.2rem,1.6vw,1.375rem)] [&_h2]:font-medium [&_h2]:leading-[1.3] [&_h2]:tracking-[-0.01em] [&_h3]:text-[clamp(1.1rem,1.4vw,1.25rem)] [&_h3]:font-medium [&_h3]:leading-[1.35]"
+    ? "[&_h1]:text-[clamp(1.3rem,1.6vw,1.55rem)] [&_h1]:font-medium [&_h1]:leading-[1.25] [&_h1]:tracking-[-0.02em] [&_h2]:text-[clamp(1.125rem,1.3vw,1.25rem)] [&_h2]:font-medium [&_h2]:leading-[1.35] [&_h2]:tracking-[-0.01em] [&_h3]:text-[clamp(1.025rem,1.15vw,1.125rem)] [&_h3]:font-medium [&_h3]:leading-[1.4]"
     : "[&_h1]:font-display [&_h1]:text-[1.8rem] [&_h1]:leading-[1.05] [&_h2]:font-display [&_h2]:text-[1.55rem] [&_h2]:leading-[1.08] [&_h3]:font-display [&_h3]:text-[1.3rem] [&_h3]:leading-[1.12]";
   const articleClassName = isArticle
-    ? "[&>p:first-of-type]:text-[1.0625rem] [&>p:first-of-type]:leading-7 [&>p:first-of-type]:text-navy-800/78 [&_h2]:text-balance [&_h2]:border-b [&_h2]:border-cobalt-700/14 [&_h2]:pb-2.5 [&_h3]:text-balance [&_h3]:border-b [&_h3]:border-cobalt-700/12 [&_h3]:pb-2.5 [&_hr]:my-7 [&_p]:max-w-none [&_p]:text-pretty [&_strong]:font-semibold"
+    ? "[&>p:first-of-type]:text-[0.975rem] [&>p:first-of-type]:leading-[1.75] [&>p:first-of-type]:text-navy-800/78 [&_h2]:text-balance [&_h2]:border-b [&_h2]:border-cobalt-700/12 [&_h2]:pb-2 [&_h3]:text-balance [&_h3]:border-b [&_h3]:border-cobalt-700/10 [&_h3]:pb-2 [&_hr]:my-6 [&_p]:max-w-none [&_p]:text-pretty [&_strong]:font-semibold [&_table]:w-full [&_table]:text-[0.925rem] [&_table]:leading-6 [&_td]:bg-white/35 [&_td]:align-top [&_th]:bg-ice/75 [&_th]:font-semibold"
     : "";
   const richTextClassName = `${className} min-w-0 ${spacingClassName} ${listClassName} ${headingClassName} ${articleClassName} [&_a]:rounded-sm [&_a]:font-bold [&_a]:underline [&_a]:decoration-sky/55 [&_a]:underline-offset-4 [&_a]:transition-colors [&_a]:focus-visible:outline-none [&_a]:focus-visible:ring-2 [&_a]:focus-visible:ring-sky [&_a]:focus-visible:ring-offset-2 [&_blockquote]:rounded-r-xl [&_blockquote]:border-l-2 [&_blockquote]:px-4 [&_blockquote]:py-2 [&_blockquote]:italic [&_code]:break-words [&_code]:rounded [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-[0.88em] [&_h4]:text-[1.05rem] [&_h4]:font-extrabold [&_h5]:text-[1rem] [&_h5]:font-extrabold [&_h6]:text-[0.92rem] [&_h6]:font-extrabold [&_hr]:border-0 [&_hr]:border-t [&_img]:h-auto [&_img]:max-w-full [&_img]:rounded-xl [&_img]:border [&_img]:object-contain [&_mark]:rounded [&_mark]:bg-sky/35 [&_mark]:px-1 [&_p]:whitespace-pre-line [&_pre]:max-w-full [&_pre]:overflow-x-auto [&_pre]:rounded-xl [&_pre]:border [&_pre]:p-4 [&_pre]:text-sm [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_strong]:font-extrabold [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto [&_table]:border-collapse [&_td]:border [&_td]:p-2.5 [&_th]:border [&_th]:p-2.5 [&_th]:text-left [&_th]:font-extrabold ${
     light
@@ -484,6 +486,155 @@ function ResultsSection({ section }: { section: RegistrationResultsSection }) {
   );
 }
 
+function ExtraContentSidebar({
+  guides,
+  header,
+  services,
+}: {
+  guides?: RegistrationExtraContentSidebarLinks;
+  header?: RegistrationExtraContentSidebarHeader;
+  services?: RegistrationExtraContentSidebarLinks;
+}) {
+  const headerHref = header ? safeRegistrationHref(header.cta.href) : null;
+  const avatarSlots = header?.avatars.length ? header.avatars : [null, null, null];
+
+  return (
+    <aside
+      aria-label="Related service information"
+      className="min-w-0 space-y-4 min-[1100px]:sticky min-[1100px]:top-[118px]"
+    >
+      {header && headerHref ? (
+        <a
+          className="group relative flex min-h-[76px] items-center gap-4 overflow-hidden rounded-[18px] border border-cobalt-700/14 bg-cloud px-5 py-4 shadow-[0_14px_38px_rgba(3,19,47,0.09)] transition-[border-color,box-shadow,transform] duration-200 hover:border-cobalt-600/40 hover:shadow-[0_20px_46px_rgba(13,92,184,0.14)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-electric motion-safe:hover:-translate-y-0.5"
+          href={headerHref}
+          {...linkTargetProps(header.cta)}
+        >
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 top-0 h-0.5 bg-[linear-gradient(90deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))]"
+          />
+          <span className="flex shrink-0 -space-x-2" aria-hidden="true">
+            {avatarSlots.slice(0, 3).map((avatar, index) => (
+              <span
+                className="relative flex size-10 items-center justify-center overflow-hidden rounded-full border-2 border-cloud bg-[linear-gradient(145deg,var(--blue-ice),var(--blue-sky))] shadow-[0_4px_12px_rgba(3,19,47,0.14)]"
+                key={`${avatar ?? "expert"}-${index}`}
+              >
+                {avatar ? (
+                  <img
+                    alt=""
+                    aria-hidden="true"
+                    className="h-full w-full object-cover"
+                    height={40}
+                    loading="lazy"
+                    src={avatar}
+                    width={40}
+                  />
+                ) : (
+                  <span className="relative size-5 rounded-full border border-cobalt-600/25 bg-cloud before:absolute before:left-1/2 before:top-1 before:size-1.5 before:-translate-x-1/2 before:rounded-full before:bg-cobalt-600 after:absolute after:bottom-1 after:left-1/2 after:h-1.5 after:w-3 after:-translate-x-1/2 after:rounded-t-full after:bg-cobalt-600" />
+                )}
+              </span>
+            ))}
+          </span>
+          <span className="min-w-0 flex-1 break-words text-[0.98rem] font-medium leading-6 text-navy-700/76">
+            {header.label}{" "}
+            <strong className="font-semibold text-cobalt-600">{header.cta.label}</strong>
+          </span>
+          <span
+            aria-hidden="true"
+            className="flex size-8 shrink-0 items-center justify-center rounded-full border border-cobalt-600/20 text-cobalt-600 transition group-hover:border-cobalt-600/45 group-hover:bg-ice group-hover:translate-x-0.5"
+          >
+            →
+          </span>
+        </a>
+      ) : null}
+
+      {guides ? (
+        <section className="relative overflow-hidden rounded-[20px] border border-cobalt-700/14 bg-cloud shadow-[0_16px_42px_rgba(3,19,47,0.08)]">
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 top-0 h-0.5 bg-[linear-gradient(90deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))]"
+          />
+          <h2 className="mb-0 px-5 pb-3 pt-6 text-sm font-semibold tracking-[-0.01em] text-navy-950">
+            {guides.title}
+          </h2>
+          <nav aria-label={`${guides.title} links`} className="px-5 pb-4">
+            <ul className="m-0 list-none divide-y divide-cobalt-700/10 p-0">
+              {guides.links.map((item, index) => {
+                const href = safeRegistrationHref(item.href);
+                return href ? (
+                  <li key={`${item.label}-${index}`}>
+                    <a
+                      className="group/link flex min-w-0 items-start gap-3 rounded-lg py-4 text-sm leading-5 text-navy-700/72 transition-colors hover:text-cobalt-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric"
+                      href={href}
+                      {...linkTargetProps(item)}
+                    >
+                      <span
+                        aria-hidden="true"
+                        className="mt-0.5 text-base text-cobalt-600 transition-transform group-hover/link:translate-x-0.5"
+                      >
+                        →
+                      </span>
+                      <span className="min-w-0 break-words">{item.label}</span>
+                    </a>
+                  </li>
+                ) : null;
+              })}
+            </ul>
+          </nav>
+        </section>
+      ) : null}
+
+      {services ? (
+        <details
+          className="group relative overflow-hidden rounded-[20px] border border-cobalt-700/14 bg-cloud shadow-[0_16px_42px_rgba(3,19,47,0.08)]"
+          open
+        >
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 top-0 h-0.5 bg-[linear-gradient(90deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))]"
+          />
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-4 rounded-lg px-5 py-5 text-sm font-semibold tracking-[-0.01em] text-navy-950 marker:hidden focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-electric [&::-webkit-details-marker]:hidden">
+            <span className="min-w-0 break-words">{services.title}</span>
+            <span
+              aria-hidden="true"
+              className="text-cobalt-600 transition-transform group-open:rotate-180"
+            >
+              ⌄
+            </span>
+          </summary>
+          <nav
+            aria-label={`${services.title} links`}
+            className="max-h-[420px] overflow-y-auto border-t border-cobalt-700/10 px-5 pb-3 [scrollbar-color:var(--blue-cobalt-600)_var(--blue-ice)] [scrollbar-width:thin]"
+          >
+            <ul className="m-0 list-none divide-y divide-cobalt-700/10 p-0">
+              {services.links.map((item, index) => {
+                const href = safeRegistrationHref(item.href);
+                return href ? (
+                  <li key={`${item.label}-${index}`}>
+                    <a
+                      className="group/link flex min-w-0 items-center justify-between gap-3 rounded-lg py-4 text-sm leading-5 text-cobalt-700 transition-colors hover:text-cobalt-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric"
+                      href={href}
+                      {...linkTargetProps(item)}
+                    >
+                      <span className="min-w-0 break-words">{item.label}</span>
+                      <span
+                        aria-hidden="true"
+                        className="shrink-0 text-base text-navy-700/45 transition-transform group-hover/link:translate-x-0.5 group-hover/link:text-cobalt-600"
+                      >
+                        →
+                      </span>
+                    </a>
+                  </li>
+                ) : null;
+              })}
+            </ul>
+          </nav>
+        </details>
+      ) : null}
+    </aside>
+  );
+}
+
 export function CompanyRegistrationPage({
   breadcrumb,
   content,
@@ -493,6 +644,11 @@ export function CompanyRegistrationPage({
     content.whyChoose?.items.length === 1
       ? "mx-auto grid w-full max-w-[860px] grid-cols-1 gap-4"
       : "grid grid-cols-1 gap-4 md:grid-cols-2";
+  const hasExtraContentSidebar = Boolean(
+    content.extraContentSidebarHeader ||
+      content.extraContentSidebarGuides ||
+      content.extraContentSidebarServices,
+  );
 
   return (
     <SitePageShell
@@ -779,12 +935,20 @@ export function CompanyRegistrationPage({
       {content.extraContent?.length ? (
         <section
           aria-label="Additional service information"
-          className="relative border-y border-cobalt-700/10 bg-[linear-gradient(180deg,var(--blue-ice)_0,var(--blue-cloud)_8rem)] pb-10 pt-10 text-navy-950 min-[821px]:pb-12"
+          className="relative border-y border-cobalt-700/10 bg-[linear-gradient(180deg,var(--blue-ice)_0,var(--blue-cloud)_8rem)] py-10 text-navy-950 min-[821px]:py-12"
           id="extra-content"
         >
-          <div className="mx-auto w-full max-w-[1760px] px-[18px]">
+          <div
+            className={`mx-auto grid w-full max-w-[1680px] items-start gap-6 px-[18px] min-[560px]:px-[22px] min-[821px]:px-8 ${
+              hasExtraContentSidebar
+                ? "min-[1100px]:grid-cols-[minmax(0,1fr)_360px] min-[1100px]:gap-7"
+                : ""
+            }`}
+          >
             <article
-              className="relative mx-auto min-w-0 max-w-[1680px] overflow-hidden rounded-[24px] border border-cobalt-700/12 bg-cloud px-5 antialiased min-[560px]:px-7 min-[821px]:px-8"
+              className={`relative min-w-0 overflow-hidden rounded-[20px] border border-cobalt-700/12 bg-cloud px-5 antialiased shadow-[0_16px_44px_rgba(3,19,47,0.06)] min-[560px]:px-7 min-[821px]:px-10 ${
+                hasExtraContentSidebar ? "" : "mx-auto w-full max-w-[1320px]"
+              }`}
               style={{
                 fontFamily: EXTRA_CONTENT_FONT_FAMILY,
                 fontKerning: "normal",
@@ -793,26 +957,26 @@ export function CompanyRegistrationPage({
             >
               <span
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-[linear-gradient(90deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))]"
+                className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-[linear-gradient(90deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))]"
               />
               <div className="relative divide-y divide-cobalt-700/12">
                 {content.extraContent.map((item, index) => (
                   <section
-                    className="min-w-0 py-10 min-[821px]:py-12"
+                    className="min-w-0 py-7 min-[821px]:py-9"
                     key={`${item.title}-${index}`}
                   >
-                    <header className="mx-auto max-w-[1120px] text-center">
-                      <h2 className="mb-0 text-balance break-words text-[clamp(1.5rem,2.2vw,2rem)] font-medium leading-[1.2] tracking-[-0.02em] text-navy-950">
+                    <header className="mx-auto max-w-[1000px] text-center">
+                      <h2 className="mb-0 text-balance break-words text-[clamp(1.35rem,1.7vw,1.7rem)] font-medium leading-[1.25] tracking-[-0.02em] text-navy-950">
                         {item.title}
                       </h2>
                       <span
-                        className="mx-auto mt-3 block h-0.5 w-16 rounded-full bg-electric"
+                        className="mx-auto mt-2.5 block h-0.5 w-16 rounded-full bg-electric"
                         aria-hidden="true"
                       />
                     </header>
                     <RegistrationRichTextView
                       articleTitle={item.title}
-                      className="mx-auto mt-6 max-w-[1400px] break-words text-base font-normal leading-[26px] tracking-[0px] text-[#475569] selection:bg-sky/45 selection:text-navy-950"
+                      className="mx-auto mt-5 max-w-[1160px] break-words text-[0.9375rem] font-normal leading-[1.75] tracking-[0px] text-[#475569] selection:bg-sky/45 selection:text-navy-950"
                       value={item.description}
                       variant="article"
                     />
@@ -820,6 +984,13 @@ export function CompanyRegistrationPage({
                 ))}
               </div>
             </article>
+            {hasExtraContentSidebar ? (
+              <ExtraContentSidebar
+                guides={content.extraContentSidebarGuides}
+                header={content.extraContentSidebarHeader}
+                services={content.extraContentSidebarServices}
+              />
+            ) : null}
           </div>
         </section>
       ) : null}
