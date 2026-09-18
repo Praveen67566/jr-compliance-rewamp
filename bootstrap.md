@@ -132,3 +132,4 @@ Approval collections:
 
 Only Ui Changes
 
+1. the faq section in all above collection pages if there is more that 5 faq then show like this if more than 10 then a load mre question so perfect the ui of faq section.

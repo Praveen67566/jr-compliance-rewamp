@@ -319,6 +319,12 @@ describe("service-detail content mirrors", () => {
       ),
       "utf8",
     );
+    const serviceFaqList = readFileSync(
+      repositoryFile(
+        "frontend/components/company-registration/service-faq-list.tsx",
+      ),
+      "utf8",
+    );
     const strapiAdapter = readFileSync(
       repositoryFile("frontend/lib/strapi.ts"),
       "utf8",
@@ -357,6 +363,27 @@ describe("service-detail content mirrors", () => {
     assert.match(component, /<figcaption/);
     assert.doesNotMatch(component, /autoplay/i);
     assert.match(component, /className="contact-ticker"/);
+    assert.match(
+      component,
+      /import \{ ServiceFaqList \} from "@\/components\/company-registration\/service-faq-list"/,
+    );
+    assert.match(component, /aria-labelledby="service-faq-heading"/);
+    assert.match(component, /<ServiceFaqList items=\{content\.faqs\.items\} \/>/);
+    assert.doesNotMatch(component, /content\.faqs\.items\.map/);
+    assert.match(serviceFaqList, /^"use client";/);
+    assert.match(serviceFaqList, /export const INITIAL_VISIBLE_FAQS = 10/);
+    assert.match(serviceFaqList, /const usesTwoColumns = items\.length > 5/);
+    assert.match(serviceFaqList, /hidden=\{index >= visibleCount\}/);
+    assert.match(serviceFaqList, /min-\[900px\]:grid-cols-2/);
+    assert.match(
+      serviceFaqList,
+      /Math\.min\(currentCount \+ FAQ_REVEAL_INCREMENT, items\.length\)/,
+    );
+    assert.match(serviceFaqList, /Load more questions/);
+    assert.match(serviceFaqList, /aria-controls=\{listId\}/);
+    assert.match(serviceFaqList, /aria-live="polite"/);
+    assert.match(serviceFaqList, /<details/);
+    assert.match(serviceFaqList, /<summary/);
     assert.match(component, /aria-labelledby="service-results-heading"/);
     assert.match(component, /<dl className=/);
     assert.match(component, /<blockquote className=/);

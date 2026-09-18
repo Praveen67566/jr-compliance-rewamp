@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { ServiceFaqList } from "@/components/company-registration/service-faq-list";
 import { RouteClosingCta } from "@/components/editorial/route-closing-cta";
 import { ConsultationForm } from "@/components/forms/consultation-form";
 import { TrustedBrandsMarquee } from "@/components/home/trusted-brands-marquee";
@@ -1149,27 +1150,31 @@ export function CompanyRegistrationPage({
         </section>
       ) : null}
 
-      <section className="scroll-mt-28 bg-ice py-14 text-navy-950 min-[560px]:py-18 min-[821px]:py-28" id="faq">
-        <div className="mx-auto grid w-full max-w-[1320px] grid-cols-1 gap-10 px-[18px] min-[560px]:px-[22px] min-[821px]:grid-cols-[minmax(0,0.65fr)_minmax(0,1.35fr)] min-[821px]:px-8">
-          <SectionHeading eyebrow={content.faqs.eyebrow} title={content.faqs.title} />
-          <div className="min-w-0 divide-y divide-cobalt-700/15 border-y border-cobalt-700/15">
-            {content.faqs.items.map((faq, index) => (
-              <details className="group py-2" key={faq.question} open={index === 0}>
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-5 rounded-lg py-5 text-base font-extrabold marker:hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric [&::-webkit-details-marker]:hidden">
-                  <span className="min-w-0 break-words">{faq.question}</span>
-                  <span
-                    className="flex size-8 shrink-0 items-center justify-center rounded-full border border-cobalt-600/30 text-electric transition group-open:rotate-45"
-                    aria-hidden="true"
-                  >
-                    +
-                  </span>
-                </summary>
-                <p className="max-w-[800px] break-words pb-6 pr-10 text-sm leading-7 text-navy-700/75 md:text-base">
-                  {faq.answer}
-                </p>
-              </details>
-            ))}
-          </div>
+      <section
+        aria-labelledby="service-faq-heading"
+        className="scroll-mt-28 border-y border-cobalt-700/10 bg-[linear-gradient(180deg,var(--blue-cloud),var(--blue-ice))] py-14 text-navy-950 min-[560px]:py-18 min-[821px]:py-20"
+        id="faq"
+      >
+        <div className="mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
+          <header className="mb-8 max-w-[760px] min-[821px]:mb-10">
+            <span
+              aria-hidden="true"
+              className="mb-5 block h-[3px] w-12 rounded-full bg-electric"
+            />
+            <h2
+              className="mb-0 text-balance font-display text-[clamp(2rem,3vw,2.65rem)] leading-[1.05] tracking-[-0.035em] text-navy-950"
+              id="service-faq-heading"
+            >
+              {content.faqs.title}
+            </h2>
+            {content.faqs.eyebrow.trim().toLocaleLowerCase() !==
+            content.faqs.title.trim().toLocaleLowerCase() ? (
+              <p className="mt-3 text-sm leading-6 text-navy-700/62 min-[560px]:text-base">
+                {content.faqs.eyebrow}
+              </p>
+            ) : null}
+          </header>
+          <ServiceFaqList items={content.faqs.items} />
         </div>
       </section>
 

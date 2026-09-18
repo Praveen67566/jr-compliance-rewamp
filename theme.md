@@ -174,7 +174,7 @@ those shared components before adding route-specific CSS.
 | YouTube videos | Navy section with a responsive one-column/two-column grid, visible titles, and 16:9 privacy-enhanced embeds. |
 | Why JR and recognition | Bluefields with network routes and dark blue-glass cards. |
 | Metrics and testimonials | Dark cobalt data cards and pale-blue type; the optional fixed-service results panel combines editor-managed rating copy, up to three metrics, and semantic testimonial attribution. Vary opacity/elevation, not colour families. |
-| FAQ | Ice-blue reading surface with cobalt category and accordion states. |
+| FAQ | Clean ice-to-cloud reading surface with compact native-details cards and visible keyboard focus. Keep up to five questions in one centered column; use two columns from `900px` when more than five exist. Render the first ten questions initially and show an electric/cobalt “Load more questions” control only when additional editor-managed questions remain. Keep the section heading above the list, use the editor-managed eyebrow as supporting copy when it does not duplicate the title, and preserve every FAQ in the server-rendered HTML. |
 | Closing CTA and footer | Darkest navy continuation with sky-blue interaction states and route/grid detail. |
 
 ## Buttons, tabs, cards, and icons

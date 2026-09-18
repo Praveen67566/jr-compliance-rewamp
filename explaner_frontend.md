@@ -331,6 +331,13 @@ The main flow is:
   circular holder. The reused `.contact-ticker` renders after Results and
   immediately before FAQ.
 
+`frontend/components/company-registration/service-faq-list.tsx`
+: Small client boundary for the shared Corporate and Approval FAQ presentation.
+  It keeps native `details`/`summary` accordions, centers lists of up to five,
+  switches larger lists to two columns at `900px`, and progressively reveals
+  editor-managed questions in batches of ten through an accessible load-more
+  control without widening the CMS contract.
+
 `frontend/components/global/global-country-page.tsx`
 : Dedicated responsive country-landing template. It renders the CMS-owned hero
   image, title, description and CTA, followed by the ordered certificate cards
