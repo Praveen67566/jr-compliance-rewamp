@@ -312,7 +312,8 @@ The main flow is:
   route and every fixed category detail route. It renders the bluefield hero,
   optional trusted-brand rail, overview, optional Challenges, Advantages,
   Process, and Why JR sections, optional Extra Content, an optional Written By
-  attribution card, an optional YouTube video grid, service breakdown, an optional results proof panel, an optional ticker CTA,
+  attribution card, an optional YouTube video grid, optional service breakdown,
+  an optional results proof panel, an optional ticker CTA,
   native-details FAQ, and shared closing
   CTA without page-specific CSS or legacy markup. The trusted-brand rail reuses
   the homepage design and renders immediately after the hero. Repeatable Extra
@@ -325,7 +326,7 @@ The main flow is:
   one-column/two-column navy grid. Each visible
   title labels a lazy 16:9 `youtube-nocookie.com` iframe with no autoplay,
   `allowFullScreen`, and `strict-origin-when-cross-origin` referrer policy. The
-  results panel renders immediately after Breakdown and uses a responsive
+  results panel renders immediately after Breakdown when present and uses a responsive
   navy/cobalt metric-and-testimonial layout. Optional detail-item icons render
   in Challenges, Advantages, Process, and Why Choose, while optional group
   icons render in Breakdown. Each icon remains stationary inside its themed
@@ -456,10 +457,11 @@ they render no local or placeholder content.
 
 The existing fallback files keep their implemented routes working when Strapi
 is offline. They also document the expected content shape for
-editors/developers. Their approved Challenges, Advantages, Process, and Why
-Choose data remains intact even though those fields are optional for published
-CMS records. Optional service-page trusted logos, Extra Content and its three
-sidebar fields, Written By attribution, YouTube videos, results content, ticker content, detail-item
+editors/developers. Their approved Challenges, Advantages, Process, Why Choose,
+and Breakdown data remains intact even though those fields are optional for
+published CMS records. Optional service-page trusted logos, Extra Content and
+its three sidebar fields, Written By attribution, YouTube videos, results
+content, ticker content, detail-item
 icons, and Breakdown group icons are not added to fallback or seed mirrors;
 existing pages remain unchanged until editors populate and publish those CMS
 fields.
@@ -480,7 +482,7 @@ fields.
   Process, and Why Choose sections; the service-page YouTube video section;
   optional Extra Content entries and its expert-header/guide/service sidebar;
   optional Written By attribution;
-  optional results proof; optional
+  optional Breakdown and results proof; optional
   detail-item and Breakdown group icon URLs, and ticker CTA. It also defines the
   separate
   `GlobalCountryPageData` /
@@ -494,7 +496,7 @@ fields.
   service-detail collections, converts media URLs, and safely falls back when
   known local fallback data is available. It omits missing or malformed
   optional card sections, trusted-logo, Extra Content, sidebar, Written By, service-video,
-  results, icon, and ticker fields,
+  breakdown, results, icon, and ticker fields,
   explicitly populates their nested media/components, and normalizes accepted
   HTTPS single-video YouTube URLs to `youtube-nocookie.com` embed URLs. The
   separate legal-page query allows

@@ -132,4 +132,4 @@ Approval collections:
 
 Changes in all collection pages :-
 
-1. need to add a section just after extra content section same as image provided named as written by ui same as the reference image given.
+1. here what i want breakdown* section to not to be required like all other sections whyChoose process.

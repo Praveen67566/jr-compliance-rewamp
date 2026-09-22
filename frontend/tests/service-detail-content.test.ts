@@ -158,6 +158,11 @@ describe("service-detail content mirrors", () => {
           repeatable: false,
         });
       }
+      assert.deepEqual(attributes.breakdown, {
+        type: "component",
+        component: "registration.breakdown-section",
+        repeatable: false,
+      });
       assert.deepEqual(attributes.resultsSection, {
         type: "component",
         component: "registration.results-section",
@@ -406,6 +411,7 @@ describe("service-detail content mirrors", () => {
     assert.match(component, /allowFullScreen/);
     assert.match(component, /src=\{video\.embedUrl\}/);
     assert.match(component, /title=\{video\.title\}/);
+    assert.match(component, /\{content\.breakdown \? \(/);
     assert.match(component, /<figcaption/);
     assert.doesNotMatch(component, /autoplay/i);
     assert.match(component, /className="contact-ticker"/);
@@ -459,6 +465,7 @@ describe("service-detail content mirrors", () => {
     assert.doesNotMatch(cmsOnlyCompletenessGate, /extraContentSidebar/);
     assert.doesNotMatch(cmsOnlyCompletenessGate, /writtenBy/);
     assert.doesNotMatch(cmsOnlyCompletenessGate, /resultsSection/);
+    assert.doesNotMatch(cmsOnlyCompletenessGate, /!breakdown/);
     assert.doesNotMatch(cmsOnlyCompletenessGate, /icon/);
     for (const field of ["challenges", "advantages", "process", "whyChoose"]) {
       assert.doesNotMatch(cmsOnlyCompletenessGate, new RegExp(`!${field}`));
@@ -489,6 +496,11 @@ describe("service-detail content mirrors", () => {
       2,
     );
     assert.match(strapiAdapter, /resultsSection: _fallbackResultsSection/);
+    assert.equal(
+      strapiAdapter.match(/\.\.\.\(breakdown \? \{ breakdown \} : \{\}\)/g)?.length,
+      2,
+    );
+    assert.match(strapiAdapter, /breakdown: _fallbackBreakdown/);
     assert.equal(
       strapiAdapter.match(
         /const extraContent = mapRegistrationExtraContent\(page\.extraContent\);/g,
@@ -677,10 +689,9 @@ describe("service-detail content mirrors", () => {
       "function strictFixedServiceBreakdown",
       "function strictFixedServiceFaqSection",
     );
-    for (const mapper of [fallbackBreakdownMapper, strictBreakdownMapper]) {
-      assert.match(mapper, /const icon = mediaUrl\(group\.icon\);/);
-      assert.match(mapper, /\.\.\.\(icon \? \{ icon \} : \{\}\)/);
-    }
+    assert.match(fallbackBreakdownMapper, /const icon = mediaUrl\(group\.icon\);/);
+    assert.match(fallbackBreakdownMapper, /\.\.\.\(icon \? \{ icon \} : \{\}\)/);
+    assert.match(strictBreakdownMapper, /return mapRegistrationBreakdown\(value\) \?\? null;/);
 
     const cmsOnlyMapper = sourceBetween(
       strapiAdapter,
@@ -712,8 +723,9 @@ describe("service-detail content mirrors", () => {
     );
     assert.match(
       fallbackMapper,
-      /breakdown: mapRegistrationBreakdown\(page\.breakdown, fallback\.breakdown\)/,
+      /const breakdown = mapRegistrationBreakdown\(page\.breakdown\);/,
     );
+    assert.match(fallbackMapper, /\.\.\.\(breakdown \? \{ breakdown \} : \{\}\)/);
     assert.doesNotMatch(cmsOnlyMapper, /(?:item|group)\.icon/);
     assert.doesNotMatch(fallbackMapper, /(?:item|group)\.icon/);
   });
@@ -857,11 +869,11 @@ describe("service-detail content mirrors", () => {
 
     assert.match(
       fallbackBreakdownMapper,
-      /mapRegistrationRichTextList\(group\.items, fallbackGroup\?\.items \?\? \[\]\)/,
+      /strictRegistrationRichTextList\(group\.items\)/,
     );
     assert.match(
       strictBreakdownMapper,
-      /strictRegistrationRichTextList\(group\.items\)/,
+      /mapRegistrationBreakdown\(value\)/,
     );
     assert.match(
       cmsOnlyMapper,
@@ -991,6 +1003,7 @@ describe("service-detail content mirrors", () => {
       assert.ok(page.advantages);
       assert.ok(page.process);
       assert.ok(page.whyChoose);
+      assert.ok(page.breakdown);
       assert.ok(page.challenges.items.length >= 4);
       assert.ok(page.advantages.items.length >= 4);
       assert.equal(page.process.items.length, 6);
@@ -1006,6 +1019,7 @@ describe("service-detail content mirrors", () => {
     assert.ok(gst.advantages);
     assert.ok(gst.process);
     assert.ok(gst.whyChoose);
+    assert.ok(gst.breakdown);
     assert.equal(gst.challenges.items.length, 4);
     assert.equal(gst.advantages.items.length, 3);
     assert.equal(gst.process.items.length, 6);

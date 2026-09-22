@@ -199,21 +199,23 @@ customized or partially migrated legal-link list is preserved.
 One published record per approved `/corporate/[slug]` route. This is a fixed
 service-detail contract, not a generic page builder.
 
-Across all nineteen fixed service-detail collections, thirteen top-level fields are
+Across all nineteen fixed service-detail collections, fourteen top-level fields are
 optional. `challenges`, `advantages`, `process`, and `whyChoose` render only
-when an editor supplies their complete card section. `trustedLogos` renders
+when an editor supplies their complete card section, and `breakdown` follows
+the same all-or-nothing behavior. `trustedLogos` renders
 immediately after `hero`, `extraContent` renders after `whyChoose` when present
 (otherwise after the preceding available section). Its adjacent
 `extraContentSidebarHeader`, `extraContentSidebarGuides`, and
 `extraContentSidebarServices` fields form one sticky desktop rail beside the
 article. `writtenBy` renders immediately after the complete Extra Content area,
-followed by `youtubeVideos`; `resultsSection` renders after `breakdown`, and `tickerCta` renders after
-the results section and immediately before `faqs`. Detail items in the four
+followed by `youtubeVideos`; `resultsSection` renders after `breakdown` when it
+is present, and `tickerCta` renders after the results section and immediately
+before `faqs`. Detail items in the four
 optional card sections, plus Breakdown groups, also accept optional image icons
 rendered as decorative artwork inside their
 themed circular holders. Existing local fallbacks retain their approved
-sections; published CMS records may intentionally omit any of the four optional
-card sections without borrowing fallback copy.
+sections; published CMS records may intentionally omit any optional section,
+including Breakdown, without borrowing fallback copy.
 
 | Field | Strapi field | Rules |
 | --- | --- | --- |
@@ -233,7 +235,7 @@ card sections without borrowing fallback copy.
 | `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
 | `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, and biography |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
-| `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
+| `breakdown` | `registration.breakdown-section` | Optional; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
 | `tickerCta` | `home.cta-band` | Optional; “Let’s Talk Compliance”-style ticker content |
 | `faqs` | `registration.faq-section` | Required |
@@ -268,7 +270,7 @@ required fixed field is complete.
 | `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
 | `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, and biography |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
-| `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
+| `breakdown` | `registration.breakdown-section` | Optional; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
 | `tickerCta` | `home.cta-band` | Optional; “Let’s Talk Compliance”-style ticker content |
 | `faqs` | `registration.faq-section` | Required |
@@ -301,7 +303,7 @@ service-detail template without a new React route or local fallback.
 | `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
 | `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, and biography |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
-| `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
+| `breakdown` | `registration.breakdown-section` | Optional; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
 | `tickerCta` | `home.cta-band` | Optional; “Let’s Talk Compliance”-style ticker content |
 | `faqs` | `registration.faq-section` | Required |
@@ -334,7 +336,7 @@ the same fixed service-detail template without borrowing Ayush content.
 | `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
 | `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, and biography |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
-| `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
+| `breakdown` | `registration.breakdown-section` | Optional; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
 | `tickerCta` | `home.cta-band` | Optional; “Let’s Talk Compliance”-style ticker content |
 | `faqs` | `registration.faq-section` | Required |
@@ -367,7 +369,7 @@ template without borrowing Trademark Registration content.
 | `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
 | `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, and biography |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
-| `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
+| `breakdown` | `registration.breakdown-section` | Optional; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
 | `tickerCta` | `home.cta-band` | Optional; “Let’s Talk Compliance”-style ticker content |
 | `faqs` | `registration.faq-section` | Required |
@@ -400,7 +402,7 @@ without borrowing FSSAI Basic Registration content.
 | `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
 | `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, and biography |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
-| `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
+| `breakdown` | `registration.breakdown-section` | Optional; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
 | `tickerCta` | `home.cta-band` | Optional; “Let’s Talk Compliance”-style ticker content |
 | `faqs` | `registration.faq-section` | Required |
@@ -434,7 +436,7 @@ without borrowing Portfolio Manager Registration content.
 | `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
 | `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, and biography |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
-| `breakdown` | `registration.breakdown-section` | Required; Eligibility, Documents, Who Needs It |
+| `breakdown` | `registration.breakdown-section` | Optional; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
 | `tickerCta` | `home.cta-band` | Optional; “Let’s Talk Compliance”-style ticker content |
 | `faqs` | `registration.faq-section` | Required |
@@ -518,8 +520,8 @@ All nine Approval collections use the same fixed fields as the other
 service-detail collections: required `title`, `menuLabel`, route-safe `slug`,
 `hero`, and `overview`; optional `trustedLogos`, `challenges`, `advantages`,
 `process`, `whyChoose`, `extraContent`, `extraContentSidebarHeader`,
-`extraContentSidebarGuides`, `extraContentSidebarServices`, `writtenBy`, and
-`youtubeVideos`; required `breakdown`; optional `resultsSection` and
+`extraContentSidebarGuides`, `extraContentSidebarServices`, `writtenBy`,
+`youtubeVideos`, and `breakdown`; optional `resultsSection` and
 `tickerCta`; and required `faqs`, `finalCta`, `seo`, and `sortOrder`. Every
 CMS-only record must complete all
 required nested content before publication; the frontend returns 404 for an
@@ -537,8 +539,8 @@ is omitted without invalidating the rest of the service record.
 2. Create a record and complete `title`, `menuLabel`, every required fixed
    content section, SEO, and `sortOrder`. Add **Trusted Logos**, **Challenges**,
    **Advantages**, **Process**, **Why Choose**, **Extra Content**, its three
-   **Extra Content Sidebar** fields, **Written By**, **YouTube Videos**, **Results Section**,
-   **Ticker CTA**, and optional icons only when approved content is available.
+   **Extra Content Sidebar** fields, **Written By**, **YouTube Videos**, **Breakdown**,
+   **Results Section**, **Ticker CTA**, and optional icons only when approved content is available.
 3. Enter a route-safe relative `slug` with no leading slash. Manually verify
    that the full path is unique across all nine Approval collections because a
    Strapi UID is unique only within its own collection.

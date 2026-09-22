@@ -691,7 +691,7 @@ export type CompanyRegistrationPageData = {
   extraContentSidebarServices?: RegistrationExtraContentSidebarLinks;
   writtenBy?: RegistrationWrittenBy;
   youtubeVideos?: YouTubeVideoSection;
-  breakdown: {
+  breakdown?: {
     eyebrow: string;
     title: string;
     groups: RegistrationBreakdownGroup[];

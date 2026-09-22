@@ -1655,31 +1655,26 @@ function mapRegistrationWrittenBy(value: unknown): RegistrationWrittenBy | undef
 
 function mapRegistrationBreakdown(
   value: unknown,
-  fallback: CompanyRegistrationPageContent["breakdown"],
-): CompanyRegistrationPageContent["breakdown"] {
+): NonNullable<CompanyRegistrationPageContent["breakdown"]> | undefined {
   const section = record(value);
-  const groups = orderedEntries(section.groups)
-    .map((entry) => {
-      const group = record(entry);
-      const title = text(group.title);
-      if (!title) {
-        return null;
-      }
+  const eyebrow = text(section.eyebrow);
+  const title = text(section.title);
+  const groups = orderedEntries(section.groups).map((entry) => {
+    const group = record(entry);
+    const groupTitle = text(group.title);
+    const items = strictRegistrationRichTextList(group.items);
+    const icon = mediaUrl(group.icon);
+    return groupTitle && items
+      ? { title: groupTitle, items, ...(icon ? { icon } : {}) }
+      : null;
+  });
 
-      const fallbackGroup = fallback.groups.find(
-        (candidate) => candidate.title.toLowerCase() === title.toLowerCase(),
-      );
-      const items = mapRegistrationRichTextList(group.items, fallbackGroup?.items ?? []);
-      const icon = mediaUrl(group.icon);
-      return items.length ? { title, items, ...(icon ? { icon } : {}) } : null;
-    })
-    .filter((group): group is RegistrationBreakdownGroup => Boolean(group));
-
-  return {
-    eyebrow: text(section.eyebrow) ?? fallback.eyebrow,
-    title: text(section.title) ?? fallback.title,
-    groups: groups.length ? groups : fallback.groups,
-  };
+  return eyebrow &&
+    title &&
+    groups.length &&
+    groups.every((group): group is RegistrationBreakdownGroup => Boolean(group))
+    ? { eyebrow, title, groups }
+    : undefined;
 }
 
 function mapRegistrationFaqSection(
@@ -1829,24 +1824,8 @@ function strictFixedServiceCardSection(
 
 function strictFixedServiceBreakdown(
   value: unknown,
-): CompanyRegistrationPageContent["breakdown"] | null {
-  const section = record(value);
-  const eyebrow = text(section.eyebrow);
-  const title = text(section.title);
-  const source = orderedEntries(section.groups);
-  const groups = source.map((entry) => {
-    const group = record(entry);
-    const groupTitle = text(group.title);
-    const items = strictRegistrationRichTextList(group.items);
-    const icon = mediaUrl(group.icon);
-    return groupTitle && items
-      ? { title: groupTitle, items, ...(icon ? { icon } : {}) }
-      : null;
-  });
-
-  return eyebrow && title && groups.length && groups.every((group): group is RegistrationBreakdownGroup => Boolean(group))
-    ? { eyebrow, title, groups }
-    : null;
+): NonNullable<CompanyRegistrationPageContent["breakdown"]> | null {
+  return mapRegistrationBreakdown(value) ?? null;
 }
 
 function strictFixedServiceFaqSection(
@@ -2353,7 +2332,6 @@ function mapCmsOnlyFixedServiceDetailPage<T extends CompanyRegistrationPageConte
     !overviewEyebrow ||
     !overviewTitle ||
     !overviewParagraphs ||
-    !breakdown ||
     !faqs ||
     !closingTitle ||
     !closingCta ||
@@ -2389,7 +2367,7 @@ function mapCmsOnlyFixedServiceDetailPage<T extends CompanyRegistrationPageConte
     ...(extraContentSidebarServices ? { extraContentSidebarServices } : {}),
     ...(writtenBy ? { writtenBy } : {}),
     ...(youtubeVideos ? { youtubeVideos } : {}),
-    breakdown,
+    ...(breakdown ? { breakdown } : {}),
     ...(resultsSection ? { resultsSection } : {}),
     ...(tickerCta ? { tickerCta } : {}),
     faqs,
@@ -2428,6 +2406,7 @@ function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
   );
   const writtenBy = mapRegistrationWrittenBy(page.writtenBy);
   const youtubeVideos = mapFixedServiceYouTubeVideos(page.youtubeVideos);
+  const breakdown = mapRegistrationBreakdown(page.breakdown);
   const resultsSection = mapFixedServiceResultsSection(page.resultsSection);
   const tickerCta = mapFixedServiceTickerCta(page.tickerCta);
   const {
@@ -2442,6 +2421,7 @@ function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
     extraContentSidebarServices: _fallbackExtraContentSidebarServices,
     writtenBy: _fallbackWrittenBy,
     youtubeVideos: _fallbackYoutubeVideos,
+    breakdown: _fallbackBreakdown,
     resultsSection: _fallbackResultsSection,
     tickerCta: _fallbackTickerCta,
     ...fallbackWithoutOptionalSections
@@ -2475,7 +2455,7 @@ function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
     ...(extraContentSidebarServices ? { extraContentSidebarServices } : {}),
     ...(writtenBy ? { writtenBy } : {}),
     ...(youtubeVideos ? { youtubeVideos } : {}),
-    breakdown: mapRegistrationBreakdown(page.breakdown, fallback.breakdown),
+    ...(breakdown ? { breakdown } : {}),
     ...(resultsSection ? { resultsSection } : {}),
     ...(tickerCta ? { tickerCta } : {}),
     faqs: mapRegistrationFaqSection(page.faqs, fallback.faqs),

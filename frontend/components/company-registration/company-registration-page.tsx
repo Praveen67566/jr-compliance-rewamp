@@ -1149,68 +1149,70 @@ export function CompanyRegistrationPage({
         </section>
       ) : null}
 
-      <section className="relative isolate scroll-mt-28 overflow-hidden bg-[linear-gradient(180deg,var(--blue-cloud),var(--blue-ice))] py-14 text-navy-950 min-[560px]:py-18 min-[821px]:py-28" id="breakdown">
-        <div
-          className="pointer-events-none absolute inset-0 -z-10 opacity-50 [background-image:linear-gradient(rgba(13,92,184,0.07)_1px,transparent_1px),linear-gradient(90deg,rgba(13,92,184,0.07)_1px,transparent_1px)] [background-size:46px_46px] [mask-image:linear-gradient(100deg,black,transparent_88%)]"
-          aria-hidden="true"
-        />
-        <div
-          className="pointer-events-none absolute -left-44 top-16 -z-10 size-[420px] rounded-full border border-cobalt-600/12 shadow-[0_0_0_46px_rgba(22,140,245,0.035),0_0_0_96px_rgba(22,140,245,0.025)] motion-safe:animate-[route-orbit-drift_18s_ease-in-out_infinite]"
-          aria-hidden="true"
-        />
-        <div
-          className="pointer-events-none absolute -bottom-32 right-[5%] -z-10 size-80 rounded-full bg-cobalt-600/8 blur-3xl"
-          aria-hidden="true"
-        />
-        <div className="relative mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
-          <SectionHeading eyebrow={content.breakdown.eyebrow} title={content.breakdown.title} compact />
-          <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
-            {content.breakdown.groups.map((group, groupIndex) => (
-              <article
-                className="group min-w-0 overflow-hidden rounded-[26px] border border-cobalt-700/18 bg-cloud shadow-[0_22px_58px_rgba(3,19,47,0.1)] transition-[transform,border-color,box-shadow] duration-300 hover:border-cobalt-600/40 hover:shadow-[0_30px_72px_rgba(13,92,184,0.15)] motion-safe:hover:-translate-y-2"
-                key={group.title}
-              >
-                <div className="relative isolate overflow-hidden border-b border-sky/18 bg-[linear-gradient(140deg,var(--blue-navy-800),var(--blue-navy-950))] p-7 text-white md:p-8">
-                  <div
-                    className="pointer-events-none absolute inset-0 -z-10 opacity-20 [background-image:linear-gradient(rgba(139,220,255,0.16)_1px,transparent_1px),linear-gradient(90deg,rgba(139,220,255,0.16)_1px,transparent_1px)] [background-size:30px_30px]"
-                    aria-hidden="true"
-                  />
-                  <div className="flex items-center justify-between gap-4">
-                    <span className="inline-flex min-h-8 items-center rounded-full border border-sky/30 bg-sky/10 px-3 text-[0.68rem] font-extrabold tracking-[0.14em] text-sky">
-                      {String(groupIndex + 1).padStart(2, "0")}
-                    </span>
-                    <span className="pointer-events-none relative size-9" aria-hidden="true">
-                      <span className="absolute inset-0 z-0 rounded-full border border-dashed border-sky/35 motion-safe:animate-[service-orbit_13s_linear_infinite]">
-                        <span className="absolute -top-1 left-1/2 size-2 -translate-x-1/2 rounded-full bg-sky shadow-[0_0_12px_rgba(139,220,255,0.75)]" />
+      {content.breakdown ? (
+        <section className="relative isolate scroll-mt-28 overflow-hidden bg-[linear-gradient(180deg,var(--blue-cloud),var(--blue-ice))] py-14 text-navy-950 min-[560px]:py-18 min-[821px]:py-28" id="breakdown">
+          <div
+            className="pointer-events-none absolute inset-0 -z-10 opacity-50 [background-image:linear-gradient(rgba(13,92,184,0.07)_1px,transparent_1px),linear-gradient(90deg,rgba(13,92,184,0.07)_1px,transparent_1px)] [background-size:46px_46px] [mask-image:linear-gradient(100deg,black,transparent_88%)]"
+            aria-hidden="true"
+          />
+          <div
+            className="pointer-events-none absolute -left-44 top-16 -z-10 size-[420px] rounded-full border border-cobalt-600/12 shadow-[0_0_0_46px_rgba(22,140,245,0.035),0_0_0_96px_rgba(22,140,245,0.025)] motion-safe:animate-[route-orbit-drift_18s_ease-in-out_infinite]"
+            aria-hidden="true"
+          />
+          <div
+            className="pointer-events-none absolute -bottom-32 right-[5%] -z-10 size-80 rounded-full bg-cobalt-600/8 blur-3xl"
+            aria-hidden="true"
+          />
+          <div className="relative mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
+            <SectionHeading eyebrow={content.breakdown.eyebrow} title={content.breakdown.title} compact />
+            <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
+              {content.breakdown.groups.map((group, groupIndex) => (
+                <article
+                  className="group min-w-0 overflow-hidden rounded-[26px] border border-cobalt-700/18 bg-cloud shadow-[0_22px_58px_rgba(3,19,47,0.1)] transition-[transform,border-color,box-shadow] duration-300 hover:border-cobalt-600/40 hover:shadow-[0_30px_72px_rgba(13,92,184,0.15)] motion-safe:hover:-translate-y-2"
+                  key={group.title}
+                >
+                  <div className="relative isolate overflow-hidden border-b border-sky/18 bg-[linear-gradient(140deg,var(--blue-navy-800),var(--blue-navy-950))] p-7 text-white md:p-8">
+                    <div
+                      className="pointer-events-none absolute inset-0 -z-10 opacity-20 [background-image:linear-gradient(rgba(139,220,255,0.16)_1px,transparent_1px),linear-gradient(90deg,rgba(139,220,255,0.16)_1px,transparent_1px)] [background-size:30px_30px]"
+                      aria-hidden="true"
+                    />
+                    <div className="flex items-center justify-between gap-4">
+                      <span className="inline-flex min-h-8 items-center rounded-full border border-sky/30 bg-sky/10 px-3 text-[0.68rem] font-extrabold tracking-[0.14em] text-sky">
+                        {String(groupIndex + 1).padStart(2, "0")}
                       </span>
-                      {group.icon ? <DecorativeCardIcon size="compact" src={group.icon} surface="light" /> : null}
-                    </span>
+                      <span className="pointer-events-none relative size-9" aria-hidden="true">
+                        <span className="absolute inset-0 z-0 rounded-full border border-dashed border-sky/35 motion-safe:animate-[service-orbit_13s_linear_infinite]">
+                          <span className="absolute -top-1 left-1/2 size-2 -translate-x-1/2 rounded-full bg-sky shadow-[0_0_12px_rgba(139,220,255,0.75)]" />
+                        </span>
+                        {group.icon ? <DecorativeCardIcon size="compact" src={group.icon} surface="light" /> : null}
+                      </span>
+                    </div>
+                    <h3 className="mb-0 mt-8 break-words font-display text-[2rem] leading-none tracking-[-0.03em] text-white">
+                      {group.title}
+                    </h3>
                   </div>
-                  <h3 className="mb-0 mt-8 break-words font-display text-[2rem] leading-none tracking-[-0.03em] text-white">
-                    {group.title}
-                  </h3>
-                </div>
-                <ul className="m-0 list-none p-7 md:p-8">
-                  {group.items.map((item, itemIndex) => (
-                    <li
-                      className="relative grid grid-cols-[1.5rem_minmax(0,1fr)] gap-3 border-b border-cobalt-700/10 py-4 text-sm leading-6 text-navy-700/80 before:absolute before:bottom-[-1rem] before:left-[0.7rem] before:top-[2rem] before:w-px before:bg-cobalt-700/15 first:pt-0 last:border-0 last:pb-0 last:before:hidden"
-                      key={`${group.title}-${itemIndex}`}
-                    >
-                      <span className="relative z-10 mt-0.5 flex size-6 items-center justify-center rounded-full border border-cobalt-600/25 bg-ice shadow-[0_4px_12px_rgba(13,92,184,0.1)]" aria-hidden="true">
-                        <span className="size-1.5 rounded-full bg-electric" />
-                      </span>
-                      <RegistrationRichTextView
-                        className="min-w-0 break-words"
-                        value={item}
-                      />
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            ))}
+                  <ul className="m-0 list-none p-7 md:p-8">
+                    {group.items.map((item, itemIndex) => (
+                      <li
+                        className="relative grid grid-cols-[1.5rem_minmax(0,1fr)] gap-3 border-b border-cobalt-700/10 py-4 text-sm leading-6 text-navy-700/80 before:absolute before:bottom-[-1rem] before:left-[0.7rem] before:top-[2rem] before:w-px before:bg-cobalt-700/15 first:pt-0 last:border-0 last:pb-0 last:before:hidden"
+                        key={`${group.title}-${itemIndex}`}
+                      >
+                        <span className="relative z-10 mt-0.5 flex size-6 items-center justify-center rounded-full border border-cobalt-600/25 bg-ice shadow-[0_4px_12px_rgba(13,92,184,0.1)]" aria-hidden="true">
+                          <span className="size-1.5 rounded-full bg-electric" />
+                        </span>
+                        <RegistrationRichTextView
+                          className="min-w-0 break-words"
+                          value={item}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
 
       {content.resultsSection ? <ResultsSection section={content.resultsSection} /> : null}
 

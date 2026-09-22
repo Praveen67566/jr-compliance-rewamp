@@ -137,10 +137,11 @@ responsive legal template; they are not a generic page builder.
   optional editor-ordered trusted-logo relation immediately after the hero.
   Populated records reuse the homepage marquee design and motion; no fallback,
   seed mirror, or database backfill is added for the optional field.
-- Challenges, Advantages, Process, and Why Choose are also optional across all
-  nineteen collections. A published CMS record may omit any of them without
-  becoming invalid or borrowing that section from a local fallback; local
-  fallback records retain their approved content when Strapi is unavailable.
+- Challenges, Advantages, Process, Why Choose, and Breakdown are also optional
+  across all nineteen collections. A published CMS record may omit any of them
+  without becoming invalid or borrowing that section from a local fallback;
+  local fallback records retain their approved content when Strapi is
+  unavailable.
 - Those collections also expose optional, repeatable Extra Content entries
   immediately after the last available card section. The entries render inside
   one clean, unnumbered ice reading card with centered underlined titles and
@@ -155,9 +156,9 @@ responsive legal template; they are not a generic page builder.
   videos across the same nineteen collections. It stores the author label,
   portrait, name, role, experience, verification state, and biography; no
   fallback, seed mirror, or automatic backfill supplies author data.
-- Those same fixed collections expose an optional results panel between the
-  breakdown and ticker CTA. Its rating copy, one to three ordered metrics, and
-  testimonial attribution are CMS managed. Detail items in Challenges,
+- Those same fixed collections expose an optional results panel after the
+  optional breakdown and before the ticker CTA. Its rating copy, one to three
+  ordered metrics, and testimonial attribution are CMS managed. Detail items in Challenges,
   Advantages, Process, and Why Choose, plus Breakdown groups, also accept
   optional icons rendered decoratively inside their themed circular artwork.
   Empty fields preserve the existing pages, and no fallback, seed mirror, or

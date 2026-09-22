@@ -146,13 +146,14 @@ those shared components before adding route-specific CSS.
   overview, optional dark challenges, optional ice advantages, optional
   numbered process, optional cobalt Why JR field, optional ice Extra Content
   reading card with an optional sticky reference sidebar, optional Written By
-  attribution card, optional navy YouTube video grid, ice breakdown, optional
-  navy/cobalt results proof panel, optional ticker CTA, FAQ, and the shared
+  attribution card, optional navy YouTube video grid, optional ice breakdown,
+  optional navy/cobalt results proof panel, optional ticker CTA, FAQ, and the shared
   closing CTA/footer. The trusted-brands marquee renders immediately after the
   hero, Extra Content renders after the last available card section, Written By
   follows Extra Content, and the video grid follows Written By when present,
-  the results panel renders immediately after Breakdown, and the ticker renders
-  immediately before FAQ.
+  the results panel renders immediately after Breakdown when present (otherwise
+  after the preceding available section), and the ticker renders immediately
+  before FAQ.
 - Use Tailwind utilities for the complete detail-page composition. The network
   grid and orbit treatment may also use Tailwind arbitrary gradients; do not
   add a page stylesheet when utilities remain readable.

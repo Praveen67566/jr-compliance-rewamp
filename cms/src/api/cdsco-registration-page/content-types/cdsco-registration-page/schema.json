@@ -96,8 +96,7 @@
     "breakdown": {
       "type": "component",
       "component": "registration.breakdown-section",
-      "repeatable": false,
-      "required": true
+      "repeatable": false
     },
     "resultsSection": {
       "type": "component",

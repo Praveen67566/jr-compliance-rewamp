@@ -46,15 +46,15 @@ unchanged; the Legal Page collection and two Global collections use separate
 fixed contracts. The seven empty Approval collections and both Global
 collections are schema integrations only and contain no bundled records.
 
-Every fixed service-detail collection exposes thirteen optional top-level fields:
+Every fixed service-detail collection exposes fourteen optional top-level fields:
 `trustedLogos`, `challenges`, `advantages`, `process`, `whyChoose`,
 `extraContent`, `extraContentSidebarHeader`, `extraContentSidebarGuides`,
-`extraContentSidebarServices`, `writtenBy`, `youtubeVideos`, `resultsSection`, and
-`tickerCta`. Trusted logos follow the hero; each available card section retains
+`extraContentSidebarServices`, `writtenBy`, `youtubeVideos`, `breakdown`,
+`resultsSection`, and `tickerCta`. Trusted logos follow the hero; each available card section retains
 its fixed order; Extra Content and its optional sticky sidebar follow the last
 available card section; Written By follows Extra Content; YouTube videos follow
-Written By; Results follows
-the breakdown; and the ticker precedes FAQ.
+Written By; Results follows the breakdown when present; and the ticker
+precedes FAQ.
 Detail items in the four optional card sections, plus Breakdown groups, also
 accept optional image icons. Leaving any optional field empty does not make an
 otherwise complete record invalid or cause the frontend to borrow that section
@@ -294,16 +294,16 @@ Each content type folder follows the Strapi pattern:
 : Dedicated detail-page records for the nineteen Company Registration slugs.
 Each record uses the fixed hero, optional trusted logos, overview, optional
 Challenges, Advantages, Process, Why JR, Extra Content and its sidebar,
-optional Written By attribution, optional YouTube videos, breakdown, optional results proof, optional ticker
-CTA, FAQ, closing CTA, and SEO fields; it is not
+optional Written By attribution, optional YouTube videos, optional breakdown,
+optional results proof, optional ticker CTA, FAQ, closing CTA, and SEO fields; it is not
 a generic page builder.
 
 `cms/src/api/mca-service-page/`
 : Dedicated detail-page records for approved MCA Services slugs. The first DSC
 record uses the same fixed hero, optional trusted logos, overview, optional
 Challenges, Advantages, Process, Why JR, Extra Content and its sidebar,
-optional Written By attribution, optional YouTube videos, breakdown, optional results proof, optional ticker
-CTA, FAQ, closing CTA, and SEO fields without
+optional Written By attribution, optional YouTube videos, optional breakdown,
+optional results proof, optional ticker CTA, FAQ, closing CTA, and SEO fields without
 widening the Company Registration collection into a generic page builder.
 
 `cms/src/api/import-export-service-page/`
@@ -593,7 +593,8 @@ PostgreSQL variables for local and deployed CMS environments are defined in
   under **Extra Content**; configure its **Sidebar Header**, **Sidebar Guides**,
   and **Sidebar Services**; add the optional **Written By** author attribution;
   add one or more titled HTTPS single-video YouTube
-  URLs under **YouTube Videos**; add a **Results Section** or **Ticker CTA**;
+  URLs under **YouTube Videos**; add **Breakdown**, a **Results Section**, or
+  **Ticker CTA**;
   and select icons for card details or Breakdown. Missing optional CMS sections
   stay omitted, while the approved local fallback records remain unchanged.
 - Deploying `legal-page` does not populate the active PostgreSQL database.
