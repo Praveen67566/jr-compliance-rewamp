@@ -130,6 +130,6 @@ Approval collections:
 - `lmpc-certification-page`
 - `stqc-page`
 
-Changes in all collection pages :-
+Only Ui Changes :-
 
-1. here what i want breakdown* section to not to be required like all other sections whyChoose process.
+1. Now the youtube section i also want this to be in between the Written By and review section on the left side.

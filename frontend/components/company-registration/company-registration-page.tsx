@@ -31,6 +31,7 @@ import type {
   RegistrationWrittenBy,
   SebiBusinessRegistrationPageContent,
   TaxAccountingPageContent,
+  YouTubeVideoSection,
 } from "@/lib/types";
 
 type CompanyRegistrationPageProps = {
@@ -398,96 +399,166 @@ function ResultsSection({ section }: { section: RegistrationResultsSection }) {
         : "grid-cols-1 min-[560px]:grid-cols-3";
 
   return (
-    <section
+    <article
       aria-labelledby="service-results-heading"
-      className="relative isolate scroll-mt-28 overflow-hidden border-y border-sky/14 bg-[linear-gradient(145deg,var(--blue-navy-900),var(--blue-navy-950))] py-12 text-white min-[560px]:py-16 min-[821px]:py-24"
+      className="relative isolate scroll-mt-28 overflow-hidden rounded-[24px] border border-sky/20 bg-[linear-gradient(145deg,var(--blue-navy-800),var(--blue-navy-950))] p-5 text-white shadow-[0_20px_52px_rgba(3,19,47,0.2)] min-[560px]:p-7 min-[821px]:p-8"
       id="results"
     >
       <div
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_82%_18%,rgba(22,140,245,0.18),transparent_32%),radial-gradient(circle_at_10%_88%,rgba(139,220,255,0.1),transparent_30%)]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_88%_12%,rgba(22,140,245,0.2),transparent_35%),radial-gradient(circle_at_8%_92%,rgba(139,220,255,0.08),transparent_34%)]"
         aria-hidden="true"
       />
       <div
-        className="pointer-events-none absolute inset-0 -z-10 opacity-30 [background-image:linear-gradient(rgba(139,220,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(139,220,255,0.08)_1px,transparent_1px)] [background-size:44px_44px] [mask-image:linear-gradient(90deg,transparent,black_14%,black_86%,transparent)]"
+        className="pointer-events-none absolute inset-0 -z-10 opacity-25 [background-image:linear-gradient(rgba(139,220,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(139,220,255,0.08)_1px,transparent_1px)] [background-size:36px_36px] [mask-image:linear-gradient(112deg,black,transparent_78%)]"
         aria-hidden="true"
       />
-      <div className="mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
-        <article className="relative min-w-0 overflow-hidden border-y border-sky/18 bg-[linear-gradient(135deg,rgba(4,26,67,0.82),rgba(3,15,43,0.9))] p-5 shadow-[0_24px_70px_rgba(0,8,34,0.32)] min-[560px]:p-7 min-[821px]:p-9">
-          <div
-            className="pointer-events-none absolute inset-0 opacity-[0.24] [background-image:linear-gradient(rgba(139,220,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(139,220,255,0.08)_1px,transparent_1px)] [background-size:40px_40px] [mask-image:linear-gradient(112deg,black,transparent_74%)]"
-            aria-hidden="true"
-          />
-          <div
-            className="pointer-events-none absolute bottom-7 left-[52%] hidden h-px w-[38%] bg-[linear-gradient(90deg,rgba(139,220,255,0.38),transparent)] min-[981px]:block"
-            aria-hidden="true"
-          />
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-[linear-gradient(90deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))]"
+      />
 
-          <div className="relative grid min-w-0 gap-8 min-[981px]:grid-cols-[minmax(0,1fr)_minmax(340px,0.82fr)] min-[981px]:items-center min-[1100px]:gap-12">
-            <div className="min-w-0">
-              <div className="flex w-fit max-w-full flex-wrap items-center gap-x-3 gap-y-2 text-[0.76rem] text-ice/76">
-                <strong className="font-extrabold text-white">{section.rating.label}</strong>
-                <span className="flex items-center gap-1" aria-hidden="true">
-                  {Array.from({ length: 5 }, (_, index) => (
-                    <span
-                      className="flex size-4 items-center justify-center border border-sky/20 bg-electric text-[0.5rem] leading-none text-white shadow-[0_4px_10px_rgba(22,140,245,0.22)]"
-                      key={index}
-                    >
-                      ★
-                    </span>
-                  ))}
+      <div className="relative grid min-w-0 gap-6 min-[900px]:grid-cols-[minmax(0,1fr)_minmax(280px,0.78fr)] min-[900px]:items-center min-[1100px]:gap-8">
+        <div className="min-w-0">
+          <div className="flex w-fit max-w-full flex-wrap items-center gap-x-3 gap-y-2 rounded-full border border-sky/16 bg-sky/6 px-3 py-2 text-[0.72rem] text-ice/76">
+            <strong className="font-extrabold text-white">{section.rating.label}</strong>
+            <span className="flex items-center gap-1" aria-hidden="true">
+              {Array.from({ length: 5 }, (_, index) => (
+                <span
+                  className="flex size-4 items-center justify-center rounded-[4px] border border-sky/20 bg-electric text-[0.5rem] leading-none text-white shadow-[0_4px_10px_rgba(22,140,245,0.22)]"
+                  key={index}
+                >
+                  ★
                 </span>
-                <span className="inline-flex items-center gap-1.5 font-bold text-sky">
-                  <span className="size-1.5 rounded-full bg-electric shadow-[0_0_10px_rgba(22,140,245,0.55)]" aria-hidden="true" />
-                  {section.rating.source}
-                </span>
-              </div>
-
-              <h2
-                className="relative mb-0 mt-5 max-w-[680px] break-words font-sans text-[clamp(1.9rem,3vw,3rem)] font-extrabold leading-[1.04] tracking-normal text-white"
-                id="service-results-heading"
-              >
-                {section.title}
-              </h2>
-              <p className="relative mb-0 mt-3 max-w-[620px] break-words text-sm leading-6 text-ice/70 min-[560px]:text-[0.95rem]">
-                {section.description}
-              </p>
-
-              <dl className={`relative mt-9 grid gap-x-6 gap-y-5 ${statsGrid}`}>
-                {section.stats.map((stat, index) => (
-                  <div className="min-w-0 border-l border-sky/18 pl-4" key={`${stat.label}-${index}`}>
-                    <dd className="m-0 break-words font-sans text-[clamp(1.65rem,2.1vw,2.15rem)] font-extrabold leading-none tracking-normal text-white">
-                      {stat.value}
-                    </dd>
-                    <dt className="mt-2 break-words text-[0.7rem] font-semibold uppercase leading-5 tracking-[0.08em] text-ice/62">
-                      {stat.label}
-                    </dt>
-                  </div>
-                ))}
-              </dl>
-            </div>
-
-            <blockquote className="relative mx-0 mb-0 min-w-0 border-t border-sky/18 pt-7 min-[981px]:border-l min-[981px]:border-t-0 min-[981px]:py-6 min-[981px]:pl-9">
-              <p className="mb-0 max-w-[54ch] break-words text-[clamp(0.98rem,1.25vw,1.16rem)] font-semibold leading-7 tracking-normal text-ice/88">
-                <span aria-hidden="true">“</span>
-                {section.quote}
-                <span aria-hidden="true">”</span>
-              </p>
-              <footer className="mt-5 text-xs leading-5 text-ice/62 min-[560px]:text-[0.82rem]">
-                <cite className="not-italic">
-                  <span className="flex items-start gap-3">
-                    <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-electric shadow-[0_0_10px_rgba(22,140,245,0.55)]" aria-hidden="true" />
-                    <span className="min-w-0 break-words">
-                      <strong className="font-semibold text-white">{section.name}</strong>
-                      {attribution ? <span> · {attribution}</span> : null}
-                    </span>
-                  </span>
-                </cite>
-              </footer>
-            </blockquote>
+              ))}
+            </span>
+            <span className="inline-flex items-center gap-1.5 font-bold text-sky">
+              <span className="size-1.5 rounded-full bg-electric shadow-[0_0_10px_rgba(22,140,245,0.55)]" aria-hidden="true" />
+              {section.rating.source}
+            </span>
           </div>
-        </article>
+
+          <h2
+            className="relative mb-0 mt-4 max-w-[680px] break-words font-sans text-[clamp(1.55rem,2.4vw,2.2rem)] font-extrabold leading-[1.08] tracking-[-0.02em] text-white"
+            id="service-results-heading"
+          >
+            {section.title}
+          </h2>
+          <p className="relative mb-0 mt-2.5 max-w-[620px] break-words text-sm leading-6 text-ice/70">
+            {section.description}
+          </p>
+
+          <dl className={`relative mt-6 grid gap-3 ${statsGrid}`}>
+            {section.stats.map((stat, index) => (
+              <div
+                className="min-w-0 rounded-[14px] border border-sky/12 bg-navy-950/45 px-4 py-3"
+                key={`${stat.label}-${index}`}
+              >
+                <dd className="m-0 break-words font-sans text-[clamp(1.4rem,1.8vw,1.8rem)] font-extrabold leading-none tracking-normal text-white">
+                  {stat.value}
+                </dd>
+                <dt className="mt-1.5 break-words text-[0.65rem] font-semibold uppercase leading-4 tracking-[0.08em] text-ice/62">
+                  {stat.label}
+                </dt>
+              </div>
+            ))}
+          </dl>
+        </div>
+
+        <blockquote className="relative mx-0 mb-0 min-w-0 rounded-[18px] border border-sky/14 bg-navy-950/55 p-5 min-[560px]:p-6">
+          <span className="mb-3 block font-display text-3xl leading-none text-sky/70" aria-hidden="true">
+            “
+          </span>
+          <p className="mb-0 max-w-[54ch] break-words text-[0.95rem] font-semibold leading-7 tracking-normal text-ice/88">
+            {section.quote}
+          </p>
+          <footer className="mt-4 border-t border-sky/12 pt-4 text-xs leading-5 text-ice/62">
+            <cite className="not-italic">
+              <span className="flex items-start gap-3">
+                <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-electric shadow-[0_0_10px_rgba(22,140,245,0.55)]" aria-hidden="true" />
+                <span className="min-w-0 break-words">
+                  <strong className="font-semibold text-white">{section.name}</strong>
+                  {attribution ? <span> · {attribution}</span> : null}
+                </span>
+              </span>
+            </cite>
+          </footer>
+        </blockquote>
       </div>
-    </section>
+    </article>
+  );
+}
+
+function YouTubeVideosSection({ section }: { section: YouTubeVideoSection }) {
+  return (
+    <article
+      aria-labelledby="youtube-videos-heading"
+      className="relative isolate scroll-mt-28 overflow-hidden rounded-[24px] border border-sky/20 bg-navy-950 p-5 text-white shadow-[0_20px_52px_rgba(3,19,47,0.2)] min-[560px]:p-7 min-[821px]:p-8"
+      id="youtube-videos"
+    >
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 opacity-25 [background-image:linear-gradient(rgba(139,220,255,0.12)_1px,transparent_1px),linear-gradient(90deg,rgba(139,220,255,0.12)_1px,transparent_1px)] [background-size:42px_42px] [mask-image:radial-gradient(circle_at_center,black,transparent_82%)]"
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute -right-24 -top-16 -z-10 size-72 rounded-full bg-electric/12 blur-3xl"
+        aria-hidden="true"
+      />
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-[linear-gradient(90deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))]"
+      />
+
+      <header className="relative mb-6 max-w-[760px]">
+        <span className="mb-3 flex items-center gap-2 text-[0.7rem] font-extrabold uppercase tracking-[0.14em] text-sky">
+          <span className="size-1.5 rounded-full bg-current" aria-hidden="true" />
+          {section.eyebrow}
+        </span>
+        <h2
+          className="mb-0 break-words font-display text-[clamp(1.8rem,3vw,2.65rem)] leading-[1.02] tracking-[-0.035em] text-white"
+          id="youtube-videos-heading"
+        >
+          {section.title}
+        </h2>
+        {section.description ? (
+          <p className="mb-0 mt-3 max-w-[720px] text-sm leading-7 text-ice/72 min-[560px]:text-base">
+            {section.description}
+          </p>
+        ) : null}
+      </header>
+
+      <div
+        className={`relative grid grid-cols-1 gap-5 ${
+          section.videos.length > 1 ? "min-[821px]:grid-cols-2" : ""
+        }`}
+      >
+        {section.videos.map((video, index) => (
+          <figure
+            className="m-0 min-w-0 overflow-hidden rounded-[18px] border border-sky/18 bg-navy-800/80 shadow-[0_16px_38px_rgba(0,8,34,0.3)]"
+            key={`${video.embedUrl}-${index}`}
+          >
+            <div className="relative aspect-video overflow-hidden border-b border-sky/15 bg-navy-900">
+              <iframe
+                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                className="absolute inset-0 h-full w-full border-0"
+                loading="lazy"
+                referrerPolicy="strict-origin-when-cross-origin"
+                src={video.embedUrl}
+                title={video.title}
+              />
+            </div>
+            <figcaption className="flex min-w-0 items-center gap-3 p-4 min-[560px]:p-5">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-full border border-sky/30 bg-electric/12 text-[0.62rem] font-extrabold tracking-[0.1em] text-sky">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <h3 className="mb-0 min-w-0 break-words font-display text-[1.3rem] leading-[1.1] text-white">
+                {video.title}
+              </h3>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </article>
   );
 }
 
@@ -642,84 +713,80 @@ function ExtraContentSidebar({
 
 function WrittenBySection({ section }: { section: RegistrationWrittenBy }) {
   return (
-    <section
+    <article
       aria-labelledby="service-author-heading"
-      className="relative border-b border-cobalt-700/10 bg-[linear-gradient(180deg,var(--blue-cloud),var(--blue-ice))] py-10 min-[821px]:py-12"
+      className="relative overflow-hidden rounded-[20px] border border-cobalt-700/14 bg-cloud shadow-[0_16px_44px_rgba(3,19,47,0.07)]"
       id="written-by"
     >
-      <div className="mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
-        <article className="relative overflow-hidden rounded-[20px] border border-cobalt-700/14 bg-cloud shadow-[0_18px_48px_rgba(3,19,47,0.08)]">
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-[linear-gradient(90deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))]"
-          />
-          <div className="p-5 min-[560px]:p-7 min-[821px]:p-9">
-            <p className="mb-5 text-[0.7rem] font-extrabold uppercase tracking-[0.16em] text-cobalt-600">
-              {section.label}
-            </p>
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-[linear-gradient(90deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))]"
+      />
+      <div className="p-5 min-[560px]:p-7">
+        <p className="mb-5 text-[0.7rem] font-extrabold uppercase tracking-[0.16em] text-cobalt-600">
+          {section.label}
+        </p>
 
-            <div className="flex min-w-0 flex-col gap-5 min-[560px]:flex-row min-[560px]:items-center">
-              <div className="relative size-[76px] shrink-0 rounded-full bg-[linear-gradient(145deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))] p-[3px] shadow-[0_10px_26px_rgba(13,92,184,0.2)]">
-                <img
-                  alt={`${section.name}, ${section.role}`}
-                  className="h-full w-full rounded-full bg-ice object-cover"
-                  decoding="async"
-                  height={70}
-                  loading="lazy"
-                  src={section.avatar}
-                  width={70}
-                />
-              </div>
-
-              <div className="min-w-0 flex-1">
-                <div className="flex min-w-0 flex-wrap items-center gap-2">
-                  <h2
-                    className="mb-0 break-words text-[clamp(1.2rem,1.6vw,1.5rem)] font-bold leading-tight tracking-[-0.02em] text-navy-950"
-                    id="service-author-heading"
-                  >
-                    {section.name}
-                  </h2>
-                  {section.verified ? (
-                    <span
-                      aria-label="Verified author"
-                      className="inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-cobalt-700 text-cloud shadow-[0_4px_12px_rgba(13,92,184,0.22)]"
-                      title="Verified author"
-                    >
-                      <svg
-                        aria-hidden="true"
-                        className="size-3"
-                        fill="none"
-                        viewBox="0 0 12 12"
-                      >
-                        <path
-                          d="m3 6.1 1.8 1.8L9.2 3.7"
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="1.8"
-                        />
-                      </svg>
-                    </span>
-                  ) : null}
-                </div>
-                <p className="mb-0 mt-1 break-words text-sm leading-6 text-navy-700/70 min-[560px]:text-[0.95rem]">
-                  {section.role}
-                </p>
-                <span className="mt-4 inline-flex rounded-full border border-cobalt-600/16 bg-ice px-4 py-2 text-xs font-bold leading-none text-cobalt-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
-                  {section.experience}
-                </span>
-              </div>
-            </div>
-
-            <div className="mt-7 border-t border-cobalt-700/12 pt-6">
-              <p className="mb-0 max-w-[1160px] break-words text-[0.9375rem] leading-[1.75] text-navy-700/76 min-[821px]:text-base">
-                {section.biography}
-              </p>
-            </div>
+        <div className="flex min-w-0 flex-col gap-5 min-[560px]:flex-row min-[560px]:items-center">
+          <div className="relative size-[72px] shrink-0 rounded-full bg-[linear-gradient(145deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))] p-[3px] shadow-[0_10px_26px_rgba(13,92,184,0.2)]">
+            <img
+              alt={`${section.name}, ${section.role}`}
+              className="h-full w-full rounded-full bg-ice object-cover"
+              decoding="async"
+              height={66}
+              loading="lazy"
+              src={section.avatar}
+              width={66}
+            />
           </div>
-        </article>
+
+          <div className="min-w-0 flex-1">
+            <div className="flex min-w-0 flex-wrap items-center gap-2">
+              <h2
+                className="mb-0 break-words text-[clamp(1.2rem,1.6vw,1.5rem)] font-bold leading-tight tracking-[-0.02em] text-navy-950"
+                id="service-author-heading"
+              >
+                {section.name}
+              </h2>
+              {section.verified ? (
+                <span
+                  aria-label="Verified author"
+                  className="inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-cobalt-700 text-cloud shadow-[0_4px_12px_rgba(13,92,184,0.22)]"
+                  title="Verified author"
+                >
+                  <svg
+                    aria-hidden="true"
+                    className="size-3"
+                    fill="none"
+                    viewBox="0 0 12 12"
+                  >
+                    <path
+                      d="m3 6.1 1.8 1.8L9.2 3.7"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.8"
+                    />
+                  </svg>
+                </span>
+              ) : null}
+            </div>
+            <p className="mb-0 mt-1 break-words text-sm leading-6 text-navy-700/70 min-[560px]:text-[0.95rem]">
+              {section.role}
+            </p>
+            <span className="mt-3 inline-flex rounded-full border border-cobalt-600/16 bg-ice px-4 py-2 text-xs font-bold leading-none text-cobalt-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
+              {section.experience}
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-6 border-t border-cobalt-700/12 pt-5">
+          <p className="mb-0 max-w-[1160px] break-words text-[0.9375rem] leading-[1.7] text-navy-700/76">
+            {section.biography}
+          </p>
+        </div>
       </div>
-    </section>
+    </article>
   );
 }
 
@@ -736,6 +803,12 @@ export function CompanyRegistrationPage({
     content.extraContentSidebarHeader ||
       content.extraContentSidebarGuides ||
       content.extraContentSidebarServices,
+  );
+  const hasEditorialCards = Boolean(
+    content.extraContent?.length ||
+      content.writtenBy ||
+      content.youtubeVideos ||
+      content.resultsSection,
   );
 
   return (
@@ -1020,7 +1093,7 @@ export function CompanyRegistrationPage({
         </section>
       ) : null}
 
-      {content.extraContent?.length ? (
+      {hasEditorialCards ? (
         <section
           aria-label="Additional service information"
           className="relative border-y border-cobalt-700/10 bg-[linear-gradient(180deg,var(--blue-ice)_0,var(--blue-cloud)_8rem)] py-10 text-navy-950 min-[821px]:py-12"
@@ -1033,45 +1106,59 @@ export function CompanyRegistrationPage({
                 : ""
             }`}
           >
-            <article
-              className={`relative min-w-0 overflow-hidden rounded-[20px] border border-cobalt-700/12 bg-cloud px-5 antialiased shadow-[0_16px_44px_rgba(3,19,47,0.06)] min-[560px]:px-7 min-[821px]:px-10 ${
+            <div
+              className={`min-w-0 space-y-6 ${
                 hasExtraContentSidebar ? "" : "mx-auto w-full max-w-[1320px]"
               }`}
-              style={{
-                fontFamily: EXTRA_CONTENT_FONT_FAMILY,
-                fontKerning: "normal",
-                fontOpticalSizing: "auto",
-              }}
             >
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-[linear-gradient(90deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))]"
-              />
-              <div className="relative divide-y divide-cobalt-700/12">
-                {content.extraContent.map((item, index) => (
-                  <section
-                    className="min-w-0 py-7 min-[821px]:py-9"
-                    key={`${item.title}-${index}`}
-                  >
-                    <header className="mx-auto max-w-[1000px] text-center">
-                      <h2 className="mb-0 text-balance break-words text-[clamp(1.35rem,1.7vw,1.7rem)] font-medium leading-[1.25] tracking-[-0.02em] text-navy-950">
-                        {item.title}
-                      </h2>
-                      <span
-                        className="mx-auto mt-2.5 block h-0.5 w-16 rounded-full bg-electric"
-                        aria-hidden="true"
-                      />
-                    </header>
-                    <RegistrationRichTextView
-                      articleTitle={item.title}
-                      className="mx-auto mt-5 max-w-[1160px] break-words text-[0.9375rem] font-normal leading-[1.75] tracking-[0px] text-[#475569] selection:bg-sky/45 selection:text-navy-950"
-                      value={item.description}
-                      variant="article"
-                    />
-                  </section>
-                ))}
-              </div>
-            </article>
+              {content.extraContent?.length ? (
+                <article
+                  className="relative min-w-0 overflow-hidden rounded-[20px] border border-cobalt-700/12 bg-cloud px-5 antialiased shadow-[0_16px_44px_rgba(3,19,47,0.06)] min-[560px]:px-7 min-[821px]:px-10"
+                  style={{
+                    fontFamily: EXTRA_CONTENT_FONT_FAMILY,
+                    fontKerning: "normal",
+                    fontOpticalSizing: "auto",
+                  }}
+                >
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-[linear-gradient(90deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))]"
+                  />
+                  <div className="relative divide-y divide-cobalt-700/12">
+                    {content.extraContent.map((item, index) => (
+                      <section
+                        className="min-w-0 py-7 min-[821px]:py-9"
+                        key={`${item.title}-${index}`}
+                      >
+                        <header className="mx-auto max-w-[1000px] text-center">
+                          <h2 className="mb-0 text-balance break-words text-[clamp(1.35rem,1.7vw,1.7rem)] font-medium leading-[1.25] tracking-[-0.02em] text-navy-950">
+                            {item.title}
+                          </h2>
+                          <span
+                            className="mx-auto mt-2.5 block h-0.5 w-16 rounded-full bg-electric"
+                            aria-hidden="true"
+                          />
+                        </header>
+                        <RegistrationRichTextView
+                          articleTitle={item.title}
+                          className="mx-auto mt-5 max-w-[1160px] break-words text-[0.9375rem] font-normal leading-[1.75] tracking-[0px] text-[#475569] selection:bg-sky/45 selection:text-navy-950"
+                          value={item.description}
+                          variant="article"
+                        />
+                      </section>
+                    ))}
+                  </div>
+                </article>
+              ) : null}
+
+              {content.writtenBy ? <WrittenBySection section={content.writtenBy} /> : null}
+
+              {content.youtubeVideos ? (
+                <YouTubeVideosSection section={content.youtubeVideos} />
+              ) : null}
+
+              {content.resultsSection ? <ResultsSection section={content.resultsSection} /> : null}
+            </div>
             {hasExtraContentSidebar ? (
               <ExtraContentSidebar
                 guides={content.extraContentSidebarGuides}
@@ -1079,72 +1166,6 @@ export function CompanyRegistrationPage({
                 services={content.extraContentSidebarServices}
               />
             ) : null}
-          </div>
-        </section>
-      ) : null}
-
-      {content.writtenBy ? <WrittenBySection section={content.writtenBy} /> : null}
-
-      {content.youtubeVideos ? (
-        <section
-          className="relative isolate overflow-hidden bg-navy-950 py-14 min-[560px]:py-18 min-[821px]:py-28"
-          aria-labelledby="youtube-videos-heading"
-          id="youtube-videos"
-        >
-          <div
-            className="pointer-events-none absolute inset-0 -z-10 opacity-25 [background-image:linear-gradient(rgba(139,220,255,0.12)_1px,transparent_1px),linear-gradient(90deg,rgba(139,220,255,0.12)_1px,transparent_1px)] [background-size:48px_48px] [mask-image:radial-gradient(circle_at_center,black,transparent_82%)]"
-            aria-hidden="true"
-          />
-          <div
-            className="pointer-events-none absolute -right-28 top-10 -z-10 size-80 rounded-full bg-electric/12 blur-3xl"
-            aria-hidden="true"
-          />
-          <div className="relative mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
-            <SectionHeading
-              eyebrow={content.youtubeVideos.eyebrow}
-              headingId="youtube-videos-heading"
-              title={content.youtubeVideos.title}
-              tone="light"
-            />
-            {content.youtubeVideos.description ? (
-              <p className="-mt-5 mb-10 max-w-[760px] text-base leading-8 text-ice/72 md:text-lg">
-                {content.youtubeVideos.description}
-              </p>
-            ) : null}
-            <div
-              className={`grid grid-cols-1 gap-6 ${
-                content.youtubeVideos.videos.length === 1
-                  ? "mx-auto w-full min-[821px]:max-w-[calc(50%_-_0.75rem)]"
-                  : "min-[821px]:grid-cols-2"
-              }`}
-            >
-              {content.youtubeVideos.videos.map((video, index) => (
-                <figure
-                  className="m-0 min-w-0 overflow-hidden rounded-[26px] border border-sky/20 bg-navy-800/80 shadow-[0_24px_62px_rgba(0,8,34,0.34)]"
-                  key={`${video.embedUrl}-${index}`}
-                >
-                  <div className="relative aspect-video overflow-hidden border-b border-sky/15 bg-navy-900">
-                    <iframe
-                      allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      allowFullScreen
-                      className="absolute inset-0 h-full w-full border-0"
-                      loading="lazy"
-                      referrerPolicy="strict-origin-when-cross-origin"
-                      src={video.embedUrl}
-                      title={video.title}
-                    />
-                  </div>
-                  <figcaption className="flex min-w-0 items-start gap-4 p-6 md:p-7">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-full border border-sky/30 bg-electric/12 text-[0.65rem] font-extrabold tracking-[0.12em] text-sky">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <h3 className="mb-0 min-w-0 break-words font-display text-[1.65rem] leading-[1.05] text-white">
-                      {video.title}
-                    </h3>
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
           </div>
         </section>
       ) : null}
@@ -1213,8 +1234,6 @@ export function CompanyRegistrationPage({
           </div>
         </section>
       ) : null}
-
-      {content.resultsSection ? <ResultsSection section={content.resultsSection} /> : null}
 
       {content.tickerCta ? (
         <section

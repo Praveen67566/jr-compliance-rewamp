@@ -402,9 +402,9 @@ describe("service-detail content mirrors", () => {
     assert.ok(whyChooseIndex < extraContentIndex);
     assert.ok(extraContentIndex < writtenByIndex);
     assert.ok(writtenByIndex < youtubeIndex);
-    assert.ok(youtubeIndex < breakdownIndex);
-    assert.ok(breakdownIndex < resultsIndex);
-    assert.ok(resultsIndex < tickerIndex);
+    assert.ok(youtubeIndex < resultsIndex);
+    assert.ok(resultsIndex < breakdownIndex);
+    assert.ok(breakdownIndex < tickerIndex);
     assert.ok(tickerIndex < faqIndex);
     assert.match(component, /loading="lazy"/);
     assert.match(component, /referrerPolicy="strict-origin-when-cross-origin"/);
@@ -544,13 +544,30 @@ describe("service-detail content mirrors", () => {
       2,
     );
     assert.match(strapiAdapter, /writtenBy: _fallbackWrittenBy/);
+    const editorialCardsSection = sourceBetween(
+      component,
+      "{hasEditorialCards ? (",
+      "{content.breakdown ? (",
+    );
     const extraContentSection = sourceBetween(
       component,
       "{content.extraContent?.length ?",
       "{content.writtenBy ?",
     );
-    assert.match(extraContentSection, /aria-label="Additional service information"/);
-    assert.match(extraContentSection, /id="extra-content"/);
+    assert.match(editorialCardsSection, /aria-label="Additional service information"/);
+    assert.match(editorialCardsSection, /id="extra-content"/);
+    assert.match(editorialCardsSection, /space-y-6/);
+    assert.match(editorialCardsSection, /<WrittenBySection section=\{content\.writtenBy\}/);
+    assert.match(editorialCardsSection, /<YouTubeVideosSection section=\{content\.youtubeVideos\}/);
+    assert.match(editorialCardsSection, /<ResultsSection section=\{content\.resultsSection\}/);
+    assert.ok(
+      editorialCardsSection.indexOf("<WrittenBySection") <
+        editorialCardsSection.indexOf("<YouTubeVideosSection"),
+    );
+    assert.ok(
+      editorialCardsSection.indexOf("<YouTubeVideosSection") <
+        editorialCardsSection.indexOf("<ResultsSection"),
+    );
     assert.match(extraContentSection, /content\.extraContent\.map\(\(item, index\)/);
     assert.match(extraContentSection, /<h2 className=/);
     assert.equal(extraContentSection.match(/<article/g)?.length, 1);
@@ -568,13 +585,13 @@ describe("service-detail content mirrors", () => {
     assert.match(extraContentSection, /max-w-\[1160px\]/);
     assert.match(extraContentSection, /articleTitle=\{item\.title\}/);
     assert.match(extraContentSection, /rounded-\[20px\]/);
-    assert.match(extraContentSection, /max-w-\[1320px\]/);
-    assert.match(extraContentSection, /py-10.*min-\[821px\]:py-12/);
+    assert.match(editorialCardsSection, /max-w-\[1320px\]/);
+    assert.match(editorialCardsSection, /py-10.*min-\[821px\]:py-12/);
     assert.match(extraContentSection, /inset-x-0 top-0 h-\[3px\]/);
     assert.match(extraContentSection, /blue-cobalt-700.*blue-electric.*blue-sky/);
     assert.match(extraContentSection, /shadow-\[0_16px_44px_rgba\(3,19,47,0\.06\)\]/);
-    assert.match(extraContentSection, /min-\[1100px\]:grid-cols/);
-    assert.match(extraContentSection, /<ExtraContentSidebar/);
+    assert.match(editorialCardsSection, /min-\[1100px\]:grid-cols/);
+    assert.match(editorialCardsSection, /<ExtraContentSidebar/);
     assert.match(component, /const tableLayoutClassName = isArticle/);
     assert.match(component, /\[&_table\]:table /);
     assert.match(component, /\[&_table\]:table-auto/);
@@ -625,6 +642,14 @@ describe("service-detail content mirrors", () => {
     assert.match(writtenBySection, /section\.biography/);
     assert.match(writtenBySection, /min-\[560px\]:flex-row/);
     assert.match(writtenBySection, /blue-cobalt-700.*blue-electric.*blue-sky/);
+    const resultsSection = sourceBetween(
+      component,
+      "function ResultsSection",
+      "function ExtraContentSidebar",
+    );
+    assert.match(resultsSection, /rounded-\[24px\]/);
+    assert.match(resultsSection, /rounded-\[18px\]/);
+    assert.doesNotMatch(resultsSection, /border-y/);
     const resultsMapper = strapiAdapter.slice(
       strapiAdapter.indexOf("function mapFixedServiceResultsSection"),
       strapiAdapter.indexOf("function strictTextList"),
@@ -826,7 +851,7 @@ describe("service-detail content mirrors", () => {
     const breakdownSection = sourceBetween(
       component,
       'id="breakdown"',
-      "{content.resultsSection ?",
+      "{content.tickerCta ?",
     );
     assert.match(breakdownSection, /group\.icon \?/);
     assert.match(breakdownSection, /relative size-9/);
@@ -864,7 +889,7 @@ describe("service-detail content mirrors", () => {
     const breakdownSection = sourceBetween(
       component,
       'id="breakdown"',
-      "{content.resultsSection ?",
+      "{content.tickerCta ?",
     );
 
     assert.match(
