@@ -722,28 +722,28 @@ function WrittenBySection({ section }: { section: RegistrationWrittenBy }) {
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-[linear-gradient(90deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))]"
       />
-      <div className="p-5 min-[560px]:p-7">
-        <p className="mb-5 text-[0.7rem] font-extrabold uppercase tracking-[0.16em] text-cobalt-600">
+      <div className="p-4 min-[560px]:px-5 min-[560px]:py-4">
+        <p className="mb-3 text-[0.625rem] font-extrabold uppercase tracking-[0.14em] text-cobalt-600">
           {section.label}
         </p>
 
-        <div className="flex min-w-0 flex-col gap-5 min-[560px]:flex-row min-[560px]:items-center">
-          <div className="relative size-[72px] shrink-0 rounded-full bg-[linear-gradient(145deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))] p-[3px] shadow-[0_10px_26px_rgba(13,92,184,0.2)]">
+        <div className="flex min-w-0 flex-col gap-3 min-[560px]:flex-row min-[560px]:items-center">
+          <div className="relative size-14 shrink-0 rounded-full bg-[linear-gradient(145deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))] p-0.5 shadow-[0_8px_20px_rgba(13,92,184,0.18)]">
             <img
               alt={`${section.name}, ${section.role}`}
               className="h-full w-full rounded-full bg-ice object-cover"
               decoding="async"
-              height={66}
+              height={52}
               loading="lazy"
               src={section.avatar}
-              width={66}
+              width={52}
             />
           </div>
 
           <div className="min-w-0 flex-1">
             <div className="flex min-w-0 flex-wrap items-center gap-2">
               <h2
-                className="mb-0 break-words text-[clamp(1.2rem,1.6vw,1.5rem)] font-bold leading-tight tracking-[-0.02em] text-navy-950"
+                className="mb-0 break-words text-[clamp(1rem,1.25vw,1.2rem)] font-bold leading-tight tracking-[-0.015em] text-navy-950"
                 id="service-author-heading"
               >
                 {section.name}
@@ -751,7 +751,7 @@ function WrittenBySection({ section }: { section: RegistrationWrittenBy }) {
               {section.verified ? (
                 <span
                   aria-label="Verified author"
-                  className="inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-cobalt-700 text-cloud shadow-[0_4px_12px_rgba(13,92,184,0.22)]"
+                  className="inline-flex size-[18px] shrink-0 items-center justify-center rounded-full bg-cobalt-700 text-cloud shadow-[0_4px_12px_rgba(13,92,184,0.22)]"
                   title="Verified author"
                 >
                   <svg
@@ -771,17 +771,17 @@ function WrittenBySection({ section }: { section: RegistrationWrittenBy }) {
                 </span>
               ) : null}
             </div>
-            <p className="mb-0 mt-1 break-words text-sm leading-6 text-navy-700/70 min-[560px]:text-[0.95rem]">
+            <p className="mb-0 mt-0.5 break-words text-[0.8125rem] leading-5 text-navy-700/70">
               {section.role}
             </p>
-            <span className="mt-3 inline-flex rounded-full border border-cobalt-600/16 bg-ice px-4 py-2 text-xs font-bold leading-none text-cobalt-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
+            <span className="mt-2 inline-flex rounded-full border border-cobalt-600/16 bg-ice px-3 py-1.5 text-[0.6875rem] font-bold leading-none text-cobalt-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
               {section.experience}
             </span>
           </div>
         </div>
 
-        <div className="mt-6 border-t border-cobalt-700/12 pt-5">
-          <p className="mb-0 max-w-[1160px] break-words text-[0.9375rem] leading-[1.7] text-navy-700/76">
+        <div className="mt-4 border-t border-cobalt-700/12 pt-3">
+          <p className="mb-0 max-w-[1160px] break-words text-[0.8125rem] leading-6 text-navy-700/76">
             {section.biography}
           </p>
         </div>
@@ -1141,7 +1141,7 @@ export function CompanyRegistrationPage({
                         </header>
                         <RegistrationRichTextView
                           articleTitle={item.title}
-                          className="mx-auto mt-5 max-w-[1160px] break-words text-[0.9375rem] font-normal leading-[1.75] tracking-[0px] text-[#475569] selection:bg-sky/45 selection:text-navy-950"
+                          className="mx-auto mt-5 max-w-[1160px] break-words text-[0.9375rem] font-normal leading-[1.75] tracking-[0px] text-[#212529] selection:bg-sky/45 selection:text-navy-950"
                           value={item.description}
                           variant="article"
                         />

@@ -580,7 +580,7 @@ describe("service-detail content mirrors", () => {
     assert.match(extraContentSection, /fontOpticalSizing: "auto"/);
     assert.match(
       extraContentSection,
-      /text-\[0\.9375rem\] font-normal leading-\[1\.75\] tracking-\[0px\] text-\[#475569\]/,
+      /text-\[0\.9375rem\] font-normal leading-\[1\.75\] tracking-\[0px\] text-\[#212529\]/,
     );
     assert.match(extraContentSection, /max-w-\[1160px\]/);
     assert.match(extraContentSection, /articleTitle=\{item\.title\}/);
@@ -642,6 +642,9 @@ describe("service-detail content mirrors", () => {
     assert.match(writtenBySection, /section\.biography/);
     assert.match(writtenBySection, /min-\[560px\]:flex-row/);
     assert.match(writtenBySection, /blue-cobalt-700.*blue-electric.*blue-sky/);
+    assert.match(writtenBySection, /size-14/);
+    assert.match(writtenBySection, /text-\[0\.8125rem\] leading-6/);
+    assert.match(writtenBySection, /min-\[560px\]:py-4/);
     const resultsSection = sourceBetween(
       component,
       "function ResultsSection",
