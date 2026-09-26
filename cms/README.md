@@ -83,6 +83,118 @@ For the full deployment order, platform-neutral environment templates, content
 transfer procedure, media-storage requirement, and launch checks, use
 [../prod.md](../prod.md).
 
+## Prompt-assisted service drafts through MCP
+
+Strapi's built-in MCP server can expose the existing Content Manager schemas to
+Codex without adding another server, changing a content type, or changing the
+frontend. It is disabled by default. Enable it only in a trusted local or
+staging environment:
+
+```dotenv
+MCP_ENABLED=true
+```
+
+Restart Strapi after changing the flag. The streamable HTTP endpoint is then
+available at `http://localhost:1337/mcp`. `MCP_ENABLED` is not a secret, but the
+Admin token used by the MCP client is. Do not add that token to `cms/.env`, a
+Codex configuration file, source control, command output, or application logs.
+
+### Dedicated draft-author token
+
+In **Settings → Global settings → Admin Tokens**, create a custom Admin token
+named **`jr-mcp-draft-author`**. This is separate from the Content API token
+stored as the frontend's `STRAPI_API_TOKEN`; never reuse, rename, or widen the
+frontend token for MCP.
+
+Grant the draft-author token only these permissions:
+
+- **Read, Create, and Update** for the nineteen fixed service-detail
+  collections: Company Registration Page, MCA Service Page, Import Export
+  Service Page, Government License & Certification Page, IPR Service Page,
+  FSSAI Service Page, SEBI Business Registration Page, Tax and Accounting
+  Page, Labour Compliance Page, Fund Raising Page, Bureau of Indian Standards
+  Page, Pollution Advisory Page, Telecommunication Engineering Centre Page,
+  Wireless Planning and Coordination Page, Bureau of Energy Efficiency Page,
+  CDSCO Registration Page, AERB Approval Page, LMPC Certification Page, and
+  STQC Page.
+- **Read only** for Brand Logo and Media Library records when an approved
+  existing asset must be referenced. Strapi 5.51.2 does not expose MCP media
+  upload tools, so editors continue to upload and select media in Content
+  Manager.
+- **No access** to Delete, Publish, Unpublish, Discard Draft, Site Setting,
+  Content-Type Builder, administrator management, or other content types.
+
+The missing permissions are intentional: Strapi omits their corresponding MCP
+tools, so the normal workflow cannot publish or delete content. A Publisher or
+Administrator reviews the generated draft, selects any required media, checks
+regulatory copy and links, and publishes through Content Manager.
+
+### Connect Codex
+
+Store the token only in the environment that launches Codex, using a value that
+is not committed or printed by project scripts:
+
+```bash
+export JR_STRAPI_MCP_ADMIN_TOKEN="<jr-mcp-draft-author-token>"
+
+codex mcp add jr-strapi \
+  --url http://localhost:1337/mcp \
+  --bearer-token-env-var JR_STRAPI_MCP_ADMIN_TOKEN
+
+codex mcp list
+```
+
+Restart or open a new Codex session after adding the connection so its tool
+inventory is refreshed. The installed Strapi 5.51.2 includes the MCP endpoint,
+but some strict MCP clients can reject that version's advertised tool schemas.
+If `jr-strapi` connects but the permitted tools are absent, stop the rollout;
+Strapi 5.53 or later is required. Upgrade all Strapi packages together only in
+a separate, approved staging change with database/media backups and the full
+validation suite.
+
+### Draft-only editor workflow
+
+Ask Codex to infer the existing collection from the service family and show a
+preview before writing. For example:
+
+```text
+Use jr-strapi to prepare a new service-page draft from the approved content
+below. Determine the existing Corporate or Approval collection, validate the
+route-safe slug, and check the service path for duplicates across that family.
+Do not invent regulatory claims or copy missing content from another record.
+Show the collection, canonical URL, missing required fields, and full content
+preview first. Do not write until I reply APPROVE DRAFT. After approval, create
+one draft only; never publish, unpublish, discard, or delete content.
+
+Service: <service name>
+Category: <existing category>
+Approved content: <paste reviewed content>
+```
+
+The editor then reviews the draft in Content Manager and publishes it manually.
+Publishing continues through the existing Next.js cache-revalidation and
+dynamic-route flow. Navigation remains separate: update and publish **Site
+Setting → Header Menu** only after the new page and destination are approved.
+Later CMS-only records do not receive local fallback or seed files and return
+404 while incomplete or unpublished.
+
+### MCP verification checklist
+
+Run write tests only against an isolated local or staging PostgreSQL database:
+
+1. With `MCP_ENABLED=true`, confirm an unauthenticated `/mcp` request is
+   rejected.
+2. Connect with `jr-mcp-draft-author` and confirm only list, get, create, and
+   update tools appear for the nineteen allowed collections.
+3. Confirm publish, unpublish, discard-draft, and delete tools are absent.
+4. Create one representative complete draft and confirm it appears as Draft in
+   Content Manager while its CMS-only public route remains 404.
+5. Confirm incomplete input, an invalid route path, a duplicate service path,
+   and a collection outside the allow-list are rejected before any write.
+6. Have a Publisher review and publish the staging draft, then verify its
+   categorized URL, metadata, sitemap entry, signed revalidation, and optional
+   navigation link. Do not perform this smoke test against production content.
+
 ## Content bootstrap and legacy seed files
 
 The active local PostgreSQL database already contains the approved page

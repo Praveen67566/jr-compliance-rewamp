@@ -13,6 +13,11 @@ const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Server =>
   app: {
     keys: env.array('APP_KEYS')!,
   },
+  // The built-in Strapi MCP endpoint is opt-in. Keep it disabled unless a
+  // trusted client is configured with a dedicated least-privilege Admin token.
+  mcp: {
+    enabled: env.bool('MCP_ENABLED', false),
+  },
   webhooks: {
     populateRelations: env.bool('WEBHOOKS_POPULATE_RELATIONS', false),
   },

@@ -134,7 +134,10 @@ The main CMS flow is:
 : Plugin configuration. Currently uses local upload behavior; production still needs durable media storage before launch.
 
 `cms/config/server.ts`
-: Server host, port, app keys, and public URL style configuration.
+: Server host, port, app keys, public URL style configuration, and the
+  disabled-by-default `MCP_ENABLED` switch for Strapi's built-in MCP endpoint.
+  MCP authentication uses a separate least-privilege Admin token supplied by
+  the client; it never reuses the frontend Content API token.
 
 ## App entry points
 
@@ -551,6 +554,7 @@ Common local variables:
 
 - `HOST`
 - `PORT`
+- `MCP_ENABLED`
 - `APP_KEYS`
 - `API_TOKEN_SALT`
 - `ADMIN_JWT_SECRET`
@@ -577,6 +581,11 @@ PostgreSQL variables for local and deployed CMS environments are defined in
 - Keep schema changes in source control, not only in a production Content-Type Builder session.
 - Do not create a generic page builder unless the content model is deliberately redesigned.
 - Do not expose public read access broadly. The frontend should use a read-only server-side API token.
+- Keep `MCP_ENABLED` false unless a trusted local or staging MCP client is
+  configured. Use a separate draft-author Admin token limited to read, create,
+  and update on the nineteen fixed service-detail collections; do not grant it
+  delete, publish, unpublish, discard-draft, Site Setting, schema, or
+  administrator permissions, and never reuse `STRAPI_API_TOKEN`.
 - Do not put secrets in frontend `NEXT_PUBLIC_*` variables.
 - Keep REST population explicit in `frontend/lib/strapi.ts`; do not switch to `populate=deep`.
 - Keep every `SEED_*` flag disabled. The current local PostgreSQL content came

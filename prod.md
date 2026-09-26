@@ -103,6 +103,8 @@ before PM2 starts.
 # PM2 and Nginx run on the same server. Do not expose this port publicly.
 HOST=127.0.0.1
 PORT=1337
+# Prompt-assisted draft authoring remains disabled in production by default.
+MCP_ENABLED=false
 PUBLIC_URL=https://cms.example.com
 IS_PROXIED=true
 CORS_ORIGINS=https://www.example.com,https://example.com
@@ -140,6 +142,14 @@ survives a CMS restart and loads from the frontend origin.
 Strapi's default email provider is development-only. Configure SMTP or another
 approved provider if production administrators need password-reset or other
 outbound email flows.
+
+Strapi's optional built-in `/mcp` endpoint is controlled by `MCP_ENABLED` and
+must remain `false` in production until the draft-only workflow has passed the
+local and staging checks in `cms/README.md`. If production access is later
+approved, keep HTTPS at the edge, use a dedicated least-privilege Admin token,
+restrict the endpoint to trusted operators where practical, and never reuse the
+frontend's read-only `STRAPI_API_TOKEN`. A normal content-authoring token must
+not expose publish, unpublish, discard-draft, or delete tools.
 
 ### Frontend (`frontend/`)
 
