@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { linkTargetProps } from "@/lib/link-props";
 import type { NavigationItem, SiteSettings } from "@/lib/types";
@@ -18,20 +18,35 @@ function sharedHref(href: string) {
 //   "grid size-9 shrink-0 place-items-center rounded-full border text-white transition-[background-color,border-color,box-shadow,transform] duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric motion-safe:hover:-translate-y-0.5";
 
 export function SiteHeader({ navigation, site }: SiteHeaderProps) {
+  const headerRef = useRef<HTMLElement>(null);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileSection, setMobileSection] = useState<string | null>(null);
 
-  const closeAll = () => {
+  const closeAll = useCallback(() => {
     setOpenMenu(null);
     setActiveCategory(null);
     setMobileOpen(false);
     setMobileSection(null);
-  };
+  }, []);
+
+  useEffect(() => {
+    if (!openMenu && !mobileOpen) return;
+
+    const closeOnOutsidePointerDown = (event: PointerEvent) => {
+      if (event.target instanceof Node && !headerRef.current?.contains(event.target)) {
+        closeAll();
+      }
+    };
+
+    document.addEventListener("pointerdown", closeOnOutsidePointerDown);
+    return () => document.removeEventListener("pointerdown", closeOnOutsidePointerDown);
+  }, [closeAll, mobileOpen, openMenu]);
 
   return (
     <header
+      ref={headerRef}
       className="site-header"
       onKeyDown={(event) => {
         if (event.key === "Escape") {
