@@ -124,6 +124,11 @@ describe("service-detail content mirrors", () => {
         relation: "manyToMany",
         target: "api::brand-logo.brand-logo",
       });
+      assert.deepEqual(attributes.overview, {
+        type: "component",
+        component: "registration.overview",
+        repeatable: false,
+      });
       assert.deepEqual(attributes.youtubeVideos, {
         type: "component",
         component: "registration.youtube-video-section",
@@ -173,6 +178,11 @@ describe("service-detail content mirrors", () => {
         component: "home.cta-band",
         repeatable: false,
       });
+      assert.deepEqual(attributes.stickyBar, {
+        type: "component",
+        component: "shared.sticky-bar",
+        repeatable: false,
+      });
 
       const fields = Object.keys(attributes);
       assert.ok(fields.indexOf("hero") < fields.indexOf("trustedLogos"));
@@ -196,7 +206,8 @@ describe("service-detail content mirrors", () => {
       assert.ok(fields.indexOf("youtubeVideos") < fields.indexOf("breakdown"));
       assert.ok(fields.indexOf("breakdown") < fields.indexOf("resultsSection"));
       assert.ok(fields.indexOf("resultsSection") < fields.indexOf("tickerCta"));
-      assert.ok(fields.indexOf("tickerCta") < fields.indexOf("faqs"));
+      assert.ok(fields.indexOf("tickerCta") < fields.indexOf("stickyBar"));
+      assert.ok(fields.indexOf("stickyBar") < fields.indexOf("faqs"));
     }
   });
 
@@ -261,6 +272,7 @@ describe("service-detail content mirrors", () => {
       "experience",
       "biography",
       "verified",
+      "logos",
     ]);
     assert.deepEqual(attributes.label, {
       type: "string",
@@ -281,6 +293,42 @@ describe("service-detail content mirrors", () => {
       type: "boolean",
       required: true,
       default: true,
+    });
+    assert.deepEqual(attributes.logos, {
+      type: "relation",
+      relation: "manyToMany",
+      target: "api::brand-logo.brand-logo",
+    });
+  });
+
+  it("keeps the sticky bar optional, CMS managed, and explicitly enabled", () => {
+    const stickyBar = readJson("cms/src/components/shared/sticky-bar.json");
+    const attributes = stickyBar.attributes as Record<string, Record<string, unknown>>;
+    const homePage = readJson("cms/src/api/home-page/content-types/home-page/schema.json");
+    const homeAttributes = homePage.attributes as Record<string, Record<string, unknown>>;
+
+    assert.deepEqual(attributes.enabled, {
+      type: "boolean",
+      required: true,
+      default: false,
+    });
+    assert.deepEqual(attributes.title, { type: "string" });
+    assert.deepEqual(attributes.description, { type: "text" });
+    assert.deepEqual(attributes.supportingText, { type: "string" });
+    assert.deepEqual(attributes.icon, {
+      type: "media",
+      multiple: false,
+      allowedTypes: ["images"],
+    });
+    assert.deepEqual(attributes.cta, {
+      type: "component",
+      component: "shared.cta",
+      repeatable: false,
+    });
+    assert.deepEqual(homeAttributes.stickyBar, {
+      type: "component",
+      component: "shared.sticky-bar",
+      repeatable: false,
     });
   });
 
@@ -398,6 +446,7 @@ describe("service-detail content mirrors", () => {
       /import \{ TrustedBrandsMarquee \} from "@\/components\/home\/trusted-brands-marquee"/,
     );
     assert.match(component, /<TrustedBrandsMarquee logos=\{content\.trustedLogos\} \/>/);
+    assert.match(component, /\{content\.overview \? \(/);
     assert.ok(whyChooseIndex >= 0);
     assert.ok(whyChooseIndex < extraContentIndex);
     assert.ok(extraContentIndex < writtenByIndex);
@@ -461,6 +510,7 @@ describe("service-detail content mirrors", () => {
       cmsOnlyMapper.indexOf("return {"),
     );
     assert.doesNotMatch(cmsOnlyCompletenessGate, /trustedLogos/);
+    assert.doesNotMatch(cmsOnlyCompletenessGate, /overview/);
     assert.doesNotMatch(cmsOnlyCompletenessGate, /extraContent/);
     assert.doesNotMatch(cmsOnlyCompletenessGate, /extraContentSidebar/);
     assert.doesNotMatch(cmsOnlyCompletenessGate, /writtenBy/);
@@ -482,9 +532,10 @@ describe("service-detail content mirrors", () => {
     );
     assert.match(strapiAdapter, /extraContentSidebarGuides: \{ links: true \}/);
     assert.match(strapiAdapter, /extraContentSidebarServices: \{ links: true \}/);
-    assert.match(strapiAdapter, /writtenBy: \{ avatar: true \}/);
+    assert.match(strapiAdapter, /writtenBy: \{ avatar: true, logos: \{ logo: true \} \}/);
     assert.match(strapiAdapter, /resultsSection: \{ stats: true \}/);
     assert.match(strapiAdapter, /tickerCta: \{ cta: true \}/);
+    assert.match(strapiAdapter, /stickyBar: \{ icon: true, cta: true \}/);
     assert.equal(
       strapiAdapter.match(
         /const resultsSection = mapFixedServiceResultsSection\(page\.resultsSection\);/g,
@@ -640,7 +691,9 @@ describe("service-detail content mirrors", () => {
     assert.match(writtenBySection, /aria-label="Verified author"/);
     assert.match(writtenBySection, /section\.experience/);
     assert.match(writtenBySection, /section\.biography/);
-    assert.match(writtenBySection, /min-\[560px\]:flex-row/);
+    assert.match(writtenBySection, /section\.logos\?\.length/);
+    assert.match(writtenBySection, /<WrittenByLogoMarquee logos=\{section\.logos\}/);
+    assert.match(component, /written-logo-marquee/);
     assert.match(writtenBySection, /blue-cobalt-700.*blue-electric.*blue-sky/);
     assert.match(writtenBySection, /size-14/);
     assert.match(writtenBySection, /text-\[0\.8125rem\] leading-6/);
@@ -678,7 +731,8 @@ describe("service-detail content mirrors", () => {
     assert.match(populateTree, /process: \{ items: \{ icon: true \} \}/);
     assert.match(populateTree, /whyChoose: \{ items: \{ icon: true \} \}/);
     assert.match(populateTree, /breakdown: \{ groups: \{ icon: true, items: true \} \}/);
-    assert.equal(populateTree.match(/icon: true/g)?.length, 5);
+    assert.match(populateTree, /stickyBar: \{ icon: true, cta: true \}/);
+    assert.equal(populateTree.match(/icon: true/g)?.length, 6);
     assert.doesNotMatch(strapiAdapter, /populate=deep/);
 
     const mediaUrlMapper = sourceBetween(
@@ -903,9 +957,15 @@ describe("service-detail content mirrors", () => {
       strictBreakdownMapper,
       /mapRegistrationBreakdown\(value\)/,
     );
+    assert.match(cmsOnlyMapper, /const overview = mapRegistrationOverview\(page\.overview\);/);
+    const overviewMapper = sourceBetween(
+      strapiAdapter,
+      "function mapRegistrationOverview",
+      "function mapRegistrationCardSection",
+    );
     assert.match(
-      cmsOnlyMapper,
-      /const overviewParagraphs = strictRegistrationRichTextList\(overview\.paragraphs\);/,
+      overviewMapper,
+      /const paragraphs = strictRegistrationRichTextList\(section\.paragraphs\);/,
     );
     assert.match(breakdownSection, /<RegistrationRichTextView/);
     assert.match(breakdownSection, /value=\{item\}/);
@@ -1026,6 +1086,7 @@ describe("service-detail content mirrors", () => {
       [fallbackFundRaisingPages[0], 4],
     ] as const) {
       assert.ok(page);
+      assert.ok(page.overview);
       assert.ok(page.overview.paragraphs.length >= 1);
       assert.ok(page.challenges);
       assert.ok(page.advantages);
@@ -1042,6 +1103,7 @@ describe("service-detail content mirrors", () => {
 
     const gst = fallbackTaxAccountingPages[0];
     assert.ok(gst);
+    assert.ok(gst.overview);
     assert.ok(gst.overview.paragraphs.length >= 1);
     assert.ok(gst.challenges);
     assert.ok(gst.advantages);

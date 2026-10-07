@@ -39,8 +39,7 @@
     "overview": {
       "type": "component",
       "component": "registration.overview",
-      "repeatable": false,
-      "required": true
+      "repeatable": false
     },
     "challenges": {
       "type": "component",
@@ -105,6 +104,11 @@
     "tickerCta": {
       "type": "component",
       "component": "home.cta-band",
+      "repeatable": false
+    },
+    "stickyBar": {
+      "type": "component",
+      "component": "shared.sticky-bar",
       "repeatable": false
     },
     "faqs": {

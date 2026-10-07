@@ -711,6 +711,64 @@ function ExtraContentSidebar({
   );
 }
 
+function WrittenByLogoMarquee({
+  logos,
+}: {
+  logos: NonNullable<RegistrationWrittenBy["logos"]>;
+}) {
+  return (
+    <div
+      aria-label="Author credentials and recognition logos"
+      className="group/written-logos min-w-0 overflow-hidden border-t border-cobalt-700/10 pt-3 motion-reduce:overflow-x-auto min-[821px]:border-l min-[821px]:border-t-0 min-[821px]:pl-5 min-[821px]:pt-0"
+    >
+      <div className="flex w-max motion-safe:animate-[written-logo-marquee_24s_linear_infinite] group-hover/written-logos:[animation-play-state:paused] group-focus-within/written-logos:[animation-play-state:paused] motion-reduce:animate-none">
+        {[false, true].map((isClone) => (
+          <ul
+            aria-hidden={isClone || undefined}
+            className={`m-0 flex w-max shrink-0 list-none items-center gap-8 py-1 pr-8 ${
+              isClone ? "motion-reduce:hidden" : ""
+            }`}
+            key={isClone ? "clone" : "primary"}
+          >
+            {logos.map((logo, index) => {
+              const href = logo.href ? safeRegistrationHref(logo.href) : null;
+              const image = (
+                <img
+                  alt={isClone ? "" : logo.name}
+                  className="h-9 w-auto max-w-[150px] object-contain opacity-75 transition-opacity duration-200 hover:opacity-100 motion-reduce:transition-none min-[560px]:h-10"
+                  decoding="async"
+                  height={40}
+                  loading="lazy"
+                  src={logo.src}
+                  width={150}
+                />
+              );
+
+              return (
+                <li className="flex h-11 min-w-[120px] items-center justify-center" key={`${logo.name}-${index}`}>
+                  {href && !isClone ? (
+                    <a
+                      aria-label={`${logo.name} website`}
+                      className="rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-electric"
+                      href={href}
+                      rel="noreferrer"
+                      target="_blank"
+                    >
+                      {image}
+                    </a>
+                  ) : (
+                    image
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function WrittenBySection({ section }: { section: RegistrationWrittenBy }) {
   return (
     <article
@@ -727,57 +785,65 @@ function WrittenBySection({ section }: { section: RegistrationWrittenBy }) {
           {section.label}
         </p>
 
-        <div className="flex min-w-0 flex-col gap-3 min-[560px]:flex-row min-[560px]:items-center">
-          <div className="relative size-14 shrink-0 rounded-full bg-[linear-gradient(145deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))] p-0.5 shadow-[0_8px_20px_rgba(13,92,184,0.18)]">
-            <img
-              alt={`${section.name}, ${section.role}`}
-              className="h-full w-full rounded-full bg-ice object-cover"
-              decoding="async"
-              height={52}
-              loading="lazy"
-              src={section.avatar}
-              width={52}
-            />
+        <div className={`grid min-w-0 grid-cols-1 gap-3 ${
+          section.logos?.length
+            ? "min-[821px]:grid-cols-[minmax(260px,0.42fr)_minmax(0,1fr)] min-[821px]:items-center min-[821px]:gap-5"
+            : ""
+        }`}>
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="relative size-14 shrink-0 rounded-full bg-[linear-gradient(145deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))] p-0.5 shadow-[0_8px_20px_rgba(13,92,184,0.18)]">
+              <img
+                alt={`${section.name}, ${section.role}`}
+                className="h-full w-full rounded-full bg-ice object-cover"
+                decoding="async"
+                height={52}
+                loading="lazy"
+                src={section.avatar}
+                width={52}
+              />
+            </div>
+
+            <div className="min-w-0">
+              <div className="flex min-w-0 flex-wrap items-center gap-2">
+                <h2
+                  className="mb-0 break-words text-[clamp(1rem,1.25vw,1.2rem)] font-bold leading-tight tracking-[-0.015em] text-navy-950"
+                  id="service-author-heading"
+                >
+                  {section.name}
+                </h2>
+                {section.verified ? (
+                  <span
+                    aria-label="Verified author"
+                    className="inline-flex size-[18px] shrink-0 items-center justify-center rounded-full bg-cobalt-700 text-cloud shadow-[0_4px_12px_rgba(13,92,184,0.22)]"
+                    title="Verified author"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      className="size-3"
+                      fill="none"
+                      viewBox="0 0 12 12"
+                    >
+                      <path
+                        d="m3 6.1 1.8 1.8L9.2 3.7"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.8"
+                      />
+                    </svg>
+                  </span>
+                ) : null}
+              </div>
+              <p className="mb-0 mt-0.5 break-words text-[0.8125rem] leading-5 text-navy-700/70">
+                {section.role}
+              </p>
+              <span className="mt-2 inline-flex rounded-full border border-cobalt-600/16 bg-ice px-3 py-1.5 text-[0.6875rem] font-bold leading-none text-cobalt-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
+                {section.experience}
+              </span>
+            </div>
           </div>
 
-          <div className="min-w-0 flex-1">
-            <div className="flex min-w-0 flex-wrap items-center gap-2">
-              <h2
-                className="mb-0 break-words text-[clamp(1rem,1.25vw,1.2rem)] font-bold leading-tight tracking-[-0.015em] text-navy-950"
-                id="service-author-heading"
-              >
-                {section.name}
-              </h2>
-              {section.verified ? (
-                <span
-                  aria-label="Verified author"
-                  className="inline-flex size-[18px] shrink-0 items-center justify-center rounded-full bg-cobalt-700 text-cloud shadow-[0_4px_12px_rgba(13,92,184,0.22)]"
-                  title="Verified author"
-                >
-                  <svg
-                    aria-hidden="true"
-                    className="size-3"
-                    fill="none"
-                    viewBox="0 0 12 12"
-                  >
-                    <path
-                      d="m3 6.1 1.8 1.8L9.2 3.7"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1.8"
-                    />
-                  </svg>
-                </span>
-              ) : null}
-            </div>
-            <p className="mb-0 mt-0.5 break-words text-[0.8125rem] leading-5 text-navy-700/70">
-              {section.role}
-            </p>
-            <span className="mt-2 inline-flex rounded-full border border-cobalt-600/16 bg-ice px-3 py-1.5 text-[0.6875rem] font-bold leading-none text-cobalt-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
-              {section.experience}
-            </span>
-          </div>
+          {section.logos?.length ? <WrittenByLogoMarquee logos={section.logos} /> : null}
         </div>
 
         <div className="mt-4 border-t border-cobalt-700/12 pt-3">
@@ -817,6 +883,7 @@ export function CompanyRegistrationPage({
       navigation={content.navigation}
       seo={content.seo}
       site={content.site}
+      stickyBar={content.stickyBar}
     >
       <section
         className="relative isolate overflow-hidden border-b border-sky/15 bg-navy-950 pb-16 pt-10 text-white min-[560px]:pb-20 min-[560px]:pt-12 min-[821px]:pb-24 min-[821px]:pt-14"
@@ -944,54 +1011,56 @@ export function CompanyRegistrationPage({
 
       {content.trustedLogos ? <TrustedBrandsMarquee logos={content.trustedLogos} /> : null}
 
-      <section className="relative isolate scroll-mt-28 overflow-hidden bg-ice py-14 text-navy-950 min-[560px]:py-18 min-[821px]:py-28" id="overview">
-        <div
-          className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_12%_18%,rgba(22,140,245,0.1),transparent_24%),radial-gradient(circle_at_88%_78%,rgba(13,92,184,0.08),transparent_26%)]"
-          aria-hidden="true"
-        />
-        <div className="mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
-          <article className="grid min-w-0 overflow-hidden rounded-[30px] border border-cobalt-700/18 bg-cloud shadow-[0_28px_75px_rgba(3,19,47,0.12)] min-[1100px]:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)]">
-            <div className="relative isolate min-w-0 overflow-hidden bg-[linear-gradient(145deg,var(--blue-navy-800),var(--blue-navy-950))] p-7 text-white min-[560px]:p-10 min-[821px]:p-12">
-              <div
-                className="pointer-events-none absolute inset-0 -z-10 opacity-25 [background-image:linear-gradient(rgba(139,220,255,0.16)_1px,transparent_1px),linear-gradient(90deg,rgba(139,220,255,0.16)_1px,transparent_1px)] [background-size:38px_38px]"
-                aria-hidden="true"
-              />
-              <div
-                className="pointer-events-none absolute -bottom-28 -right-24 -z-10 size-64 rounded-full border border-sky/20 shadow-[0_0_0_36px_rgba(22,140,245,0.04)]"
-                aria-hidden="true"
-              />
-              <span className="mb-5 flex items-center gap-2 text-[0.7rem] font-extrabold uppercase tracking-[0.14em] text-sky">
-                <span className="size-1.5 rounded-full bg-current" aria-hidden="true" />
-                {content.overview.eyebrow}
-              </span>
-              <h2 className="mb-0 max-w-[560px] break-words font-display text-[clamp(2.5rem,4vw,4.35rem)] leading-[0.97] tracking-[-0.045em] text-white">
-                {content.overview.title}
-              </h2>
-              <div className="mt-10 flex items-center gap-3" aria-hidden="true">
-                <span className="size-2.5 rounded-full border-2 border-sky bg-electric shadow-[0_0_18px_rgba(139,220,255,0.72)]" />
-                <span className="h-px flex-1 bg-[linear-gradient(90deg,var(--blue-sky),rgba(139,220,255,0.08))]" />
-                <span className="size-1.5 rounded-full bg-sky/75" />
-              </div>
-            </div>
-            <div className="min-w-0 bg-[linear-gradient(150deg,var(--blue-cloud),rgba(234,246,255,0.72))] p-7 min-[560px]:p-10 min-[821px]:p-12">
-              {content.overview.paragraphs.map((paragraph, index) => (
+      {content.overview ? (
+        <section className="relative isolate scroll-mt-28 overflow-hidden bg-ice py-14 text-navy-950 min-[560px]:py-18 min-[821px]:py-28" id="overview">
+          <div
+            className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_12%_18%,rgba(22,140,245,0.1),transparent_24%),radial-gradient(circle_at_88%_78%,rgba(13,92,184,0.08),transparent_26%)]"
+            aria-hidden="true"
+          />
+          <div className="mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
+            <article className="grid min-w-0 overflow-hidden rounded-[30px] border border-cobalt-700/18 bg-cloud shadow-[0_28px_75px_rgba(3,19,47,0.12)] min-[1100px]:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)]">
+              <div className="relative isolate min-w-0 overflow-hidden bg-[linear-gradient(145deg,var(--blue-navy-800),var(--blue-navy-950))] p-7 text-white min-[560px]:p-10 min-[821px]:p-12">
                 <div
-                  className="grid min-w-0 grid-cols-1 gap-3 border-b border-cobalt-700/12 py-5 first:pt-0 last:border-0 last:pb-0 min-[560px]:grid-cols-[2.65rem_minmax(0,1fr)] min-[560px]:gap-4"
-                  key={`${index}-${typeof paragraph === "string" ? paragraph : index}`}
-                >
-                  <span className="flex size-10 items-center justify-center rounded-xl border border-cobalt-600/18 bg-ice text-[0.65rem] font-extrabold tracking-[0.12em] text-cobalt-600">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <RegistrationRichTextView
-                    className="mb-0 min-w-0 break-words text-base leading-8 text-navy-700/80 md:text-lg"
-                    value={paragraph}
-                  />
+                  className="pointer-events-none absolute inset-0 -z-10 opacity-25 [background-image:linear-gradient(rgba(139,220,255,0.16)_1px,transparent_1px),linear-gradient(90deg,rgba(139,220,255,0.16)_1px,transparent_1px)] [background-size:38px_38px]"
+                  aria-hidden="true"
+                />
+                <div
+                  className="pointer-events-none absolute -bottom-28 -right-24 -z-10 size-64 rounded-full border border-sky/20 shadow-[0_0_0_36px_rgba(22,140,245,0.04)]"
+                  aria-hidden="true"
+                />
+                <span className="mb-5 flex items-center gap-2 text-[0.7rem] font-extrabold uppercase tracking-[0.14em] text-sky">
+                  <span className="size-1.5 rounded-full bg-current" aria-hidden="true" />
+                  {content.overview.eyebrow}
+                </span>
+                <h2 className="mb-0 max-w-[560px] break-words font-display text-[clamp(2.5rem,4vw,4.35rem)] leading-[0.97] tracking-[-0.045em] text-white">
+                  {content.overview.title}
+                </h2>
+                <div className="mt-10 flex items-center gap-3" aria-hidden="true">
+                  <span className="size-2.5 rounded-full border-2 border-sky bg-electric shadow-[0_0_18px_rgba(139,220,255,0.72)]" />
+                  <span className="h-px flex-1 bg-[linear-gradient(90deg,var(--blue-sky),rgba(139,220,255,0.08))]" />
+                  <span className="size-1.5 rounded-full bg-sky/75" />
                 </div>
-              ))}
-            </div>
-          </article>
-        </div>
-      </section>
+              </div>
+              <div className="min-w-0 bg-[linear-gradient(150deg,var(--blue-cloud),rgba(234,246,255,0.72))] p-7 min-[560px]:p-10 min-[821px]:p-12">
+                {content.overview.paragraphs.map((paragraph, index) => (
+                  <div
+                    className="grid min-w-0 grid-cols-1 gap-3 border-b border-cobalt-700/12 py-5 first:pt-0 last:border-0 last:pb-0 min-[560px]:grid-cols-[2.65rem_minmax(0,1fr)] min-[560px]:gap-4"
+                    key={`${index}-${typeof paragraph === "string" ? paragraph : index}`}
+                  >
+                    <span className="flex size-10 items-center justify-center rounded-xl border border-cobalt-600/18 bg-ice text-[0.65rem] font-extrabold tracking-[0.12em] text-cobalt-600">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <RegistrationRichTextView
+                      className="mb-0 min-w-0 break-words text-base leading-8 text-navy-700/80 md:text-lg"
+                      value={paragraph}
+                    />
+                  </div>
+                ))}
+              </div>
+            </article>
+          </div>
+        </section>
+      ) : null}
 
       {content.challenges ? (
         <section className="relative isolate overflow-hidden bg-navy-950 py-14 min-[560px]:py-18 min-[821px]:py-28">

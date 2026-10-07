@@ -168,6 +168,7 @@ export function HomePage({ content }: HomePageProps) {
       navigation={content.navigation}
       seo={content.seo}
       site={content.site}
+      stickyBar={content.stickyBar}
     >
         <Hero
           hero={content.hero}

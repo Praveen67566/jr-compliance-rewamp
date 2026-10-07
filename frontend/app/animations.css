@@ -215,6 +215,16 @@
   }
 }
 
+@keyframes written-logo-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 @keyframes footer-orbit-drift {
   0%,
   100% {

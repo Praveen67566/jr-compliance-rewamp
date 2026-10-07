@@ -3,18 +3,29 @@ import type { PropsWithChildren } from "react";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { SeoJsonLd } from "@/components/seo-json-ld";
-import type { PageChromeContent, Seo } from "@/lib/types";
+import { StickyCtaBar } from "@/components/sticky-cta-bar";
+import type { PageChromeContent, Seo, StickyBarContent } from "@/lib/types";
 
-type SitePageShellProps = PropsWithChildren<PageChromeContent & { seo?: Seo }>;
+type SitePageShellProps = PropsWithChildren<
+  PageChromeContent & { seo?: Seo; stickyBar?: StickyBarContent }
+>;
 
 /** Shared, content-driven chrome for the home page and every editorial route. */
-export function SitePageShell({ children, footer, navigation, seo, site }: SitePageShellProps) {
+export function SitePageShell({
+  children,
+  footer,
+  navigation,
+  seo,
+  site,
+  stickyBar,
+}: SitePageShellProps) {
   return (
     <div className="site-shell">
       <SeoJsonLd schemaMarkup={seo?.schemaMarkup} />
       <SiteHeader navigation={navigation} site={site} />
       <main>{children}</main>
       <SiteFooter footer={footer} site={site} />
+      {stickyBar ? <StickyCtaBar content={stickyBar} /> : null}
       {site.whatsAppHref ? (
         <a
           className="group/whatsapp fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] right-[calc(1rem+env(safe-area-inset-right))] z-[40] block size-[60px] rounded-full focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky min-[560px]:bottom-[calc(1.5rem+env(safe-area-inset-bottom))] min-[560px]:right-[calc(1.5rem+env(safe-area-inset-right))]"

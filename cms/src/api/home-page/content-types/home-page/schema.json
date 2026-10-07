@@ -62,6 +62,11 @@
       "component": "home.cta-band",
       "repeatable": false
     },
+    "stickyBar": {
+      "type": "component",
+      "component": "shared.sticky-bar",
+      "repeatable": false
+    },
     "testimonialsHeading": {
       "type": "component",
       "component": "shared.section-heading",

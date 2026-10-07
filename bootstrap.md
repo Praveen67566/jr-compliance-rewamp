@@ -105,63 +105,37 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Read bootstrap.md, context.md, theme.md, explaner_frontend.md,
-explainer_cms.md, prod.md, and any applicable AGENTS.md before changing files.
+Now i want some changes here only change the things required.
 
-Goal:
-Integrate Strapi’s built-in MCP server so Codex can create and update draft
-service-page records using natural-language prompts, without changing the
-existing frontend rendering, routing, fallback, Strapi REST, publication,
-revalidation, or deployment flows.
+1. In All these collection pages i want the Service Overview or Overview section to not to be required.
+Corporate collections:
 
-Requirements:
+- `company-registration-page`
+- `mca-service-page`
+- `import-export-service-page`
+- `government-license-certification-page`
+- `ipr-service-page`
+- `fssai-service-page`
+- `sebi-business-registration-page`
+- `tax-accounting-page`
+- `labour-compliance-page`
+- `fund-raising-page`
 
-1. Use Strapi’s built-in MCP server. Do not create a separate MCP application
-   and do not install @modelcontextprotocol/sdk.
+Approval collections:
 
-2. Keep the public frontend UI unchanged. Do not modify frontend components,
-   routes, types, fallback files, service-route registry, or lib/strapi.ts.
+- `bureau-indian-standards-page`
+- `pollution-advisory-page`
+- `telecommunication-engineering-centre-page`
+- `wireless-planning-coordination-page`
+- `bureau-energy-efficiency-page`
+- `cdsco-registration-page`
+- `aerb-approval-page`
+- `lmpc-certification-page`
+- `stqc-page`
 
-3. Enable MCP in cms/config/server.ts using an environment-controlled boolean
-   that defaults to false. Document it safely in cms/.env.example.
+2. I want a sticky bar at the bottom in all the above collection pages also in the home page a reference image is given and i want the sticky bar content to be dynamic can be added from the strapi cms and can be enabled disabled 
+and i want at the time of scroll it appears like create a animation for the sticky bar.
 
-4. Do not modify any CMS content-type or component schema.
+3. In All the Above Collection Pages In Written By Section after image name there is too much space i want there to be some logo moving from right to left animation this to i want from strapi cms and in the written By section and if logo added then show otherwise no need.
 
-5. Do not change, rename, expose, or reuse STRAPI_API_TOKEN. MCP must use a
-   separate Strapi Admin token supplied by the MCP client through an environment
-   variable. Never commit or print the token.
-
-6. Document a least-privilege Admin token named jr-mcp-draft-author:
-   - Read/Create/Update for the 19 fixed service-detail collections.
-   - Read-only access to supporting logo/media records when required.
-   - No Delete.
-   - No Publish, Unpublish or Discard Draft.
-   - No Content-Type Builder, administrator or Site Setting permissions.
-
-7. Document the Codex connection using:
-   codex mcp add jr-strapi --url http://localhost:1337/mcp
-   --bearer-token-env-var JR_STRAPI_MCP_ADMIN_TOKEN
-
-8. The installed Strapi version is 5.51.2. Test tool discovery before changing
-   dependencies. If Codex or MCP Inspector drops or cannot use the advertised
-   tools, stop and report that Strapi 5.53+ is required. Do not upgrade Strapi
-   without separate approval.
-
-9. Do not create, publish, update or delete production content. Any write smoke
-   test must use an isolated local/staging database and must create a draft only.
-
-10. Test:
-    - unauthenticated endpoint rejection;
-    - authenticated MCP initialization;
-    - tool inventory and permission boundaries;
-    - one representative draft creation;
-    - invalid and incomplete input rejection;
-    - absence of publish/delete tools;
-    - existing frontend route behavior and revalidation.
-
-11. Run:
-    cd cms && npx tsc --noEmit && npm run build
-    cd frontend && npm run test && npm run typecheck && npm run build
-
-12. Update only the necessary CMS documentation. Report every changed file,
-    all validation results, and any remaining manual token or client setup.
+Don't Change Anything Else.

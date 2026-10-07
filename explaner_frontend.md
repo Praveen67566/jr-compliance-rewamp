@@ -239,6 +239,11 @@ The main flow is:
 `frontend/components/site-footer.css`
 : Footer-only network field, glass panel, and legal-area styling.
 
+`frontend/components/sticky-cta-bar.tsx`
+: Shared client boundary for the optional homepage/service-page bottom CTA. It
+  stays hidden until the visitor scrolls, then enters with reduced-motion-safe
+  movement using CMS-managed copy, optional media, supporting text, and link.
+
 `frontend/components/forms/consultation-form.tsx`
 : The one reusable consultation form. It owns field state, accessible feedback,
   required-message validation, UTM capture, consent, honeypot, loading state,
@@ -310,7 +315,7 @@ The main flow is:
 `frontend/components/company-registration/company-registration-page.tsx`
 : One fixed Tailwind-first service template for every Company Registration
   route and every fixed category detail route. It renders the bluefield hero,
-  optional trusted-brand rail, overview, optional Challenges, Advantages,
+  optional trusted-brand rail, optional Overview, optional Challenges, Advantages,
   Process, and Why JR sections, optional Extra Content, an optional Written By
   attribution card, an optional YouTube video grid, optional service breakdown,
   an optional results proof panel, an optional ticker CTA,
@@ -321,8 +326,9 @@ The main flow is:
   underlined sans headings and reference-style rich prose. When configured, an
   expert CTA header, Related Guides card, and collapsible related-services card
   form a sticky desktop sidebar beside the article and stack below it on smaller
-  screens. The content-managed Written By card follows Extra Content and
-  precedes YouTube videos, which render in a
+  screens. The content-managed Written By card follows Extra Content; optional
+  ordered logos move right to left beside the compact author identity. YouTube
+  videos follow the author card and render in a
   one-column/two-column navy grid. Each visible
   title labels a lazy 16:9 `youtube-nocookie.com` iframe with no autoplay,
   `allowFullScreen`, and `strict-origin-when-cross-origin` referrer policy. The
@@ -331,7 +337,8 @@ The main flow is:
   in Challenges, Advantages, Process, and Why Choose, while optional group
   icons render in Breakdown. Each icon remains stationary inside its themed
   circular holder. The reused `.contact-ticker` renders after Results and
-  immediately before FAQ.
+  immediately before FAQ. The optional CMS-enabled sticky CTA is supplied to
+  the shared page shell and reveals at the bottom of the viewport after scroll.
 
 `frontend/components/company-registration/service-faq-list.tsx`
 : Small client boundary for the shared Corporate and Approval FAQ presentation.
@@ -457,11 +464,11 @@ they render no local or placeholder content.
 
 The existing fallback files keep their implemented routes working when Strapi
 is offline. They also document the expected content shape for
-editors/developers. Their approved Challenges, Advantages, Process, Why Choose,
-and Breakdown data remains intact even though those fields are optional for
+editors/developers. Their approved Overview, Challenges, Advantages, Process,
+Why Choose, and Breakdown data remains intact even though those fields are optional for
 published CMS records. Optional service-page trusted logos, Extra Content and
-its three sidebar fields, Written By attribution, YouTube videos, results
-content, ticker content, detail-item
+its three sidebar fields, Written By attribution/logos, YouTube videos, results
+content, ticker content, sticky-bar content, detail-item
 icons, and Breakdown group icons are not added to fallback or seed mirrors;
 existing pages remain unchanged until editors populate and publish those CMS
 fields.
@@ -478,12 +485,12 @@ fields.
   Indian Standards, Pollution Advisory, Telecommunication Engineering Centre,
   Wireless Planning and Coordination, Bureau of Energy Efficiency, CDSCO
   Registration, AERB Approval, LMPC Certification, and STQC service-detail
-  models, including optional trusted logos; optional Challenges, Advantages,
+  models, including optional trusted logos and Overview; optional Challenges, Advantages,
   Process, and Why Choose sections; the service-page YouTube video section;
   optional Extra Content entries and its expert-header/guide/service sidebar;
-  optional Written By attribution;
+  optional Written By attribution and its ordered logos;
   optional Breakdown and results proof; optional
-  detail-item and Breakdown group icon URLs, and ticker CTA. It also defines the
+  detail-item and Breakdown group icon URLs, ticker CTA, and sticky CTA. It also defines the
   separate
   `GlobalCountryPageData` /
   `GlobalCountryPageContent` and `GlobalCertificatePageData` /
@@ -495,8 +502,8 @@ fields.
   fetches published single types or exact-slug entries from all nineteen fixed
   service-detail collections, converts media URLs, and safely falls back when
   known local fallback data is available. It omits missing or malformed
-  optional card sections, trusted-logo, Extra Content, sidebar, Written By, service-video,
-  breakdown, results, icon, and ticker fields,
+  optional Overview, card sections, trusted-logo, Extra Content, sidebar,
+  Written By/logo, service-video, breakdown, results, icon, ticker, and sticky-bar fields,
   explicitly populates their nested media/components, and normalizes accepted
   HTTPS single-video YouTube URLs to `youtube-nocookie.com` embed URLs. The
   separate legal-page query allows

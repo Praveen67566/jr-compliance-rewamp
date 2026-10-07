@@ -40,22 +40,24 @@ The CMS provides content for:
 - shared header/footer and global consultation-form copy through the `site-setting` single type
 
 The committed model contains five single types, thirty-seven collection types,
-and sixty-four components: forty-two content types in total, including
+and sixty-five components: forty-two content types in total, including
 nineteen fixed service-detail collections. That fixed service-detail count is
 unchanged; the Legal Page collection and two Global collections use separate
 fixed contracts. The seven empty Approval collections and both Global
 collections are schema integrations only and contain no bundled records.
 
-Every fixed service-detail collection exposes fourteen optional top-level fields:
-`trustedLogos`, `challenges`, `advantages`, `process`, `whyChoose`,
+Every fixed service-detail collection exposes sixteen optional top-level fields:
+`trustedLogos`, `overview`, `challenges`, `advantages`, `process`, `whyChoose`,
 `extraContent`, `extraContentSidebarHeader`, `extraContentSidebarGuides`,
 `extraContentSidebarServices`, `writtenBy`, `youtubeVideos`, `breakdown`,
-`resultsSection`, and `tickerCta`. Trusted logos follow the hero; each available card section retains
+`resultsSection`, `tickerCta`, and `stickyBar`. Trusted logos follow the hero; each available card section retains
 its fixed order; Extra Content and its optional sticky sidebar follow the last
 available card section; Written By follows Extra Content; YouTube videos follow
 Written By; Results follows the breakdown when present; and the ticker
 precedes FAQ.
-Detail items in the four optional card sections, plus Breakdown groups, also
+The independently positioned sticky bar enters from the bottom after scrolling
+only when its CMS enable switch is on and its content is complete. Detail items
+in the four optional card sections, plus Breakdown groups, also
 accept optional image icons. Leaving any optional field empty does not make an
 otherwise complete record invalid or cause the frontend to borrow that section
 from another record.
@@ -247,9 +249,10 @@ There are likewise no seed JSON files, fallback mirrors, or initial records for
 created and published directly through Strapi Content Manager after schema and
 token permissions are deployed.
 
-The optional `trustedLogos`, `extraContent`, `extraContentSidebarHeader`,
+The optional `trustedLogos`, `overview`, `extraContent`, `extraContentSidebarHeader`,
 `extraContentSidebarGuides`, `extraContentSidebarServices`, `writtenBy`, `youtubeVideos`,
-`resultsSection`, `tickerCta`, detail-item icon, and Breakdown group icon
+`resultsSection`, `tickerCta`, `stickyBar`, Written By logo relation,
+detail-item icon, and Breakdown group icon
 service fields are also not added to historical seed JSON or frontend fallback
 data, and bootstrap performs no backfill. Editors opt records into these fields
 after the schema is deployed.
@@ -272,7 +275,9 @@ Each content type folder follows the Strapi pattern:
   copy, redirect path, and enabled state. It never stores webhook configuration.
 
 `cms/src/api/home-page/`
-: Home page content. Stores hero, trusted logos, services section selections, why-us content, metrics, testimonials, recognitions, FAQs, optional insights, and closing CTA.
+: Home page content. Stores hero, trusted logos, services section selections,
+  why-us content, metrics, testimonials, recognitions, FAQs, optional insights,
+  closing CTA, and the optional enable-controlled bottom sticky bar.
 
 `cms/src/api/about-page/`
 : About Us page content. Stores hero, proof stats, overview/mantra content, timeline selections, partnership reasons, pioneers, team selections, achievements, SEO, and CTA.
@@ -295,7 +300,7 @@ Each content type folder follows the Strapi pattern:
 
 `cms/src/api/company-registration-page/`
 : Dedicated detail-page records for the nineteen Company Registration slugs.
-Each record uses the fixed hero, optional trusted logos, overview, optional
+Each record uses the fixed hero, optional trusted logos and overview, optional
 Challenges, Advantages, Process, Why JR, Extra Content and its sidebar,
 optional Written By attribution, optional YouTube videos, optional breakdown,
 optional results proof, optional ticker CTA, FAQ, closing CTA, and SEO fields; it is not
@@ -303,7 +308,7 @@ a generic page builder.
 
 `cms/src/api/mca-service-page/`
 : Dedicated detail-page records for approved MCA Services slugs. The first DSC
-record uses the same fixed hero, optional trusted logos, overview, optional
+record uses the same fixed hero, optional trusted logos and overview, optional
 Challenges, Advantages, Process, Why JR, Extra Content and its sidebar,
 optional Written By attribution, optional YouTube videos, optional breakdown,
 optional results proof, optional ticker CTA, FAQ, closing CTA, and SEO fields without
@@ -453,7 +458,7 @@ Strapi components are reusable field groups stored as JSON schemas in `cms/src/c
 
 `cms/src/components/shared/`
 : Cross-page primitives: `link`, `cta`, `seo`, `section-heading`, `contact`,
-  `social-link`, and `legal-notice`. The existing `legal-notice` title/Blocks
+  `social-link`, `legal-notice`, and the enable-controlled `sticky-bar`. The existing `legal-notice` title/Blocks
   body component is reused by Site Setting footer notices and ordered Legal
   Page sections. SEO also accepts optional comma-separated page keywords and
   JSON-only schema markup; the frontend supplies and safely serializes the
@@ -490,8 +495,8 @@ Strapi components are reusable field groups stored as JSON schemas in `cms/src/c
   expert label, optional avatars, and CTA; the reusable
   `registration.extra-content-sidebar-links` stores a heading and ordered links
   for each of the two fixed sidebar cards. `registration.written-by` stores the
-  author label, portrait, name, role, experience, verification state, and
-  biography. Registration Rich Text is rendered
+  author label, portrait, name, role, experience, verification state,
+  biography, and optional ordered Brand Logo records. Registration Rich Text is rendered
   with formatting intact and sanitized by the frontend.
 
 `cms/src/components/global/`
@@ -596,14 +601,15 @@ PostgreSQL variables for local and deployed CMS environments are defined in
   Grant the server-side reader token `find` access after deployment and keep
   Public access disabled. Existing regulator Brand Logo records are not
   migrated or backfilled.
-- On any fixed service record, editors may optionally add **Challenges**,
+- On any fixed service record, editors may optionally add **Overview**, **Challenges**,
   **Advantages**, **Process**, and **Why Choose**; select client Brand Logo
   records under **Trusted Logos**; add ordered title-and-description entries
   under **Extra Content**; configure its **Sidebar Header**, **Sidebar Guides**,
-  and **Sidebar Services**; add the optional **Written By** author attribution;
+  and **Sidebar Services**; add the optional **Written By** author attribution
+  and its ordered logos;
   add one or more titled HTTPS single-video YouTube
-  URLs under **YouTube Videos**; add **Breakdown**, a **Results Section**, or
-  **Ticker CTA**;
+  URLs under **YouTube Videos**; add **Breakdown**, a **Results Section**,
+  **Ticker CTA**, or the enable-controlled **Sticky Bar**;
   and select icons for card details or Breakdown. Missing optional CMS sections
   stay omitted, while the approved local fallback records remain unchanged.
 - Deploying `legal-page` does not populate the active PostgreSQL database.

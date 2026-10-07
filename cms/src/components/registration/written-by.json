@@ -36,6 +36,11 @@
       "type": "boolean",
       "required": true,
       "default": true
+    },
+    "logos": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::brand-logo.brand-logo"
     }
   }
 }

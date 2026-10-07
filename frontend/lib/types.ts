@@ -229,6 +229,16 @@ export type PageChromeContent = {
   updatedAt?: string;
 };
 
+/** Optional CMS-managed CTA revealed at the bottom of the viewport after scrolling. */
+export type StickyBarContent = {
+  title: string;
+  description: string;
+  supportingText?: string;
+  icon?: string;
+  iconAlt?: string;
+  cta: Link;
+};
+
 export type HomepageContent = PageChromeContent & {
   seo: Seo;
   hero: {
@@ -267,6 +277,7 @@ export type HomepageContent = PageChromeContent & {
     description?: string;
     cta: Link;
   };
+  stickyBar?: StickyBarContent;
   testimonials: SectionHeading & {
     items: Testimonial[];
   };
@@ -613,6 +624,7 @@ export type RegistrationWrittenBy = {
   experience: string;
   biography: string;
   verified: boolean;
+  logos?: Logo[];
 };
 
 /** One named group in the service breakdown (for example, Documents). */
@@ -675,7 +687,7 @@ export type CompanyRegistrationPageData = {
   };
   /** Optional, editor-ordered client logos rendered directly after the hero. */
   trustedLogos?: Logo[];
-  overview: {
+  overview?: {
     eyebrow: string;
     title: string;
     paragraphs: RegistrationRichText[];
@@ -702,6 +714,7 @@ export type CompanyRegistrationPageData = {
     description?: string;
     cta: Link;
   };
+  stickyBar?: StickyBarContent;
   faqs: {
     eyebrow: string;
     title: string;

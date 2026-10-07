@@ -72,6 +72,7 @@ import type {
   Seo,
   SocialLink,
   StqcPageContent,
+  StickyBarContent,
   TaxAccountingPageContent,
   TeamMember,
   TelecommunicationEngineeringCentrePageContent,
@@ -195,6 +196,7 @@ const populateTrees: Record<SingleTypeSlug, PopulateTree> = {
     regulatorLogos: { logo: true },
     story: { heading: true, stats: { icon: true }, featureImage: true, cta: true },
     tickerCta: { cta: true },
+    stickyBar: { icon: true, cta: true },
     testimonialsHeading: true,
     testimonials: { personPhoto: true, companyLogo: true },
     recognitionHeading: true,
@@ -261,11 +263,12 @@ const fixedServiceDetailPopulateTree: PopulateTree = {
   extraContentSidebarHeader: { avatars: true, cta: true },
   extraContentSidebarGuides: { links: true },
   extraContentSidebarServices: { links: true },
-  writtenBy: { avatar: true },
+  writtenBy: { avatar: true, logos: { logo: true } },
   youtubeVideos: { videos: true },
   breakdown: { groups: { icon: true, items: true } },
   resultsSection: { stats: true },
   tickerCta: { cta: true },
+  stickyBar: { icon: true, cta: true },
   faqs: { items: true },
   finalCta: { cta: true },
   seo: { shareImage: true },
@@ -1163,17 +1166,6 @@ function registrationRichText(value: unknown): RegistrationRichText | undefined 
   return strictLegalBlocks(value) ?? undefined;
 }
 
-function mapRegistrationRichTextList(
-  value: unknown,
-  fallback: RegistrationRichText[],
-): RegistrationRichText[] {
-  const items = orderedEntries(value)
-    .map((item) => registrationRichText(record(item).text) ?? registrationRichText(item))
-    .filter((item): item is RegistrationRichText => Boolean(item));
-
-  return items.length ? items : fallback;
-}
-
 function mapHomepage(
   fallback: HomepageContent,
   rawPage: unknown,
@@ -1233,9 +1225,11 @@ function mapHomepage(
     .filter((card): card is HomepageContent["whyUs"]["cards"][number] => Boolean(card));
   const insightItems = mapInsights(page.insights);
   const tickerTitle = text(tickerCta.title);
+  const stickyBar = mapStickyBar(page.stickyBar);
+  const { stickyBar: _fallbackStickyBar, ...fallbackWithoutStickyBar } = fallback;
 
   return {
-    ...fallback,
+    ...fallbackWithoutStickyBar,
     ...chrome,
     seo: mapSeo(page.seo, fallback.seo),
     hero: {
@@ -1306,6 +1300,7 @@ function mapHomepage(
       : fallback.tickerCta
         ? { tickerCta: fallback.tickerCta }
         : {}),
+    ...(stickyBar ? { stickyBar } : {}),
     testimonials: {
       ...fallback.testimonials,
       eyebrow: text(testimonialsHeading.eyebrow) ?? fallback.testimonials.eyebrow,
@@ -1588,6 +1583,17 @@ function mapContactPage(
   };
 }
 
+function mapRegistrationOverview(
+  value: unknown,
+): CompanyRegistrationPageContent["overview"] | undefined {
+  const section = record(value);
+  const eyebrow = text(section.eyebrow);
+  const title = text(section.title);
+  const paragraphs = strictRegistrationRichTextList(section.paragraphs);
+
+  return eyebrow && title && paragraphs ? { eyebrow, title, paragraphs } : undefined;
+}
+
 function mapRegistrationCardSection(value: unknown): RegistrationCardSection | undefined {
   const section = record(value);
   const eyebrow = text(section.eyebrow);
@@ -1647,9 +1653,19 @@ function mapRegistrationWrittenBy(value: unknown): RegistrationWrittenBy | undef
   const experience = text(section.experience);
   const biography = text(section.biography);
   const verified = boolean(section.verified) ?? false;
+  const logos = mapLogos(section.logos, []);
 
   return label && name && role && avatar && experience && biography
-    ? { label, name, role, avatar, experience, biography, verified }
+    ? {
+        label,
+        name,
+        role,
+        avatar,
+        experience,
+        biography,
+        verified,
+        ...(logos.length ? { logos } : {}),
+      }
     : undefined;
 }
 
@@ -1697,6 +1713,31 @@ function strictLink(value: unknown): Link | null {
   const target = targetFromStrapi(source);
 
   return label && href ? { label, href, ...(target ? { target } : {}) } : null;
+}
+
+function mapStickyBar(value: unknown): StickyBarContent | null {
+  const section = record(value);
+  const enabled = boolean(section.enabled) ?? false;
+  const title = text(section.title);
+  const description = text(section.description);
+  const supportingText = text(section.supportingText);
+  const icon = mediaUrl(section.icon);
+  const cta = strictLink(section.cta);
+
+  return enabled && title && description && cta
+    ? {
+        title,
+        description,
+        ...(supportingText ? { supportingText } : {}),
+        ...(icon
+          ? {
+              icon,
+              iconAlt: text(record(section.icon).alternativeText) ?? "",
+            }
+          : {}),
+        cta,
+      }
+    : null;
 }
 
 function mapFixedServiceYouTubeVideos(value: unknown): YouTubeVideoSection | null {
@@ -2284,7 +2325,6 @@ function mapCmsOnlyFixedServiceDetailPage<T extends CompanyRegistrationPageConte
 ): T | null {
   const page = record(rawPage);
   const hero = record(page.hero);
-  const overview = record(page.overview);
   const finalCta = record(page.finalCta);
   const slug = text(page.slug);
   const menuLabel = text(page.menuLabel);
@@ -2293,9 +2333,7 @@ function mapCmsOnlyFixedServiceDetailPage<T extends CompanyRegistrationPageConte
   const heroDescription = text(hero.description);
   const heroCta = strictLink(hero.cta);
   const trustedLogos = mapLogos(page.trustedLogos, []);
-  const overviewEyebrow = text(overview.eyebrow);
-  const overviewTitle = text(overview.title);
-  const overviewParagraphs = strictRegistrationRichTextList(overview.paragraphs);
+  const overview = mapRegistrationOverview(page.overview);
   const challenges = strictFixedServiceCardSection(page.challenges);
   const advantages = strictFixedServiceCardSection(page.advantages);
   const process = strictFixedServiceCardSection(page.process);
@@ -2316,6 +2354,7 @@ function mapCmsOnlyFixedServiceDetailPage<T extends CompanyRegistrationPageConte
   const faqs = strictFixedServiceFaqSection(page.faqs);
   const youtubeVideos = mapFixedServiceYouTubeVideos(page.youtubeVideos);
   const tickerCta = mapFixedServiceTickerCta(page.tickerCta);
+  const stickyBar = mapStickyBar(page.stickyBar);
   const closingTitle = text(finalCta.title);
   const closingDescription = text(finalCta.description) ?? "";
   const closingCta = strictLink(finalCta.cta);
@@ -2329,9 +2368,6 @@ function mapCmsOnlyFixedServiceDetailPage<T extends CompanyRegistrationPageConte
     !heroEyebrow ||
     !heroDescription ||
     !heroCta ||
-    !overviewEyebrow ||
-    !overviewTitle ||
-    !overviewParagraphs ||
     !faqs ||
     !closingTitle ||
     !closingCta ||
@@ -2352,11 +2388,7 @@ function mapCmsOnlyFixedServiceDetailPage<T extends CompanyRegistrationPageConte
       cta: heroCta,
     },
     ...(trustedLogos.length ? { trustedLogos } : {}),
-    overview: {
-      eyebrow: overviewEyebrow,
-      title: overviewTitle,
-      paragraphs: overviewParagraphs,
-    },
+    ...(overview ? { overview } : {}),
     ...(challenges ? { challenges } : {}),
     ...(advantages ? { advantages } : {}),
     ...(process ? { process } : {}),
@@ -2370,6 +2402,7 @@ function mapCmsOnlyFixedServiceDetailPage<T extends CompanyRegistrationPageConte
     ...(breakdown ? { breakdown } : {}),
     ...(resultsSection ? { resultsSection } : {}),
     ...(tickerCta ? { tickerCta } : {}),
+    ...(stickyBar ? { stickyBar } : {}),
     faqs,
     closingCta: {
       title: closingTitle,
@@ -2387,9 +2420,9 @@ function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
   const page = record(rawPage);
   const chrome = mapPageChrome(fallback, rawSettings);
   const hero = record(page.hero);
-  const overview = record(page.overview);
   const finalCta = record(page.finalCta);
   const trustedLogos = mapLogos(page.trustedLogos, []);
+  const overview = mapRegistrationOverview(page.overview);
   const challenges = mapRegistrationCardSection(page.challenges);
   const advantages = mapRegistrationCardSection(page.advantages);
   const process = mapRegistrationCardSection(page.process);
@@ -2409,8 +2442,10 @@ function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
   const breakdown = mapRegistrationBreakdown(page.breakdown);
   const resultsSection = mapFixedServiceResultsSection(page.resultsSection);
   const tickerCta = mapFixedServiceTickerCta(page.tickerCta);
+  const stickyBar = mapStickyBar(page.stickyBar);
   const {
     trustedLogos: _fallbackTrustedLogos,
+    overview: _fallbackOverview,
     challenges: _fallbackChallenges,
     advantages: _fallbackAdvantages,
     process: _fallbackProcess,
@@ -2424,6 +2459,7 @@ function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
     breakdown: _fallbackBreakdown,
     resultsSection: _fallbackResultsSection,
     tickerCta: _fallbackTickerCta,
+    stickyBar: _fallbackStickyBar,
     ...fallbackWithoutOptionalSections
   } = fallback;
 
@@ -2440,11 +2476,7 @@ function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
       cta: link(hero.cta, fallback.hero.cta),
     },
     ...(trustedLogos.length ? { trustedLogos } : {}),
-    overview: {
-      eyebrow: text(overview.eyebrow) ?? fallback.overview.eyebrow,
-      title: text(overview.title) ?? fallback.overview.title,
-      paragraphs: mapRegistrationRichTextList(overview.paragraphs, fallback.overview.paragraphs),
-    },
+    ...(overview ? { overview } : {}),
     ...(challenges ? { challenges } : {}),
     ...(advantages ? { advantages } : {}),
     ...(process ? { process } : {}),
@@ -2458,6 +2490,7 @@ function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
     ...(breakdown ? { breakdown } : {}),
     ...(resultsSection ? { resultsSection } : {}),
     ...(tickerCta ? { tickerCta } : {}),
+    ...(stickyBar ? { stickyBar } : {}),
     faqs: mapRegistrationFaqSection(page.faqs, fallback.faqs),
     closingCta: {
       title: text(finalCta.title) ?? fallback.closingCta.title,

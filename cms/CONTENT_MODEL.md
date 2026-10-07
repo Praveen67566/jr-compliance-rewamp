@@ -30,7 +30,7 @@ typed frontend fallback data and a historical CMS JSON source, and do not widen
 the model into a generic page builder.
 
 The committed schema contains five single types, thirty-seven collection types,
-and sixty-four components: forty-two content types in total. Nineteen of the
+and sixty-five components: forty-two content types in total. Nineteen of the
 collections use the fixed service-detail contract; that count does not include
 the legal collection or the two Global collections.
 
@@ -86,6 +86,7 @@ One editorially ordered homepage record.
 | `regulatorLogos` | Relation | **Many-way** to `regulatory-expertise-item`; editor order is display order |
 | `story` | `home.story` component | Required |
 | `tickerCta` | `home.cta-band` component | Optional; the animated “Let’s Talk Compliance” band |
+| `stickyBar` | `shared.sticky-bar` component | Optional; enabled/disabled scroll-revealed bottom CTA with editor-managed copy, icon, link, and supporting text |
 | `testimonialsHeading` | `shared.section-heading` component | Required |
 | `testimonials` | Relation | **Many-way** to `testimonial`; editor order is carousel order |
 | `recognitionHeading` | `shared.section-heading` component | Required |
@@ -199,8 +200,8 @@ customized or partially migrated legal-link list is preserved.
 One published record per approved `/corporate/[slug]` route. This is a fixed
 service-detail contract, not a generic page builder.
 
-Across all nineteen fixed service-detail collections, fourteen top-level fields are
-optional. `challenges`, `advantages`, `process`, and `whyChoose` render only
+Across all nineteen fixed service-detail collections, sixteen top-level fields are
+optional. `overview`, `challenges`, `advantages`, `process`, and `whyChoose` render only
 when an editor supplies their complete card section, and `breakdown` follows
 the same all-or-nothing behavior. `trustedLogos` renders
 immediately after `hero`, `extraContent` renders after `whyChoose` when present
@@ -208,9 +209,12 @@ immediately after `hero`, `extraContent` renders after `whyChoose` when present
 `extraContentSidebarHeader`, `extraContentSidebarGuides`, and
 `extraContentSidebarServices` fields form one sticky desktop rail beside the
 article. `writtenBy` renders immediately after the complete Extra Content area,
-followed by `youtubeVideos`; `resultsSection` renders after `breakdown` when it
+followed by `youtubeVideos`; optional `writtenBy.logos` move right to left
+beside the author identity. `resultsSection` renders after `breakdown` when it
 is present, and `tickerCta` renders after the results section and immediately
-before `faqs`. Detail items in the four
+before `faqs`. `stickyBar` is independent of section order and appears at the
+bottom of the viewport after the visitor begins scrolling when its enable
+switch is on. Detail items in the four
 optional card sections, plus Breakdown groups, also accept optional image icons
 rendered as decorative artwork inside their
 themed circular holders. Existing local fallbacks retain their approved
@@ -224,7 +228,7 @@ including Breakdown, without borrowing fallback copy.
 | `slug` | UID from `title` | Required; exact route segment |
 | `hero` | `registration.hero` | Required |
 | `trustedLogos` | Relation | Optional many-to-many selection of client `brand-logo` records; editor order is display order |
-| `overview` | `registration.overview` | Required |
+| `overview` | `registration.overview` | Optional; omitted completely when not supplied |
 | `challenges` | `registration.card-section` | Optional; ordered page-specific cards |
 | `advantages` | `registration.card-section` | Optional; ordered page-specific cards |
 | `process` | `registration.card-section` | Optional; ordered process cards |
@@ -233,11 +237,12 @@ including Breakdown, without borrowing fallback copy.
 | `extraContentSidebarHeader` | `registration.extra-content-sidebar-header` | Optional; expert label, up to three displayed avatars, and CTA above the sticky rail |
 | `extraContentSidebarGuides` | `registration.extra-content-sidebar-links` | Optional; heading and ordered Related Guides links |
 | `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
-| `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, and biography |
+| `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, biography, and ordered Brand Logo selection |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Optional; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
 | `tickerCta` | `home.cta-band` | Optional; “Let’s Talk Compliance”-style ticker content |
+| `stickyBar` | `shared.sticky-bar` | Optional; enable switch, copy, optional icon/supporting text, and CTA for the scroll-revealed bottom bar |
 | `faqs` | `registration.faq-section` | Required |
 | `finalCta` | `home.cta-band` | Required |
 | `seo` | `shared.seo` | Required |
@@ -259,7 +264,7 @@ required fixed field is complete.
 | `slug` | UID from `title` | Required; exact route segment and globally unique across every `/corporate/[slug]` collection |
 | `hero` | `registration.hero` | Required |
 | `trustedLogos` | Relation | Optional many-to-many selection of client `brand-logo` records; editor order is display order |
-| `overview` | `registration.overview` | Required |
+| `overview` | `registration.overview` | Optional; omitted completely when not supplied |
 | `challenges` | `registration.card-section` | Optional; ordered page-specific cards |
 | `advantages` | `registration.card-section` | Optional; ordered page-specific cards |
 | `process` | `registration.card-section` | Optional; ordered process cards |
@@ -268,11 +273,12 @@ required fixed field is complete.
 | `extraContentSidebarHeader` | `registration.extra-content-sidebar-header` | Optional; expert label, up to three displayed avatars, and CTA above the sticky rail |
 | `extraContentSidebarGuides` | `registration.extra-content-sidebar-links` | Optional; heading and ordered Related Guides links |
 | `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
-| `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, and biography |
+| `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, biography, and ordered Brand Logo selection |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Optional; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
 | `tickerCta` | `home.cta-band` | Optional; “Let’s Talk Compliance”-style ticker content |
+| `stickyBar` | `shared.sticky-bar` | Optional; enable switch, copy, optional icon/supporting text, and CTA for the scroll-revealed bottom bar |
 | `faqs` | `registration.faq-section` | Required |
 | `finalCta` | `home.cta-band` | Required |
 | `seo` | `shared.seo` | Required |
@@ -292,7 +298,7 @@ service-detail template without a new React route or local fallback.
 | `slug` | UID from `title` | Required; exact route segment and globally unique across every `/corporate/[slug]` collection |
 | `hero` | `registration.hero` | Required |
 | `trustedLogos` | Relation | Optional many-to-many selection of client `brand-logo` records; editor order is display order |
-| `overview` | `registration.overview` | Required |
+| `overview` | `registration.overview` | Optional; omitted completely when not supplied |
 | `challenges` | `registration.card-section` | Optional; ordered page-specific cards |
 | `advantages` | `registration.card-section` | Optional; ordered page-specific cards |
 | `process` | `registration.card-section` | Optional; ordered process cards |
@@ -301,11 +307,12 @@ service-detail template without a new React route or local fallback.
 | `extraContentSidebarHeader` | `registration.extra-content-sidebar-header` | Optional; expert label, up to three displayed avatars, and CTA above the sticky rail |
 | `extraContentSidebarGuides` | `registration.extra-content-sidebar-links` | Optional; heading and ordered Related Guides links |
 | `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
-| `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, and biography |
+| `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, biography, and ordered Brand Logo selection |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Optional; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
 | `tickerCta` | `home.cta-band` | Optional; “Let’s Talk Compliance”-style ticker content |
+| `stickyBar` | `shared.sticky-bar` | Optional; enable switch, copy, optional icon/supporting text, and CTA for the scroll-revealed bottom bar |
 | `faqs` | `registration.faq-section` | Required |
 | `finalCta` | `home.cta-band` | Required |
 | `seo` | `shared.seo` | Required |
@@ -325,7 +332,7 @@ the same fixed service-detail template without borrowing Ayush content.
 | `slug` | UID from `title` | Required; exact route segment and globally unique across every `/corporate/[slug]` collection |
 | `hero` | `registration.hero` | Required |
 | `trustedLogos` | Relation | Optional many-to-many selection of client `brand-logo` records; editor order is display order |
-| `overview` | `registration.overview` | Required |
+| `overview` | `registration.overview` | Optional; omitted completely when not supplied |
 | `challenges` | `registration.card-section` | Optional; ordered page-specific cards |
 | `advantages` | `registration.card-section` | Optional; ordered page-specific cards |
 | `process` | `registration.card-section` | Optional; ordered process cards |
@@ -334,11 +341,12 @@ the same fixed service-detail template without borrowing Ayush content.
 | `extraContentSidebarHeader` | `registration.extra-content-sidebar-header` | Optional; expert label, up to three displayed avatars, and CTA above the sticky rail |
 | `extraContentSidebarGuides` | `registration.extra-content-sidebar-links` | Optional; heading and ordered Related Guides links |
 | `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
-| `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, and biography |
+| `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, biography, and ordered Brand Logo selection |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Optional; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
 | `tickerCta` | `home.cta-band` | Optional; “Let’s Talk Compliance”-style ticker content |
+| `stickyBar` | `shared.sticky-bar` | Optional; enable switch, copy, optional icon/supporting text, and CTA for the scroll-revealed bottom bar |
 | `faqs` | `registration.faq-section` | Required |
 | `finalCta` | `home.cta-band` | Required |
 | `seo` | `shared.seo` | Required |
@@ -358,7 +366,7 @@ template without borrowing Trademark Registration content.
 | `slug` | UID from `title` | Required; exact route segment and globally unique across every `/corporate/[slug]` collection |
 | `hero` | `registration.hero` | Required |
 | `trustedLogos` | Relation | Optional many-to-many selection of client `brand-logo` records; editor order is display order |
-| `overview` | `registration.overview` | Required |
+| `overview` | `registration.overview` | Optional; omitted completely when not supplied |
 | `challenges` | `registration.card-section` | Optional; ordered page-specific cards |
 | `advantages` | `registration.card-section` | Optional; ordered page-specific cards |
 | `process` | `registration.card-section` | Optional; ordered process cards |
@@ -367,11 +375,12 @@ template without borrowing Trademark Registration content.
 | `extraContentSidebarHeader` | `registration.extra-content-sidebar-header` | Optional; expert label, up to three displayed avatars, and CTA above the sticky rail |
 | `extraContentSidebarGuides` | `registration.extra-content-sidebar-links` | Optional; heading and ordered Related Guides links |
 | `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
-| `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, and biography |
+| `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, biography, and ordered Brand Logo selection |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Optional; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
 | `tickerCta` | `home.cta-band` | Optional; “Let’s Talk Compliance”-style ticker content |
+| `stickyBar` | `shared.sticky-bar` | Optional; enable switch, copy, optional icon/supporting text, and CTA for the scroll-revealed bottom bar |
 | `faqs` | `registration.faq-section` | Required |
 | `finalCta` | `home.cta-band` | Required |
 | `seo` | `shared.seo` | Required |
@@ -391,7 +400,7 @@ without borrowing FSSAI Basic Registration content.
 | `slug` | UID from `title` | Required; exact route segment and globally unique across every `/corporate/[slug]` collection |
 | `hero` | `registration.hero` | Required |
 | `trustedLogos` | Relation | Optional many-to-many selection of client `brand-logo` records; editor order is display order |
-| `overview` | `registration.overview` | Required |
+| `overview` | `registration.overview` | Optional; omitted completely when not supplied |
 | `challenges` | `registration.card-section` | Optional; ordered page-specific cards |
 | `advantages` | `registration.card-section` | Optional; ordered page-specific cards |
 | `process` | `registration.card-section` | Optional; ordered process cards |
@@ -400,11 +409,12 @@ without borrowing FSSAI Basic Registration content.
 | `extraContentSidebarHeader` | `registration.extra-content-sidebar-header` | Optional; expert label, up to three displayed avatars, and CTA above the sticky rail |
 | `extraContentSidebarGuides` | `registration.extra-content-sidebar-links` | Optional; heading and ordered Related Guides links |
 | `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
-| `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, and biography |
+| `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, biography, and ordered Brand Logo selection |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Optional; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
 | `tickerCta` | `home.cta-band` | Optional; “Let’s Talk Compliance”-style ticker content |
+| `stickyBar` | `shared.sticky-bar` | Optional; enable switch, copy, optional icon/supporting text, and CTA for the scroll-revealed bottom bar |
 | `faqs` | `registration.faq-section` | Required |
 | `finalCta` | `home.cta-band` | Required |
 | `seo` | `shared.seo` | Required |
@@ -425,7 +435,7 @@ without borrowing Portfolio Manager Registration content.
 | `slug` | UID from `title` | Required; exact route segment and globally unique across every `/corporate/[slug]` collection |
 | `hero` | `registration.hero` | Required |
 | `trustedLogos` | Relation | Optional many-to-many selection of client `brand-logo` records; editor order is display order |
-| `overview` | `registration.overview` | Required |
+| `overview` | `registration.overview` | Optional; omitted completely when not supplied |
 | `challenges` | `registration.card-section` | Optional; ordered page-specific cards |
 | `advantages` | `registration.card-section` | Optional; ordered page-specific cards |
 | `process` | `registration.card-section` | Optional; ordered process cards |
@@ -434,11 +444,12 @@ without borrowing Portfolio Manager Registration content.
 | `extraContentSidebarHeader` | `registration.extra-content-sidebar-header` | Optional; expert label, up to three displayed avatars, and CTA above the sticky rail |
 | `extraContentSidebarGuides` | `registration.extra-content-sidebar-links` | Optional; heading and ordered Related Guides links |
 | `extraContentSidebarServices` | `registration.extra-content-sidebar-links` | Optional; heading and ordered links in the collapsible, scrollable related-services card |
-| `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, and biography |
+| `writtenBy` | `registration.written-by` | Optional; label, portrait, name, role, experience, verification state, biography, and ordered Brand Logo selection |
 | `youtubeVideos` | `registration.youtube-video-section` | Optional; heading and ordered relevant YouTube videos |
 | `breakdown` | `registration.breakdown-section` | Optional; Eligibility, Documents, Who Needs It |
 | `resultsSection` | `registration.results-section` | Optional; rating copy, heading/body, one to three ordered metrics, and testimonial attribution |
 | `tickerCta` | `home.cta-band` | Optional; “Let’s Talk Compliance”-style ticker content |
+| `stickyBar` | `shared.sticky-bar` | Optional; enable switch, copy, optional icon/supporting text, and CTA for the scroll-revealed bottom bar |
 | `faqs` | `registration.faq-section` | Required |
 | `finalCta` | `home.cta-band` | Required |
 | `seo` | `shared.seo` | Required |
@@ -518,11 +529,11 @@ detail-page families, not records in the separate Home Service Stack
 
 All nine Approval collections use the same fixed fields as the other
 service-detail collections: required `title`, `menuLabel`, route-safe `slug`,
-`hero`, and `overview`; optional `trustedLogos`, `challenges`, `advantages`,
+and `hero`; optional `trustedLogos`, `overview`, `challenges`, `advantages`,
 `process`, `whyChoose`, `extraContent`, `extraContentSidebarHeader`,
 `extraContentSidebarGuides`, `extraContentSidebarServices`, `writtenBy`,
-`youtubeVideos`, and `breakdown`; optional `resultsSection` and
-`tickerCta`; and required `faqs`, `finalCta`, `seo`, and `sortOrder`. Every
+`youtubeVideos`, and `breakdown`; optional `resultsSection`, `tickerCta`, and
+`stickyBar`; and required `faqs`, `finalCta`, `seo`, and `sortOrder`. Every
 CMS-only record must complete all
 required nested content before publication; the frontend returns 404 for an
 incomplete record and never copies content from another page or category.
@@ -539,8 +550,9 @@ is omitted without invalidating the rest of the service record.
 2. Create a record and complete `title`, `menuLabel`, every required fixed
    content section, SEO, and `sortOrder`. Add **Trusted Logos**, **Challenges**,
    **Advantages**, **Process**, **Why Choose**, **Extra Content**, its three
-   **Extra Content Sidebar** fields, **Written By**, **YouTube Videos**, **Breakdown**,
-   **Results Section**, **Ticker CTA**, and optional icons only when approved content is available.
+   **Extra Content Sidebar** fields, **Written By** and its optional ordered logos,
+   **YouTube Videos**, **Breakdown**, **Results Section**, **Ticker CTA**, the
+   enabled **Sticky Bar**, and optional icons only when approved content is available.
 3. Enter a route-safe relative `slug` with no leading slash. Manually verify
    that the full path is unique across all nine Approval collections because a
    Strapi UID is unique only within its own collection.
@@ -659,8 +671,10 @@ the editor's actual content task.
 ## Components
 
 Components have no REST endpoints. Media is allowed in components; collection
-relations deliberately live on their parent content types—including fixed
-service `trustedLogos`—or the two parent/child collection pairs above.
+relations normally live on their parent content types—including fixed service
+`trustedLogos`—or the two parent/child collection pairs above. The optional
+`registration.written-by.logos` relation deliberately reuses ordered
+`brand-logo` records inside the author component.
 
 | Component UID | Exact fields |
 | --- | --- |
@@ -673,6 +687,7 @@ service `trustedLogos`—or the two parent/child collection pairs above.
 | `shared.legal-notice` | `title` short text*, `body` Rich Text (Blocks)*; reused for Site Setting footer notices and ordered `legal-page.sections` |
 | `shared.lead-form-settings` | `enabled` boolean* (default `true`), `heading` short text*, `subtitle` short text*, `nameLabel` short text*, `namePlaceholder` short text*, `emailLabel` short text*, `emailPlaceholder` short text*, `phoneLabel` short text*, `phonePlaceholder` short text*, `messageLabel` short text*, `messagePlaceholder` short text*, `consentText` long text*, `privacyLink` `shared.link`*, `submitLabel` short text*, `submittingLabel` short text*, `successTitle` short text*, `successMessage` long text*, `redirectPath` short text*, `secureLabel` short text*, `durationLabel` short text*, `noSpamLabel` short text*, `trustHeading` short text, `trustDescription` long text, `trustItems` repeatable `shared.lead-form-trust-item`, `experienceText` short text. The message itself is always required by the form and submission API; the CMS exposes no optional-message switch. |
 | `shared.lead-form-trust-item` | `name` short text*, `logo` single image media, `link` `shared.link` component; items render in editor order and may fall back to their name when no logo is selected |
+| `shared.sticky-bar` | `enabled` boolean* (default `false`), `title` short text, `description` long text, `supportingText` short text, `icon` single image media, `cta` `shared.cta`; the frontend renders it only when enabled and complete |
 | `navigation.menu-item` | `label` short text*, `href` short text, `children` repeatable `shared.link` component, `categories` repeatable `navigation.menu-category` component; use categories for multi-column mega menus, children for a simple submenu, and `href` alone for Careers/About Us |
 | `navigation.menu-category` | `title` short text*, `links` repeatable `shared.link` component* |
 | `navigation.link-group` | `title` short text*, `links` repeatable `shared.link` component* |
@@ -721,7 +736,7 @@ settings, colour pickers, Webflow IDs, or public form endpoints.
 | `registration.extra-content-card` | `title` short text*, `description` Rich Text (Markdown)*; repeatable entries are presented as sections inside one optional, unnumbered reading card |
 | `registration.extra-content-sidebar-header` | `label` short text*, `avatars` multiple image media, `cta` `shared.cta`*; the frontend displays at most the first three avatars |
 | `registration.extra-content-sidebar-links` | `title` short text*, `links` repeatable `shared.link`* (minimum 1); reused by the fixed Related Guides and related-services fields |
-| `registration.written-by` | `label` short text* (default “Written By”), `name` short text*, `role` short text*, `avatar` single image media*, `experience` short text*, `biography` long text*, `verified` boolean* (default true) |
+| `registration.written-by` | `label` short text* (default “Written By”), `name` short text*, `role` short text*, `avatar` single image media*, `experience` short text*, `biography` long text*, `verified` boolean* (default true), optional ordered many-to-many `logos` relation to `brand-logo` |
 | `registration.hero` | `eyebrow` short text*, `description` long text*, `cta` `shared.cta`*; page H1 comes from the parent `title` |
 | `registration.overview` | `eyebrow` short text*, `title` short text*, `paragraphs` repeatable `registration.text-item`*; each paragraph supports headings, links, lists, and text marks |
 | `registration.card-section` | `eyebrow` short text*, `title` short text*, `items` repeatable `registration.detail-item`* |
