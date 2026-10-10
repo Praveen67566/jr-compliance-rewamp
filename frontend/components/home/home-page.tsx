@@ -3,6 +3,7 @@ import { RouteClosingCta } from "@/components/editorial/route-closing-cta";
 import { Faq } from "@/components/home/faq";
 import { Hero } from "@/components/home/hero";
 import { KeychainRevealSection } from "@/components/home/keychain-reveal-section";
+import { MediaRecognitions } from "@/components/home/media-recognitions";
 import { ServiceStack } from "@/components/home/service-stack";
 import { TrustedBrandsMarquee } from "@/components/home/trusted-brands-marquee";
 import { linkTargetProps } from "@/lib/link-props";
@@ -311,45 +312,7 @@ export function HomePage({ content }: HomePageProps) {
           </div>
         </KeychainRevealSection>
 
-        <KeychainRevealSection
-          className="recognitions-section section"
-          itemCount={content.recognitions.items.length}
-          labelledBy="recognitions-heading"
-        >
-          <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
-            <div className="recognition-heading">
-              <div>
-                <span className="eyebrow">{content.recognitions.eyebrow}</span>
-                <h2 id="recognitions-heading">{content.recognitions.title}</h2>
-              </div>
-              <p>{content.recognitions.description}</p>
-            </div>
-            <div className="recognition-grid">
-              {content.recognitions.items.map((recognition, index) => (
-                <a
-                  className="recognition-card"
-                  href={recognition.href}
-                  key={recognition.title}
-                  {...linkTargetProps(recognition)}
-                >
-                  <span className="keychain-card-anchor" aria-hidden="true" />
-                  {recognition.coverImage ? <img className="recognition-cover" src={recognition.coverImage} alt="" /> : null}
-                  <span className="recognition-index">0{index + 1}</span>
-                  {recognition.category ? <span className="recognition-category">{recognition.category}</span> : null}
-                  {recognition.sourceName || recognition.sourceLogo ? (
-                    <span className="recognition-source">
-                      {recognition.sourceLogo ? <img src={recognition.sourceLogo} alt={recognition.sourceName ?? ""} /> : null}
-                      {recognition.sourceName ? <span>{recognition.sourceName}</span> : null}
-                    </span>
-                  ) : null}
-                  <h3>{recognition.title}</h3>
-                  <p>{recognition.summary}</p>
-                  <span className="recognition-link">{recognition.linkLabel ?? "Read more"} <b aria-hidden="true">↗</b></span>
-                </a>
-              ))}
-            </div>
-          </div>
-        </KeychainRevealSection>
+        <MediaRecognitions content={content.recognitions} />
 
         {content.insights?.items.length ? (
           <section className="insights-section section" aria-labelledby="insights-heading">

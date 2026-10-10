@@ -2090,9 +2090,9 @@
   border-radius: 22px;
   display: flex;
   flex-direction: column;
-  min-height: 340px;
+  min-height: 300px;
   overflow: hidden;
-  padding: 26px;
+  padding: 22px;
   position: relative;
   transition: background 200ms ease, border-color 200ms ease, transform 200ms ease;
 }
@@ -2185,7 +2185,7 @@
 }
 
 .recognition-source img {
-  height: 80px;
+  height: 64px;
   max-width: min(190px, 80%);
   object-fit: contain;
   object-position: left center;
@@ -2209,6 +2209,23 @@
 .recognition-link b {
   color: var(--blue-sky);
   font-size: 1.05rem;
+}
+
+@keyframes recognition-slide {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (min-width: 1441px) {
+  .recognition-card {
+    min-height: 340px;
+    padding: 26px;
+  }
+
+  .recognition-source img {
+    height: 80px;
+  }
 }
 
 .keychain-reveal {

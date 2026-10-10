@@ -28,7 +28,7 @@ export function SitePageShell({
       {stickyBar ? <StickyCtaBar content={stickyBar} /> : null}
       {site.whatsAppHref ? (
         <a
-          className="group/whatsapp fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] right-[calc(1rem+env(safe-area-inset-right))] z-[40] block size-[60px] rounded-full focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky min-[560px]:bottom-[calc(1.5rem+env(safe-area-inset-bottom))] min-[560px]:right-[calc(1.5rem+env(safe-area-inset-right))]"
+          className="group/whatsapp fixed bottom-[calc(1rem+max(env(safe-area-inset-bottom),var(--sticky-cta-offset,0px)))] right-[calc(1rem+env(safe-area-inset-right))] z-[40] block size-[60px] rounded-full transition-[bottom] duration-500 ease-[cubic-bezier(.22,1,.36,1)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky motion-reduce:transition-none min-[560px]:bottom-[calc(1.5rem+max(env(safe-area-inset-bottom),var(--sticky-cta-offset,0px)))] min-[560px]:right-[calc(1.5rem+env(safe-area-inset-right))]"
           href={site.whatsAppHref}
           target="_blank"
           rel="noreferrer"

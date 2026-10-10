@@ -107,35 +107,18 @@ If a command cannot be run, clearly explain why.
 
 Now i want some changes here only change the things required.
 
-1. In All these collection pages i want the Service Overview or Overview section to not to be required.
-Corporate collections:
+1. In Home Page The Media Section if cards are three then key animation is perfect but if cards increases then the problem aries so :-
+    1. if card are more then three then don't use key chain animation use slider animation slide from right to left.
+    2. and i think make the cards litile small for laptops.
 
-- `company-registration-page`
-- `mca-service-page`
-- `import-export-service-page`
-- `government-license-certification-page`
-- `ipr-service-page`
-- `fssai-service-page`
-- `sebi-business-registration-page`
-- `tax-accounting-page`
-- `labour-compliance-page`
-- `fund-raising-page`
+2. now see if the fixed sticky bar is coming then whatsapp floating icon overlaps so move whatsapp icon towards the top refernce image is provides.
 
-Approval collections:
+3. Sticky bar design not looks so good make it appeling also decrease the height for screens like laptops (this for all company registration and home page also).
 
-- `bureau-indian-standards-page`
-- `pollution-advisory-page`
-- `telecommunication-engineering-centre-page`
-- `wireless-planning-coordination-page`
-- `bureau-energy-efficiency-page`
-- `cdsco-registration-page`
-- `aerb-approval-page`
-- `lmpc-certification-page`
-- `stqc-page`
+4. In Headers Remove the R written on the right side in the circle.
 
-2. I want a sticky bar at the bottom in all the above collection pages also in the home page a reference image is given and i want the sticky bar content to be dynamic can be added from the strapi cms and can be enabled disabled 
-and i want at the time of scroll it appears like create a animation for the sticky bar.
+5. In The company registration pages like all 19 colletion pages the Service Overview section if there is only one heading no need to write 01 and make it in center.
 
-3. In All the Above Collection Pages In Written By Section after image name there is too much space i want there to be some logo moving from right to left animation this to i want from strapi cms and in the written By section and if logo added then show otherwise no need.
+6. In The company registration pages the related guides section doesn't have any underline but startup india section have so put a underline in related guide section also just after the heading.
 
-Don't Change Anything Else.
+These are only ui changes so don't change anything else.

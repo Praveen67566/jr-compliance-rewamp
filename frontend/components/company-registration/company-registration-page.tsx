@@ -630,7 +630,7 @@ function ExtraContentSidebar({
             aria-hidden="true"
             className="pointer-events-none absolute inset-x-0 top-0 h-0.5 bg-[linear-gradient(90deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))]"
           />
-          <h2 className="mb-0 px-5 pb-3 pt-6 text-sm font-semibold tracking-[-0.01em] text-navy-950">
+          <h2 className="mb-0 border-b border-cobalt-700/10 px-5 py-5 text-sm font-semibold tracking-[-0.01em] text-navy-950">
             {guides.title}
           </h2>
           <nav aria-label={`${guides.title} links`} className="px-5 pb-4">
@@ -861,6 +861,7 @@ export function CompanyRegistrationPage({
   content,
   showHeroGlobe = false,
 }: CompanyRegistrationPageProps) {
+  const isSingleOverview = content.overview?.paragraphs.length === 1;
   const whyChooseGridClass =
     content.whyChoose?.items.length === 1
       ? "mx-auto grid w-full max-w-[860px] grid-cols-1 gap-4"
@@ -1041,15 +1042,17 @@ export function CompanyRegistrationPage({
                   <span className="size-1.5 rounded-full bg-sky/75" />
                 </div>
               </div>
-              <div className="min-w-0 bg-[linear-gradient(150deg,var(--blue-cloud),rgba(234,246,255,0.72))] p-7 min-[560px]:p-10 min-[821px]:p-12">
+              <div className={`min-w-0 bg-[linear-gradient(150deg,var(--blue-cloud),rgba(234,246,255,0.72))] p-7 min-[560px]:p-10 min-[821px]:p-12 ${isSingleOverview ? "flex flex-col justify-center text-center" : ""}`}>
                 {content.overview.paragraphs.map((paragraph, index) => (
                   <div
-                    className="grid min-w-0 grid-cols-1 gap-3 border-b border-cobalt-700/12 py-5 first:pt-0 last:border-0 last:pb-0 min-[560px]:grid-cols-[2.65rem_minmax(0,1fr)] min-[560px]:gap-4"
+                    className={`min-w-0 ${isSingleOverview ? "w-full" : "grid grid-cols-1 gap-3 border-b border-cobalt-700/12 py-5 first:pt-0 last:border-0 last:pb-0 min-[560px]:grid-cols-[2.65rem_minmax(0,1fr)] min-[560px]:gap-4"}`}
                     key={`${index}-${typeof paragraph === "string" ? paragraph : index}`}
                   >
-                    <span className="flex size-10 items-center justify-center rounded-xl border border-cobalt-600/18 bg-ice text-[0.65rem] font-extrabold tracking-[0.12em] text-cobalt-600">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
+                    {!isSingleOverview ? (
+                      <span className="flex size-10 items-center justify-center rounded-xl border border-cobalt-600/18 bg-ice text-[0.65rem] font-extrabold tracking-[0.12em] text-cobalt-600">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                    ) : null}
                     <RegistrationRichTextView
                       className="mb-0 min-w-0 break-words text-base leading-8 text-navy-700/80 md:text-lg"
                       value={paragraph}

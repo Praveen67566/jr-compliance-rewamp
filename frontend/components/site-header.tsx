@@ -155,12 +155,6 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
                                 •
                               </span>
                             </h2>
-                            <span
-                              className="grid size-10 shrink-0 place-items-center rounded-full border border-cobalt-700/20 font-display text-lg text-[#0b315f]"
-                              aria-hidden="true"
-                            >
-                              R
-                            </span>
                           </div>
                           <div className="grid grid-cols-3 gap-x-9 gap-y-5 pt-8 max-[1100px]:grid-cols-2">
                             {selectedCategory.links.map((link) => (
