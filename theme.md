@@ -126,9 +126,11 @@ information hierarchy of the supplied reference:
   mega-menu title row and appear beside mobile category labels. Preserve their colors in
   a 24px contained image on a small ice tile. Without a logo, keep the desktop
   title's blue dot and omit the mobile tile and its space.
-- The footer combines brand/contact details, service links, and legal notices
-  inside one blue-glass panel with a subtle divider above the notices. Badges,
-  copyright, and policy links sit below that panel.
+- The footer uses an open layout directly on the navy/cobalt network field.
+  Give brand/contact details and service columns generous spacing, with subtle
+  horizontal dividers above legal notices and the bottom row. Avoid enclosing
+  footer content in cards, rounded panels, or shadows. Keep badges, copyright,
+  and policy links aligned to the same content width.
 
 ## Editorial route system
 

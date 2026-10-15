@@ -240,11 +240,13 @@ The main flow is:
 : Shared footer. Renders logo, contact details, social links, link groups,
   popular services, legal links, and disclaimers from CMS/fallback data. Its
   three legal links now resolve to the completed local legal routes.
-  Brand/contact details, service links, and legal notices share one panel;
-  badges, copyright, and policy links remain beneath it.
+  Brand/contact details and service links use open responsive columns directly
+  on the network background, followed by legal notices and the badge/copyright/
+  policy row. Subtle horizontal dividers separate the areas without cards.
 
 `frontend/components/site-footer.css`
-: Footer-only network field, glass panel, and legal-area styling.
+: Footer-only network artwork, link treatments, and legal typography. Layout
+  and responsive columns use Tailwind utilities in the shared footer component.
 
 `frontend/components/sticky-cta-bar.tsx`
 : Shared client boundary for the optional homepage/service-page bottom CTA. It

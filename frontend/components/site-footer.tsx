@@ -27,9 +27,9 @@ export function SiteFooter({ site, footer }: SiteFooterProps) {
         <span className="footer-network-node footer-network-node--two" />
       </div>
 
-      <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px] footer-panel">
-        <div className="footer-top">
-          <div className="footer-brand-block">
+      <div className="footer-content site-container relative z-1 mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
+        <div className="footer-top grid items-start gap-12 pb-12 min-[821px]:grid-cols-[minmax(260px,0.8fr)_minmax(0,1.7fr)] min-[1101px]:gap-20 max-[560px]:gap-10 max-[560px]:pb-10">
+          <div className="footer-brand-block grid min-w-0 content-start justify-items-start gap-6">
             <div className="footer-brand-meta">
               <a className="footer-brand" href="/" aria-label={`${site.name} home`}>
                 <img src={site.footerLogo} alt={site.name} />
@@ -37,7 +37,7 @@ export function SiteFooter({ site, footer }: SiteFooterProps) {
               <p>{site.footerTagline}</p>
             </div>
 
-            <div className="footer-contact-list">
+            <div className="footer-contact-list grid w-full justify-items-start gap-2">
               <a className="footer-contact-phone" href={site.phoneHref}>
                 {site.phone}
               </a>
@@ -72,11 +72,11 @@ export function SiteFooter({ site, footer }: SiteFooterProps) {
             </div>
           </div>
 
-          <div className="footer-link-columns">
+          <div className="footer-link-columns grid min-w-0 gap-10 min-[561px]:grid-cols-[minmax(145px,0.7fr)_minmax(0,1.3fr)] min-[1101px]:gap-14">
             {linkGroups.map((group, index) => {
               const useCompactGrid = index === 1 || group.title.toLowerCase().includes("popular");
               const links = group.links.map((link) => (
-                <a href={sharedHref(link.href)} key={link.label} {...linkTargetProps(link)}>
+                <a className="footer-service-link" href={sharedHref(link.href)} key={link.label} {...linkTargetProps(link)}>
                   {link.label}
                 </a>
               ));
@@ -86,19 +86,28 @@ export function SiteFooter({ site, footer }: SiteFooterProps) {
                   className={`footer-link-column${useCompactGrid ? " footer-popular-column" : ""}`}
                   key={`${group.title}-${index}`}
                 >
-                  <span className="footer-label">{group.title}</span>
-                  {useCompactGrid ? <div className="footer-popular-links">{links}</div> : links}
+                  <h2 className="footer-label">{group.title}</h2>
+                  <div
+                    className={`grid grid-cols-2 gap-x-6 gap-y-3 ${
+                      useCompactGrid ? "footer-popular-links" : "footer-featured-links min-[561px]:grid-cols-1"
+                    }`}
+                  >
+                    {links}
+                  </div>
                 </div>
               );
             })}
           </div>
         </div>
 
-        <div className="footer-disclaimer">
+        <div className="footer-disclaimer grid gap-7 border-t border-sky/15 py-8 max-[560px]:py-7">
           {legalNotices.map((notice, index) => (
-            <div className="footer-notice" key={`${notice.title}-${index}`}>
-              <span className="footer-label">{notice.title}</span>
-              <div>
+            <div
+              className="footer-notice grid items-start gap-3 min-[821px]:grid-cols-[minmax(150px,0.75fr)_minmax(0,3fr)] min-[821px]:gap-12"
+              key={`${notice.title}-${index}`}
+            >
+              <h2 className="footer-label">{notice.title}</h2>
+              <div className="min-w-0 max-w-[100ch]">
                 {notice.body.split("\n\n").map((paragraph) => (
                   <p key={paragraph}>{paragraph}</p>
                 ))}
@@ -106,27 +115,27 @@ export function SiteFooter({ site, footer }: SiteFooterProps) {
             </div>
           ))}
         </div>
-      </div>
 
-      <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px] footer-bottom">
-        {footer.footerBadges.length ? (
-          <ul className="footer-badges" aria-label="Certifications and recognitions">
-            {footer.footerBadges.map((badge, index) => (
-              <li className="footer-badge" key={`${badge.src}-${index}`}>
-                <img src={badge.src} alt={badge.alt} loading="lazy" />
-              </li>
+        <div className="footer-bottom">
+          {footer.footerBadges.length ? (
+            <ul className="footer-badges" aria-label="Certifications and recognitions">
+              {footer.footerBadges.map((badge, index) => (
+                <li className="footer-badge" key={`${badge.src}-${index}`}>
+                  <img src={badge.src} alt={badge.alt} loading="lazy" />
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          <div className="footer-bottom-identity">
+            <span>{site.copyrightText}</span>
+          </div>
+          <div className="footer-bottom-legal">
+            {site.legalLinks.map((link) => (
+              <a href={sharedHref(link.href)} key={link.label} {...linkTargetProps(link)}>
+                {link.label}
+              </a>
             ))}
-          </ul>
-        ) : null}
-        <div className="footer-bottom-identity">
-          <span>{site.copyrightText}</span>
-        </div>
-        <div className="footer-bottom-legal">
-          {site.legalLinks.map((link) => (
-            <a href={sharedHref(link.href)} key={link.label} {...linkTargetProps(link)}>
-              {link.label}
-            </a>
-          ))}
+          </div>
         </div>
       </div>
     </footer>

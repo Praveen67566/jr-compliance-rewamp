@@ -1,7 +1,7 @@
 .site-footer {
   background:
-    radial-gradient(circle at 92% 8%, rgba(26, 139, 245, 0.36), transparent 26%),
-    radial-gradient(circle at 8% 100%, rgba(8, 69, 155, 0.38), transparent 31%),
+    radial-gradient(circle at 92% 8%, rgba(26, 139, 245, 0.22), transparent 34%),
+    radial-gradient(circle at 8% 100%, rgba(8, 69, 155, 0.28), transparent 40%),
     linear-gradient(135deg, #020d29, #041a43 54%, #031535);
   border-top: 1px solid rgba(145, 214, 255, 0.2);
   color: #d6ddef;
@@ -26,6 +26,7 @@
 
 .footer-network-layer {
   inset: 0;
+  opacity: 0.4;
   overflow: hidden;
   pointer-events: none;
   position: absolute;
@@ -118,44 +119,9 @@
   animation-delay: 1.7s;
 }
 
-.footer-panel,
-.footer-bottom {
-  position: relative;
-  z-index: 1;
-}
-
-.footer-panel {
-  background: linear-gradient(125deg, rgba(8, 39, 89, 0.76), rgba(4, 23, 59, 0.76));
-  border: 1px solid rgba(145, 214, 255, 0.22);
-  border-radius: 28px;
-  box-shadow: inset 0 1px rgba(196, 238, 255, 0.12), 0 28px 70px rgba(0, 7, 30, 0.2);
-  overflow: hidden;
-  padding: 0;
-}
-
-.footer-top {
-  align-items: start;
-  display: grid;
-  gap: clamp(38px, 5vw, 76px);
-  grid-template-columns: minmax(230px, 0.78fr) minmax(0, 1.62fr);
-  padding: clamp(30px, 4.1vw, 54px);
-}
-
-.footer-brand-block {
-  border-right: 1px solid rgba(145, 214, 255, 0.18);
-  min-height: 100%;
-  padding-right: clamp(28px, 4vw, 58px);
-}
-
-.footer-link-columns {
-  display: grid;
-  gap: clamp(28px, 4vw, 62px);
-  grid-template-columns: minmax(145px, 0.68fr) minmax(0, 1.32fr);
-}
-
 .footer-brand {
   display: block;
-  width: 185px;
+  width: 208px;
 }
 
 .footer-brand img {
@@ -165,27 +131,27 @@
 
 .footer-brand-meta > p {
   color: #a9cbe5;
-  font-size: 0.89rem;
-  line-height: 1.6;
-  margin: 21px 0 0;
-  max-width: 270px;
-}
-
-.footer-contact-list {
-  border-top: 1px solid rgba(145, 214, 255, 0.18);
-  display: grid;
-  gap: 8px;
-  margin-top: 22px;
-  padding-top: 18px;
+  font-size: 0.94rem;
+  line-height: 1.7;
+  margin: 20px 0 0;
+  max-width: 28ch;
 }
 
 .footer-contact-phone,
 .footer-contact-email,
 .footer-contact-whatsapp {
   display: block;
-  font-size: 0.86rem;
-  font-weight: 650;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
   transition: color 180ms ease;
+}
+
+.footer-contact-phone {
+  color: var(--blue-cloud);
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .footer-contact-phone:hover,
@@ -201,11 +167,10 @@
   border-radius: 999px;
   color: white;
   display: inline-flex;
-  font-size: 0.78rem;
-  font-weight: 800;
+  font-size: 0.82rem;
+  font-weight: 600;
   gap: 8px;
-  margin-top: 19px;
-  padding: 11px 15px;
+  padding: 12px 18px;
   transition: box-shadow 180ms ease, transform 180ms ease;
 }
 
@@ -218,26 +183,27 @@
 
 .social-links {
   display: flex;
-  gap: 8px;
-  margin-top: 24px;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .social-links a {
   align-items: center;
-  background: rgba(3, 15, 43, 0.32);
+  background: transparent;
   border: 1px solid rgba(139, 220, 255, 0.32);
   border-radius: 50%;
   color: white;
   display: inline-flex;
   font-size: 0.76rem;
-  font-weight: 800;
-  height: 31px;
+  font-weight: 600;
+  height: 36px;
   justify-content: center;
   transition: background 180ms ease, border-color 180ms ease, color 180ms ease;
-  width: 31px;
+  width: 36px;
 }
 
-.social-links a:hover {
+.social-links a:hover,
+.social-links a:focus-visible {
   background: var(--blue-electric);
   border-color: var(--blue-sky);
   color: white;
@@ -247,11 +213,13 @@
   align-items: center;
   color: var(--blue-sky);
   display: flex;
-  font-size: 0.66rem;
-  font-weight: 800;
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  font-weight: 600;
   gap: 8px;
   letter-spacing: 0.12em;
-  margin-bottom: 18px;
+  line-height: 1.5;
+  margin: 0 0 24px;
   text-transform: uppercase;
 }
 
@@ -260,58 +228,35 @@
   border-radius: 50%;
   content: "";
   height: 5px;
+  flex-shrink: 0;
   width: 5px;
 }
 
-.footer-link-column > a {
+.footer-service-link {
   color: #c8e2f5;
-  display: block;
-  font-size: 0.83rem;
-  margin: 0 0 12px;
-  transition: color 160ms ease, transform 160ms ease;
+  font-size: 0.86rem;
+  font-weight: 500;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  transition: color 160ms ease;
+  width: fit-content;
 }
 
-.footer-link-column > a:hover,
-.footer-popular-links a:hover {
+.footer-service-link:hover {
   color: var(--blue-sky);
-  transform: translateX(3px);
 }
 
-.footer-popular-links {
-  display: grid;
-  gap: 10px 17px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.footer-popular-links a {
-  color: #c8e2f5;
-  font-size: 0.77rem;
-  transition: color 160ms ease, transform 160ms ease;
-}
-
-.footer-disclaimer {
-  border-top: 1px solid rgba(145, 214, 255, 0.18);
-  display: grid;
-  gap: 26px clamp(26px, 4vw, 60px);
-  grid-template-columns: minmax(125px, 0.75fr) minmax(0, 3fr);
-  margin: 0 clamp(30px, 4.1vw, 54px);
-  padding: 26px 0 32px;
+.site-footer a:focus-visible {
+  outline: 2px solid var(--blue-sky);
+  outline-offset: 5px;
 }
 
 .footer-disclaimer .footer-label {
   margin: 2px 0 0;
 }
 
-.footer-notice {
-  display: contents;
-}
-
-.footer-notice > div {
-  max-width: 82ch;
-}
-
 .footer-disclaimer p {
-  color: #c8e2f5;
+  color: #a9cbe5;
   font-size: clamp(0.8rem, 0.76rem + 0.16vw, 0.86rem);
   font-weight: 500;
   line-height: 1.75;
@@ -335,15 +280,9 @@
 
 .footer-badge {
   align-items: center;
-  background: rgba(3, 15, 43, 0.34);
-  border: 1px solid rgba(145, 214, 255, 0.2);
-  border-radius: 12px;
-  box-shadow: inset 0 1px rgba(196, 238, 255, 0.08);
   display: flex;
-  height: 56px;
+  height: 48px;
   justify-content: center;
-  min-width: 56px;
-  padding: 7px 9px;
 }
 
 .footer-badge img {
@@ -359,17 +298,21 @@
   border-top: 1px solid rgba(145, 214, 255, 0.18);
   color: #9cc5e4;
   display: flex;
-  font-size: 0.7rem;
-  gap: 25px;
+  flex-wrap: wrap;
+  font-size: 0.74rem;
+  gap: 18px 28px;
   justify-content: space-between;
-  margin-top: 22px;
-  padding-top: 22px;
+  padding-top: 24px;
 }
 
 .footer-bottom > div {
   display: flex;
   flex-wrap: wrap;
   gap: 9px 18px;
+}
+
+.footer-bottom-legal {
+  line-height: 1.6;
 }
 
 .footer-bottom a:hover {

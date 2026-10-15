@@ -105,6 +105,3 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-1. In Header Shown In the Image the text is looks a bit weird like the bold font and also i want where in the sidebar in selected category where company registation is there i want in that a logo can be added. from the strapi cms side. logo is there for each category see in the second image and its going to be not compulsary.
-
-2. Fix the footer see like there are two boxes looks a bit weird.

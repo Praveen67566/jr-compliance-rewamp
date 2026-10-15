@@ -87,9 +87,9 @@ responsive legal template; they are not a generic page builder.
   Global open a bounded two-pane mega menu: a navy category rail and an ice
   three-column link panel populated by Strapi, with the typed home fallback
   covering offline and pre-migration CMS records.
-- Shared footer continues the same navy/cobalt network field through a
-  structured blue-glass content panel, subtle grid/orbit detail, and responsive
-  service/legal groups. Its three policy links now resolve to the completed
+- Shared footer continues the same navy/cobalt network field through open
+  brand/service columns, subtle grid/orbit detail, and responsive legal groups
+  separated by horizontal dividers. Its three policy links resolve to the completed
   local legal routes in both CMS-managed and fallback chrome.
 - Hero word rotation, photo/card composition, client-logo marquee, service tabs,
   contact ticker, trust/metrics, testimonials, recognition cards, FAQ tabs and
