@@ -1423,6 +1423,7 @@
 
 .regulator-logo-marquee {
   --regulator-logo-gap: 18px;
+  --regulator-logo-width: clamp(170px, 11vw, 214px);
   display: grid;
   gap: 10px;
   margin-top: 72px;
@@ -1439,7 +1440,9 @@
 
 .regulator-logo-track {
   animation: regulator-logo-scroll 48s -8s linear infinite;
-  display: flex;
+  display: grid;
+  grid-auto-columns: max-content;
+  grid-auto-flow: column;
   width: max-content;
   will-change: transform;
 }
@@ -1456,12 +1459,15 @@
 }
 
 .regulator-logo-list {
-  display: flex;
-  flex: 0 0 auto;
+  /* Fixed columns keep each repeated list independent of logo image dimensions. */
+  display: grid;
   gap: var(--regulator-logo-gap);
+  grid-auto-columns: var(--regulator-logo-width);
+  grid-auto-flow: column;
   list-style: none;
   margin: 0;
   padding: 7px var(--regulator-logo-gap) 9px 0;
+  width: max-content;
 }
 
 .regulator-logo-marquee:focus-within .regulator-logo-track {
@@ -1491,13 +1497,12 @@
   box-shadow:
     0 10px 30px rgba(3, 24, 66, 0.035),
     inset 0 1px rgba(255, 255, 255, 0.9);
-  /* Explicit widths keep WebKit's intrinsic list size aligned with the cards. */
-  flex: 0 0 auto;
   min-height: 78px;
+  min-width: 0;
   overflow: hidden;
   position: relative;
   transition: border-color 240ms ease, box-shadow 240ms ease, transform 240ms ease;
-  width: clamp(170px, 11vw, 214px);
+  width: var(--regulator-logo-width);
 }
 
 .regulator-logo-marquee .regulator-logo {
@@ -2779,8 +2784,8 @@
     padding-inline: 0;
   }
 
-  .regulator-logo-marquee .regulator-logo {
-    width: clamp(172px, 18vw, 205px);
+  .regulator-logo-marquee {
+    --regulator-logo-width: clamp(172px, 18vw, 205px);
   }
 
   .testimonials-section[data-keychain-count="4"].is-reveal-ready:not(.is-settled) .testimonial-card:nth-child(1) {
@@ -2859,8 +2864,8 @@
     inset: 25px;
   }
 
-  .regulator-logo-marquee .regulator-logo {
-    width: clamp(168px, 30vw, 205px);
+  .regulator-logo-marquee {
+    --regulator-logo-width: clamp(168px, 30vw, 205px);
   }
 
   .recognitions-section[data-keychain-count="3"].is-reveal-ready:not(.is-settled) .recognition-card:nth-child(1) {
@@ -2971,6 +2976,7 @@
 
   .regulator-logo-marquee {
     --regulator-logo-gap: 12px;
+    --regulator-logo-width: min(62vw, 224px);
     gap: 7px;
     margin-top: 48px;
   }
@@ -2981,7 +2987,6 @@
 
   .regulator-logo-marquee .regulator-logo {
     min-height: 72px;
-    width: min(62vw, 224px);
   }
 
   .regulator-logo-marquee .regulator-logo-link,
