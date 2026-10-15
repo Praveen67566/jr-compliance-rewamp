@@ -9,6 +9,8 @@ export type Link = {
 
 export type NavigationCategory = {
   title: string;
+  /** Optional decorative category logo from the CMS Media Library. */
+  logo?: string;
   links: Link[];
 };
 

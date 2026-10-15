@@ -467,6 +467,11 @@ Strapi components are reusable field groups stored as JSON schemas in `cms/src/c
 
 `cms/src/components/navigation/`
 : Header/footer navigation structures: `menu-item`, nested `menu-category`, and `link-group`.
+  `menu-category.logo` is optional single-image media, edited under Site Setting
+  → Header Menu → Categories. It appears at the far right of the selected
+  desktop panel title row and beside mobile category labels; existing records
+  remain valid without it. Deploy the CMS schema before the frontend that
+  explicitly populates this new media field.
 
 `cms/src/components/home/`
 : Home page field groups: hero, rotating terms, hero cards, stats, stories, image cards, CTA band, and why-us content.

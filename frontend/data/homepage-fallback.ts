@@ -1,6 +1,6 @@
-import type { HomepageContent } from "@/lib/types";
+import type { HomepageContent, NavigationCategory } from "@/lib/types";
 
-const navigationCategory = (title: string, links: readonly (readonly [string, string])[]) => ({
+const navigationCategory = (title: string, links: readonly (readonly [string, string])[]): NavigationCategory => ({
   title,
   links: links.map(([label, href]) => ({ label, href })),
 });

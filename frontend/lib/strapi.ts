@@ -167,7 +167,7 @@ const populateTrees: Record<SingleTypeSlug, PopulateTree> = {
     headerLogo: true,
     footerLogo: true,
     footerBadges: true,
-    headerMenu: { children: true, categories: { links: true } },
+    headerMenu: { children: true, categories: { logo: true, links: true } },
     headerCta: true,
     footerCta: true,
     footerLinkGroups: { links: true },
@@ -497,6 +497,7 @@ function mapNavigation(value: unknown, fallback: NavigationItem[]): NavigationIt
         .map((entry) => {
           const category = record(entry);
           const title = text(category.title);
+          const logo = mediaUrl(category.logo);
           const links = asArray(category.links)
             .map((categoryLink) => {
               const categoryLinkRecord = record(categoryLink);
@@ -509,7 +510,7 @@ function mapNavigation(value: unknown, fallback: NavigationItem[]): NavigationIt
             })
             .filter((categoryLink): categoryLink is Link => Boolean(categoryLink));
 
-          return title && links.length ? { title, links } : null;
+          return title && links.length ? { title, ...(logo ? { logo } : {}), links } : null;
         })
         .filter((category): category is NavigationCategory => Boolean(category));
 

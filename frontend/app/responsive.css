@@ -147,7 +147,7 @@
     color: #0d2a30;
     display: inline-block;
     font-size: 0.85rem;
-    font-weight: 800;
+    font-weight: 600;
     margin-top: 19px;
     padding: 12px 17px;
   }
@@ -578,8 +578,11 @@
     padding-top: 64px;
   }
 
-  .footer-top {
+  .footer-panel {
     border-radius: 22px;
+  }
+
+  .footer-top {
     gap: 30px;
     padding: 28px 24px;
   }
@@ -603,11 +606,10 @@
   }
 
   .footer-disclaimer {
-    border-radius: 16px;
     gap: 16px;
     grid-template-columns: 1fr;
-    margin-top: 16px;
-    padding: 23px 22px;
+    margin-inline: 24px;
+    padding: 23px 0 26px;
   }
 
   .footer-bottom {
@@ -711,7 +713,7 @@
     color: white;
     display: inline-block;
     font-size: 0.85rem;
-    font-weight: 800;
+    font-weight: 600;
     margin-top: 16px;
     padding: 12px 17px;
   }

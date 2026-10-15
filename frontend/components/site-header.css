@@ -3,6 +3,8 @@
     radial-gradient(circle at 78% -145%, rgba(46, 151, 255, 0.55), transparent 43%),
     linear-gradient(115deg, rgba(3, 15, 43, 0.98), rgba(6, 40, 95, 0.98) 68%, rgba(3, 20, 55, 0.98));
   border-bottom: 1px solid rgba(145, 214, 255, 0.18);
+  font-family: var(--font-inter), var(--sans);
+  font-weight: 500;
   isolation: isolate;
   left: 0;
   padding: 12px 0;
@@ -102,7 +104,7 @@
   cursor: pointer;
   display: inline-flex;
   font-size: 0.81rem;
-  font-weight: 700;
+  font-weight: 600;
   gap: 7px;
   padding: 10px 12px;
   transition: color 180ms ease, background 180ms ease, box-shadow 180ms ease;
@@ -145,7 +147,7 @@
 .popover-kicker {
   color: #167be0;
   font-size: 0.66rem;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: 0.12em;
   padding: 7px 10px 9px;
   text-transform: uppercase;
@@ -157,7 +159,7 @@
   color: #0b315f;
   display: flex;
   font-size: 0.84rem;
-  font-weight: 650;
+  font-weight: 500;
   justify-content: space-between;
   padding: 11px 10px;
   transition: background 160ms ease, color 160ms ease;
@@ -189,6 +191,7 @@
   box-shadow: 0 8px 20px rgba(15, 122, 240, 0.28), inset 0 1px rgba(255, 255, 255, 0.28);
   color: white;
   flex: 0 0 auto;
+  font-weight: 600;
   padding: 11px 15px;
 }
 

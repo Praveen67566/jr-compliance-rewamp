@@ -119,6 +119,16 @@ information hierarchy of the supplied reference:
 - Collapse to the compact menu at `980px`; keep the mobile menu as a structured
   navy/cobalt panel, never a generic white drawer.
 - Header and section anchors use a `102px` scroll offset.
+- Use the loaded Inter font throughout the header. Navigation labels and the
+  selected category use weight 600; service links and inactive categories use
+  weight 500. Mega-menu headings use Inter at 24–32px and weight 600.
+- Optional CMS category logos align to the far right of the selected desktop
+  mega-menu title row and appear beside mobile category labels. Preserve their colors in
+  a 24px contained image on a small ice tile. Without a logo, keep the desktop
+  title's blue dot and omit the mobile tile and its space.
+- The footer combines brand/contact details, service links, and legal notices
+  inside one blue-glass panel with a subtle divider above the notices. Badges,
+  copyright, and policy links sit below that panel.
 
 ## Editorial route system
 

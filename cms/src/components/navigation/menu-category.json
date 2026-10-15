@@ -10,6 +10,11 @@
       "type": "string",
       "required": true
     },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
     "links": {
       "type": "component",
       "component": "shared.link",

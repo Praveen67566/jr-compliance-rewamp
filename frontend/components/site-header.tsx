@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { linkTargetProps } from "@/lib/link-props";
-import type { NavigationItem, SiteSettings } from "@/lib/types";
+import type { NavigationCategory, NavigationItem, SiteSettings } from "@/lib/types";
 
 type SiteHeaderProps = {
   navigation: NavigationItem[];
@@ -12,6 +12,23 @@ type SiteHeaderProps = {
 
 function sharedHref(href: string) {
   return href.startsWith("#") ? `/${href}` : href;
+}
+
+function CategoryLogo({ src }: { src?: string }) {
+  return src ? (
+    <span className="inline-grid size-8 shrink-0 place-items-center rounded-lg bg-ice p-1 align-middle" aria-hidden="true">
+      <img className="size-6 object-contain" src={src} alt="" width={24} height={24} />
+    </span>
+  ) : null;
+}
+
+function CategoryLabel({ category }: { category: NavigationCategory }) {
+  return (
+    <span className="flex min-w-0 items-center gap-3">
+      <CategoryLogo src={category.logo} />
+      <span className="min-w-0">{category.title}</span>
+    </span>
+  );
 }
 
 // const headerContactActionClass =
@@ -122,10 +139,10 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
 
                             return (
                               <button
-                                className={`mb-1.5 flex min-h-12 w-full appearance-none items-center justify-between rounded-2xl bg-transparent px-5 py-3.5 text-left text-[0.93rem] font-extrabold leading-tight transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky ${
+                                className={`mb-1.5 flex min-h-12 w-full appearance-none items-center justify-between rounded-2xl bg-transparent px-5 py-3.5 text-left text-[0.93rem]! leading-snug! transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky ${
                                   isSelected
-                                    ? "border border-sky bg-[linear-gradient(135deg,var(--blue-cobalt-700),var(--blue-navy-700))] text-cloud shadow-[inset_0_1px_rgba(255,255,255,0.22),0_10px_26px_rgba(0,64,155,0.2)]"
-                                    : "border border-transparent text-[#c7e7fb] hover:border-sky/30 hover:bg-sky/10 hover:text-cloud"
+                                    ? "border border-sky bg-[linear-gradient(135deg,var(--blue-cobalt-700),var(--blue-navy-700))] font-semibold! text-cloud shadow-[inset_0_1px_rgba(255,255,255,0.22),0_10px_26px_rgba(0,64,155,0.2)]"
+                                    : "border border-transparent font-medium! text-[#c7e7fb] hover:border-sky/30 hover:bg-sky/10 hover:text-cloud"
                                 }`}
                                 key={category.title}
                                 type="button"
@@ -134,8 +151,8 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
                                 aria-controls={`${menuId}-panel`}
                                 onClick={() => setActiveCategory(category.title)}
                               >
-                                <span>{category.title}</span>
-                                <span className="ml-3 text-sky" aria-hidden="true">
+                                <span className="min-w-0">{category.title}</span>
+                                <span className="ml-3 shrink-0 text-sky" aria-hidden="true">
                                   ›
                                 </span>
                               </button>
@@ -148,18 +165,21 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
                           id={`${menuId}-panel`}
                           role="tabpanel"
                         >
-                          <div className="flex items-start justify-between gap-6 border-b border-cobalt-700/15 pb-7">
-                            <h2 className="font-display text-[clamp(2rem,2.5vw,3.2rem)] leading-[0.96] tracking-[-0.05em] text-[#071b43]">
+                          <div className="flex items-center justify-between gap-6 border-b border-cobalt-700/15 pb-7">
+                            <h2 className="m-0 min-w-0 text-[clamp(1.5rem,2vw,2rem)] font-semibold! leading-[1.2] tracking-[-0.02em] text-[#071b43]">
                               {selectedCategory.title}{" "}
-                              <span className="align-middle text-electric" aria-hidden="true">
-                                •
-                              </span>
+                              {!selectedCategory.logo ? (
+                                <span className="align-middle text-electric" aria-hidden="true">
+                                  •
+                                </span>
+                              ) : null}
                             </h2>
+                            <CategoryLogo src={selectedCategory.logo} />
                           </div>
                           <div className="grid grid-cols-3 gap-x-9 gap-y-5 pt-8 max-[1100px]:grid-cols-2">
                             {selectedCategory.links.map((link) => (
                               <a
-                                className="rounded-md text-[1rem] font-extrabold leading-[1.25] text-[#123665] outline-none transition hover:text-cobalt-700 focus-visible:bg-sky/20 focus-visible:text-cobalt-700"
+                                className="rounded-md text-[1rem] font-medium leading-[1.5] text-[#123665] outline-none transition hover:text-cobalt-700 focus-visible:bg-sky/20 focus-visible:text-cobalt-700"
                                 href={sharedHref(link.href)}
                                 key={link.label}
                                 {...linkTargetProps(link)}
@@ -267,10 +287,10 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
               </svg>
             </span>
             <span className="flex flex-col pr-1 max-[1100px]:hidden">
-              <span className="text-[7px] font-extrabold uppercase leading-none tracking-[0.16em] text-cobalt-700/60">
+              <span className="text-[7px] font-semibold uppercase leading-none tracking-[0.16em] text-cobalt-700/60">
                 Call us
               </span>
-              <span className="mt-1 whitespace-nowrap text-[11px] font-extrabold leading-none tracking-[0.01em] text-navy-950">
+              <span className="mt-1 whitespace-nowrap text-[11px] font-semibold leading-none tracking-[0.01em] text-navy-950">
                 {site.phone}
               </span>
             </span>
@@ -324,7 +344,7 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
               <div className="mobile-nav-group" key={item.label}>
                 {hasCategories ? (
                   <button
-                    className="flex w-full cursor-pointer appearance-none items-center justify-between border-0 bg-transparent py-[9px] text-left text-[0.96rem] font-bold text-cloud focus-visible:rounded focus-visible:outline-2 focus-visible:outline-sky"
+                    className="flex w-full cursor-pointer appearance-none items-center justify-between border-0 bg-transparent py-[9px] text-left text-[0.96rem]! font-semibold! text-cloud focus-visible:rounded focus-visible:outline-2 focus-visible:outline-sky"
                     type="button"
                     aria-label={`${isMobileSectionOpen ? "Collapse" : "Expand"} ${item.label} menu`}
                     aria-expanded={isMobileSectionOpen}
@@ -341,7 +361,7 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
                   </button>
                 ) : (
                   <a
-                    className="flex items-center justify-between py-[9px] text-[0.96rem] font-bold text-cloud focus-visible:rounded focus-visible:outline-2 focus-visible:outline-sky"
+                    className="flex items-center justify-between py-[9px] text-[0.96rem] font-semibold text-cloud focus-visible:rounded focus-visible:outline-2 focus-visible:outline-sky"
                     href={sharedHref(item.href)}
                     {...linkTargetProps(item)}
                     onClick={closeAll}
@@ -358,8 +378,8 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
                         key={category.title}
                         name={`${mobileSectionId}-categories`}
                       >
-                        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 py-2 pl-3 text-[0.82rem] font-bold text-[#c7e7fb] marker:content-none [&::-webkit-details-marker]:hidden">
-                          {category.title}
+                        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 py-2 pl-3 text-[0.82rem] font-medium text-[#c7e7fb] marker:content-none [&::-webkit-details-marker]:hidden">
+                          <CategoryLabel category={category} />
                           <span
                             className="text-sky transition-transform duration-200 group-open/mobile-category:rotate-45"
                             aria-hidden="true"
@@ -370,7 +390,7 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
                         <div className="grid gap-1 pb-2 pl-3">
                           {category.links.map((link) => (
                             <a
-                              className="py-1 text-[0.77rem] text-[#b7daf2] hover:text-cloud focus-visible:rounded focus-visible:outline-2 focus-visible:outline-sky"
+                              className="py-1 text-[0.77rem] font-medium text-[#b7daf2] hover:text-cloud focus-visible:rounded focus-visible:outline-2 focus-visible:outline-sky"
                               href={sharedHref(link.href)}
                               key={link.label}
                               {...linkTargetProps(link)}
@@ -402,7 +422,7 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
           })}
           {site.loginButton.enabled ? (
             <a
-              className="mr-2 mt-4 inline-flex items-center justify-center rounded-full border border-sky/50 bg-ice px-[17px] py-3 text-[0.85rem] font-extrabold text-[#0b315f] transition-[background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-sky-strong hover:bg-cloud focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky"
+              className="mr-2 mt-4 inline-flex items-center justify-center rounded-full border border-sky/50 bg-ice px-[17px] py-3 text-[0.85rem] font-semibold text-[#0b315f] transition-[background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-sky-strong hover:bg-cloud focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky"
               href={sharedHref(site.loginButton.href)}
               onClick={closeAll}
             >

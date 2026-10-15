@@ -227,6 +227,11 @@ The main flow is:
   Global country links remain editor-managed through the existing
   `site-setting.headerMenu` Global category. Publishing a Global page does not
   add it to the navbar automatically.
+  Each category also accepts an optional CMS logo at the far right of its
+  selected desktop panel title row and beside its mobile summary label. Without a
+  logo, the desktop title keeps its blue dot and mobile labels have no empty
+  tile. The header uses the loaded Inter font with medium links and semibold
+  navigation/headings.
 
 `frontend/components/site-header.css`
 : Header-only bluefield, navigation rail, popover, and mobile-menu artwork. It is imported once by the root layout to preserve the established cascade.
@@ -235,6 +240,8 @@ The main flow is:
 : Shared footer. Renders logo, contact details, social links, link groups,
   popular services, legal links, and disclaimers from CMS/fallback data. Its
   three legal links now resolve to the completed local legal routes.
+  Brand/contact details, service links, and legal notices share one panel;
+  badges, copyright, and policy links remain beneath it.
 
 `frontend/components/site-footer.css`
 : Footer-only network field, glass panel, and legal-area styling.

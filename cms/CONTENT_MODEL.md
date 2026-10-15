@@ -689,7 +689,7 @@ relations normally live on their parent content types—including fixed service
 | `shared.lead-form-trust-item` | `name` short text*, `logo` single image media, `link` `shared.link` component; items render in editor order and may fall back to their name when no logo is selected |
 | `shared.sticky-bar` | `enabled` boolean* (default `false`), `title` short text, `description` long text, `supportingText` short text, `icon` single image media, `cta` `shared.cta`; the frontend renders it only when enabled and complete |
 | `navigation.menu-item` | `label` short text*, `href` short text, `children` repeatable `shared.link` component, `categories` repeatable `navigation.menu-category` component; use categories for multi-column mega menus, children for a simple submenu, and `href` alone for Careers/About Us |
-| `navigation.menu-category` | `title` short text*, `links` repeatable `shared.link` component* |
+| `navigation.menu-category` | `title` short text*, optional `logo` single image media, `links` repeatable `shared.link` component*. Editors choose logos under Site Setting → Header Menu → Categories; they render decoratively at the far right of the selected desktop panel title row and beside mobile category labels. Missing logos preserve the desktop title's blue dot and leave no mobile placeholder; existing records need no backfill. |
 | `navigation.link-group` | `title` short text*, `links` repeatable `shared.link` component* |
 | `home.rotating-term` | `text` short text* |
 | `home.hero-card` | `title` short text*, `description` long text, `image` single image media, `icon` single image media, `cta` `shared.cta` component |
