@@ -18,6 +18,7 @@ export const metadata: Metadata = {
   title: "JR Compliance | Global Compliance Consultants",
   description:
     "Global compliance, certification, and corporate services from JR Compliance.",
+  robots: "noindex,nofollow",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

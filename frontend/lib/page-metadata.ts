@@ -14,7 +14,6 @@ export function pageMetadata(
   { forcePathnameCanonical = false }: PageMetadataOptions = {},
 ): Metadata {
   const image = seo.shareImage ? [seo.shareImage] : undefined;
-  const robots = seo.robots ?? (seo.noIndex ? "noindex,nofollow" : "index,follow");
   const configuredMetadataBase = configuredSiteUrl();
   const metadataBase =
     configuredMetadataBase ?? (forcePathnameCanonical ? publicSiteUrl() : undefined);
@@ -30,7 +29,8 @@ export function pageMetadata(
     ...(seo.keywords?.length ? { keywords: seo.keywords } : {}),
     ...(metadataBase ? { metadataBase } : {}),
     ...(canonical ? { alternates: { canonical } } : {}),
-    robots,
+    // Enforce the site-wide policy even when CMS SEO requests indexing.
+    robots: "noindex,nofollow",
     openGraph: {
       title: seo.title,
       description: seo.description,

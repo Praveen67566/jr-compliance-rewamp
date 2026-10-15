@@ -105,20 +105,4 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Now i want some changes here only change the things required.
 
-1. In Home Page The Media Section if cards are three then key animation is perfect but if cards increases then the problem aries so :-
-    1. if card are more then three then don't use key chain animation use slider animation slide from right to left.
-    2. and i think make the cards litile small for laptops.
-
-2. now see if the fixed sticky bar is coming then whatsapp floating icon overlaps so move whatsapp icon towards the top refernce image is provides.
-
-3. Sticky bar design not looks so good make it appeling also decrease the height for screens like laptops (this for all company registration and home page also).
-
-4. In Headers Remove the R written on the right side in the circle.
-
-5. In The company registration pages like all 19 colletion pages the Service Overview section if there is only one heading no need to write 01 and make it in center.
-
-6. In The company registration pages the related guides section doesn't have any underline but startup india section have so put a underline in related guide section also just after the heading.
-
-These are only ui changes so don't change anything else.

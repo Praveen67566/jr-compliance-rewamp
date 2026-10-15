@@ -26,16 +26,20 @@ describe("CMS robots metadata", () => {
     assert.deepEqual(schema.attributes.schemaMarkup, { type: "json" });
   });
 
-  it("emits the CMS robots directive and defaults fallback pages to index,follow", () => {
+  it("enforces noindex,nofollow for fallback pages and overrides CMS robots directives", () => {
     const baseSeo = {
       title: "SEO test page",
       description: "SEO test description",
     };
 
-    assert.equal(pageMetadata(baseSeo, "/seo-test").robots, "index,follow");
+    assert.equal(pageMetadata(baseSeo, "/seo-test").robots, "noindex,nofollow");
+    assert.equal(
+      pageMetadata({ ...baseSeo, robots: "index,follow" }, "/seo-test").robots,
+      "noindex,nofollow",
+    );
     assert.equal(
       pageMetadata({ ...baseSeo, robots: "noindex,follow" }, "/seo-test").robots,
-      "noindex,follow",
+      "noindex,nofollow",
     );
     assert.equal(pageMetadata({ ...baseSeo, noIndex: true }, "/seo-test").robots, "noindex,nofollow");
   });
