@@ -105,4 +105,6 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
+Only Ui Changes:-
 
+1. REGULATORY EXPERTISE section in homepage ui in safari browser looks weird fix the ui also the refernce image is given.

@@ -1491,11 +1491,13 @@
   box-shadow:
     0 10px 30px rgba(3, 24, 66, 0.035),
     inset 0 1px rgba(255, 255, 255, 0.9);
-  flex: 0 0 clamp(170px, 11vw, 214px);
+  /* Explicit widths keep WebKit's intrinsic list size aligned with the cards. */
+  flex: 0 0 auto;
   min-height: 78px;
   overflow: hidden;
   position: relative;
   transition: border-color 240ms ease, box-shadow 240ms ease, transform 240ms ease;
+  width: clamp(170px, 11vw, 214px);
 }
 
 .regulator-logo-marquee .regulator-logo {
@@ -2778,7 +2780,7 @@
   }
 
   .regulator-logo-marquee .regulator-logo {
-    flex-basis: clamp(172px, 18vw, 205px);
+    width: clamp(172px, 18vw, 205px);
   }
 
   .testimonials-section[data-keychain-count="4"].is-reveal-ready:not(.is-settled) .testimonial-card:nth-child(1) {
@@ -2858,7 +2860,7 @@
   }
 
   .regulator-logo-marquee .regulator-logo {
-    flex-basis: clamp(168px, 30vw, 205px);
+    width: clamp(168px, 30vw, 205px);
   }
 
   .recognitions-section[data-keychain-count="3"].is-reveal-ready:not(.is-settled) .recognition-card:nth-child(1) {
@@ -2978,8 +2980,8 @@
   }
 
   .regulator-logo-marquee .regulator-logo {
-    flex-basis: min(62vw, 224px);
     min-height: 72px;
+    width: min(62vw, 224px);
   }
 
   .regulator-logo-marquee .regulator-logo-link,
