@@ -73,8 +73,8 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
     >
       <div className="header-shell site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
         <div className="header-brand-area">
-          <a className="brand" href="/" aria-label={`${site.name} home`} onClick={closeAll}>
-            <img src={site.logo} alt={site.name} />
+          <a className="block w-[184px] shrink-0 max-[1100px]:w-[164px] max-[560px]:w-[156px]" href="/" aria-label={`${site.name} home`} onClick={closeAll}>
+            <img className="h-auto max-h-12 w-full object-contain" src={site.logo} alt={site.name} />
           </a>
         </div>
 
@@ -179,13 +179,16 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
                           <div className="grid grid-cols-3 gap-x-9 gap-y-5 pt-8 max-[1100px]:grid-cols-2">
                             {selectedCategory.links.map((link) => (
                               <a
-                                className="rounded-md text-[1rem] font-medium leading-[1.5] text-[#123665] outline-none transition hover:text-cobalt-700 focus-visible:bg-sky/20 focus-visible:text-cobalt-700"
+                                className="group/service-link flex min-w-0 items-center justify-between gap-3 rounded-2xl border border-transparent px-4 py-3.5 text-[1rem] font-medium leading-[1.5] text-[#123665] transition-[background-color,border-color,color] duration-200 hover:border-electric/20 hover:bg-electric/5 hover:text-cobalt-700 focus-visible:border-electric/20 focus-visible:bg-electric/5 focus-visible:text-cobalt-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric"
                                 href={sharedHref(link.href)}
                                 key={link.label}
                                 {...linkTargetProps(link)}
                                 onClick={closeAll}
                               >
-                                {link.label}
+                                <span className="min-w-0">{link.label}</span>
+                                <span className="shrink-0 text-xl leading-none text-cobalt-700/30 group-hover/service-link:text-electric group-focus-visible/service-link:text-electric" aria-hidden="true">
+                                  ›
+                                </span>
                               </a>
                             ))}
                           </div>

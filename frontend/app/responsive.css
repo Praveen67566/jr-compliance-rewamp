@@ -3,10 +3,6 @@
     gap: 16px;
   }
 
-  .brand {
-    width: 132px;
-  }
-
   .nav-link {
     padding-left: 8px;
     padding-right: 8px;
@@ -68,10 +64,6 @@
     border-radius: 18px;
     justify-content: space-between;
     min-height: 72px;
-  }
-
-  .brand {
-    width: 145px;
   }
 
   .desktop-navigation,
@@ -269,10 +261,6 @@
 @media (max-width: 560px) {
   .header-shell {
     min-height: 66px;
-  }
-
-  .brand {
-    width: 126px;
   }
 
   .hero-layout {

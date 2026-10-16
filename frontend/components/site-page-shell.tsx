@@ -76,13 +76,6 @@ export function SitePageShell({
               Chat on WhatsApp
             </span>
           </span>
-          <span
-            className="pointer-events-none absolute -top-[38px] left-1/2 z-[3] flex -translate-x-1/2 items-center gap-[0.35rem] whitespace-nowrap rounded-full bg-[linear-gradient(135deg,#1b95ff,#376bed)] py-[0.4rem] pl-[0.55rem] pr-[0.7rem] text-[0.68rem] font-bold tracking-[0.01em] text-white shadow-[0_8px_18px_rgba(15,113,241,0.45),inset_0_1px_rgba(255,255,255,0.25)] after:absolute after:-bottom-1 after:left-1/2 after:size-[9px] after:-translate-x-1/2 after:rotate-45 after:rounded-br-[2px] after:bg-[#2e7ff0] after:content-['']"
-            aria-hidden="true"
-          >
-            <span className="size-[5px] rounded-full bg-[#5fe3b0] shadow-[0_0_6px_#5fe3b0] motion-safe:animate-pulse" />
-            24/7 AI
-          </span>
           <span className="relative isolate grid size-[60px] place-items-center rounded-full bg-[linear-gradient(150deg,#25d366,#128c7e)] text-white shadow-[0_12px_28px_rgba(18,140,126,0.45),inset_0_1px_rgba(255,255,255,0.3)] transition-[translate,scale] duration-250 ease-[cubic-bezier(.22,1,.36,1)] pointer-fine:group-hover/whatsapp:-translate-y-[3px] pointer-fine:group-hover/whatsapp:scale-[1.04] group-focus-visible/whatsapp:-translate-y-[3px] group-focus-visible/whatsapp:scale-[1.04] motion-reduce:transition-none">
             <span
               className="pointer-events-none absolute inset-0 rounded-full border-2 border-[#25d366] opacity-[0.55] motion-safe:animate-ping motion-safe:[animation-duration:2.6s] motion-reduce:hidden"
