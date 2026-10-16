@@ -231,6 +231,17 @@ export type PageChromeContent = {
   updatedAt?: string;
 };
 
+export type StickyBarImage = {
+  src: string;
+  alt: string;
+};
+
+export type StickyBarPoint = {
+  title: string;
+  description?: string;
+  icon?: string;
+};
+
 /** Optional CMS-managed CTA revealed at the bottom of the viewport after scrolling. */
 export type StickyBarContent = {
   title: string;
@@ -238,6 +249,9 @@ export type StickyBarContent = {
   supportingText?: string;
   icon?: string;
   iconAlt?: string;
+  brandLogo?: StickyBarImage;
+  points?: StickyBarPoint[];
+  logos?: StickyBarImage[];
   cta: Link;
 };
 
@@ -626,6 +640,7 @@ export type RegistrationWrittenBy = {
   experience: string;
   biography: string;
   verified: boolean;
+  logosLabel?: string;
   logos?: Logo[];
 };
 

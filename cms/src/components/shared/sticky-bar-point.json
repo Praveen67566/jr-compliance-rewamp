@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_shared_sticky_bar_points",
+  "info": {
+    "displayName": "Sticky bar support point",
+    "description": "A short support benefit with optional description and artwork."
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string"
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

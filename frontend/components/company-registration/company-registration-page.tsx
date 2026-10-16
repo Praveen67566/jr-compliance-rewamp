@@ -713,14 +713,21 @@ function ExtraContentSidebar({
 
 function WrittenByLogoMarquee({
   logos,
+  label,
 }: {
   logos: NonNullable<RegistrationWrittenBy["logos"]>;
+  label?: string;
 }) {
   return (
     <div
-      aria-label="Author credentials and recognition logos"
+      aria-label={label || "Author credentials and recognition logos"}
       className="group/written-logos min-w-0 overflow-hidden border-t border-cobalt-700/10 pt-3 motion-reduce:overflow-x-auto min-[821px]:border-l min-[821px]:border-t-0 min-[821px]:pl-5 min-[821px]:pt-0"
     >
+      {label ? (
+        <p className="mb-2 text-[0.625rem] font-extrabold uppercase tracking-[0.14em] text-cobalt-700">
+          {label}
+        </p>
+      ) : null}
       <div className="flex w-max motion-safe:animate-[written-logo-marquee_24s_linear_infinite] group-hover/written-logos:[animation-play-state:paused] group-focus-within/written-logos:[animation-play-state:paused] motion-reduce:animate-none">
         {[false, true].map((isClone) => (
           <ul
@@ -843,7 +850,7 @@ function WrittenBySection({ section }: { section: RegistrationWrittenBy }) {
             </div>
           </div>
 
-          {section.logos?.length ? <WrittenByLogoMarquee logos={section.logos} /> : null}
+          {section.logos?.length ? <WrittenByLogoMarquee logos={section.logos} label={section.logosLabel} /> : null}
         </div>
 
         <div className="mt-4 border-t border-cobalt-700/12 pt-3">
@@ -861,7 +868,6 @@ export function CompanyRegistrationPage({
   content,
   showHeroGlobe = false,
 }: CompanyRegistrationPageProps) {
-  const isSingleOverview = content.overview?.paragraphs.length === 1;
   const whyChooseGridClass =
     content.whyChoose?.items.length === 1
       ? "mx-auto grid w-full max-w-[860px] grid-cols-1 gap-4"
@@ -1013,51 +1019,55 @@ export function CompanyRegistrationPage({
       {content.trustedLogos ? <TrustedBrandsMarquee logos={content.trustedLogos} /> : null}
 
       {content.overview ? (
-        <section className="relative isolate scroll-mt-28 overflow-hidden bg-ice py-14 text-navy-950 min-[560px]:py-18 min-[821px]:py-28" id="overview">
+        <section aria-labelledby="service-overview-heading" className="relative isolate scroll-mt-28 overflow-hidden bg-ice pb-14 pt-28 text-navy-950 min-[560px]:pb-18 min-[560px]:pt-36 min-[821px]:pb-20 min-[821px]:pt-40" id="overview">
           <div
-            className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_12%_18%,rgba(22,140,245,0.1),transparent_24%),radial-gradient(circle_at_88%_78%,rgba(13,92,184,0.08),transparent_26%)]"
+            className="pointer-events-none absolute inset-x-0 top-0 -z-20 h-28 bg-[linear-gradient(180deg,var(--blue-navy-950)_0%,var(--blue-navy-700)_48%,var(--blue-cobalt-700)_74%,var(--blue-ice)_100%)] min-[560px]:h-36 min-[821px]:h-40"
+            aria-hidden="true"
+          />
+          <div
+            className="pointer-events-none absolute inset-0 -z-10 [background-image:linear-gradient(rgba(22,140,245,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(22,140,245,0.1)_1px,transparent_1px)] [background-size:48px_48px] min-[821px]:[background-size:56px_56px]"
+            aria-hidden="true"
+          />
+          <div
+            className="pointer-events-none absolute -left-52 top-1/3 -z-10 size-[440px] rotate-12 rounded-[72px] bg-electric/10"
+            aria-hidden="true"
+          />
+          <div
+            className="pointer-events-none absolute -bottom-64 -right-48 -z-10 size-[560px] rounded-full bg-sky/25"
             aria-hidden="true"
           />
           <div className="mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
-            <article className="grid min-w-0 overflow-hidden rounded-[30px] border border-cobalt-700/18 bg-cloud shadow-[0_28px_75px_rgba(3,19,47,0.12)] min-[1100px]:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)]">
-              <div className="relative isolate min-w-0 overflow-hidden bg-[linear-gradient(145deg,var(--blue-navy-800),var(--blue-navy-950))] p-7 text-white min-[560px]:p-10 min-[821px]:p-12">
-                <div
-                  className="pointer-events-none absolute inset-0 -z-10 opacity-25 [background-image:linear-gradient(rgba(139,220,255,0.16)_1px,transparent_1px),linear-gradient(90deg,rgba(139,220,255,0.16)_1px,transparent_1px)] [background-size:38px_38px]"
-                  aria-hidden="true"
-                />
-                <div
-                  className="pointer-events-none absolute -bottom-28 -right-24 -z-10 size-64 rounded-full border border-sky/20 shadow-[0_0_0_36px_rgba(22,140,245,0.04)]"
-                  aria-hidden="true"
-                />
-                <span className="mb-5 flex items-center gap-2 text-[0.7rem] font-extrabold uppercase tracking-[0.14em] text-sky">
-                  <span className="size-1.5 rounded-full bg-current" aria-hidden="true" />
+            <article className="relative isolate min-w-0 overflow-hidden rounded-[24px] border border-cobalt-600/25 bg-cloud p-6 shadow-[0_24px_64px_rgba(3,19,47,0.1)] min-[560px]:rounded-[32px] min-[560px]:p-9 min-[821px]:rounded-[36px] min-[821px]:px-14 min-[821px]:py-12">
+              <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-1.5 bg-[linear-gradient(90deg,var(--blue-navy-700),var(--blue-electric),var(--blue-sky))]" />
+              <div aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 -z-10 size-[300px] rounded-full border border-cobalt-600/30 opacity-40 min-[560px]:size-[340px] min-[560px]:opacity-70 min-[821px]:size-[360px]">
+                <span className="absolute inset-14 rounded-full border border-dashed border-cobalt-600/50" />
+                <span className="absolute left-[40%] top-[40%] size-3 rounded-full bg-electric shadow-[0_0_0_7px_rgba(139,220,255,0.5)] min-[821px]:size-4" />
+              </div>
+              <header className="relative mx-auto w-full max-w-[1120px]">
+                <span className="mb-6 inline-flex max-w-full items-center gap-3 rounded-full border border-cobalt-600/30 bg-ice px-4 py-2 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-cobalt-700 min-[560px]:mb-7 min-[560px]:px-5">
+                  <span className="size-2 shrink-0 rounded-full bg-electric shadow-[0_0_0_5px_rgba(139,220,255,0.45)]" aria-hidden="true" />
                   {content.overview.eyebrow}
                 </span>
-                <h2 className="mb-0 max-w-[560px] break-words font-display text-[clamp(2.5rem,4vw,4.35rem)] leading-[0.97] tracking-[-0.045em] text-white">
-                  {content.overview.title}
+                <h2 className="mb-0 break-words font-display text-[clamp(1.8rem,3vw,2.65rem)] leading-[1.08] tracking-[-0.035em] text-navy-950" id="service-overview-heading">
+                  {content.overview.title.split(/(\*[^*]+\*)/g).map((part, index) =>
+                    part.length > 2 && part.startsWith("*") && part.endsWith("*") ? (
+                      <em className="font-normal text-cobalt-700" key={index}>{part.slice(1, -1)}</em>
+                    ) : part,
+                  )}
                 </h2>
-                <div className="mt-10 flex items-center gap-3" aria-hidden="true">
-                  <span className="size-2.5 rounded-full border-2 border-sky bg-electric shadow-[0_0_18px_rgba(139,220,255,0.72)]" />
-                  <span className="h-px flex-1 bg-[linear-gradient(90deg,var(--blue-sky),rgba(139,220,255,0.08))]" />
-                  <span className="size-1.5 rounded-full bg-sky/75" />
+                <div aria-hidden="true" className="mt-6 flex items-center gap-2.5 min-[821px]:mt-7">
+                  <span className="h-1 w-16 rounded-full bg-electric min-[821px]:w-20" />
+                  <span className="size-2.5 rounded-full bg-sky" />
+                  <span className="size-2.5 rounded-full bg-sky/55" />
                 </div>
-              </div>
-              <div className={`min-w-0 bg-[linear-gradient(150deg,var(--blue-cloud),rgba(234,246,255,0.72))] p-7 min-[560px]:p-10 min-[821px]:p-12 ${isSingleOverview ? "flex flex-col justify-center text-center" : ""}`}>
+              </header>
+              <div className="relative mx-auto mt-7 w-full max-w-[1120px] space-y-5 text-left min-[821px]:mt-8">
                 {content.overview.paragraphs.map((paragraph, index) => (
-                  <div
-                    className={`min-w-0 ${isSingleOverview ? "w-full" : "grid grid-cols-1 gap-3 border-b border-cobalt-700/12 py-5 first:pt-0 last:border-0 last:pb-0 min-[560px]:grid-cols-[2.65rem_minmax(0,1fr)] min-[560px]:gap-4"}`}
-                    key={`${index}-${typeof paragraph === "string" ? paragraph : index}`}
-                  >
-                    {!isSingleOverview ? (
-                      <span className="flex size-10 items-center justify-center rounded-xl border border-cobalt-600/18 bg-ice text-[0.65rem] font-extrabold tracking-[0.12em] text-cobalt-600">
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                    ) : null}
-                    <RegistrationRichTextView
-                      className="mb-0 min-w-0 break-words text-base leading-8 text-navy-700/80 md:text-lg"
-                      value={paragraph}
-                    />
-                  </div>
+                  <RegistrationRichTextView
+                    className="mb-0 max-w-[1040px] break-words text-[0.9375rem] leading-[1.8] text-navy-700 min-[821px]:text-base"
+                    key={index}
+                    value={paragraph}
+                  />
                 ))}
               </div>
             </article>

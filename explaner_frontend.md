@@ -251,7 +251,21 @@ The main flow is:
 `frontend/components/sticky-cta-bar.tsx`
 : Shared client boundary for the optional homepage/service-page bottom CTA. It
   stays hidden until the visitor scrolls, then enters with reduced-motion-safe
-  movement using CMS-managed copy, optional media, supporting text, and link.
+  movement using CMS-managed copy, optional brand logo, up to three ordered
+  support points with optional icons, up to three trust logos, supporting text,
+  and link. The reference-style ice/cloud rail uses navy copy, a larger unboxed
+  brand logo, fine support-point dividers, blue document/headset/seal artwork
+  when point icons are absent, unboxed trust logos, and a cobalt pill CTA.
+  The CTA has a curved leading cutout. At `820px` and below, a compact navy
+  title/CTA row replaces the larger branding, with a single CMS support line
+  cycling every four seconds underneath. Readers can pause/play or select the
+  next highlight; all support points also remain in a static screen-reader
+  list. Automatic cycling stops for hidden bars, hover, inactive documents,
+  and reduced motion. Compact-screen visibility waits until the entire
+  `#expert-consultation` form is above the viewport and updates when that form
+  resizes; scrolling back hides the bar. Desktop and form-disabled pages retain
+  the `240px` threshold. Its measured height reserves bottom-page space and
+  lifts WhatsApp above it. Existing CMS fields remain unchanged.
 
 `frontend/components/forms/consultation-form.tsx`
 : The one reusable consultation form. It owns field state, accessible feedback,
@@ -336,7 +350,14 @@ The main flow is:
   expert CTA header, Related Guides card, and collapsible related-services card
   form a sticky desktop sidebar beside the article and stack below it on smaller
   screens. The content-managed Written By card follows Extra Content; optional
-  ordered logos move right to left beside the compact author identity. YouTube
+  ordered logos move right to left beside the compact author identity, under
+  an editor-managed `logosLabel` caption. The shared mapper uses the typed
+  “As seen on” default for older author records. Overview uses a navy-to-ice
+  blueprint field and one rounded ice reading card, with a pill eyebrow,
+  electric top rule, static orbit artwork, a display heading, and left-aligned
+  description. Editors can wrap title words in `*asterisks*` for blue italic
+  emphasis without changing the schema; plain titles, existing multi-paragraph
+  content, and description Markdown formatting remain intact. YouTube
   videos follow the author card and render in a
   one-column/two-column navy grid. Each visible
   title labels a lazy 16:9 `youtube-nocookie.com` iframe with no autoplay,
@@ -481,6 +502,10 @@ content, ticker content, sticky-bar content, detail-item
 icons, and Breakdown group icons are not added to fallback or seed mirrors;
 existing pages remain unchanged until editors populate and publish those CMS
 fields.
+
+The exported `defaultWrittenByLogosLabel` in the Company Registration fallback
+module supplies only the default author-logo caption; it adds no author, logo,
+sticky-bar, or service-page records to any fallback/seed mirror.
 
 ## Library files
 

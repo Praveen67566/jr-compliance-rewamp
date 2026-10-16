@@ -37,6 +37,10 @@
       "required": true,
       "default": true
     },
+    "logosLabel": {
+      "type": "string",
+      "default": "As seen on"
+    },
     "logos": {
       "type": "relation",
       "relation": "manyToMany",

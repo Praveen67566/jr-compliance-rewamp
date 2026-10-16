@@ -40,7 +40,7 @@ The CMS provides content for:
 - shared header/footer and global consultation-form copy through the `site-setting` single type
 
 The committed model contains five single types, thirty-seven collection types,
-and sixty-five components: forty-two content types in total, including
+and sixty-six components: forty-two content types in total, including
 nineteen fixed service-detail collections. That fixed service-detail count is
 unchanged; the Legal Page collection and two Global collections use separate
 fixed contracts. The seven empty Approval collections and both Global
@@ -61,6 +61,16 @@ in the four optional card sections, plus Breakdown groups, also
 accept optional image icons. Leaving any optional field empty does not make an
 otherwise complete record invalid or cause the frontend to borrow that section
 from another record.
+
+The shared Sticky Bar also accepts an optional **Brand Logo**, up to three
+ordered **Points** (title, optional description and icon), and optional **Logos**
+media; the first three valid logos are displayed. Brand Logo replaces the
+small service-icon tile when supplied. Set Media Library alternative text for
+informative branding. These additive fields apply to the homepage and all
+nineteen service collections. Under **Written By → Logos Label**, editors can
+change the “As seen on” caption above the author logos; older records use that
+default until customized. Neither change creates or backfills editor records.
+Deploy the CMS schemas before the frontend's expanded populate queries.
 
 The frontend reads published CMS content using a server-only API token. If
 Strapi is unavailable, fallback-backed routes use local data from
@@ -458,7 +468,8 @@ Strapi components are reusable field groups stored as JSON schemas in `cms/src/c
 
 `cms/src/components/shared/`
 : Cross-page primitives: `link`, `cta`, `seo`, `section-heading`, `contact`,
-  `social-link`, `legal-notice`, and the enable-controlled `sticky-bar`. The existing `legal-notice` title/Blocks
+  `social-link`, `legal-notice`, the enable-controlled `sticky-bar`, and its
+  ordered `sticky-bar-point`. The existing `legal-notice` title/Blocks
   body component is reused by Site Setting footer notices and ordered Legal
   Page sections. SEO also accepts optional comma-separated page keywords and
   JSON-only schema markup; the frontend supplies and safely serializes the
@@ -501,7 +512,8 @@ Strapi components are reusable field groups stored as JSON schemas in `cms/src/c
   `registration.extra-content-sidebar-links` stores a heading and ordered links
   for each of the two fixed sidebar cards. `registration.written-by` stores the
   author label, portrait, name, role, experience, verification state,
-  biography, and optional ordered Brand Logo records. Registration Rich Text is rendered
+  biography, editable `logosLabel` caption (default “As seen on”), and optional
+  ordered Brand Logo records. Registration Rich Text is rendered
   with formatting intact and sanitized by the frontend.
 
 `cms/src/components/global/`

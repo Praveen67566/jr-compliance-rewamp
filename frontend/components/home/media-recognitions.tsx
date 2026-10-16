@@ -15,7 +15,7 @@ function RecognitionCards({
 }) {
   return items.map((recognition, index) => (
     <a
-      className="recognition-card"
+      className="recognition-card max-[820px]:!min-h-[230px] max-[820px]:!p-[18px] max-[820px]:[&_.recognition-category]:!mt-3 max-[820px]:[&_.recognition-source]:!mt-4 max-[820px]:[&_.recognition-source]:!min-h-9 max-[820px]:[&_.recognition-source]:!text-sm max-[820px]:[&_.recognition-source_img]:!h-10 max-[820px]:[&_.recognition-source_img]:!max-w-[140px] max-[820px]:[&_h3]:!mt-4 max-[820px]:[&_h3]:!mb-3 max-[820px]:[&_h3]:!text-[1.35rem] max-[820px]:[&_p]:!text-[0.8125rem] max-[820px]:[&_p]:!leading-[1.55]"
       href={recognition.href}
       key={`${recognition.title}-${index}`}
       tabIndex={isClone ? -1 : undefined}
@@ -55,19 +55,19 @@ export function MediaRecognitions({ content }: { content: HomepageContent["recog
             className="flex w-max motion-safe:animate-[recognition-slide_var(--recognition-duration)_linear_infinite] group-hover/recognitions:[animation-play-state:paused] group-focus-within/recognitions:animate-none motion-reduce:animate-none"
             style={{ "--recognition-duration": `${content.items.length * 6}s` } as CSSProperties}
           >
-            <div className="grid auto-cols-[min(78vw,360px)] grid-flow-col gap-4 pr-4 min-[821px]:auto-cols-[min(30vw,400px)]">
+            <div className="grid auto-cols-[min(72vw,320px)] grid-flow-col gap-4 pr-4 min-[821px]:auto-cols-[min(30vw,400px)]">
               <RecognitionCards items={content.items} isSlider />
             </div>
             <div
               aria-hidden="true"
-              className="grid auto-cols-[min(78vw,360px)] grid-flow-col gap-4 pr-4 min-[821px]:auto-cols-[min(30vw,400px)] group-focus-within/recognitions:hidden motion-reduce:hidden"
+              className="grid auto-cols-[min(72vw,320px)] grid-flow-col gap-4 pr-4 min-[821px]:auto-cols-[min(30vw,400px)] group-focus-within/recognitions:hidden motion-reduce:hidden"
             >
               <RecognitionCards items={content.items} isSlider isClone />
             </div>
           </div>
         </div>
       ) : (
-        <div className="recognition-grid">
+        <div className="recognition-grid max-[820px]:mx-auto max-[820px]:w-full max-[820px]:max-w-[420px] max-[820px]:!gap-3">
           <RecognitionCards items={content.items} isSlider={false} />
         </div>
       )}

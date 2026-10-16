@@ -25,6 +25,22 @@
       "multiple": false,
       "allowedTypes": ["images"]
     },
+    "brandLogo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "points": {
+      "type": "component",
+      "component": "shared.sticky-bar-point",
+      "repeatable": true,
+      "max": 3
+    },
+    "logos": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": ["images"]
+    },
     "cta": {
       "type": "component",
       "component": "shared.cta",

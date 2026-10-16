@@ -2,6 +2,8 @@ import "server-only";
 
 import { cache } from "react";
 
+import { defaultWrittenByLogosLabel } from "@/data/company-registration-pages-fallback";
+
 import type {
   AboutPageContent,
   AboutValue,
@@ -196,7 +198,7 @@ const populateTrees: Record<SingleTypeSlug, PopulateTree> = {
     regulatorLogos: { logo: true },
     story: { heading: true, stats: { icon: true }, featureImage: true, cta: true },
     tickerCta: { cta: true },
-    stickyBar: { icon: true, cta: true },
+    stickyBar: { icon: true, brandLogo: true, points: { icon: true }, logos: true, cta: true },
     testimonialsHeading: true,
     testimonials: { personPhoto: true, companyLogo: true },
     recognitionHeading: true,
@@ -268,7 +270,7 @@ const fixedServiceDetailPopulateTree: PopulateTree = {
   breakdown: { groups: { icon: true, items: true } },
   resultsSection: { stats: true },
   tickerCta: { cta: true },
-  stickyBar: { icon: true, cta: true },
+  stickyBar: { icon: true, brandLogo: true, points: { icon: true }, logos: true, cta: true },
   faqs: { items: true },
   finalCta: { cta: true },
   seo: { shareImage: true },
@@ -1654,6 +1656,7 @@ function mapRegistrationWrittenBy(value: unknown): RegistrationWrittenBy | undef
   const experience = text(section.experience);
   const biography = text(section.biography);
   const verified = boolean(section.verified) ?? false;
+  const logosLabel = text(section.logosLabel) ?? defaultWrittenByLogosLabel;
   const logos = mapLogos(section.logos, []);
 
   return label && name && role && avatar && experience && biography
@@ -1665,6 +1668,7 @@ function mapRegistrationWrittenBy(value: unknown): RegistrationWrittenBy | undef
         experience,
         biography,
         verified,
+        logosLabel,
         ...(logos.length ? { logos } : {}),
       }
     : undefined;
@@ -1723,6 +1727,31 @@ function mapStickyBar(value: unknown): StickyBarContent | null {
   const description = text(section.description);
   const supportingText = text(section.supportingText);
   const icon = mediaUrl(section.icon);
+  const brandLogoSrc = mediaUrl(section.brandLogo);
+  const points = orderedEntries(section.points)
+    .map((entry) => {
+      const point = record(entry);
+      const pointTitle = text(point.title);
+      const pointDescription = text(point.description);
+      const pointIcon = mediaUrl(point.icon);
+
+      return pointTitle
+        ? {
+            title: pointTitle,
+            ...(pointDescription ? { description: pointDescription } : {}),
+            ...(pointIcon ? { icon: pointIcon } : {}),
+          }
+        : null;
+    })
+    .filter((point) => point !== null)
+    .slice(0, 3);
+  const logos = orderedEntries(section.logos)
+    .map((entry) => {
+      const src = mediaUrl(entry);
+      return src ? { src, alt: text(record(entry).alternativeText) ?? "" } : null;
+    })
+    .filter((logo) => logo !== null)
+    .slice(0, 3);
   const cta = strictLink(section.cta);
 
   return enabled && title && description && cta
@@ -1730,6 +1759,16 @@ function mapStickyBar(value: unknown): StickyBarContent | null {
         title,
         description,
         ...(supportingText ? { supportingText } : {}),
+        ...(brandLogoSrc
+          ? {
+              brandLogo: {
+                src: brandLogoSrc,
+                alt: text(record(section.brandLogo).alternativeText) ?? "",
+              },
+            }
+          : {}),
+        ...(points.length ? { points } : {}),
+        ...(logos.length ? { logos } : {}),
         ...(icon
           ? {
               icon,

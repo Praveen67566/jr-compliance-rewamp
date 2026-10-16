@@ -105,3 +105,43 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
+First Verify Everything don't change everything which disrupt the flow follow the project struture changes are below:-
+
+1. In Home Page Media Section Cards are Too big for small screens 720*1280 make a slightly small so it dons't cover overall screen.
+
+2. In All 19 collection pages:-
+
+Corporate collections:
+
+- `company-registration-page`
+- `mca-service-page`
+- `import-export-service-page`
+- `government-license-certification-page`
+- `ipr-service-page`
+- `fssai-service-page`
+- `sebi-business-registration-page`
+- `tax-accounting-page`
+- `labour-compliance-page`
+- `fund-raising-page`
+
+Approval collections:
+
+- `bureau-indian-standards-page`
+- `pollution-advisory-page`
+- `telecommunication-engineering-centre-page`
+- `wireless-planning-coordination-page`
+- `bureau-energy-efficiency-page`
+- `cdsco-registration-page`
+- `aerb-approval-page`
+- `lmpc-certification-page`
+- `stqc-page`
+
+  a. i want one simple thing the service overview design looks weird there   is going to be one description only so make it better according to our theme.
+
+  b. in the written by section above at the starting of logo i want a text
+  as seen on so it looks more appeling i want this to be dynamic i can change from cms.
+
+  c. now the fixed bar at the bottom looks so werid i want this to be unique and not only the content we can add logo designs multiple things a refernce image is also provided for fixed bar more content more points and logos and 
+  this is going to be dynamic.
+
+

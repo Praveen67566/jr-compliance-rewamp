@@ -272,6 +272,7 @@ describe("service-detail content mirrors", () => {
       "experience",
       "biography",
       "verified",
+      "logosLabel",
       "logos",
     ]);
     assert.deepEqual(attributes.label, {
@@ -299,6 +300,10 @@ describe("service-detail content mirrors", () => {
       relation: "manyToMany",
       target: "api::brand-logo.brand-logo",
     });
+    assert.deepEqual(attributes.logosLabel, {
+      type: "string",
+      default: "As seen on",
+    });
   });
 
   it("keeps the sticky bar optional, CMS managed, and explicitly enabled", () => {
@@ -325,6 +330,27 @@ describe("service-detail content mirrors", () => {
       component: "shared.cta",
       repeatable: false,
     });
+    assert.deepEqual(attributes.brandLogo, {
+      type: "media",
+      multiple: false,
+      allowedTypes: ["images"],
+    });
+    assert.deepEqual(attributes.logos, {
+      type: "media",
+      multiple: true,
+      allowedTypes: ["images"],
+    });
+    assert.deepEqual(attributes.points, {
+      type: "component",
+      component: "shared.sticky-bar-point",
+      repeatable: true,
+      max: 3,
+    });
+    const point = readJson("cms/src/components/shared/sticky-bar-point.json");
+    const pointAttributes = point.attributes as Record<string, Record<string, unknown>>;
+    assert.deepEqual(pointAttributes.title, { type: "string", required: true });
+    assert.deepEqual(pointAttributes.description, { type: "string" });
+    assert.deepEqual(pointAttributes.icon, attributes.icon);
     assert.deepEqual(homeAttributes.stickyBar, {
       type: "component",
       component: "shared.sticky-bar",
@@ -535,7 +561,7 @@ describe("service-detail content mirrors", () => {
     assert.match(strapiAdapter, /writtenBy: \{ avatar: true, logos: \{ logo: true \} \}/);
     assert.match(strapiAdapter, /resultsSection: \{ stats: true \}/);
     assert.match(strapiAdapter, /tickerCta: \{ cta: true \}/);
-    assert.match(strapiAdapter, /stickyBar: \{ icon: true, cta: true \}/);
+    assert.match(strapiAdapter, /stickyBar: \{ icon: true, brandLogo: true, points: \{ icon: true \}, logos: true, cta: true \}/);
     assert.equal(
       strapiAdapter.match(
         /const resultsSection = mapFixedServiceResultsSection\(page\.resultsSection\);/g,
@@ -693,6 +719,7 @@ describe("service-detail content mirrors", () => {
     assert.match(writtenBySection, /section\.biography/);
     assert.match(writtenBySection, /section\.logos\?\.length/);
     assert.match(writtenBySection, /<WrittenByLogoMarquee logos=\{section\.logos\}/);
+    assert.match(writtenBySection, /label=\{section\.logosLabel\}/);
     assert.match(component, /written-logo-marquee/);
     assert.match(writtenBySection, /blue-cobalt-700.*blue-electric.*blue-sky/);
     assert.match(writtenBySection, /size-14/);
@@ -731,8 +758,8 @@ describe("service-detail content mirrors", () => {
     assert.match(populateTree, /process: \{ items: \{ icon: true \} \}/);
     assert.match(populateTree, /whyChoose: \{ items: \{ icon: true \} \}/);
     assert.match(populateTree, /breakdown: \{ groups: \{ icon: true, items: true \} \}/);
-    assert.match(populateTree, /stickyBar: \{ icon: true, cta: true \}/);
-    assert.equal(populateTree.match(/icon: true/g)?.length, 6);
+    assert.match(populateTree, /stickyBar: \{ icon: true, brandLogo: true, points: \{ icon: true \}, logos: true, cta: true \}/);
+    assert.equal(populateTree.match(/icon: true/g)?.length, 7);
     assert.doesNotMatch(strapiAdapter, /populate=deep/);
 
     const mediaUrlMapper = sourceBetween(

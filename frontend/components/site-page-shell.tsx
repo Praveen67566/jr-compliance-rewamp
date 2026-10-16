@@ -20,7 +20,7 @@ export function SitePageShell({
   stickyBar,
 }: SitePageShellProps) {
   return (
-    <div className="site-shell">
+    <div className="site-shell pb-[var(--sticky-cta-offset,0px)]">
       <SeoJsonLd schemaMarkup={seo?.schemaMarkup} />
       <SiteHeader navigation={navigation} site={site} />
       <main>{children}</main>

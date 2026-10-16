@@ -6,6 +6,10 @@ import type {
 } from "@/lib/types";
 
 type DetailTuple = readonly [title: string, description: string];
+
+/** Label used by older CMS author records until an editor supplies their own. */
+export const defaultWrittenByLogosLabel = "As seen on";
+
 type FaqTuple = readonly [question: string, answer: string];
 
 type RegistrationPageSource = {
