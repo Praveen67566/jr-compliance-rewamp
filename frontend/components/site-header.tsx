@@ -16,9 +16,14 @@ function sharedHref(href: string) {
 
 function CategoryLogo({ src }: { src?: string }) {
   return src ? (
-    <span className="inline-grid size-8 shrink-0 place-items-center rounded-lg bg-ice p-1 align-middle" aria-hidden="true">
-      <img className="size-6 object-contain" src={src} alt="" width={24} height={24} />
-    </span>
+    <img
+      className="h-16 w-auto max-w-[180px] shrink-0 object-contain drop-shadow-[0_1px_2px_rgba(3,15,43,0.35)] max-[980px]:h-12 max-[980px]:max-w-24"
+      src={src}
+      alt=""
+      width={64}
+      height={64}
+      aria-hidden="true"
+    />
   ) : null;
 }
 

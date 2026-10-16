@@ -228,10 +228,11 @@ The main flow is:
   `site-setting.headerMenu` Global category. Publishing a Global page does not
   add it to the navbar automatically.
   Each category also accepts an optional CMS logo at the far right of its
-  selected desktop panel title row and beside its mobile summary label. Without a
-  logo, the desktop title keeps its blue dot and mobile labels have no empty
-  tile. The header uses the loaded Inter font with medium links and semibold
-  navigation/headings.
+  selected desktop panel title row and beside its mobile summary label. The logos
+  render without boxes, at 64px high on desktop and 48px on mobile with proportional,
+  bounded widths. Without a logo, the desktop title keeps its blue dot and mobile
+  labels reserve no logo space. The header uses the loaded Inter font with medium
+  links and semibold navigation/headings.
 
 `frontend/components/site-header.css`
 : Header-only bluefield, navigation rail, popover, and mobile-menu artwork. It is imported once by the root layout to preserve the established cascade.

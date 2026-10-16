@@ -123,9 +123,11 @@ information hierarchy of the supplied reference:
   selected category use weight 600; service links and inactive categories use
   weight 500. Mega-menu headings use Inter at 24–32px and weight 600.
 - Optional CMS category logos align to the far right of the selected desktop
-  mega-menu title row and appear beside mobile category labels. Preserve their colors in
-  a 24px contained image on a small ice tile. Without a logo, keep the desktop
-  title's blue dot and omit the mobile tile and its space.
+  mega-menu title row and appear beside mobile category labels. Display the artwork
+  without a tile or box, preserving its colors and proportions at 64px high on
+  desktop and 48px on mobile, with widths capped at 180px and 96px respectively.
+  Use a subtle navy drop shadow to keep pale artwork visible. Without a logo,
+  keep the desktop title's blue dot and omit the mobile logo and its space.
 - The footer uses an open layout directly on the navy/cobalt network field.
   Give brand/contact details and service columns generous spacing, with subtle
   horizontal dividers above legal notices and the bottom row. Avoid enclosing
