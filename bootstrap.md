@@ -105,7 +105,6 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-One thing i wanted in header logo image i want there a specific animation which can be enable or disable from cms there i want two images switiching animation one is logo and second one is a gif image 
-like if there is a festival i put gif of that festival and enable the animation.
+
 
 

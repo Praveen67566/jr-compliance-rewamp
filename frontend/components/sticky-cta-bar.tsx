@@ -49,7 +49,7 @@ function SupportPointIcon({ index }: { index: number }) {
 
 function ServiceSignalGraphic({ active }: { active: boolean }) {
   return (
-    <span aria-hidden="true" className="pointer-events-none relative hidden size-9 shrink-0 text-cobalt-700 min-[821px]:block">
+    <span aria-hidden="true" className="pointer-events-none relative hidden size-9 shrink-0 text-cobalt-700 min-[821px]:block max-[1440px]:size-7">
       <span className="absolute inset-1.5 rounded-full bg-sky/20" />
       <svg
         className="absolute inset-0 size-full motion-safe:animate-spin motion-safe:[animation-duration:12s]"
@@ -62,7 +62,7 @@ function ServiceSignalGraphic({ active }: { active: boolean }) {
         <circle cx="37" cy="20" fill="var(--blue-sky)" r="2.5" stroke="var(--blue-electric)" />
         <circle cx="3" cy="20" fill="var(--blue-electric)" r="1.75" />
       </svg>
-      <svg className="absolute inset-2 size-5" fill="var(--blue-ice)" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.6" viewBox="0 0 24 24">
+      <svg className="absolute inset-2 size-5 max-[1440px]:inset-1" fill="var(--blue-ice)" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.6" viewBox="0 0 24 24">
         <path d="m12 3 7 3v5.5c0 4.1-2.3 7.1-7 9.5-4.7-2.4-7-5.4-7-9.5V6z" />
         <path d="m8.5 11.8 2.3 2.3 4.7-4.7" />
       </svg>
@@ -182,16 +182,16 @@ export function StickyCtaBar({ content }: StickyCtaBarProps) {
         <span className="absolute -right-20 inset-y-0 w-80 -skew-x-[28deg] border-l border-cobalt-600/10 bg-sky/15" />
         <span className="absolute -right-8 inset-y-0 w-24 -skew-x-[28deg] bg-sky/20" />
       </div>
-      <div className={`relative grid w-full grid-cols-[minmax(0,1fr)_auto] items-center bg-navy-900 min-[821px]:gap-x-6 min-[821px]:bg-transparent min-[821px]:pb-[env(safe-area-inset-bottom)] ${desktopColumns}`}>
+      <div className={`relative grid w-full grid-cols-[minmax(0,1fr)_auto] items-center bg-navy-900 min-[821px]:gap-x-4 min-[1440px]:gap-x-6 min-[821px]:bg-transparent min-[821px]:pb-[env(safe-area-inset-bottom)] ${desktopColumns}`}>
         {content.brandLogo ? (
-          <div className={`relative col-start-1 row-start-1 hidden min-h-[88px] w-[clamp(148px,13vw,224px)] self-stretch items-center bg-navy-900 px-4 py-3 after:pointer-events-none after:absolute after:inset-y-0 after:left-full after:w-6 after:bg-navy-900 after:content-[''] after:[mask-image:radial-gradient(ellipse_100%_100%_at_100%_100%,transparent_98%,#000_100%)] min-[821px]:flex min-[1440px]:px-6 ${hasProof ? "min-[821px]:row-span-2 min-[1440px]:row-span-1" : ""}`}>
+          <div className={`relative col-start-1 row-start-1 hidden min-h-[72px] w-[clamp(148px,13vw,224px)] self-stretch items-center bg-navy-900 px-4 py-2 after:pointer-events-none after:absolute after:inset-y-0 after:left-full after:w-6 after:bg-navy-900 after:content-[''] after:[mask-image:radial-gradient(ellipse_100%_100%_at_100%_100%,transparent_98%,#000_100%)] min-[821px]:flex min-[1440px]:min-h-[88px] min-[1440px]:px-6 min-[1440px]:py-3 ${hasProof ? "min-[821px]:row-span-2 min-[1440px]:row-span-1" : ""}`}>
             <span aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
               <span className="absolute -left-8 -top-12 size-32 rounded-full border border-sky/15" />
             </span>
             <span className="relative block w-full rounded-r-full rounded-l-xl border border-sky/30 bg-cloud px-2.5 py-2">
               <img
                 alt={content.brandLogo.alt}
-                className="h-9 w-full !max-w-[160px] object-contain"
+                className="h-7 w-full !max-w-[160px] object-contain min-[1440px]:h-9"
                 decoding="async"
                 height={36}
                 src={content.brandLogo.src}
@@ -201,14 +201,14 @@ export function StickyCtaBar({ content }: StickyCtaBarProps) {
           </div>
         ) : null}
         <div className={`contents ${hasProof ? "min-[1440px]:row-start-1 min-[1440px]:grid min-[1440px]:min-w-0 min-[1440px]:w-full min-[1440px]:max-w-[1080px] min-[1440px]:grid-cols-[minmax(0,0.73fr)_minmax(0,1.77fr)] min-[1440px]:items-center min-[1440px]:gap-x-4 min-[1440px]:justify-self-center" : ""} ${hasProof ? content.brandLogo ? "min-[1440px]:col-start-2" : "min-[1440px]:col-start-1" : ""}`}>
-          <div className={`order-1 flex min-h-[72px] min-w-0 items-center gap-2 py-2.5 pl-3.5 pr-7 min-[560px]:gap-3 min-[560px]:pl-[22px] min-[821px]:row-start-1 min-[821px]:gap-3 min-[821px]:py-3 min-[821px]:pr-0 ${content.brandLogo ? "min-[821px]:col-start-2 min-[821px]:pl-0" : "min-[821px]:col-start-1 min-[821px]:pl-8"} ${hasProof ? "min-[1440px]:col-start-1 min-[1440px]:pl-0" : ""}`}>
+          <div className={`order-1 flex min-h-14 min-w-0 items-center gap-2 py-1.5 pl-3.5 pr-7 min-[560px]:gap-3 min-[560px]:pl-[22px] min-[821px]:row-start-1 min-[821px]:min-h-11 min-[821px]:gap-3 min-[821px]:pr-0 min-[1440px]:min-h-[72px] min-[1440px]:py-3 ${content.brandLogo ? "min-[821px]:col-start-2 min-[821px]:pl-0" : "min-[821px]:col-start-1 min-[821px]:pl-8"} ${hasProof ? "min-[1440px]:col-start-1 min-[1440px]:pl-0" : ""}`}>
             <ServiceSignalGraphic active={isVisible} />
 
             <div className="min-w-0">
-              <p className="mb-0 line-clamp-2 break-words text-base font-extrabold leading-[1.25] tracking-[-0.015em] text-white min-[560px]:text-[1.0625rem] min-[821px]:block min-[821px]:truncate min-[821px]:text-lg min-[821px]:text-navy-950 min-[1600px]:text-xl" title={content.title}>
+              <p className="mb-0 line-clamp-1 break-words text-base font-extrabold leading-[1.25] tracking-[-0.015em] text-white min-[560px]:text-[1.0625rem] min-[821px]:block min-[821px]:truncate min-[821px]:text-base min-[821px]:text-navy-950 min-[1440px]:text-lg min-[1600px]:text-xl" title={content.title}>
                 {content.title}
               </p>
-              <p className="mb-0 mt-1 line-clamp-2 break-words text-[0.6875rem] leading-[1.4] text-ice/85 min-[821px]:text-navy-700 min-[1600px]:text-xs">
+              <p className="mb-0 mt-1 line-clamp-1 break-words text-[0.6875rem] leading-[1.4] text-ice/85 min-[821px]:text-navy-700 min-[1440px]:line-clamp-2 min-[1600px]:text-xs" title={content.description}>
                 {content.description}
               </p>
             </div>
@@ -217,7 +217,7 @@ export function StickyCtaBar({ content }: StickyCtaBarProps) {
           {hasProof ? (
             <div
               aria-label={content.title}
-              className={`order-3 col-span-2 hidden min-w-0 border-t border-cobalt-700/15 py-2.5 pr-6 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cobalt-700 min-[821px]:row-start-2 min-[821px]:block min-[1440px]:col-span-1 min-[1440px]:col-start-2 min-[1440px]:row-start-1 min-[1440px]:border-l min-[1440px]:border-t-0 min-[1440px]:py-3.5 min-[1440px]:pl-4 min-[1440px]:pr-0 ${content.brandLogo ? "min-[821px]:col-start-2" : "min-[821px]:col-start-1 min-[821px]:pl-8"}`}
+              className={`order-3 col-span-2 hidden min-w-0 border-t border-cobalt-700/15 py-1.5 pr-6 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cobalt-700 min-[821px]:col-span-1 min-[821px]:row-start-2 min-[821px]:block min-[1440px]:col-start-2 min-[1440px]:row-start-1 min-[1440px]:border-l min-[1440px]:border-t-0 min-[1440px]:py-3.5 min-[1440px]:pl-4 min-[1440px]:pr-0 ${content.brandLogo ? "min-[821px]:col-start-2" : "min-[821px]:col-start-1 min-[821px]:pl-8"}`}
               role="group"
               tabIndex={isVisible ? 0 : -1}
             >
@@ -225,7 +225,7 @@ export function StickyCtaBar({ content }: StickyCtaBarProps) {
                 <ul className="m-0 flex list-none divide-x divide-cobalt-700/15 p-0">
                   {content.points.map((point, index) => (
                     <li className="flex min-w-0 flex-initial items-center gap-2 px-2 first:pl-0 last:pr-0 min-[1600px]:px-3" key={`${point.title}-${index}`}>
-                      <span aria-hidden="true" className="grid size-7 shrink-0 place-items-center text-cobalt-700 min-[1600px]:size-8">
+                      <span aria-hidden="true" className="grid size-5 shrink-0 place-items-center text-cobalt-700 min-[1440px]:size-7 min-[1600px]:size-8">
                         {point.icon ? (
                           <img alt="" className="size-full object-contain" decoding="async" height={32} src={point.icon} width={32} />
                         ) : (
@@ -234,14 +234,14 @@ export function StickyCtaBar({ content }: StickyCtaBarProps) {
                       </span>
                       <span className="min-w-0">
                         <span className="block truncate text-[0.6875rem] font-extrabold leading-[1.3] text-cobalt-700 min-[981px]:text-xs" title={point.title}>{point.title}</span>
-                        {point.description ? <span className="mt-0.5 block text-[0.625rem] leading-[1.4] text-navy-700 min-[560px]:text-[0.6875rem]">{point.description}</span> : null}
+                        {point.description ? <span className="mt-0.5 block text-[0.625rem] leading-[1.4] text-navy-700 min-[560px]:text-[0.6875rem] max-[1440px]:sr-only">{point.description}</span> : null}
                       </span>
                     </li>
                   ))}
                 </ul>
               ) : null}
               {content.logos?.length ? (
-                <ul className={`m-0 flex list-none flex-wrap items-center gap-3 p-0 ${content.points?.length ? "mt-2" : ""}`}>
+                <ul className={`m-0 flex list-none flex-wrap items-center gap-3 p-0 ${content.points?.length ? "mt-2 max-[1440px]:sr-only" : ""}`}>
                   {content.logos.map((logo, index) => (
                     <li className="flex h-5 items-center" key={`${logo.src}-${index}`}>
                       <img alt={logo.alt} className="h-full w-auto !max-w-[88px] object-contain" decoding="async" height={20} src={logo.src} width={88} />
@@ -253,7 +253,7 @@ export function StickyCtaBar({ content }: StickyCtaBarProps) {
           ) : null}
         </div>
 
-        <div className={`relative order-2 flex w-[128px] min-w-0 flex-col items-center justify-center self-stretch bg-cloud py-2.5 pl-0 pr-3.5 text-center before:pointer-events-none before:absolute before:inset-y-0 before:right-full before:w-7 before:bg-cloud before:content-[''] before:[mask-image:radial-gradient(ellipse_100%_100%_at_0_100%,transparent_98%,#000_100%)] min-[560px]:w-[164px] min-[560px]:pr-[22px] min-[821px]:row-start-1 min-[821px]:w-auto min-[821px]:max-w-[264px] min-[821px]:bg-navy-900 min-[821px]:py-3.5 min-[821px]:pl-2 min-[821px]:pr-6 min-[821px]:before:w-6 min-[821px]:before:bg-navy-900 ${content.brandLogo ? "min-[821px]:col-start-3" : "min-[821px]:col-start-2"}`}>
+        <div className={`relative order-2 flex w-[128px] min-w-0 flex-col items-center justify-center self-stretch bg-cloud py-1.5 pl-0 pr-3.5 text-center before:pointer-events-none before:absolute before:inset-y-0 before:right-full before:w-7 before:bg-cloud before:content-[''] before:[mask-image:radial-gradient(ellipse_100%_100%_at_0_100%,transparent_98%,#000_100%)] min-[560px]:w-[164px] min-[560px]:pr-[22px] min-[821px]:row-start-1 min-[821px]:w-auto min-[821px]:max-w-[264px] min-[821px]:bg-navy-900 min-[821px]:py-2 min-[821px]:pl-2 min-[821px]:pr-6 min-[821px]:before:w-6 min-[821px]:before:bg-navy-900 min-[1440px]:py-3.5 ${hasProof ? "min-[821px]:row-span-2 min-[1440px]:row-span-1" : ""} ${content.brandLogo ? "min-[821px]:col-start-3" : "min-[821px]:col-start-2"}`}>
           <a
             className="inline-flex min-h-11 max-w-full items-center justify-center gap-1.5 rounded-full border border-cloud/80 bg-[linear-gradient(115deg,var(--blue-cobalt-700),var(--blue-cobalt-700)_65%,var(--blue-navy-700))] px-2.5 py-2 text-center text-[0.6875rem] font-extrabold !text-white shadow-[inset_0_1px_rgba(255,255,255,0.25),0_6px_18px_rgba(13,92,184,0.2)] transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_22px_rgba(13,92,184,0.3)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cobalt-700 motion-reduce:transition-none min-[560px]:text-xs min-[821px]:gap-2.5 min-[821px]:whitespace-nowrap min-[821px]:px-5 min-[821px]:py-2.5 min-[821px]:focus-visible:outline-sky min-[1100px]:text-[0.8125rem]"
             href={content.cta.href}
@@ -267,7 +267,7 @@ export function StickyCtaBar({ content }: StickyCtaBarProps) {
             </svg>
           </a>
           {content.supportingText ? (
-            <p className="sr-only break-words text-[0.6875rem] leading-[1.4] text-ice/85 min-[821px]:not-sr-only min-[821px]:mb-0 min-[821px]:mt-1">
+            <p className="sr-only break-words text-[0.6875rem] leading-[1.4] text-ice/85 min-[1440px]:not-sr-only min-[1440px]:mb-0 min-[1440px]:mt-1">
               {content.supportingText}
             </p>
           ) : null}

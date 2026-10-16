@@ -268,13 +268,17 @@ The main flow is:
   on one line, with smaller descriptions. From `1440px` the desktop content
   shares one row, with the title/points group centered within a `1080px` maximum
   width and support points sized to their content; narrower desktop/tablet widths
-  place the points below the title. A decorative shield and slowly rotating
-  blue orbit replace the legacy service icon beside the desktop title. The
+  use tighter padding and a compact support-heading row below the title, with
+  both corner panels spanning the two rows. In that intermediate layout, point
+  descriptions and extra trust logos when points are present are visually hidden.
+  CTA supporting text is visually hidden below `1440px`; all remain available to
+  screen readers. A decorative shield and slowly rotating blue orbit replace
+  the legacy service icon beside the desktop title. The
   shield stays stationary; the orbit pauses while the bar is hidden and is
   static for reduced motion. The graphic stays hidden on compact screens.
-  At `820px` and below, a navy
-  title/description row pairs with the CTA, above an ice support
-  strip containing the brand logo and illustrated CMS points cycling every four
+  At `820px` and below, a navy single-line title/description row with reduced
+  padding pairs with the CTA, above an ice support strip containing the brand
+  logo and illustrated CMS points cycling every four
   seconds. Selecting the next highlight or focusing the bar stops automatic
   rotation without a separate pause button; all support points also remain in
   a static screen-reader list. Automatic cycling also stops for hidden bars,
