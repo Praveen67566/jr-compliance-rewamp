@@ -44,6 +44,7 @@ describe("CMS-managed sticky bar rendering", () => {
       content: {
         ...existingBar,
         brandLogo: { src: "/images/jr-logo.svg", alt: "JR Compliance" },
+        icon: "/bis-mark.svg",
         supportingText: "Speak to a certification expert",
         points: [
           { title: "Documentation", description: "Complete filing support", icon: "/documents.svg" },
@@ -60,6 +61,7 @@ describe("CMS-managed sticky bar rendering", () => {
 
     assert.match(markup, /src="\/images\/jr-logo.svg"/);
     assert.match(markup, /alt="JR Compliance"/);
+    assert.doesNotMatch(markup, /src="\/bis-mark.svg"/);
     assert.match(markup, /alt=""[^>]*src="\/documents.svg"/);
     assert.match(markup, /Complete filing support/);
     assert.ok(markup.indexOf("Documentation") < markup.indexOf("Expert guidance"));
@@ -69,5 +71,8 @@ describe("CMS-managed sticky bar rendering", () => {
     assert.match(markup, /Talk to our team/);
     assert.match(markup, /target="_blank"/);
     assert.match(markup, /rel="noreferrer"/);
+    assert.match(markup, /Next support highlight \(stops automatic rotation\)/);
+    assert.doesNotMatch(markup, /(?:Pause|Play) support highlights/);
+    assert.equal((markup.match(/<button\b/g) ?? []).length, 1);
   });
 });

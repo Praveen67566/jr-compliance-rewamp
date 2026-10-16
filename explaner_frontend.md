@@ -253,16 +253,26 @@ The main flow is:
   stays hidden until the visitor scrolls, then enters with reduced-motion-safe
   movement using CMS-managed copy, optional brand logo, up to three ordered
   support points with optional icons, up to three trust logos, supporting text,
-  and link. The reference-style ice/cloud rail uses navy copy, a larger unboxed
-  brand logo, fine support-point dividers, blue document/headset/seal artwork
-  when point icons are absent, unboxed trust logos, and a cobalt pill CTA.
-  The CTA has a curved leading cutout. At `820px` and below, a compact navy
-  title/CTA row replaces the larger branding, with a single CMS support line
-  cycling every four seconds underneath. Readers can pause/play or select the
-  next highlight; all support points also remain in a static screen-reader
-  list. Automatic cycling stops for hidden bars, hover, inactive documents,
-  and reduced motion. Compact-screen visibility waits until the entire
-  `#expert-consultation` form is above the viewport and updates when that form
+  and link. The full-width ice/cloud rail uses navy copy, a dark curved logo
+  panel at the left edge, fine support-point dividers, blue document/headset/seal
+  artwork when point icons are absent, unboxed trust logos, and a cobalt pill
+  CTA in a dark panel with a curved leading cutout at the right edge. The logo
+  retains a light backing for contrast. Service titles and point headings stay
+  on one line, with smaller descriptions. From `1440px` the desktop content
+  shares one row, with the title/points group centered within a `1080px` maximum
+  width and support points sized to their content; narrower desktop/tablet widths
+  place the points below the title. A decorative shield and slowly rotating
+  blue orbit replace the legacy service icon beside the desktop title. The
+  shield stays stationary; the orbit pauses while the bar is hidden and is
+  static for reduced motion. The graphic stays hidden on compact screens.
+  At `820px` and below, a navy
+  title/description row pairs with the CTA, above an ice support
+  strip containing the brand logo and illustrated CMS points cycling every four
+  seconds. Selecting the next highlight or focusing the bar stops automatic
+  rotation without a separate pause button; all support points also remain in
+  a static screen-reader list. Automatic cycling also stops for hidden bars,
+  hover, inactive documents, and reduced motion. Compact-screen visibility waits
+  until the entire `#expert-consultation` form is above the viewport and updates when that form
   resizes; scrolling back hides the bar. Desktop and form-disabled pages retain
   the `240px` threshold. Its measured height reserves bottom-page space and
   lifts WhatsApp above it. Existing CMS fields remain unchanged.

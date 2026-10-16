@@ -64,9 +64,11 @@ from another record.
 
 The shared Sticky Bar also accepts an optional **Brand Logo**, up to three
 ordered **Points** (title, optional description and icon), and optional **Logos**
-media; the first three valid logos are displayed. Brand Logo replaces the
-small service-icon tile when supplied. Set Media Library alternative text for
-informative branding. These additive fields apply to the homepage and all
+media; the first three valid logos are displayed. Use **Brand Logo** for the JR
+wordmark. The desktop title uses a frontend-owned animated shield/orbit graphic;
+the legacy **Icon** field remains accepted but is no longer displayed there.
+The brand leads the desktop bar and the phone support strip. Set Media Library alternative
+text for informative branding. These additive fields apply to the homepage and all
 nineteen service collections. Under **Written By → Logos Label**, editors can
 change the “As seen on” caption above the author logos; older records use that
 default until customized. Neither change creates or backfills editor records.
