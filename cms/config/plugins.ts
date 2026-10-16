@@ -5,6 +5,7 @@ const allowedMediaTypes = [
   'image/webp',
   'image/png',
   'image/jpeg',
+  'image/gif',
 ];
 
 const deniedExecutableTypes = [

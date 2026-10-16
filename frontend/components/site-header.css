@@ -207,3 +207,23 @@
   display: none;
 }
 
+@keyframes header-logo-primary {
+  0%, 42%, 100% {
+    opacity: 1;
+  }
+
+  50%, 92% {
+    opacity: 0;
+  }
+}
+
+@keyframes header-logo-festival {
+  0%, 42%, 100% {
+    opacity: 0;
+  }
+
+  50%, 92% {
+    opacity: 1;
+  }
+}
+

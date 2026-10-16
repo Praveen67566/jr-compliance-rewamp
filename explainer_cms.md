@@ -145,7 +145,9 @@ The main CMS flow is:
 : Strapi middleware configuration.
 
 `cms/config/plugins.ts`
-: Plugin configuration. Currently uses local upload behavior; production still needs durable media storage before launch.
+: Plugin configuration. Its upload MIME allowlist includes SVG, WebP, PNG, JPEG,
+  and GIF (`image/gif`) for header festival animation. Currently uses local
+  upload behavior; production still needs durable media storage before launch.
 
 `cms/config/server.ts`
 : Server host, port, app keys, public URL style configuration, and the
@@ -282,9 +284,14 @@ Each content type folder follows the Strapi pattern:
 
 `cms/src/api/site-setting/`
 : Shared site chrome and lead-form copy. Stores site name, header/footer logos,
+  an optional **Header Logo Animation Enabled** toggle (off by default) and
+  **Header Logo Animation Image** for a festival GIF, plus the
   header menu, CTAs, footer links, contact details, social/legal links, and the
   centralized consultation-form labels, trust content, consent link, success
   copy, redirect path, and enabled state. It never stores webhook configuration.
+  Upload the optional GIF, enable the toggle, and publish Site Setting to switch
+  between the logo and festival image. Disable the toggle to return to the normal
+  logo. No existing editor record or media is backfilled.
 
 `cms/src/api/home-page/`
 : Home page content. Stores hero, trusted logos, services section selections,

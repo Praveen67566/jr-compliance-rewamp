@@ -22,6 +22,15 @@
       "required": true,
       "allowedTypes": ["images"]
     },
+    "headerLogoAnimationEnabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "headerLogoAnimationImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
     "footerLogo": {
       "type": "media",
       "multiple": false,

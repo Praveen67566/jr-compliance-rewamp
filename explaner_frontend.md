@@ -224,6 +224,12 @@ The main flow is:
 
 `frontend/components/site-header.tsx`
 : Shared navbar/header. It renders the JR logo, desktop navigation, a two-pane category/link mega menu, contact CTA, and mobile navigation. Layout and responsive styling use Tailwind utilities; it consumes CMS/fallback navigation data.
+  When Site Setting enables header-logo animation and supplies a festival image,
+  the frontend automatically fits both images into the same responsive logo frame
+  regardless of original dimensions, preserving their proportions without cropping.
+  The logo and image crossfade in that fixed space on an eight-second loop
+  after the image loads. Missing or failed images keep the normal logo visible.
+  Hover/focus pauses switching, and reduced motion keeps only the normal logo.
   Global country links remain editor-managed through the existing
   `site-setting.headerMenu` Global category. Publishing a Global page does not
   add it to the navbar automatically.

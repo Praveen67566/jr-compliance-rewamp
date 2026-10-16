@@ -54,6 +54,8 @@ consultation form.
 | --- | --- | --- |
 | `siteName` | Short text | Required |
 | `headerLogo` | Media, single image | Required |
+| `headerLogoAnimationEnabled` | Boolean | Optional; defaults to `false`; the frontend switches images when enabled and a festival image is available |
+| `headerLogoAnimationImage` | Media, single image | Optional festival GIF or other image; any original dimensions are accepted and fitted to the header logo area by the frontend |
 | `footerLogo` | Media, single image | Required |
 | `footerBadges` | Media, multiple images | Optional; ordered trust/certification badges shown in the footer bottom row. Set meaningful Media Library alternative text when a badge conveys information; without it the image is treated as decorative. Leaving this field empty preserves the existing footer. |
 | `headerMenu` | Repeatable `navigation.menu-item` component | Required |
@@ -70,6 +72,21 @@ consultation form.
 | `copyrightText` | Short text | Required |
 | `leadForm` | `shared.lead-form-settings` component | Optional for backwards-compatible rollout; when absent, the frontend uses its typed form fallback |
 | `defaultSeo` | `shared.seo` component | Optional fallback for non-home routes |
+
+For a festival, upload the GIF to **Header Logo Animation Image**, turn on
+**Header Logo Animation Enabled**, then save and publish Site Setting. The GIF
+can have any original dimensions. The frontend automatically scales it into the same
+responsive frame as the header logo, preserves its proportions, and keeps it
+centered without cropping. Wider or taller artwork may leave space around it.
+Editors do not need to resize GIF files manually, and their original uploads are
+preserved.
+The frontend crossfades between the normal **Header Logo** and the festival image
+on an eight-second loop, keeping the same responsive logo space. Switching
+pauses on hover or keyboard focus; reduced-motion visitors see only the normal
+logo. The normal logo remains visible when animation is disabled or media cannot
+load. Existing records and local fallbacks default to off;
+no record or festival media is seeded or backfilled. Deploy the CMS schema
+before the frontend's expanded media population.
 
 ### `home-page` — API: `api::home-page.home-page`
 
@@ -847,7 +864,8 @@ should use its own approved media relation and alternative text.
   frontend must never reference `site/assets/...` or Webflow-hosted URLs.
 - Set every media item’s `alternativeText` before publishing. `name` is not an
   accessibility substitute.
-- Image-only media fields accept SVG, WebP, PNG, or JPG. Prefer SVG for logos,
+- Image-only media fields accept SVG, WebP, PNG, or JPG; the header's optional
+  festival image also supports animated GIF. Prefer SVG for logos,
   WebP/JPG for photography, and preserve transparent logos. Do not upload video
   files for service embeds; use a vetted HTTPS single-video YouTube URL in
   `youtubeVideos.videos.youtubeUrl`. Home video CTAs continue to use a vetted

@@ -105,12 +105,7 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Only Ui Changes:-
- 
- 1. In header Ui What i want to add a box at the time of hover like the reference image.in the links.
-
- 2. In Whatsapp floating icon everything is perfect just remove 24*7 at the top don't remove what is comming after hover. only the outside visible 24*7.
-
- 3. Inhance the size of jrcompliance logo in the header.
+One thing i wanted in header logo image i want there a specific animation which can be enable or disable from cms there i want two images switiching animation one is logo and second one is a gif image 
+like if there is a festival i put gif of that festival and enable the animation.
 
 

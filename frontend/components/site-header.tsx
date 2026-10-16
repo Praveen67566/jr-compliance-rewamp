@@ -14,6 +14,46 @@ function sharedHref(href: string) {
   return href.startsWith("#") ? `/${href}` : href;
 }
 
+function HeaderLogo({ site }: { site: SiteSettings }) {
+  const animationImage = site.headerLogoAnimation.enabled ? site.headerLogoAnimation.image : undefined;
+  const imageRef = useRef<HTMLImageElement>(null);
+  const [loadedImage, setLoadedImage] = useState<string | null>(null);
+  const isReady = Boolean(animationImage && loadedImage === animationImage);
+  const pauseAnimation = "group-hover/brand:[animation-play-state:paused] group-focus-visible/brand:[animation-play-state:paused]";
+
+  useEffect(() => {
+    // A cached GIF can finish loading before React hydrates the server markup.
+    const image = imageRef.current;
+    setLoadedImage(image?.complete && image.naturalWidth > 0 ? animationImage ?? null : null);
+  }, [animationImage]);
+
+  return (
+    <span className="relative block h-12 w-full overflow-hidden">
+      <img
+        className={`h-full w-full object-contain ${isReady ? `motion-safe:animate-[header-logo-primary_8s_ease-in-out_infinite] ${pauseAnimation}` : ""}`}
+        src={site.logo}
+        alt={site.name}
+        width={184}
+        height={48}
+      />
+      {animationImage ? (
+        <img
+          key={animationImage}
+          ref={imageRef}
+          className={`pointer-events-none absolute inset-0 h-full w-full object-contain opacity-0 motion-reduce:hidden! ${isReady ? `motion-safe:animate-[header-logo-festival_8s_ease-in-out_infinite] ${pauseAnimation}` : ""}`}
+          src={animationImage}
+          alt=""
+          aria-hidden="true"
+          width={184}
+          height={48}
+          onLoad={() => setLoadedImage(animationImage)}
+          onError={() => setLoadedImage(null)}
+        />
+      ) : null}
+    </span>
+  );
+}
+
 function CategoryLogo({ src }: { src?: string }) {
   return src ? (
     <img
@@ -78,8 +118,8 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
     >
       <div className="header-shell site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
         <div className="header-brand-area">
-          <a className="block w-[184px] shrink-0 max-[1100px]:w-[164px] max-[560px]:w-[156px]" href="/" aria-label={`${site.name} home`} onClick={closeAll}>
-            <img className="h-auto max-h-12 w-full object-contain" src={site.logo} alt={site.name} />
+          <a className="group/brand block w-[184px] shrink-0 max-[1100px]:w-[164px] max-[560px]:w-[156px]" href="/" aria-label={`${site.name} home`} onClick={closeAll}>
+            <HeaderLogo site={site} />
           </a>
         </div>
 

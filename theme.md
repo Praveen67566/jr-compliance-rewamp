@@ -112,6 +112,11 @@ information hierarchy of the supplied reference:
   sticky states. Do not switch to a full-width white bar on scroll.
 - JR logo on the left, a centered ice navigation capsule, and electric-blue
   Contact Us CTA on the right.
+- An optional CMS-enabled festival GIF may crossfade with the header logo on an
+  eight-second loop inside the existing responsive brand space. Keep the normal
+  logo when disabled, missing, failed, or under reduced motion; pause switching
+  on hover and keyboard focus. Accept any original GIF dimensions and scale the
+  artwork proportionally into the same logo frame without cropping or overflow.
 - Desktop mega menus stay within the shared `1320px` content width and use a
   roughly 25/75 split: navy category rail on the left, ice-blue link panel on
   the right, and three link columns where space permits. The active category

@@ -167,6 +167,7 @@ export const strapiCacheTagBySlug: Record<RevalidatableContentSlug, string> = {
 const populateTrees: Record<SingleTypeSlug, PopulateTree> = {
   "site-setting": {
     headerLogo: true,
+    headerLogoAnimationImage: true,
     footerLogo: true,
     footerBadges: true,
     headerMenu: { children: true, categories: { logo: true, links: true } },
@@ -910,6 +911,8 @@ function mapPageChrome(fallback: PageChromeContent, rawSettings: unknown): PageC
   const settings = record(rawSettings);
   const siteContact = record(settings.contact);
   const headerLogo = mediaUrl(settings.headerLogo);
+  const headerLogoAnimationImage = mediaUrl(settings.headerLogoAnimationImage);
+  const headerLogoAnimationEnabled = boolean(settings.headerLogoAnimationEnabled) === true;
   const footerLogo = mediaUrl(settings.footerLogo);
   const footerBadges = mapFooterBadges(settings.footerBadges);
   const whatsAppHref = text(siteContact.whatsAppUrl);
@@ -922,6 +925,10 @@ function mapPageChrome(fallback: PageChromeContent, rawSettings: unknown): PageC
       ...fallback.site,
       name: text(settings.siteName) ?? fallback.site.name,
       ...(headerLogo ? { logo: headerLogo } : {}),
+      headerLogoAnimation:
+        headerLogoAnimationEnabled && headerLogoAnimationImage
+          ? { enabled: true, image: headerLogoAnimationImage }
+          : { enabled: false },
       ...(footerLogo ? { footerLogo } : {}),
       loginButton:
         loginButtonEnabled && loginButtonHref

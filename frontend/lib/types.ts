@@ -139,6 +139,10 @@ export type HeaderLoginButton =
   | { enabled: false; label: string }
   | { enabled: true; label: string; href: string };
 
+export type HeaderLogoAnimation =
+  | { enabled: false }
+  | { enabled: true; image: string };
+
 export type JsonLdValue =
   | string
   | number
@@ -198,6 +202,7 @@ export type LeadFormSettings = {
 export type SiteSettings = {
   name: string;
   logo: string;
+  headerLogoAnimation: HeaderLogoAnimation;
   footerLogo: string;
   loginButton: HeaderLoginButton;
   headerCta: Link;

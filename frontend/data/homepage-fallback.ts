@@ -14,6 +14,7 @@ export const fallbackHomepage: HomepageContent = {
   site: {
     name: "JR Compliance",
     logo: "/images/jr-logo.svg",
+    headerLogoAnimation: { enabled: false },
     footerLogo: "/images/jr-footer-logo.svg",
     loginButton: { enabled: false, label: "Login" },
     headerCta: { label: "Contact Us", href: "/contact-us" },
