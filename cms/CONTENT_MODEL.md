@@ -16,6 +16,16 @@ corresponding `site/*.html`, `site/corporate/*.html`, and
 colours, and responsive behaviour belong in Next.js; editors own copy, links,
 ordering, SEO, and approved media.
 
+The explicit local Corporate workbook import in
+`scripts/import-corporate-services.cjs` uses these existing contracts without
+changing required fields. New records receive Excel hero/overview copy, one
+combined Extra Content entry with HTML headings, paragraphs, and native lists,
+the published Home Page's trusted Brand Logo
+selection, and the user-approved fixed results panel, ticker, single
+`test`/`test` FAQ, and final CTA. Existing service records and Company
+Registration remain unchanged. The command is opt-in, backs up PostgreSQL,
+updates matching header destinations, and is never invoked by bootstrap.
+
 Two additional collections provide the separate CMS-only Global system:
 `global-country-page` renders `/globals/[country]`, and
 `global-certificate-page` renders `/globals/[country]/[slug]`. Both begin empty

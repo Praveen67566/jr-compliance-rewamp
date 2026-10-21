@@ -1,0 +1,10 @@
+[2026-10-21 09:37:07.307] info: [transfer] Diagnostic log file: /Users/yalagalasrinivas/praveen-dev/jr-compliance-rewamp/cms/transfer_1792555627304.log (info-level messages are written here even without --verbose)
+[2026-10-21 09:37:07.307] info: [remote-source-provider] establishing websocket connection
+
+[2026-10-21 09:37:07.309] info: [local-destination-provider] validating options
+
+[2026-10-21 09:37:08.147] error: [FATAL] Failed to initialize the connection: Authentication Error
+[2026-10-21 09:37:08.149] info: [local-destination-provider] Rolling back transaction
+
+[2026-10-21 09:37:08.151] info: [local-destination-provider] Rolled back transaction
+

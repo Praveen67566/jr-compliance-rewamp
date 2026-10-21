@@ -225,6 +225,51 @@ backups. Also update the existing reader-token permissions before expecting CMS
 records to replace the typed frontend fallbacks. Do not enable a seed flag for
 this rollout.
 
+## Approved Corporate workbook import
+
+The explicit local import in `scripts/import-corporate-services.cjs` fills only
+missing Corporate services from the approved Excel workbook. It preserves the
+nineteen Company Registration pages and existing draft/published service pages,
+including legacy aliases such as DSC, IEC and PSARA. It is never called by
+bootstrap, and every `SEED_*` flag remains disabled.
+
+```bash
+node scripts/import-corporate-services.cjs '/path/to/workbook.xlsx' --dry-run
+node --test scripts/import-corporate-services.test.cjs
+node scripts/import-corporate-services.cjs '/path/to/workbook.xlsx' --apply
+node scripts/import-corporate-services.cjs '/path/to/workbook.xlsx' --verify='/path/to/audit-directory'
+node scripts/import-corporate-services.cjs '/path/to/workbook.xlsx' --format-extra-content='/path/to/original-import-audit-directory' --dry-run
+node scripts/import-corporate-services.cjs '/path/to/workbook.xlsx' --format-extra-content='/path/to/original-import-audit-directory' --apply
+```
+
+The default is a read-only preview against the running local CMS. Applying
+requires the existing local PostgreSQL configuration, a current `dist` build,
+Python 3, and `pg_dump`/`pg_restore`. Before writes it makes a verified database
+backup and content snapshot under `~/Downloads/jr-compliance-backups/`.
+Creation and matching header-link updates use a single Strapi database
+transaction. Pending Site Setting drafts stop the import rather than publish
+unrelated editor changes. Repeated runs skip existing pages and repaired links.
+Use `--verify` with the saved audit directory to repeat exact content,
+preservation, navigation, and duplicate checks without creating records.
+
+Excel Service Overview becomes the hero description; What Is becomes one
+overview paragraph. Documentation, Eligibility Criteria, Step-by-Step Process,
+and Who Needs remain in one Extra Content entry with semantic HTML headings,
+paragraphs, bullet lists, and numbered steps, using the existing article styles.
+Sources are not
+imported and workbook instructions are never executed. Each new page reuses the
+published Home Page's trusted-logo selection and includes the explicitly
+approved fixed results panel, ticker CTA, one `test`/`test` FAQ, and final CTA.
+All other optional sections remain empty. No schema, fallback, or renderer
+change is needed; FAQ and final CTA remain required and editor-managed.
+
+The explicit `--format-extra-content` mode updates only Extra Content
+descriptions on the 74 records identified by the original import's
+`created.json` manifest. It preserves all other content, navigation, and logo
+selections, verifies a fresh backup, and skips already formatted entries.
+Pending draft edits or descriptions that differ from the original imported
+copy stop the update so editor changes are preserved.
+
 ## Schema and editor policy
 
 The committed schemas define five single types, thirty-seven collection types,
