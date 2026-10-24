@@ -1,0 +1,31 @@
+@media (min-width: 821px) and (prefers-reduced-motion: no-preference) {
+  .sticky-cta-sweep {
+    animation: sticky-cta-sweep 12s ease-in-out infinite;
+    animation-play-state: paused;
+  }
+
+  .sticky-cta-bar[aria-hidden="false"] .sticky-cta-sweep {
+    animation-play-state: running;
+  }
+
+  .sticky-cta-bar:hover .sticky-cta-sweep,
+  .sticky-cta-bar:focus-within .sticky-cta-sweep {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes sticky-cta-sweep {
+  0%, 12% {
+    opacity: 0;
+    transform: translateX(-110%);
+  }
+
+  24%, 66% {
+    opacity: 0.8;
+  }
+
+  82%, 100% {
+    opacity: 0;
+    transform: translateX(390%);
+  }
+}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import "../components/site-header.css";
+import "../components/sticky-cta-bar.css";
 import "../components/home/home.css";
 import "../components/site-footer.css";
 import "../components/editorial/editorial.css";

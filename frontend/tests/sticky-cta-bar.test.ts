@@ -61,11 +61,15 @@ describe("CMS-managed sticky bar rendering", () => {
 
     assert.match(markup, /src="\/images\/jr-logo.svg"/);
     assert.match(markup, /alt="JR Compliance"/);
-    assert.doesNotMatch(markup, /src="\/bis-mark.svg"/);
+    assert.match(markup, /alt=""[^>]*src="\/bis-mark.svg"/);
     assert.match(markup, /alt=""[^>]*src="\/documents.svg"/);
     assert.match(markup, /Complete filing support/);
     assert.ok(markup.indexOf("Documentation") < markup.indexOf("Expert guidance"));
     assert.ok(markup.indexOf("Expert guidance") < markup.indexOf("Reliable service"));
+    const desktopPoints = markup.slice(markup.indexOf('role="group"'), markup.indexOf("</ul>"));
+    assert.match(desktopPoints, /Documentation/);
+    assert.match(desktopPoints, /Expert guidance/);
+    assert.doesNotMatch(desktopPoints, /Reliable service/);
     assert.ok(markup.indexOf('alt="Partner A"') < markup.indexOf('alt="Partner B"'));
     assert.match(markup, /Speak to a certification expert/);
     assert.match(markup, /Talk to our team/);

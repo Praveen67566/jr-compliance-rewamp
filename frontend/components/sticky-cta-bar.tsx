@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
 import { linkTargetProps } from "@/lib/link-props";
 import type { StickyBarContent, StickyBarPoint } from "@/lib/types";
@@ -44,6 +44,34 @@ function SupportPointIcon({ index }: { index: number }) {
         </>
       )}
     </svg>
+  );
+}
+
+function ServiceShield({ icon }: { icon?: string }) {
+  const gradientId = useId();
+
+  return (
+    <span aria-hidden="true" className="pointer-events-none absolute bottom-0 left-6 hidden h-[92px] w-20 drop-shadow-[0_5px_10px_rgba(13,92,184,0.3)] min-[821px]:block">
+      <svg className="size-full" fill="none" viewBox="0 0 84 100">
+        <defs>
+          <linearGradient id={gradientId} x1="8" x2="76" y1="4" y2="94" gradientUnits="userSpaceOnUse">
+            <stop stopColor="var(--blue-sky)" />
+            <stop offset="0.38" stopColor="var(--blue-electric)" />
+            <stop offset="1" stopColor="var(--blue-navy-700)" />
+          </linearGradient>
+        </defs>
+        <path d="M42 2 75 15a8 8 0 0 1 5 7.5V51c0 22-15 39-38 47C19 90 4 73 4 51V22.5A8 8 0 0 1 9 15Z" fill={`url(#${gradientId})`} fillOpacity="0.94" stroke="var(--blue-sky-strong)" strokeWidth="1.5" />
+        <path d="M42 5 74 18a5 5 0 0 1 3 4.5V37C53 51 29 31 7 50V22.5a5 5 0 0 1 3-4.5Z" fill="var(--blue-cloud)" fillOpacity="0.2" />
+        <path d="M11 25v26c0 18 12 32 31 40 19-8 31-22 31-40V25" stroke="var(--blue-sky)" strokeOpacity="0.32" />
+      </svg>
+      {icon ? (
+        <img alt="" className="absolute left-1/2 top-7 size-11 -translate-x-1/2 object-contain" decoding="async" height={44} src={icon} width={44} />
+      ) : (
+        <svg className="absolute left-1/2 top-7 size-10 -translate-x-1/2 text-cloud" fill="none" viewBox="0 0 24 24">
+          <path d="m6 12 4 4 8-8" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+        </svg>
+      )}
+    </span>
   );
 }
 
@@ -142,7 +170,7 @@ export function StickyCtaBar({ content }: StickyCtaBarProps) {
       aria-label={content.title}
       onFocusCapture={() => setIsRotationStopped(true)}
       ref={barRef}
-      className={`fixed inset-x-0 bottom-0 z-30 isolate border-b-2 border-t border-b-cobalt-700 border-t-cobalt-600/25 bg-[linear-gradient(110deg,var(--blue-ice),var(--blue-cloud)_42%,var(--blue-ice))] text-navy-950 shadow-[0_-10px_36px_rgba(3,19,47,0.12)] transition-[transform,opacity,visibility] duration-500 ease-[cubic-bezier(.22,1,.36,1)] motion-reduce:transition-none min-[821px]:rounded-b-xl min-[821px]:border-b-0 min-[821px]:bg-[linear-gradient(100deg,#d6ecff,var(--blue-ice)_55%,var(--blue-cloud))] ${
+      className={`sticky-cta-bar fixed inset-x-0 bottom-0 z-30 isolate border-b-2 border-t border-b-cobalt-700 border-t-cobalt-600/25 bg-[linear-gradient(110deg,var(--blue-ice),var(--blue-cloud)_42%,var(--blue-ice))] text-navy-950 shadow-[0_-10px_36px_rgba(3,19,47,0.12)] transition-[transform,opacity,visibility] duration-500 ease-[cubic-bezier(.22,1,.36,1)] motion-reduce:transition-none min-[821px]:rounded-b-xl min-[821px]:border-b-0 min-[821px]:border-t-sky/35 min-[821px]:bg-[linear-gradient(100deg,var(--blue-navy-950),var(--blue-navy-700)_28%,var(--blue-cobalt-700)_70%,var(--blue-electric))] min-[821px]:text-ice ${
         isVisible
           ? "visible translate-y-0 opacity-100"
           : "invisible pointer-events-none translate-y-full opacity-0"
@@ -150,16 +178,23 @@ export function StickyCtaBar({ content }: StickyCtaBarProps) {
     >
       <div
         aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 hidden overflow-hidden rounded-[inherit] min-[821px]:block"
+      >
+        <span className="sticky-cta-sweep absolute inset-y-0 left-0 w-[35%] bg-[linear-gradient(105deg,transparent,rgba(139,220,255,0.12),rgba(22,140,245,0.18),transparent)] motion-reduce:hidden" />
+      </div>
+      <div
+        aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,var(--blue-sky),var(--blue-electric),transparent)]"
       />
-      <div className="relative grid w-full grid-cols-[minmax(0,1fr)_auto] items-center bg-navy-900 min-[821px]:gap-x-5 min-[821px]:bg-transparent min-[821px]:pb-[env(safe-area-inset-bottom)] min-[1440px]:gap-x-8">
+      <div className="relative grid w-full grid-cols-[minmax(0,1fr)_minmax(132px,min(44%,224px))] items-center bg-navy-900 max-[820px]:bg-[linear-gradient(110deg,var(--blue-navy-950),var(--blue-navy-700))] min-[821px]:grid-cols-[minmax(0,1fr)_auto] min-[821px]:gap-x-5 min-[821px]:bg-transparent min-[821px]:pb-[env(safe-area-inset-bottom)] min-[1440px]:gap-x-8">
         <div className="contents min-[821px]:col-start-1 min-[821px]:row-start-1 min-[821px]:flex min-[821px]:min-w-0 min-[821px]:items-center min-[821px]:gap-5 min-[1440px]:gap-8">
-          <div className="order-1 flex min-h-14 min-w-0 items-center gap-2 py-1.5 pl-3.5 pr-7 min-[560px]:gap-3 min-[560px]:pl-[22px] min-[821px]:min-h-[72px] min-[821px]:max-w-[40%] min-[821px]:flex-[0_1_auto] min-[821px]:py-3 min-[821px]:pl-8 min-[821px]:pr-0">
+          <div className="relative order-1 flex min-h-[72px] min-w-0 items-center gap-2 py-3 pl-3.5 pr-7 min-[560px]:gap-3 min-[560px]:pl-[22px] min-[821px]:max-w-[40%] min-[821px]:flex-[0_1_auto] min-[821px]:pl-32 min-[821px]:pr-0">
+            <ServiceShield icon={content.icon} />
             <div className="min-w-0">
-              <p className="mb-0 line-clamp-1 break-words text-base font-extrabold leading-[1.25] tracking-[-0.015em] text-white min-[560px]:text-[1.0625rem] min-[821px]:block min-[821px]:truncate min-[821px]:text-base min-[821px]:font-semibold min-[821px]:text-navy-950 min-[1440px]:text-lg" title={content.title}>
+              <p className="mb-0 line-clamp-2 break-words text-sm font-bold leading-[1.25] tracking-[-0.015em] text-white min-[560px]:text-base min-[821px]:block min-[821px]:truncate min-[821px]:text-base min-[821px]:font-semibold min-[821px]:text-cloud min-[1440px]:text-lg" title={content.title}>
                 {content.title}
               </p>
-              <p className="mb-0 mt-1 line-clamp-1 break-words text-[0.6875rem] leading-[1.4] text-ice/85 min-[821px]:text-navy-700 min-[1440px]:text-xs" title={content.description}>
+              <p className="mb-0 mt-1 line-clamp-2 break-words text-[0.6875rem] leading-[1.4] text-ice/85 min-[821px]:line-clamp-1 min-[821px]:text-ice min-[1440px]:text-xs" title={content.description}>
                 {content.description}
               </p>
             </div>
@@ -168,15 +203,15 @@ export function StickyCtaBar({ content }: StickyCtaBarProps) {
           {hasProof ? (
             <div
               aria-label={content.title}
-              className="order-3 hidden min-w-0 flex-1 items-center gap-4 border-l border-cobalt-700/20 py-1 pl-5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cobalt-700 min-[821px]:flex min-[1440px]:pl-8"
+              className="order-3 hidden min-w-0 flex-1 items-center gap-4 border-l border-sky/25 py-1 pl-5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky min-[821px]:flex min-[1440px]:pl-8"
               role="group"
               tabIndex={isVisible ? 0 : -1}
             >
               {content.points?.length ? (
-                <ul className="m-0 flex min-w-0 flex-1 list-none items-center divide-x divide-cobalt-700/15 p-0">
-                  {content.points.map((point, index) => (
+                <ul className="m-0 flex min-w-0 flex-1 list-none items-center divide-x divide-sky/20 p-0">
+                  {content.points.slice(0, 2).map((point, index) => (
                     <li className="flex min-w-0 flex-1 items-center gap-2 px-3 first:pl-0 last:pr-0 min-[1440px]:gap-3 min-[1440px]:px-5" key={`${point.title}-${index}`}>
-                      <span aria-hidden="true" className="grid size-6 shrink-0 place-items-center text-cobalt-700 min-[1440px]:size-8">
+                      <span aria-hidden="true" className="grid size-6 shrink-0 place-items-center text-sky min-[1440px]:size-8">
                         {point.icon ? (
                           <img alt="" className="size-full object-contain" decoding="async" height={32} src={point.icon} width={32} />
                         ) : (
@@ -184,15 +219,15 @@ export function StickyCtaBar({ content }: StickyCtaBarProps) {
                         )}
                       </span>
                       <span className="min-w-0">
-                        <span className="block truncate text-[0.6875rem] font-semibold leading-[1.3] text-cobalt-700 min-[981px]:text-xs min-[1440px]:text-sm" title={point.title}>{point.title}</span>
-                        {point.description ? <span className="sr-only mt-0.5 text-[0.6875rem] leading-[1.4] text-navy-700 min-[1100px]:not-sr-only min-[1100px]:block min-[1100px]:truncate" title={point.description}>{point.description}</span> : null}
+                        <span className="block truncate text-[0.6875rem] font-semibold leading-[1.3] text-cloud min-[981px]:text-xs min-[1440px]:text-sm" title={point.title}>{point.title}</span>
+                        {point.description ? <span className="sr-only mt-0.5 text-[0.6875rem] leading-[1.4] text-ice min-[1100px]:not-sr-only min-[1100px]:block min-[1100px]:truncate" title={point.description}>{point.description}</span> : null}
                       </span>
                     </li>
                   ))}
                 </ul>
               ) : null}
               {content.logos?.length ? (
-                <ul className={`m-0 flex list-none items-center gap-3 p-0 ${content.points?.length ? "sr-only min-[1440px]:not-sr-only min-[1440px]:shrink-0 min-[1440px]:border-l min-[1440px]:border-cobalt-700/15 min-[1440px]:pl-4" : ""}`}>
+                <ul className={`m-0 flex list-none items-center gap-3 p-0 ${content.points?.length ? "sr-only min-[1440px]:not-sr-only min-[1440px]:shrink-0 min-[1440px]:border-l min-[1440px]:border-sky/25 min-[1440px]:pl-4" : ""}`}>
                   {content.logos.map((logo, index) => (
                     <li className="flex h-5 items-center" key={`${logo.src}-${index}`}>
                       <img alt={logo.alt} className="h-full w-auto !max-w-[88px] object-contain" decoding="async" height={20} src={logo.src} width={88} />
@@ -204,18 +239,14 @@ export function StickyCtaBar({ content }: StickyCtaBarProps) {
           ) : null}
         </div>
 
-        <div className="relative order-2 flex w-[128px] min-w-0 flex-col items-center justify-center self-stretch bg-cloud py-1.5 pl-0 pr-3.5 text-center before:pointer-events-none before:absolute before:inset-y-0 before:right-full before:w-7 before:bg-cloud before:content-[''] before:[mask-image:radial-gradient(ellipse_100%_100%_at_0_100%,transparent_98%,#000_100%)] min-[560px]:w-[164px] min-[560px]:pr-[22px] min-[821px]:col-start-2 min-[821px]:row-start-1 min-[821px]:w-auto min-[821px]:max-w-[264px] min-[821px]:bg-transparent min-[821px]:py-3 min-[821px]:pr-8 min-[821px]:before:hidden">
+        <div className="relative order-2 flex w-full min-w-0 flex-col items-center justify-center self-stretch bg-cloud py-3 pl-0 pr-3.5 text-center before:pointer-events-none before:absolute before:inset-y-0 before:right-full before:w-7 before:bg-cloud before:content-[''] before:[mask-image:radial-gradient(ellipse_100%_100%_at_0_100%,transparent_98%,#000_100%)] min-[560px]:pr-[22px] min-[821px]:col-start-2 min-[821px]:row-start-1 min-[821px]:w-auto min-[821px]:max-w-[264px] min-[821px]:bg-transparent min-[821px]:pr-8 min-[821px]:before:hidden">
           <a
-            className="inline-flex min-h-11 max-w-full items-center justify-center gap-1.5 rounded-full border border-cloud/80 bg-[linear-gradient(115deg,var(--blue-cobalt-700),var(--blue-cobalt-700)_65%,var(--blue-navy-700))] px-2.5 py-2 text-center text-[0.6875rem] font-extrabold !text-white shadow-[inset_0_1px_rgba(255,255,255,0.25),0_6px_18px_rgba(13,92,184,0.2)] transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_22px_rgba(13,92,184,0.3)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cobalt-700 motion-reduce:transition-none min-[560px]:text-xs min-[821px]:gap-2.5 min-[821px]:whitespace-nowrap min-[821px]:border-transparent min-[821px]:bg-cobalt-700 min-[821px]:bg-none min-[821px]:px-6 min-[821px]:py-2.5 min-[821px]:font-semibold min-[821px]:shadow-none min-[1100px]:text-sm"
+            className="inline-flex min-h-11 max-w-full items-center justify-center gap-1.5 rounded-full border border-cloud/80 bg-[linear-gradient(115deg,var(--blue-cobalt-700),var(--blue-cobalt-700)_65%,var(--blue-navy-700))] px-2.5 py-2 text-center text-[0.6875rem] font-extrabold !text-white shadow-[inset_0_1px_rgba(255,255,255,0.25),0_6px_18px_rgba(13,92,184,0.2)] transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_22px_rgba(13,92,184,0.3)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky motion-reduce:transition-none max-[820px]:w-full max-[820px]:text-xs max-[820px]:font-semibold max-[820px]:leading-[1.3] min-[560px]:text-xs min-[821px]:gap-2.5 min-[821px]:whitespace-nowrap min-[821px]:border-sky/50 min-[821px]:bg-[linear-gradient(135deg,#67e8f9,#22d3ee)] min-[821px]:px-6 min-[821px]:py-2.5 min-[821px]:font-semibold min-[821px]:text-navy-950! min-[821px]:shadow-[0_0_24px_rgba(34,211,238,0.3)] min-[821px]:hover:shadow-[0_0_32px_rgba(34,211,238,0.5)] min-[821px]:focus-visible:outline-cloud min-[1100px]:text-sm"
             href={content.cta.href}
             tabIndex={isVisible ? undefined : -1}
             {...linkTargetProps(content.cta)}
           >
-            <span className="min-w-0 break-words">{content.cta.label}</span>
-            <svg aria-hidden="true" className="size-4 shrink-0 min-[821px]:hidden" fill="none" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="10" fill="currentColor" />
-              <path d="m10 8 4 4-4 4m-3-4h7" stroke="var(--blue-cobalt-700)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
-            </svg>
+            <span className="min-w-0 break-words max-[820px]:text-balance">{content.cta.label}</span>
           </a>
           {content.supportingText ? (
             <p className="sr-only">
@@ -243,7 +274,7 @@ export function StickyCtaBar({ content }: StickyCtaBarProps) {
           ) : null}
           {highlights.length > 1 ? <button
             aria-label={`Next support highlight (stops automatic rotation). Current: ${highlights[selectedPoint].title}`}
-            className="group/highlight relative h-11 min-w-0 flex-1 overflow-hidden border-0 bg-transparent p-0 text-left focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-cobalt-700"
+            className="group/highlight relative h-14 min-w-0 flex-1 overflow-hidden border-0 bg-transparent p-0 text-left focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-cobalt-700"
             onClick={() => {
               setActivePoint((current) => (current + 1) % highlights.length);
               setIsRotationStopped(true);
@@ -261,8 +292,8 @@ export function StickyCtaBar({ content }: StickyCtaBarProps) {
                   {point.icon ? <img alt="" className="size-full object-contain" decoding="async" height={24} src={point.icon} width={24} /> : <SupportPointIcon index={index} />}
                 </span>
                 <span className="min-w-0 leading-[1.3]">
-                  <strong className="block truncate text-xs font-extrabold text-cobalt-700">{point.title}</strong>
-                  {point.description ? <span className="mt-0.5 block truncate text-[0.625rem] text-navy-700 min-[560px]:text-[0.6875rem]">{point.description}</span> : null}
+                  <strong className="line-clamp-2 text-xs font-semibold text-cobalt-700">{point.title}</strong>
+                  {point.description ? <span className="mt-0.5 block truncate text-[0.6875rem] text-navy-700">{point.description}</span> : null}
                 </span>
               </span>
             ))}
@@ -270,12 +301,12 @@ export function StickyCtaBar({ content }: StickyCtaBarProps) {
               <path d="m9 6 6 6-6 6" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
             </svg>
           </button> : (
-            <div className="flex min-h-11 min-w-0 flex-1 items-center gap-2 py-1.5">
+            <div className="flex min-h-14 min-w-0 flex-1 items-center gap-2 py-1.5">
               <span aria-hidden="true" className="size-6 shrink-0 text-cobalt-700">
                 {highlights[0].icon ? <img alt="" className="size-full object-contain" decoding="async" height={24} src={highlights[0].icon} width={24} /> : <SupportPointIcon index={0} />}
               </span>
               <p className="m-0 min-w-0 text-[0.6875rem] leading-[1.4]">
-                <strong className="block truncate font-bold">{highlights[0].title}</strong>
+                <strong className="line-clamp-2 font-semibold">{highlights[0].title}</strong>
                 {highlights[0].description ? <span className="block truncate text-navy-700">{highlights[0].description}</span> : null}
               </p>
             </div>
