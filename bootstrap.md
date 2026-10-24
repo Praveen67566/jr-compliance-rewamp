@@ -105,6 +105,16 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
+Only Ui Changes:-
 
+1. No See the header ui it looks so wide and too much space make it shrink and it should look smooth.
 
+2. see the div which contain:- corporate approval global careers aboutUs i want when some one click outside of this also the header window close for web only.
 
+3. Now see in whatsapp floating there is when we hover it i want there at the start the png icon 
+jr>>.
+
+4. See the axis max life fixed ui i want exact that type of ui for sticky fixed bar we are not going to add more content like logo at the start
+this is for web.
+
+These are only ui changes don't change anything else. and refernce images are provided.

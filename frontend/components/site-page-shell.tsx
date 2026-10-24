@@ -42,10 +42,16 @@ export function SitePageShell({
           >
             <span className="mb-3 flex items-center gap-2.5">
               <span
-                className="grid size-[34px] flex-none place-items-center rounded-full border border-sky/50 bg-[radial-gradient(circle_at_30%_22%,#489fff_0%,#1467ca_46%,#08295f_100%)] text-[0.85rem] font-bold text-white"
+                className="grid size-[38px] flex-none place-items-center rounded-full border border-sky/50 bg-cloud p-1"
                 aria-hidden="true"
               >
-                JR
+                <img
+                  className="size-full object-contain"
+                  src="/images/jr-whatsapp-icon.png"
+                  alt=""
+                  width={30}
+                  height={30}
+                />
               </span>
               <span className="min-w-0">
                 <span className="block truncate text-[0.82rem] font-bold text-white">{site.name} Assistant</span>

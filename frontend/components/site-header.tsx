@@ -81,6 +81,7 @@ function CategoryLabel({ category }: { category: NavigationCategory }) {
 
 export function SiteHeader({ navigation, site }: SiteHeaderProps) {
   const headerRef = useRef<HTMLElement>(null);
+  const desktopNavigationRef = useRef<HTMLDivElement>(null);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -97,7 +98,11 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
     if (!openMenu && !mobileOpen) return;
 
     const closeOnOutsidePointerDown = (event: PointerEvent) => {
-      if (event.target instanceof Node && !headerRef.current?.contains(event.target)) {
+      const boundary = window.matchMedia("(min-width: 981px)").matches
+        ? desktopNavigationRef.current
+        : headerRef.current;
+
+      if (event.target instanceof Node && !boundary?.contains(event.target)) {
         closeAll();
       }
     };
@@ -109,22 +114,22 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
   return (
     <header
       ref={headerRef}
-      className="site-header"
+      className="site-header min-[981px]:py-2!"
       onKeyDown={(event) => {
         if (event.key === "Escape") {
           closeAll();
         }
       }}
     >
-      <div className="header-shell site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
+      <div className="header-shell site-container mx-auto w-full max-w-[1320px] px-8 min-[981px]:min-h-[62px]! min-[981px]:gap-3! min-[981px]:rounded-[18px]! min-[981px]:py-1.5! max-[820px]:px-[22px] max-[560px]:px-[18px]">
         <div className="header-brand-area">
           <a className="group/brand block w-[184px] shrink-0 max-[1100px]:w-[164px] max-[560px]:w-[156px]" href="/" aria-label={`${site.name} home`} onClick={closeAll}>
             <HeaderLogo site={site} />
           </a>
         </div>
 
-        <div className="header-navigation-shell">
-          <nav className="desktop-navigation" aria-label="Primary navigation">
+        <div className="header-navigation-shell min-[981px]:rounded-xl! min-[981px]:p-[3px]!" ref={desktopNavigationRef}>
+          <nav className="desktop-navigation min-[981px]:gap-0.5!" aria-label="Primary navigation">
             {navigation.map((item) => {
               const isOpen = openMenu === item.label;
               const hasChildren = Boolean(item.children?.length);
@@ -137,7 +142,7 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
                 <div className="navigation-item" key={item.label}>
                   {hasMenu ? (
                     <button
-                      className="nav-link nav-menu-trigger"
+                      className="nav-link nav-menu-trigger min-[981px]:gap-1.5! min-[981px]:px-2.5! min-[981px]:py-2! min-[981px]:max-[1100px]:px-2!"
                       type="button"
                       aria-expanded={isOpen}
                       aria-controls={menuId}
@@ -159,7 +164,7 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
                     </button>
                   ) : (
                     <a
-                      className="nav-link"
+                      className="nav-link min-[981px]:gap-1.5! min-[981px]:px-2.5! min-[981px]:py-2! min-[981px]:max-[1100px]:px-2!"
                       href={sharedHref(item.href)}
                       {...linkTargetProps(item)}
                       onClick={closeAll}
@@ -170,12 +175,12 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
 
                   {hasCategories && isOpen && selectedCategory ? (
                     <div
-                      className="fixed left-1/2 top-[94px] z-[60] h-[min(620px,calc(100vh-118px))] w-[min(92vw,1320px)] -translate-x-1/2 overflow-hidden rounded-[30px] border border-sky/45 bg-navy-900 shadow-[0_34px_84px_rgba(0,8,34,0.46)] motion-safe:animate-[popover-in_180ms_ease_both]"
+                      className="fixed left-1/2 top-[86px] z-[60] h-[min(500px,calc(100dvh-106px))] w-[min(92vw,1160px)] -translate-x-1/2 overflow-hidden rounded-[22px] border border-sky/45 bg-navy-900 shadow-[0_24px_60px_rgba(0,8,34,0.38)] motion-safe:animate-[popover-in_180ms_ease_both]"
                       id={menuId}
                     >
-                      <div className="grid h-full grid-cols-[minmax(290px,25%)_minmax(0,1fr)] overflow-hidden">
+                      <div className="grid h-full grid-cols-[minmax(240px,25%)_minmax(0,1fr)] overflow-hidden">
                         <nav
-                          className="overflow-y-auto border-r border-sky/25 bg-[linear-gradient(160deg,var(--blue-navy-800),var(--blue-navy-950))] px-2 py-4"
+                          className="overflow-y-auto overscroll-contain border-r border-sky/25 bg-[linear-gradient(160deg,var(--blue-navy-800),var(--blue-navy-950))] px-2 py-3"
                           aria-label={`${item.label} service categories`}
                           role="tablist"
                         >
@@ -184,7 +189,7 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
 
                             return (
                               <button
-                                className={`mb-1.5 flex min-h-12 w-full appearance-none items-center justify-between rounded-2xl bg-transparent px-5 py-3.5 text-left text-[0.93rem]! leading-snug! transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky ${
+                                className={`mb-1 flex min-h-10 w-full appearance-none items-center justify-between rounded-xl bg-transparent px-3.5 py-2.5 text-left text-[0.84rem]! leading-snug! transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky ${
                                   isSelected
                                     ? "border border-sky bg-[linear-gradient(135deg,var(--blue-cobalt-700),var(--blue-navy-700))] font-semibold! text-cloud shadow-[inset_0_1px_rgba(255,255,255,0.22),0_10px_26px_rgba(0,64,155,0.2)]"
                                     : "border border-transparent font-medium! text-[#c7e7fb] hover:border-sky/30 hover:bg-sky/10 hover:text-cloud"
@@ -206,12 +211,12 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
                         </nav>
 
                         <section
-                          className="min-w-0 overflow-y-auto bg-[linear-gradient(135deg,#f8fcff,#edf7ff)] p-9 text-[#0b315f]"
+                          className="min-w-0 overflow-y-auto overscroll-contain bg-[linear-gradient(135deg,#f8fcff,#edf7ff)] p-6 text-[#0b315f]"
                           id={`${menuId}-panel`}
                           role="tabpanel"
                         >
-                          <div className="flex items-center justify-between gap-6 border-b border-cobalt-700/15 pb-7">
-                            <h2 className="m-0 min-w-0 text-[clamp(1.5rem,2vw,2rem)] font-semibold! leading-[1.2] tracking-[-0.02em] text-[#071b43]">
+                          <div className="flex items-center justify-between gap-4 border-b border-cobalt-700/15 pb-4">
+                            <h2 className="m-0 min-w-0 text-2xl font-semibold! leading-[1.2] tracking-[-0.02em] text-[#071b43]">
                               {selectedCategory.title}{" "}
                               {!selectedCategory.logo ? (
                                 <span className="align-middle text-electric" aria-hidden="true">
@@ -221,10 +226,10 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
                             </h2>
                             <CategoryLogo src={selectedCategory.logo} />
                           </div>
-                          <div className="grid grid-cols-3 gap-x-9 gap-y-5 pt-8 max-[1100px]:grid-cols-2">
+                          <div className="grid grid-cols-3 gap-x-3 gap-y-1.5 pt-4 max-[1100px]:grid-cols-2">
                             {selectedCategory.links.map((link) => (
                               <a
-                                className="group/service-link flex min-w-0 items-center justify-between gap-3 rounded-2xl border border-transparent px-4 py-3.5 text-[1rem] font-medium leading-[1.5] text-[#123665] transition-[background-color,border-color,color] duration-200 hover:border-electric/20 hover:bg-electric/5 hover:text-cobalt-700 focus-visible:border-electric/20 focus-visible:bg-electric/5 focus-visible:text-cobalt-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric"
+                                className="group/service-link flex min-h-11 min-w-0 items-center justify-between gap-2 rounded-xl border border-transparent px-3 py-2.5 text-sm font-medium leading-[1.4] text-[#123665] transition-[background-color,border-color,color] duration-200 hover:border-electric/20 hover:bg-electric/5 hover:text-cobalt-700 focus-visible:border-electric/20 focus-visible:bg-electric/5 focus-visible:text-cobalt-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric"
                                 href={sharedHref(link.href)}
                                 key={link.label}
                                 {...linkTargetProps(link)}
