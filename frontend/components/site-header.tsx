@@ -54,25 +54,191 @@ function HeaderLogo({ site }: { site: SiteSettings }) {
   );
 }
 
-function CategoryLogo({ src }: { src?: string }) {
-  return src ? (
-    <img
-      className="h-16 w-auto max-w-[180px] shrink-0 object-contain drop-shadow-[0_1px_2px_rgba(3,15,43,0.35)] max-[980px]:h-12 max-[980px]:max-w-24"
-      src={src}
-      alt=""
-      width={64}
-      height={64}
-      aria-hidden="true"
-    />
-  ) : null;
-}
-
 function CategoryLabel({ category }: { category: NavigationCategory }) {
   return (
     <span className="flex min-w-0 items-center gap-3">
-      <CategoryLogo src={category.logo} />
+      <span className={`grid size-9 shrink-0 place-items-center rounded-lg border border-sky/20 ${category.logo ? "bg-cloud text-cobalt-700" : "bg-electric/10 text-sky"}`}>
+        <CategoryIcon title={category.title} logo={category.logo} />
+      </span>
       <span className="min-w-0">{category.title}</span>
     </span>
+  );
+}
+
+function CategoryIcon({ title, logo }: { title: string; logo?: string }) {
+  const [failedLogo, setFailedLogo] = useState<string | null>(null);
+
+  if (logo && logo !== failedLogo) {
+    return (
+      <img
+        key={logo}
+        className="size-6 shrink-0 object-contain"
+        src={logo}
+        alt=""
+        width={24}
+        height={24}
+        aria-hidden="true"
+        onError={() => setFailedLogo(logo)}
+      />
+    );
+  }
+
+  const path = /company|corporate/i.test(title)
+    ? "M4 21V7h10v14M14 11h6v10M8 11h2m-2 4h2m-2 4h2m8-4h.01M2 21h20M7 7V3h4v4"
+    : /import|global|asia|africa|america|australia|europe/i.test(title)
+      ? "M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM3 12h18M12 3a17 17 0 0 1 0 18 17 17 0 0 1 0-18Z"
+      : /license|approval|standards|certification|fssai/i.test(title)
+        ? "m12 3 8 4v5c0 5-8 9-8 9s-8-4-8-9V7l8-4Zm-4 9 3 3 5-6"
+        : /tax|account|fund|sebi/i.test(title)
+          ? "M4 20h16M6 16v-4m6 4V8m6 8V4M4 8l6-4 5 2 5-4"
+          : /ipr/i.test(title)
+            ? "M9 18h6m-5 3h4M8 13a6 6 0 1 1 8 0c-1 1-1 2-1 3H9c0-1 0-2-1-3Z"
+            : "M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9l-6-6Zm0 0v6h6M8 13h8m-8 4h6";
+
+  return (
+    <svg className="size-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d={path} />
+    </svg>
+  );
+}
+
+function HeaderMegaMenu({ item, menuId, site, onClose }: {
+  item: NavigationItem;
+  menuId: string;
+  site: SiteSettings;
+  onClose: () => void;
+}) {
+  const [query, setQuery] = useState("");
+  const [activeCategory, setActiveCategory] = useState(item.categories?.[0]?.title);
+  const searchRef = useRef<HTMLInputElement>(null);
+  const search = query.trim().toLowerCase();
+  const categories = (item.categories ?? []).map((category, index) => ({
+    ...category,
+    id: `${menuId}-tab-${index}`,
+    links: category.title.toLowerCase().includes(search)
+      ? category.links
+      : category.links.filter((link) => link.label.toLowerCase().includes(search)),
+  })).filter((category) => category.links.length > 0);
+  const selectedCategory = categories.find((category) => category.title === activeCategory) ?? categories[0];
+  const selectedIndex = categories.findIndex((category) => category === selectedCategory);
+  const serviceCount = selectedCategory?.links.length ?? 0;
+
+  return (
+    <div
+      className="fixed left-1/2 top-[86px] z-[60] h-[min(600px,calc(100dvh-106px))] w-[min(calc(100%-48px),1320px)] -translate-x-1/2 overflow-hidden rounded-[24px] border border-sky/40 bg-cloud shadow-[0_28px_80px_rgba(0,8,34,0.4)] motion-safe:animate-[popover-in_180ms_ease_both] max-[980px]:hidden"
+      id={menuId}
+    >
+      <div className="grid h-full grid-cols-[minmax(260px,25%)_minmax(0,1fr)]">
+        <div className="flex min-h-0 flex-col border-r border-sky/20 bg-[linear-gradient(155deg,var(--blue-navy-700),var(--blue-navy-950))] p-4">
+          <label className="flex min-h-12 shrink-0 items-center gap-2.5 rounded-xl border border-sky/30 bg-cloud/5 px-3 text-sky transition focus-within:border-sky focus-within:ring-2 focus-within:ring-sky/20">
+            <svg className="size-[18px] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+              <circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 4 4" />
+            </svg>
+            <span className="sr-only">Search {item.label} services</span>
+            <input
+              ref={searchRef}
+              className="min-w-0 w-full border-0 bg-transparent py-3 font-[inherit] text-sm text-cloud outline-none placeholder:text-sky-strong/65"
+              type="search"
+              placeholder="Search services…"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+            />
+          </label>
+          <p className="mb-3 mt-5! px-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-sky/65">{item.label}</p>
+          <div
+            className="min-h-0 flex-1 space-y-1 overflow-y-auto overscroll-contain pr-2 [scrollbar-color:var(--blue-cobalt-600)_transparent] [scrollbar-width:thin]"
+            aria-label={`${item.label} service categories`}
+            role={categories.length ? "tablist" : undefined}
+            aria-orientation={categories.length ? "vertical" : undefined}
+            onKeyDown={(event) => {
+              const index = categories.findIndex((category) => category.id === document.activeElement?.id);
+              if (index < 0) return;
+              const next = event.key === "ArrowDown" ? (index + 1) % categories.length
+                : event.key === "ArrowUp" ? (index - 1 + categories.length) % categories.length
+                  : event.key === "Home" ? 0 : event.key === "End" ? categories.length - 1 : -1;
+              if (next < 0) return;
+              event.preventDefault();
+              setActiveCategory(categories[next].title);
+              document.getElementById(categories[next].id)?.focus();
+            }}
+          >
+            {categories.map((category, index) => {
+              const isSelected = index === selectedIndex;
+              return (
+                <button
+                  className={`group/category flex min-h-[58px] w-full cursor-pointer appearance-none items-center gap-3 rounded-xl border px-3 py-3 text-left text-[13px]! leading-snug! transition-[background-color,border-color,color] duration-200 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-sky ${isSelected
+                    ? "border-sky/45 bg-electric/20 font-semibold! text-cloud! shadow-[inset_3px_0_var(--blue-sky)]"
+                    : "border-transparent bg-transparent font-medium! text-sky-strong/80! hover:border-sky/20 hover:bg-sky/8 hover:text-cloud!"}`}
+                  key={category.title}
+                  id={category.id}
+                  type="button"
+                  role="tab"
+                  tabIndex={isSelected ? 0 : -1}
+                  aria-selected={isSelected}
+                  aria-controls={`${menuId}-panel`}
+                  onMouseEnter={() => setActiveCategory(category.title)}
+                  onClick={() => setActiveCategory(category.title)}
+                >
+                  <span className={`grid size-9 shrink-0 place-items-center rounded-[10px] border ${category.logo ? "border-sky/30 bg-cloud text-cobalt-700" : isSelected ? "border-sky/30 bg-electric/25 text-sky" : "border-sky/15 bg-cloud/5 text-sky/70"}`}>
+                    <CategoryIcon title={category.title} logo={category.logo} />
+                  </span>
+                  <span className="min-w-0 flex-1">{category.title}</span>
+                  <span className={`shrink-0 text-lg ${isSelected ? "text-sky" : "text-sky/45"}`} aria-hidden="true">›</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <section className="flex min-h-0 min-w-0 flex-col bg-[linear-gradient(135deg,var(--blue-cloud),white_70%,var(--blue-ice))] text-navy-950">
+          <div
+            className="flex min-h-0 flex-1 flex-col"
+            id={`${menuId}-panel`}
+            role="tabpanel"
+            aria-labelledby={selectedCategory?.id}
+            aria-label={selectedCategory ? undefined : "Search results"}
+            tabIndex={0}
+          >
+            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-5 [scrollbar-color:var(--blue-cobalt-600)_transparent] [scrollbar-width:thin] max-[1100px]:px-4">
+              {selectedCategory ? (
+                <div className="grid grid-cols-3 gap-x-3 gap-y-1 max-[1100px]:grid-cols-2">
+                  {selectedCategory.links.map((link) => (
+                    <a
+                      className="group/service-link flex min-h-[58px] min-w-0 items-center justify-between gap-3 rounded-xl border border-transparent px-3 py-3 text-sm font-medium leading-[1.5] text-navy-700! transition-[background-color,border-color,color] duration-200 hover:border-electric/20 hover:bg-ice hover:text-cobalt-700! focus-visible:border-electric/30 focus-visible:bg-ice focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric"
+                      href={sharedHref(link.href)}
+                      key={link.label}
+                      {...linkTargetProps(link)}
+                      onClick={onClose}
+                    >
+                      <span className="min-w-0">{link.label}</span>
+                      <span className="grid size-6 shrink-0 place-items-center rounded-full text-lg leading-none text-cobalt-700/35 transition-[background-color,color] group-hover/service-link:bg-electric/10 group-hover/service-link:text-cobalt-700 group-focus-visible/service-link:text-cobalt-700" aria-hidden="true">›</span>
+                    </a>
+                  ))}
+                </div>
+              ) : (
+                <div className="grid h-full content-center justify-items-center gap-3 px-6 text-center">
+                  <h2 className="m-0 text-lg font-semibold! text-navy-950">No services found</h2>
+                  <p className="m-0 text-sm text-navy-700">Try another service or category name.</p>
+                  <button className="cursor-pointer rounded-lg border border-cobalt-700/20 bg-ice px-4 py-2 text-sm! font-semibold! text-cobalt-700! focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric" type="button" onClick={() => { setQuery(""); searchRef.current?.focus(); }}>Clear search</button>
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="flex shrink-0 items-center justify-between gap-4 border-t border-cobalt-700/10 bg-ice/75 px-8 py-4 max-[1100px]:px-6">
+            <div className="flex min-w-0 items-center gap-3">
+              <span className={`grid size-10 shrink-0 place-items-center rounded-xl border border-electric/15 text-cobalt-700 ${selectedCategory?.logo ? "bg-cloud" : "bg-electric/10"}`}>
+                <CategoryIcon title={selectedCategory?.title ?? item.label} logo={selectedCategory?.logo} />
+              </span>
+              <div className="min-w-0">
+                <p className="mb-1 truncate text-[13px] font-semibold text-navy-950">{selectedCategory?.title ?? item.label}</p>
+                <p className="m-0 text-xs text-cobalt-700" role="status">{serviceCount} {serviceCount === 1 ? "service" : "services"}{search ? " matching your search" : " available"}</p>
+              </div>
+            </div>
+            <a className="inline-flex shrink-0 items-center gap-3 rounded-xl border border-electric/30 bg-cobalt-700 px-4 py-3 text-[13px] font-semibold text-cloud! transition hover:bg-navy-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric" href={sharedHref(site.headerCta.href)} {...linkTargetProps(site.headerCta)} onClick={onClose}>{site.headerCta.label}<span aria-hidden="true">↗</span></a>
+          </div>
+        </section>
+      </div>
+    </div>
   );
 }
 
@@ -83,16 +249,20 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
   const headerRef = useRef<HTMLElement>(null);
   const desktopNavigationRef = useRef<HTMLDivElement>(null);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileSection, setMobileSection] = useState<string | null>(null);
 
   const closeAll = useCallback(() => {
     setOpenMenu(null);
-    setActiveCategory(null);
     setMobileOpen(false);
     setMobileSection(null);
   }, []);
+
+  useEffect(() => {
+    const desktop = window.matchMedia("(min-width: 981px)");
+    desktop.addEventListener("change", closeAll);
+    return () => desktop.removeEventListener("change", closeAll);
+  }, [closeAll]);
 
   useEffect(() => {
     if (!openMenu && !mobileOpen) return;
@@ -117,7 +287,9 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
       className="site-header min-[981px]:py-2!"
       onKeyDown={(event) => {
         if (event.key === "Escape") {
+          const trigger = headerRef.current?.querySelector<HTMLButtonElement>('[aria-expanded="true"]');
           closeAll();
+          trigger?.focus();
         }
       }}
     >
@@ -136,7 +308,6 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
               const hasCategories = Boolean(item.categories?.length);
               const hasMenu = hasCategories || hasChildren;
               const menuId = `menu-${item.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
-              const selectedCategory = item.categories?.find((category) => category.title === activeCategory) ?? item.categories?.[0];
 
               return (
                 <div className="navigation-item" key={item.label}>
@@ -149,17 +320,15 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
                       onClick={() => {
                         if (isOpen) {
                           setOpenMenu(null);
-                          setActiveCategory(null);
                           return;
                         }
 
                         setOpenMenu(item.label);
-                        setActiveCategory(item.categories?.[0]?.title ?? null);
                       }}
                     >
                       {item.label}
                       <span className="chevron" aria-hidden="true">
-                        ↓
+                        <svg className="block size-3" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="m4 6 4 4 4-4" /></svg>
                       </span>
                     </button>
                   ) : (
@@ -173,78 +342,8 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
                     </a>
                   )}
 
-                  {hasCategories && isOpen && selectedCategory ? (
-                    <div
-                      className="fixed left-1/2 top-[86px] z-[60] h-[min(500px,calc(100dvh-106px))] w-[min(92vw,1160px)] -translate-x-1/2 overflow-hidden rounded-[22px] border border-sky/45 bg-navy-900 shadow-[0_24px_60px_rgba(0,8,34,0.38)] motion-safe:animate-[popover-in_180ms_ease_both]"
-                      id={menuId}
-                    >
-                      <div className="grid h-full grid-cols-[minmax(240px,25%)_minmax(0,1fr)] overflow-hidden">
-                        <nav
-                          className="overflow-y-auto overscroll-contain border-r border-sky/25 bg-[linear-gradient(160deg,var(--blue-navy-800),var(--blue-navy-950))] px-2 py-3"
-                          aria-label={`${item.label} service categories`}
-                          role="tablist"
-                        >
-                          {item.categories?.map((category) => {
-                            const isSelected = category.title === selectedCategory.title;
-
-                            return (
-                              <button
-                                className={`mb-1 flex min-h-10 w-full appearance-none items-center justify-between rounded-xl bg-transparent px-3.5 py-2.5 text-left text-[0.84rem]! leading-snug! transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky ${
-                                  isSelected
-                                    ? "border border-sky bg-[linear-gradient(135deg,var(--blue-cobalt-700),var(--blue-navy-700))] font-semibold! text-cloud shadow-[inset_0_1px_rgba(255,255,255,0.22),0_10px_26px_rgba(0,64,155,0.2)]"
-                                    : "border border-transparent font-medium! text-[#c7e7fb] hover:border-sky/30 hover:bg-sky/10 hover:text-cloud"
-                                }`}
-                                key={category.title}
-                                type="button"
-                                role="tab"
-                                aria-selected={isSelected}
-                                aria-controls={`${menuId}-panel`}
-                                onClick={() => setActiveCategory(category.title)}
-                              >
-                                <span className="min-w-0">{category.title}</span>
-                                <span className="ml-3 shrink-0 text-sky" aria-hidden="true">
-                                  ›
-                                </span>
-                              </button>
-                            );
-                          })}
-                        </nav>
-
-                        <section
-                          className="min-w-0 overflow-y-auto overscroll-contain bg-[linear-gradient(135deg,#f8fcff,#edf7ff)] p-6 text-[#0b315f]"
-                          id={`${menuId}-panel`}
-                          role="tabpanel"
-                        >
-                          <div className="flex items-center justify-between gap-4 border-b border-cobalt-700/15 pb-4">
-                            <h2 className="m-0 min-w-0 text-2xl font-semibold! leading-[1.2] tracking-[-0.02em] text-[#071b43]">
-                              {selectedCategory.title}{" "}
-                              {!selectedCategory.logo ? (
-                                <span className="align-middle text-electric" aria-hidden="true">
-                                  •
-                                </span>
-                              ) : null}
-                            </h2>
-                            <CategoryLogo src={selectedCategory.logo} />
-                          </div>
-                          <div className="grid grid-cols-3 gap-x-3 gap-y-1.5 pt-4 max-[1100px]:grid-cols-2">
-                            {selectedCategory.links.map((link) => (
-                              <a
-                                className="group/service-link flex min-h-11 min-w-0 items-center justify-between gap-2 rounded-xl border border-transparent px-3 py-2.5 text-sm font-medium leading-[1.4] text-[#123665] transition-[background-color,border-color,color] duration-200 hover:border-electric/20 hover:bg-electric/5 hover:text-cobalt-700 focus-visible:border-electric/20 focus-visible:bg-electric/5 focus-visible:text-cobalt-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric"
-                                href={sharedHref(link.href)}
-                                key={link.label}
-                                {...linkTargetProps(link)}
-                                onClick={closeAll}
-                              >
-                                <span className="min-w-0">{link.label}</span>
-                                <span className="shrink-0 text-xl leading-none text-cobalt-700/30 group-hover/service-link:text-electric group-focus-visible/service-link:text-electric" aria-hidden="true">
-                                  ›
-                                </span>
-                              </a>
-                            ))}
-                          </div>
-                        </section>
-                      </div>
-                    </div>
+                  {hasCategories && isOpen ? (
+                    <HeaderMegaMenu item={item} menuId={menuId} site={site} onClose={closeAll} />
                   ) : hasChildren && isOpen ? (
                     <div className="nav-popover">
                       <span className="popover-kicker">{item.label}</span>
@@ -440,10 +539,10 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
                             +
                           </span>
                         </summary>
-                        <div className="grid gap-1 pb-2 pl-3">
+                        <div className="grid gap-1 pb-3 pl-3">
                           {category.links.map((link) => (
                             <a
-                              className="py-1 text-[0.77rem] font-medium text-[#b7daf2] hover:text-cloud focus-visible:rounded focus-visible:outline-2 focus-visible:outline-sky"
+                              className="rounded-lg border border-sky/10 bg-sky/5 px-3 py-3 text-[0.8rem] font-medium text-sky-strong! transition hover:border-sky/30 hover:bg-sky/10 hover:text-cloud! focus-visible:outline-2 focus-visible:outline-sky"
                               href={sharedHref(link.href)}
                               key={link.label}
                               {...linkTargetProps(link)}
