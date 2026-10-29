@@ -657,13 +657,13 @@ describe("service-detail content mirrors", () => {
     assert.match(extraContentSection, /fontOpticalSizing: "auto"/);
     assert.match(
       extraContentSection,
-      /text-\[0\.9375rem\] font-normal leading-\[1\.75\] tracking-\[0px\] text-\[#212529\]/,
+      /text-\[0\.9375rem\] font-normal leading-\[1\.65\] tracking-\[0px\] text-\[#475569\]/,
     );
     assert.match(extraContentSection, /max-w-\[1160px\]/);
     assert.match(extraContentSection, /articleTitle=\{item\.title\}/);
     assert.match(extraContentSection, /rounded-\[20px\]/);
     assert.match(editorialCardsSection, /max-w-\[1320px\]/);
-    assert.match(editorialCardsSection, /py-10.*min-\[821px\]:py-12/);
+    assert.match(editorialCardsSection, /py-6.*min-\[821px\]:py-8/);
     assert.match(extraContentSection, /inset-x-0 top-0 h-\[3px\]/);
     assert.match(extraContentSection, /blue-cobalt-700.*blue-electric.*blue-sky/);
     assert.match(extraContentSection, /shadow-\[0_16px_44px_rgba\(3,19,47,0\.06\)\]/);
