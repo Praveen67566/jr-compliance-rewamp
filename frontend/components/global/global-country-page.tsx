@@ -20,7 +20,7 @@ function PrimaryLink({ link }: { link: Link }) {
   );
 }
 
-/** Shared CMS-driven template for every `/globals/[country]` landing page. */
+/** Shared CMS-driven template for every `/global/[slug]` landing page. */
 export function GlobalCountryPage({ content }: GlobalCountryPageProps) {
   return (
     <SitePageShell
@@ -75,7 +75,7 @@ export function GlobalCountryPage({ content }: GlobalCountryPageProps) {
               <a
                 aria-current="page"
                 className="min-w-0 rounded-sm break-words text-ice/75 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky"
-                href={`/globals/${content.slug}`}
+                href={`/global/${content.slug}`}
               >
                 {content.menuLabel}
               </a>

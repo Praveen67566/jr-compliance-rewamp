@@ -70,7 +70,7 @@ describe("rotating Earth hero scope", () => {
   });
 
   it("enables the globe for all Corporate service collections", () => {
-    const corporateRoute = source("frontend/app/corporate/[category]/[slug]/page.tsx");
+    const corporateRoute = source("frontend/app/corporate/[slug]/page.tsx");
 
     assert.equal(companyRegistrationSlugs.length, 19);
     assert.deepEqual(companyRegistrationSlugs, expectedCompanyRegistrationSlugs);
@@ -99,11 +99,11 @@ describe("rotating Earth hero scope", () => {
   });
 
   it("enables the globe for all Approval service collections", () => {
-    const approvalRoute = source("frontend/app/approval/[...slug]/page.tsx");
+    const approvalRoute = source("frontend/app/approval/[slug]/page.tsx");
 
     assert.match(
       approvalRoute,
-      /<CompanyRegistrationPage[\s\S]*?content=\{resolution\.content\}[\s\S]*?showHeroGlobe[\s\S]*?\/>/,
+      /<CompanyRegistrationPage[\s\S]*?content=\{resolved\.content\}[\s\S]*?showHeroGlobe[\s\S]*?\/>/,
     );
     assert.doesNotMatch(approvalRoute, /RotatingEarthBackground/);
   });

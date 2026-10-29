@@ -7,18 +7,16 @@ routes (`/privacy-policy`, `/terms-and-conditions`, and
 first MCA Services, Import Export Service, Government License & Certification,
 IPR Services, FSSAI, and SEBI Business Registration, Tax and Accounting,
 Labour Compliance, and Fund Raising pages under
-`/corporate/[category]/[slug]`, plus ISI Certification and EPR Certification
-under categorized
-`/approval/{category}/{servicePath}` URLs resolved by `/approval/[...slug]`.
+`/corporate/[slug]`, plus ISI Certification and EPR Certification at
+`/approval/[slug]`. Category names are internal CMS/navigation groups.
 It is intentionally separate from the legacy Webflow export in `../site`. The
-Approval catch-all is also connected to seven empty CMS-only collections for
+shared public detail route is also connected to seven empty CMS-only collections for
 Telecommunication Engineering Centre, Wireless Planning and Coordination,
 Bureau of Energy Efficiency, CDSCO Registration, AERB Approval, LMPC
 Certification, and STQC.
 
 The frontend also includes two separate CMS-only Global templates and dynamic
-routes: country landings at `/globals/[country]` and certificate pages at
-`/globals/[country]/[slug]`. Their dedicated `global-country-page` and
+routes: country landings and certificate pages both use `/global/[slug]`. Their dedicated `global-country-page` and
 `global-certificate-page` collections begin empty. No Global fallback, seed,
 sample record, or page-specific route is bundled.
 
@@ -28,17 +26,24 @@ paragraph, list, inline-formatting, and safe-link content comes from the fixed
 `legal-page` collection, with typed local Blocks fallbacks mirrored in
 `../cms/src/seed/legal-pages.json`.
 
-Approval service slugs remain relative CMS-managed paths: flat values such as
-`isi-certificate` and nested values such as
-`bis-certification/fmcs-bis-certification` are both preserved after the fixed
-frontend category segment by the catch-all route. Future Approval pages are
-published from Strapi without adding a new frontend page file. Their complete
-relative paths may repeat across categories; when they do, categorized URLs
-remain valid while the ambiguous uncategorized legacy path returns 404.
+Corporate and Approval pages resolve directly at `/corporate/<slug>` and
+`/approval/<slug>` across the collections in their family. The CMS category
+identifies the owning collection internally, without adding a URL segment.
+Existing nested Approval identities retain their stored value and expose only
+the final service slug. Slugs must be unique across all collections in the
+same family; conflicts return 404 and are excluded from static generation and
+the sitemap. The same slug may exist once in Corporate and once in Approval.
 
-Legacy uncategorized Corporate and Approval service URLs remain supported as
-permanent 308 redirects when exactly one category owns the requested service
-path.
+Global country landings and certificates share `/global/<slug>`. Certificate
+country relationships stay in Strapi. Certificate slugs must be unique across
+countries, and country/certificate slug conflicts return 404. No records or
+schemas are renamed or migrated.
+
+Former `/corporate/<category>/<slug>`, `/approval/<category>/<slug>`,
+`/<category>/<slug>`, `/globals/<country>/<slug>`, and country landing URLs
+permanently redirect to their unique direct URL, retaining query parameters.
+Mapped CMS/fallback navigation, sidebar, CTA and SEO link fields are normalized
+on read. Use the direct family URLs for new links and canonicals.
 
 The current sitemap contains thirty-seven fixed active routes, including the
 three legal routes, twenty-eight Corporate service routes, and two Approval
@@ -172,9 +177,9 @@ configuration or the Strapi token.
 - The CMS schema and editor setup are documented in `../cms/CONTENT_MODEL.md`.
 
 Global navigation stays editor-managed. After a complete country record is
-published, add its exact `/globals/<country>` URL under **Site Setting → Header
+published, add its exact `/global/<country>` URL under **Site Setting → Header
 Menu → Global** and publish Site Setting. Put each certificate's exact
-`/globals/<country>/<slug>` URL on the matching country card. Publishing a page
+`/global/<slug>` URL on the matching country card. Publishing a page
 record does not automatically add it to the navbar, and the frontend does not
 enumerate every CMS record into navigation.
 
@@ -201,8 +206,10 @@ For a CTA-only surface, use `ConsultationFormTrigger`; it links to the shared
 `expert-consultation` anchor instead of creating another form. If editors turn
 off `leadForm.enabled`, current hero templates retain their existing artwork.
 
-The server route sends `technical` leads for `/approval/*` and `/ad/*`,
-`corporate` leads for `/corporate/*`, and `global` leads for all other paths.
+The server route uses the category registry to send Approval category leads to
+`technical` and Corporate category leads to `corporate`. It retains the former
+`/approval/*`, `/corporate/*`, and `/ad/*` classification for compatibility;
+country pages and other paths send `global` leads.
 The message is required and always forwarded. Supported UTM values are omitted
 as a group when none are present. Successful requests redirect to the noindex
 `/thank-you` page.

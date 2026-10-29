@@ -169,20 +169,21 @@ const expectedRegistry = [
 
 describe("fixed service route hierarchy", () => {
   it("maps all nineteen content collections to unique frontend-owned categories", () => {
-    const routes = source("frontend/lib/service-routes.ts");
-    const registry = routes.slice(
-      routes.indexOf("export const serviceRouteRegistry = ["),
-      routes.indexOf("] as const satisfies readonly ServiceRouteCategory[]"),
-    );
-    const mappings = [...registry.matchAll(
-      /family: "(corporate|approval)",\s+contentType: "([^"]+)",\s+categorySlug: "([^"]+)",\s+categoryLabel: "([^"]+)",\s+loadPage: ([A-Za-z0-9]+),\s+loadSlugs: ([A-Za-z0-9]+),/g,
-    )].map((match) => match.slice(1));
+    const definitions = source("frontend/lib/service-route-config.ts");
+    const loaders = source("frontend/lib/service-routes.ts");
+    const mappings = [...definitions.matchAll(
+      /family: "(corporate|approval)", contentType: "([^"]+)", categorySlug: "([^"]+)", categoryLabel: "([^"]+)"/g,
+    )].map((match) => {
+      const loader = loaders.match(new RegExp(`"${match[2]}": \{ loadPage: (\\w+), loadSlugs: (\\w+) \}`));
+      assert.ok(loader, `Missing loaders for ${match[2]}`);
+      return [...match.slice(1), ...loader.slice(1)];
+    });
 
     assert.deepEqual(mappings, expectedRegistry);
     assert.equal(mappings.length, 19);
     assert.equal(mappings.filter(([family]) => family === "corporate").length, 10);
     assert.equal(mappings.filter(([family]) => family === "approval").length, 9);
-    assert.equal(new Set(mappings.map(([family, , slug]) => `${family}/${slug}`)).size, 19);
+    assert.equal(new Set(mappings.map(([, , slug]) => slug)).size, 19);
     assert.equal(new Set(mappings.map(([, contentType]) => contentType)).size, 19);
   });
 
@@ -218,99 +219,33 @@ describe("fixed service route hierarchy", () => {
     );
   });
 
-  it("keeps categorized Corporate resolution exact and rejects invalid or wrong categories", () => {
-    const routes = source("frontend/lib/service-routes.ts");
-    const categorized = routes.slice(
-      routes.indexOf("export const getCategorizedServicePage"),
-      routes.indexOf("export type LegacyServiceResolution"),
-    );
-    const corporatePage = source(
-      "frontend/app/corporate/[category]/[slug]/page.tsx",
-    );
-
-    assert.match(
-      routes,
-      /category\.family === family && category\.categorySlug === categorySlug/,
-    );
-    assert.match(
-      routes,
-      /\(family === "approval" \|\| segments\.length === 1\)/,
-    );
-    assert.match(
-      categorized,
-      /if \(!category \|\| !isValidServicePath\(family, servicePath\)\) \{\s+return null;/,
-    );
-    assert.match(categorized, /const content = await category\.loadPage\(servicePath\)/);
-    assert.doesNotMatch(categorized, /resolveLegacyService/);
-    assert.match(
-      corporatePage,
-      /getCategorizedServicePage\("corporate", category, slug\)/,
-    );
-    assert.match(corporatePage, /if \(!resolved\) \{\s+notFound\(\);/);
-    assert.match(
-      corporatePage,
-      /category: entry\.categorySlug,\s+slug: entry\.servicePath/,
-    );
+  it("renders service pages directly under their family", () => {
+    const corporate = source("frontend/app/corporate/[slug]/page.tsx");
+    const approval = source("frontend/app/approval/[slug]/page.tsx");
+    assert.match(corporate, /getPublicServicePage\("corporate", slug\)/);
+    assert.match(corporate, /<CompanyRegistrationPage/);
+    assert.match(approval, /getPublicServicePage\("approval", slug\)/);
+    assert.match(approval, /<CompanyRegistrationPage/);
+    assert.match(source("frontend/lib/service-routes.ts"), /uniquePublicLinks\(categoryEntries.flat\(\)\)/);
   });
 
-  it("preserves multi-segment Approval paths without cross-category fallback", () => {
+  it("keeps categories internal and exposes only family plus the final service slug", () => {
     const routes = source("frontend/lib/service-routes.ts");
-    const approvalResolver = routes.slice(
-      routes.indexOf("export const resolveApprovalService"),
-    );
-    const approvalPage = source("frontend/app/approval/[...slug]/page.tsx");
-
-    assert.match(
-      approvalPage,
-      /slug: \[entry\.categorySlug, \.\.\.entry\.servicePath\.split\("\/"\)\]/,
-    );
-    assert.match(approvalPage, /resolveApprovalService\(slug\.join\("\/"\)\)/);
-    assert.match(
-      approvalResolver,
-      /const \[possibleCategorySlug, \.\.\.serviceSegments\] = routePath\.split\("\/"\)/,
-    );
-    assert.match(
-      approvalResolver,
-      /const servicePath = serviceSegments\.join\("\/"\);\s+const content = await category\.loadPage\(servicePath\)/,
-    );
-    assert.match(
-      approvalResolver,
-      /resolveLegacyService\("approval", routePath\)/,
-    );
-    assert.doesNotMatch(
-      approvalResolver,
-      /resolveLegacyService\("approval", servicePath\)/,
-    );
-    assert.match(
-      routes,
-      /return `\/\$\{category\.family\}\/\$\{category\.categorySlug\}\/\$\{servicePath\}`/,
-    );
+    assert.match(routes, /return `\/\$\{category.family\}\/\$\{publicServiceSlug\(servicePath\)\}`/);
+    assert.match(routes, /getCategorizedServicePage\(family, entry.categorySlug, entry.servicePath\)/);
   });
 
-  it("fails closed for ambiguous and unknown legacy paths and permanently redirects exact matches", () => {
-    const routes = source("frontend/lib/service-routes.ts");
-    const legacyResolver = routes.slice(
-      routes.indexOf("export const resolveLegacyService"),
-      routes.indexOf("export type ApprovalServiceResolution"),
-    );
-    const corporateLegacy = source("frontend/app/corporate/[category]/page.tsx");
-    const approvalPage = source("frontend/app/approval/[...slug]/page.tsx");
-
-    assert.match(legacyResolver, /if \(matches\.length === 1\)/);
-    assert.match(
-      legacyResolver,
-      /return \{ kind: matches\.length \? "ambiguous" : "not-found" \}/,
-    );
-    assert.match(
-      corporateLegacy,
-      /if \(resolution\.kind !== "found"\) \{\s+notFound\(\);\s+\}\s+permanentRedirect\(resolution\.canonicalPath\)/,
-    );
-    assert.match(
-      approvalPage,
-      /if \(resolution\.kind === "redirect"\) \{\s+permanentRedirect\(resolution\.canonicalPath\);/,
-    );
-    assert.match(corporateLegacy, /import \{ notFound, permanentRedirect \}/);
-    assert.match(approvalPage, /import \{ notFound, permanentRedirect \}/);
+  it("redirects former category URLs instead of rendering duplicate pages", () => {
+    for (const route of [
+      "frontend/app/[category]/[slug]/page.tsx",
+      "frontend/app/corporate/[slug]/[service]/page.tsx",
+    ]) {
+      const page = source(route);
+      assert.match(page, /notFound\(\)/);
+      assert.match(page, /permanentRedirect\(/);
+      assert.doesNotMatch(page, /<CompanyRegistrationPage/);
+    }
+    assert.match(source("frontend/app/approval/[slug]/[...legacy]/page.tsx"), /resolved.kind !== "redirect"/);
   });
 
   it("renders a four-level accessible breadcrumb from fixed route context", () => {
@@ -335,7 +270,7 @@ describe("fixed service route hierarchy", () => {
     assert.match(component, /areaLabel: "Corporate" \| "Approval"/);
   });
 
-  it("forces canonical service metadata to the categorized pathname", () => {
+  it("forces canonical metadata to the direct family pathname", () => {
     const previousSiteUrl = process.env.SITE_URL;
     process.env.SITE_URL = "https://www.jr.test";
 
@@ -346,7 +281,7 @@ describe("fixed service route hierarchy", () => {
         canonicalUrl: "https://legacy.example/corporate/legacy-service",
       };
       const canonicalPath =
-        "/corporate/company-registration/private-limited-company-registration-consultant";
+        "/corporate/private-limited-company-registration-consultant";
 
       assert.equal(
         pageMetadata(seo, canonicalPath, { forcePathnameCanonical: true }).alternates
@@ -366,17 +301,18 @@ describe("fixed service route hierarchy", () => {
     }
 
     for (const route of [
-      "frontend/app/corporate/[category]/[slug]/page.tsx",
-      "frontend/app/approval/[...slug]/page.tsx",
+      "frontend/app/corporate/[slug]/page.tsx",
+      "frontend/app/approval/[slug]/page.tsx",
+      "frontend/app/global/[slug]/page.tsx",
     ]) {
       assert.match(
         source(route),
-        /pageMetadata\([\s\S]*?\.canonicalPath, \{\s+forcePathnameCanonical: true,/,
+        /pageMetadata\([\s\S]*?forcePathnameCanonical: true/,
       );
     }
   });
 
-  it("publishes canonical categorized service URLs only in the sitemap", () => {
+  it("publishes only direct canonical service URLs in the sitemap", () => {
     const sitemap = source("frontend/app/sitemap.ts");
     const serviceRoutes = source("frontend/lib/service-routes.ts");
 

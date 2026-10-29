@@ -150,7 +150,7 @@ function pageData(row, logoIds) {
     extraContent: [{ title: row.title, description: extraContentHtml(row) }],
     ...structuredClone(fixedContent),
     seo: { metaTitle: row.title, metaDescription: row.heroDescription,
-      canonicalUrl: `/corporate/${categories[row.category][1]}/${slug}` },
+      canonicalUrl: `/corporate/${slug}` },
   };
 }
 
@@ -179,7 +179,7 @@ function planImport(rows, pages, headerMenu, logoIds) {
     // Preserve the twelve original pages and their existing navigation; repair
     // links for newly imported pages on a subsequent run after an interruption.
     if (!existingSlugs[row.title]) {
-      const href = `/corporate/${categorySlug}/${existing?.slug ?? data.slug}`;
+      const href = `/corporate/${existing?.slug ?? data.slug}`;
       if (links[0].href !== href) {
         linkChanges.push({ label: row.title, before: links[0].href, after: href });
         links[0].href = href;

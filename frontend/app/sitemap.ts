@@ -5,14 +5,11 @@ import {
   getAboutPage,
   getCareersPage,
   getContactPage,
-  getGlobalCertificatePage,
-  getGlobalCertificatePaths,
-  getGlobalCountryPage,
-  getGlobalCountrySlugs,
   getHomepage,
   getLegalPage,
 } from "@/lib/content";
 import { getServiceSitemapEntries } from "@/lib/service-routes";
+import { getPublicGlobalLinks, getPublicGlobalPage } from "@/lib/global-routes";
 import { publicSiteUrl } from "@/lib/site-url";
 
 function lastModified(updatedAt: string | undefined) {
@@ -33,25 +30,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         getServiceSitemapEntries("approval"),
       ]).then((entries) => entries.flat()),
     ]);
-  const [globalCountryPages, globalCertificatePages] = await Promise.all([
-    getGlobalCountrySlugs().then((countries) =>
-      Promise.all(
-        countries.map(async (country) => ({
-          country,
-          content: await getGlobalCountryPage(country),
-        })),
-      ),
-    ),
-    getGlobalCertificatePaths().then((paths) =>
-      Promise.all(
-        paths.map(async ({ country, slug }) => ({
-          country,
-          slug,
-          content: await getGlobalCertificatePage(country, slug),
-        })),
-      ),
-    ),
-  ]);
+  const globalPages = await Promise.all((await getPublicGlobalLinks()).map((entry) => getPublicGlobalPage(entry.slug)));
 
   return [
     ...(!homepage.seo.noIndex
@@ -112,25 +91,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly" as const,
       priority: 0.75,
     })),
-    ...globalCountryPages.flatMap(({ country, content }) =>
-      !content || content.seo.noIndex
+    ...globalPages.flatMap((page) =>
+      !page || page.content.seo.noIndex
         ? []
         : [
             {
-              url: new URL(`/globals/${country}`, siteUrl).toString(),
-              ...lastModified(content.updatedAt),
-              changeFrequency: "monthly" as const,
-              priority: 0.75,
-            },
-          ],
-    ),
-    ...globalCertificatePages.flatMap(({ country, slug, content }) =>
-      !content || content.seo.noIndex
-        ? []
-        : [
-            {
-              url: new URL(`/globals/${country}/${slug}`, siteUrl).toString(),
-              ...lastModified(content.updatedAt),
+              url: new URL(page.canonicalPath, siteUrl).toString(),
+              ...lastModified(page.content.updatedAt),
               changeFrequency: "monthly" as const,
               priority: 0.75,
             },

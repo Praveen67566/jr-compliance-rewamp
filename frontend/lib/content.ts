@@ -1,5 +1,9 @@
 import { cache } from "react";
 
+import { publicContentLinks } from "@/lib/public-paths";
+import { isPublicCountrySlug } from "@/lib/service-route-config";
+import { publicSiteUrl } from "@/lib/site-url";
+
 import { fallbackAboutPage } from "@/data/about-page-fallback";
 import { fallbackCareersPage } from "@/data/careers-page-fallback";
 import {
@@ -129,23 +133,33 @@ import type {
   WirelessPlanningCoordinationPageContent,
 } from "@/lib/types";
 
-export const getHomepage = cache(async function getHomepage(): Promise<HomepageContent> {
+/** Global link discovery lists identities only; it never recursively loads page content. */
+function cachePublicPage<Args extends unknown[], Result>(loader: (...args: Args) => Promise<Result>) {
+  return cache(async (...args: Args): Promise<Result> => {
+    const content = await loader(...args);
+    if (!content) return content;
+    const { getPublicGlobalLinks } = await import("@/lib/global-routes");
+    return publicContentLinks(content, publicSiteUrl().origin, await getPublicGlobalLinks());
+  });
+}
+
+export const getHomepage = cachePublicPage(async function getHomepage(): Promise<HomepageContent> {
   return (await getHomepageFromStrapi(fallbackHomepage)) ?? fallbackHomepage;
 });
 
-export const getAboutPage = cache(async function getAboutPage(): Promise<AboutPageContent> {
+export const getAboutPage = cachePublicPage(async function getAboutPage(): Promise<AboutPageContent> {
   return (await getAboutPageFromStrapi(fallbackAboutPage)) ?? fallbackAboutPage;
 });
 
-export const getCareersPage = cache(async function getCareersPage(): Promise<CareersPageContent> {
+export const getCareersPage = cachePublicPage(async function getCareersPage(): Promise<CareersPageContent> {
   return (await getCareersPageFromStrapi(fallbackCareersPage)) ?? fallbackCareersPage;
 });
 
-export const getContactPage = cache(async function getContactPage(): Promise<ContactPageContent> {
+export const getContactPage = cachePublicPage(async function getContactPage(): Promise<ContactPageContent> {
   return (await getContactPageFromStrapi(fallbackContactPage)) ?? fallbackContactPage;
 });
 
-export const getLegalPage = cache(async function getLegalPage(
+export const getLegalPage = cachePublicPage(async function getLegalPage(
   slug: LegalPageSlug,
 ): Promise<LegalPageContent> {
   const page = legalPageFallback(slug);
@@ -164,7 +178,7 @@ export const getLegalPage = cache(async function getLegalPage(
   return (await getLegalPageFromStrapi(slug, fallback)) ?? fallback;
 });
 
-export const getCompanyRegistrationPage = cache(async function getCompanyRegistrationPage(
+export const getCompanyRegistrationPage = cachePublicPage(async function getCompanyRegistrationPage(
   slug: string,
 ): Promise<CompanyRegistrationPageContent | null> {
   const page = companyRegistrationFallback(slug);
@@ -192,7 +206,7 @@ export const getCompanyRegistrationSlugs = cache(
   },
 );
 
-export const getMcaServicePage = cache(async function getMcaServicePage(
+export const getMcaServicePage = cachePublicPage(async function getMcaServicePage(
   slug: string,
 ): Promise<McaServicePageContent | null> {
   const page = mcaServiceFallback(slug);
@@ -216,7 +230,7 @@ export const getMcaServiceSlugs = cache(async function getMcaServiceSlugs(): Pro
   return [...new Set([...mcaServiceSlugs, ...strapiSlugs])];
 });
 
-export const getImportExportServicePage = cache(async function getImportExportServicePage(
+export const getImportExportServicePage = cachePublicPage(async function getImportExportServicePage(
   slug: string,
 ): Promise<ImportExportServicePageContent | null> {
   const page = importExportServiceFallback(slug);
@@ -244,7 +258,7 @@ export const getImportExportServiceSlugs = cache(
   },
 );
 
-export const getGovernmentLicenseCertificationPage = cache(
+export const getGovernmentLicenseCertificationPage = cachePublicPage(
   async function getGovernmentLicenseCertificationPage(
     slug: string,
   ): Promise<GovernmentLicenseCertificationPageContent | null> {
@@ -278,7 +292,7 @@ export const getGovernmentLicenseCertificationSlugs = cache(
   },
 );
 
-export const getIprServicePage = cache(async function getIprServicePage(
+export const getIprServicePage = cachePublicPage(async function getIprServicePage(
   slug: string,
 ): Promise<IprServicePageContent | null> {
   const page = iprServiceFallback(slug);
@@ -299,7 +313,7 @@ export const getIprServiceSlugs = cache(async function getIprServiceSlugs(): Pro
   return [...new Set([...iprServiceSlugs, ...strapiSlugs])];
 });
 
-export const getFssaiServicePage = cache(async function getFssaiServicePage(
+export const getFssaiServicePage = cachePublicPage(async function getFssaiServicePage(
   slug: string,
 ): Promise<FssaiServicePageContent | null> {
   const page = fssaiServiceFallback(slug);
@@ -320,7 +334,7 @@ export const getFssaiServiceSlugs = cache(async function getFssaiServiceSlugs():
   return [...new Set([...fssaiServiceSlugs, ...strapiSlugs])];
 });
 
-export const getSebiBusinessRegistrationPage = cache(
+export const getSebiBusinessRegistrationPage = cachePublicPage(
   async function getSebiBusinessRegistrationPage(
     slug: string,
   ): Promise<SebiBusinessRegistrationPageContent | null> {
@@ -347,7 +361,7 @@ export const getSebiBusinessRegistrationSlugs = cache(
   },
 );
 
-export const getTaxAccountingPage = cache(async function getTaxAccountingPage(
+export const getTaxAccountingPage = cachePublicPage(async function getTaxAccountingPage(
   slug: string,
 ): Promise<TaxAccountingPageContent | null> {
   const page = taxAccountingFallback(slug);
@@ -370,7 +384,7 @@ export const getTaxAccountingSlugs = cache(
   },
 );
 
-export const getLabourCompliancePage = cache(async function getLabourCompliancePage(
+export const getLabourCompliancePage = cachePublicPage(async function getLabourCompliancePage(
   slug: string,
 ): Promise<LabourCompliancePageContent | null> {
   const page = labourComplianceFallback(slug);
@@ -393,7 +407,7 @@ export const getLabourComplianceSlugs = cache(
   },
 );
 
-export const getFundRaisingPage = cache(async function getFundRaisingPage(
+export const getFundRaisingPage = cachePublicPage(async function getFundRaisingPage(
   slug: string,
 ): Promise<FundRaisingPageContent | null> {
   const page = fundRaisingFallback(slug);
@@ -416,7 +430,7 @@ export const getFundRaisingSlugs = cache(
   },
 );
 
-export const getBureauIndianStandardsPage = cache(
+export const getBureauIndianStandardsPage = cachePublicPage(
   async function getBureauIndianStandardsPage(
     slug: string,
   ): Promise<BureauIndianStandardsPageContent | null> {
@@ -443,7 +457,7 @@ export const getBureauIndianStandardsSlugs = cache(
   },
 );
 
-export const getPollutionAdvisoryPage = cache(async function getPollutionAdvisoryPage(
+export const getPollutionAdvisoryPage = cachePublicPage(async function getPollutionAdvisoryPage(
   slug: string,
 ): Promise<PollutionAdvisoryPageContent | null> {
   const page = pollutionAdvisoryFallback(slug);
@@ -472,7 +486,7 @@ const cmsOnlyApprovalChromeFallback = {
   footer: fallbackHomepage.footer,
 };
 
-export const getTelecommunicationEngineeringCentrePage = cache(
+export const getTelecommunicationEngineeringCentrePage = cachePublicPage(
   async function getTelecommunicationEngineeringCentrePage(
     slug: string,
   ): Promise<TelecommunicationEngineeringCentrePageContent | null> {
@@ -490,7 +504,7 @@ export const getTelecommunicationEngineeringCentreSlugs = cache(
   },
 );
 
-export const getWirelessPlanningCoordinationPage = cache(
+export const getWirelessPlanningCoordinationPage = cachePublicPage(
   async function getWirelessPlanningCoordinationPage(
     slug: string,
   ): Promise<WirelessPlanningCoordinationPageContent | null> {
@@ -508,7 +522,7 @@ export const getWirelessPlanningCoordinationSlugs = cache(
   },
 );
 
-export const getBureauEnergyEfficiencyPage = cache(
+export const getBureauEnergyEfficiencyPage = cachePublicPage(
   async function getBureauEnergyEfficiencyPage(
     slug: string,
   ): Promise<BureauEnergyEfficiencyPageContent | null> {
@@ -526,7 +540,7 @@ export const getBureauEnergyEfficiencySlugs = cache(
   },
 );
 
-export const getCdscoRegistrationPage = cache(
+export const getCdscoRegistrationPage = cachePublicPage(
   async function getCdscoRegistrationPage(
     slug: string,
   ): Promise<CdscoRegistrationPageContent | null> {
@@ -540,7 +554,7 @@ export const getCdscoRegistrationSlugs = cache(
   },
 );
 
-export const getAerbApprovalPage = cache(async function getAerbApprovalPage(
+export const getAerbApprovalPage = cachePublicPage(async function getAerbApprovalPage(
   slug: string,
 ): Promise<AerbApprovalPageContent | null> {
   return getAerbApprovalPageFromStrapi(slug, null, cmsOnlyApprovalChromeFallback);
@@ -552,7 +566,7 @@ export const getAerbApprovalSlugs = cache(
   },
 );
 
-export const getLmpcCertificationPage = cache(async function getLmpcCertificationPage(
+export const getLmpcCertificationPage = cachePublicPage(async function getLmpcCertificationPage(
   slug: string,
 ): Promise<LmpcCertificationPageContent | null> {
   return getLmpcCertificationPageFromStrapi(slug, null, cmsOnlyApprovalChromeFallback);
@@ -564,7 +578,7 @@ export const getLmpcCertificationSlugs = cache(
   },
 );
 
-export const getStqcPage = cache(async function getStqcPage(
+export const getStqcPage = cachePublicPage(async function getStqcPage(
   slug: string,
 ): Promise<StqcPageContent | null> {
   return getStqcPageFromStrapi(slug, null, cmsOnlyApprovalChromeFallback);
@@ -580,22 +594,24 @@ const cmsOnlyGlobalChromeFallback = {
   footer: fallbackHomepage.footer,
 };
 
-export const getGlobalCountryPage = cache(async function getGlobalCountryPage(
+export const getGlobalCountryPage = cachePublicPage(async function getGlobalCountryPage(
   country: string,
 ): Promise<GlobalCountryPageContent | null> {
+  if (!isPublicCountrySlug(country)) return null;
   return getGlobalCountryPageFromStrapi(country, cmsOnlyGlobalChromeFallback);
 });
 
 export const getGlobalCountrySlugs = cache(
   async function getGlobalCountrySlugs(): Promise<string[]> {
-    return [...new Set(await getGlobalCountrySlugsFromStrapi())];
+    return [...new Set(await getGlobalCountrySlugsFromStrapi())].filter(isPublicCountrySlug);
   },
 );
 
-export const getGlobalCertificatePage = cache(async function getGlobalCertificatePage(
+export const getGlobalCertificatePage = cachePublicPage(async function getGlobalCertificatePage(
   country: string,
   slug: string,
 ): Promise<GlobalCertificatePageContent | null> {
+  if (!isPublicCountrySlug(country)) return null;
   return getGlobalCertificatePageFromStrapi(
     country,
     slug,
@@ -610,6 +626,7 @@ export const getGlobalCertificatePaths = cache(
     const seen = new Set<string>();
 
     return (await getGlobalCertificatePathsFromStrapi()).filter(({ country, slug }) => {
+      if (!isPublicCountrySlug(country)) return false;
       const key = `${country}/${slug}`;
       if (seen.has(key)) {
         return false;

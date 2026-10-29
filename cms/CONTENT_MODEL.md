@@ -27,8 +27,8 @@ Registration remain unchanged. The command is opt-in, backs up PostgreSQL,
 updates matching header destinations, and is never invoked by bootstrap.
 
 Two additional collections provide the separate CMS-only Global system:
-`global-country-page` renders `/globals/[country]`, and
-`global-certificate-page` renders `/globals/[country]/[slug]`. Both begin empty
+`global-country-page` renders `/global/[slug]`, and
+`global-certificate-page` renders `/global/[slug]`. Both begin empty
 and use dedicated fixed Global contracts and shared templates. The legacy
 Global HTML files informed structure only; no page copy, fallback, seed,
 initial record, Webflow UI, or remote media URL is bundled.
@@ -52,6 +52,24 @@ settings type in this phase.
 All listed content types use **Draft & Publish**. Start with English only
 (i18n disabled); enable i18n on every content type together before adding a
 second locale.
+
+## Public URL contract
+
+Corporate services render at `/corporate/<slug>`, Approval services at
+`/approval/<slug>`, and Global country/certificate pages at `/global/<slug>`.
+Categories and certificate country relationships remain internal CMS fields;
+neither adds a public path segment. Existing nested Approval slugs retain
+their stored identity while exposing their final segment in the public URL.
+
+Final service slugs must be unique across collections within their family.
+Corporate and Approval can each own the same slug. Global certificate slugs
+must be unique across countries and must not conflict with a country landing
+slug. Ambiguous URLs return 404 and are excluded from static params/sitemap.
+
+Use direct family URLs for navigation, sidebar/card links and SEO canonicals.
+The frontend normalizes old CMS link fields and redirects former category and
+country URLs, preserving query parameters. No schema or database migration is
+required.
 
 ## Single types
 
@@ -224,7 +242,7 @@ customized or partially migrated legal-link list is preserved.
 
 ### `company-registration-page` — API: `api::company-registration-page.company-registration-page`
 
-One published record per approved `/corporate/[slug]` route. This is a fixed
+One published record per approved `/<family>/<slug>` route. This is a fixed
 service-detail contract, not a generic page builder.
 
 Across all nineteen fixed service-detail collections, sixteen top-level fields are
@@ -277,7 +295,7 @@ including Breakdown, without borrowing fallback copy.
 
 ### `mca-service-page` — API: `api::mca-service-page.mca-service-page`
 
-One published record per approved MCA Services `/corporate/[slug]` route. The
+One published record per approved MCA Services `/<family>/<slug>` route. The
 first approved record is `dsc-certificate`. It uses the same fixed
 service-detail sequence as Company Registration while remaining a separate,
 MCA-specific collection rather than a generic page builder. Later approved MCA
@@ -288,7 +306,7 @@ required fixed field is complete.
 | --- | --- | --- |
 | `title` | Short text | Required; public H1 and CMS record name |
 | `menuLabel` | Short text | Required; matches the MCA Services navbar label |
-| `slug` | UID from `title` | Required; exact route segment and globally unique across every `/corporate/[slug]` collection |
+| `slug` | UID from `title` | Required; exact route segment and globally unique across every `/<family>/<slug>` collection |
 | `hero` | `registration.hero` | Required |
 | `trustedLogos` | Relation | Optional many-to-many selection of client `brand-logo` records; editor order is display order |
 | `overview` | `registration.overview` | Optional; omitted completely when not supplied |
@@ -313,7 +331,7 @@ required fixed field is complete.
 
 ### `import-export-service-page` — API: `api::import-export-service-page.import-export-service-page`
 
-One published record per approved Import Export Service `/corporate/[slug]`
+One published record per approved Import Export Service `/<family>/<slug>`
 route. The first approved record is `iec-registration`. Later complete records
 can be created and published only in Strapi; they render through the same fixed
 service-detail template without a new React route or local fallback.
@@ -322,7 +340,7 @@ service-detail template without a new React route or local fallback.
 | --- | --- | --- |
 | `title` | Short text | Required; public H1 and CMS record name |
 | `menuLabel` | Short text | Required; matches the Import Export Service navbar label |
-| `slug` | UID from `title` | Required; exact route segment and globally unique across every `/corporate/[slug]` collection |
+| `slug` | UID from `title` | Required; exact route segment and globally unique across every `/<family>/<slug>` collection |
 | `hero` | `registration.hero` | Required |
 | `trustedLogos` | Relation | Optional many-to-many selection of client `brand-logo` records; editor order is display order |
 | `overview` | `registration.overview` | Optional; omitted completely when not supplied |
@@ -348,7 +366,7 @@ service-detail template without a new React route or local fallback.
 ### `government-license-certification-page` — API: `api::government-license-certification-page.government-license-certification-page`
 
 One published record per approved Government License & Certification
-`/corporate/[slug]` route. The first approved record is `ayush-license`.
+`/<family>/<slug>` route. The first approved record is `ayush-license`.
 Later complete records can be created and published only in Strapi; they use
 the same fixed service-detail template without borrowing Ayush content.
 
@@ -356,7 +374,7 @@ the same fixed service-detail template without borrowing Ayush content.
 | --- | --- | --- |
 | `title` | Short text | Required; public H1 and CMS record name |
 | `menuLabel` | Short text | Required; matches the Government License & Certification navbar label |
-| `slug` | UID from `title` | Required; exact route segment and globally unique across every `/corporate/[slug]` collection |
+| `slug` | UID from `title` | Required; exact route segment and globally unique across every `/<family>/<slug>` collection |
 | `hero` | `registration.hero` | Required |
 | `trustedLogos` | Relation | Optional many-to-many selection of client `brand-logo` records; editor order is display order |
 | `overview` | `registration.overview` | Optional; omitted completely when not supplied |
@@ -381,7 +399,7 @@ the same fixed service-detail template without borrowing Ayush content.
 
 ### `ipr-service-page` — API: `api::ipr-service-page.ipr-service-page`
 
-One published record per approved IPR Services `/corporate/[slug]` route. The
+One published record per approved IPR Services `/<family>/<slug>` route. The
 first approved record is `trademark-registration`. Later complete records can
 be created and published only in Strapi; they use the same fixed service-detail
 template without borrowing Trademark Registration content.
@@ -390,7 +408,7 @@ template without borrowing Trademark Registration content.
 | --- | --- | --- |
 | `title` | Short text | Required; public H1 and CMS record name |
 | `menuLabel` | Short text | Required; matches the IPR Services navbar label |
-| `slug` | UID from `title` | Required; exact route segment and globally unique across every `/corporate/[slug]` collection |
+| `slug` | UID from `title` | Required; exact route segment and globally unique across every `/<family>/<slug>` collection |
 | `hero` | `registration.hero` | Required |
 | `trustedLogos` | Relation | Optional many-to-many selection of client `brand-logo` records; editor order is display order |
 | `overview` | `registration.overview` | Optional; omitted completely when not supplied |
@@ -415,7 +433,7 @@ template without borrowing Trademark Registration content.
 
 ### `fssai-service-page` — API: `api::fssai-service-page.fssai-service-page`
 
-One published record per approved FSSAI `/corporate/[slug]` route. The first
+One published record per approved FSSAI `/<family>/<slug>` route. The first
 approved record is `fssai-certificate`. Later complete records can be created
 and published only in Strapi; they use the same fixed service-detail template
 without borrowing FSSAI Basic Registration content.
@@ -424,7 +442,7 @@ without borrowing FSSAI Basic Registration content.
 | --- | --- | --- |
 | `title` | Short text | Required; public H1 and CMS record name |
 | `menuLabel` | Short text | Required; matches the FSSAI navbar label |
-| `slug` | UID from `title` | Required; exact route segment and globally unique across every `/corporate/[slug]` collection |
+| `slug` | UID from `title` | Required; exact route segment and globally unique across every `/<family>/<slug>` collection |
 | `hero` | `registration.hero` | Required |
 | `trustedLogos` | Relation | Optional many-to-many selection of client `brand-logo` records; editor order is display order |
 | `overview` | `registration.overview` | Optional; omitted completely when not supplied |
@@ -450,7 +468,7 @@ without borrowing FSSAI Basic Registration content.
 ### `sebi-business-registration-page` — API: `api::sebi-business-registration-page.sebi-business-registration-page`
 
 One published record per approved SEBI Business Registration
-`/corporate/[slug]` route. The first approved record is
+`/<family>/<slug>` route. The first approved record is
 `portfolio-manager-registration`. Later complete records can be created and
 published only in Strapi; they use the same fixed service-detail template
 without borrowing Portfolio Manager Registration content.
@@ -459,7 +477,7 @@ without borrowing Portfolio Manager Registration content.
 | --- | --- | --- |
 | `title` | Short text | Required; public H1 and CMS record name |
 | `menuLabel` | Short text | Required; matches the SEBI Business Registration navbar label |
-| `slug` | UID from `title` | Required; exact route segment and globally unique across every `/corporate/[slug]` collection |
+| `slug` | UID from `title` | Required; exact route segment and globally unique across every `/<family>/<slug>` collection |
 | `hero` | `registration.hero` | Required |
 | `trustedLogos` | Relation | Optional many-to-many selection of client `brand-logo` records; editor order is display order |
 | `overview` | `registration.overview` | Optional; omitted completely when not supplied |
@@ -484,7 +502,7 @@ without borrowing Portfolio Manager Registration content.
 
 ### `tax-accounting-page` — API: `api::tax-accounting-page.tax-accounting-page`
 
-One published record per approved Tax and Accounting `/corporate/[slug]`
+One published record per approved Tax and Accounting `/<family>/<slug>`
 route. The first approved record is `gst-registration`. Later complete records
 can be published only in Strapi and use the same fixed field and validation
 rules as `mca-service-page`, including the four optional card sections, with
@@ -492,7 +510,7 @@ rules as `mca-service-page`, including the four optional card sections, with
 
 ### `labour-compliance-page` — API: `api::labour-compliance-page.labour-compliance-page`
 
-One published record per approved Labour Compliance `/corporate/[slug]` route.
+One published record per approved Labour Compliance `/<family>/<slug>` route.
 The first approved record is `shop-and-establishment-act-registration`. Later
 complete records can be published only in Strapi and use the same fixed field
 and validation rules as `mca-service-page`, including the four optional card
@@ -500,7 +518,7 @@ sections, with `menuLabel` matching the Labour Compliance navbar label.
 
 ### `fund-raising-page` — API: `api::fund-raising-page.fund-raising-page`
 
-One published record per approved Fund Raising `/corporate/[slug]` route. The
+One published record per approved Fund Raising `/<family>/<slug>` route. The
 first approved record is `msme-registration`. Later complete records can be
 published only in Strapi and use the same fixed field and validation rules as
 `mca-service-page`, including the four optional card sections, with `menuLabel`
@@ -509,7 +527,7 @@ matching the Fund Raising navbar label.
 ### `bureau-indian-standards-page` — API: `api::bureau-indian-standards-page.bureau-indian-standards-page`
 
 One published record per approved Bureau of Indian Standards
-`/approval/[...slug]` path. The first approved record is `isi-certificate`.
+`/<family>/<slug>` path. The first approved record is `isi-certificate`.
 Later complete records can be published only in Strapi and use the same fixed
 field and validation rules as `mca-service-page`, including the four optional
 card sections, with `menuLabel` matching the Bureau of Indian Standards navbar
@@ -524,7 +542,7 @@ characters.
 
 ### `pollution-advisory-page` — API: `api::pollution-advisory-page.pollution-advisory-page`
 
-One published record per approved Pollution Advisory `/approval/[...slug]`
+One published record per approved Pollution Advisory `/<family>/<slug>`
 path. The first approved record is `epr-certification`. Later complete records
 can be published only in Strapi and use the same fixed field and validation
 rules as `mca-service-page`, including the four optional card sections, with
@@ -606,7 +624,7 @@ not a composite database UID.
 
 #### `global-country-page` — API: `api::global-country-page.global-country-page`
 
-One complete published record per `/globals/[country]` landing page.
+One complete published record per `/global/[slug]` landing page.
 
 | Field | Strapi field | Rules |
 | --- | --- | --- |
@@ -621,7 +639,7 @@ One complete published record per `/globals/[country]` landing page.
 
 #### `global-certificate-page` — API: `api::global-certificate-page.global-certificate-page`
 
-One complete published record per `/globals/[country]/[slug]` certificate
+One complete published record per `/global/[slug]` certificate
 page. The fixed scope section is neutral so editors may describe products,
 documents, or requirements without introducing a page builder.
 
@@ -654,12 +672,12 @@ content.
 #### Editor workflow for Global pages
 
 1. Create and complete a **Global Country Page**, save it, and publish it.
-2. Add its exact `/globals/<country>` URL under **Site Setting → Header Menu →
+2. Add its exact `/<country>` URL under **Site Setting → Header Menu →
    Global**, then publish Site Setting. Publishing the country record alone
    does not add a navbar link.
 3. Create and publish complete **Global Certificate Page** records using the
    same exact country segment.
-4. Add each certificate's exact `/globals/<country>/<slug>` destination to the
+4. Add each certificate's exact `/<country>/<slug>` destination to the
    appropriate country record's ordered card, then republish the country.
 5. Verify both public templates, metadata, navigation, card links, and sitemap
    entries. The existing two dynamic route files discover complete records; no
@@ -845,7 +863,7 @@ invent claims or silently repair source inconsistencies.
 | `/privacy-policy` | `site/privacy-policy.html` | Preserve the approved Privacy Policy title, introduction, consent wording, section headings, paragraphs, lists, links, and contact information in ordered Blocks content. Exclude all Webflow markup, CSS, JavaScript, classes, forms, tracking scripts, and `data-wf-*` attributes. |
 | `/terms-and-conditions` | `site/terms-and-conditions.html` | Preserve the approved Terms and Conditions title, introductory provisions, ordered section headings, paragraphs, lists, links, and contact information. Exclude all Webflow UI and transport code. |
 | `/purchase-and-billing` | `site/purchase-and-billing.html` | Preserve the approved purchase terms for Services and Products, including their heading hierarchy, paragraphs, lists, links, and contact information. Exclude all Webflow UI, scripts, forms, and tracking code. |
-| `/corporate/[slug]` (nineteen Company Registration routes) | Matching approved files under `site/corporate/` | Page-specific SEO, hero, overview, four challenges, four advantages, six process steps, Why JR cards, Eligibility/Documents/Who Needs It breakdown, FAQs, and shared final CTA. Exclude the duplicated private-company challenge block, hidden placeholder processes/tabs/resources, copied testimonials, Webflow lead form, and all legacy UI/transport code. |
+| `/<family>/<slug>` (nineteen Company Registration routes) | Matching approved files under `site/corporate/` | Page-specific SEO, hero, overview, four challenges, four advantages, six process steps, Why JR cards, Eligibility/Documents/Who Needs It breakdown, FAQs, and shared final CTA. Exclude the duplicated private-company challenge block, hidden placeholder processes/tabs/resources, copied testimonials, Webflow lead form, and all legacy UI/transport code. |
 | `/corporate/dsc-certificate` (MCA Services) | `site/corporate/dsc-certificate.html` | Page-specific SEO, DSC hero and overview, four DSC challenges, four advantages, six service steps, Why JR cards, Eligibility/Documents/Who Needs It breakdown, FAQs, and shared final CTA. Exclude the copied Private Limited Company blocks, hidden Products/Requirements/process templates/resources, Webflow lead form, and all legacy UI/transport code. |
 | `/corporate/iec-registration` (Import Export Service) | `site/corporate/iec-registration.html` | Page-specific IEC SEO, hero and overview, four IEC challenges, four advantages, six service steps, Why JR cards, Eligibility/Documents/Who Needs It breakdown, five FAQs, and shared final CTA. Exclude copied Private Limited Company challenges, hidden Products/process/templates/resources, unrelated testimonials, the Webflow form, and all legacy UI/transport code. |
 | `/corporate/ayush-license` (Government License & Certification) | `site/corporate/ayush-license.html` | Page-specific Ayush SEO, hero and overview, four Ayush challenges, four advantages, six service steps, Why JR cards, Eligibility/Documents/Who Needs It breakdown, five FAQs, and shared final CTA. Exclude copied Private Limited Company challenges, hidden Products/process/templates/resources, unrelated testimonials, the Webflow form, and all legacy UI/transport code. |

@@ -13,7 +13,7 @@ describe("leadTypeFromPath", () => {
   const cases = [
     ["/approval", "technical"],
     ["/approval/isi-certificate", "technical"],
-    ["/approval/bureau-indian-standards/isi-certificate", "technical"],
+    ["/approval/approval/isi-certificate", "technical"],
     ["/corporate", "corporate"],
     ["/corporate/private-limited-company", "corporate"],
     ["/corporate/company-registration/private-limited-company", "corporate"],
@@ -38,7 +38,7 @@ describe("lead request validation", () => {
     consent: true,
     pageTitle: "Private Limited Company Registration",
     pathname:
-      "/corporate/company-registration/private-limited-company-registration-consultant",
+      "/corporate/private-limited-company-registration-consultant",
     pageParameters: {
       utm_source: "google",
       utm_medium: "cpc",
@@ -58,7 +58,7 @@ describe("lead request validation", () => {
       phone: "+919876543210",
       message: "I need help with company registration.",
       page_name:
-        "Private Limited Company Registration - /corporate/company-registration/private-limited-company-registration-consultant",
+        "Private Limited Company Registration - /corporate/private-limited-company-registration-consultant",
       page_parameters: {
         utm_source: "google",
         utm_medium: "cpc",

@@ -1,6 +1,8 @@
 import MarkdownIt from "markdown-it";
 import sanitizeHtml from "sanitize-html";
 
+import { publicHref } from "@/lib/public-paths";
+
 const registrationMarkdown = new MarkdownIt({
   breaks: true,
   html: true,
@@ -28,7 +30,7 @@ function safeLinkHref(
     return null;
   }
 
-  const resolvedValue = resolveCmsAssetHref(value, strapiUrl);
+  const resolvedValue = publicHref(resolveCmsAssetHref(value, strapiUrl));
   if (
     (resolvedValue.startsWith("/") && !resolvedValue.startsWith("//")) ||
     resolvedValue.startsWith("#")

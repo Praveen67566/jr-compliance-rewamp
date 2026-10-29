@@ -4,6 +4,8 @@ import {
   type CountryCode,
 } from "libphonenumber-js/min";
 
+import { serviceCategory } from "@/lib/service-route-config";
+
 export const LEAD_BODY_LIMIT_BYTES = 16 * 1024;
 export const LEAD_MESSAGE_MAX_LENGTH = 1000;
 export const DEFAULT_LEAD_COUNTRY: CountryCode = "IN";
@@ -153,6 +155,9 @@ export function normalizeLeadPathname(value: unknown): string | null {
 }
 
 export function leadTypeFromPath(pathname: string): LeadType {
+  const category = serviceCategory(pathname.split("/")[1]);
+  if (category) return category.family === "approval" ? "technical" : "corporate";
+
   if (pathname === "/approval" || pathname.startsWith("/approval/")) {
     return "technical";
   }

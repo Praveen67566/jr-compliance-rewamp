@@ -92,7 +92,7 @@ function ComplianceNetworkVisual() {
   );
 }
 
-/** Shared CMS-driven template for every `/globals/[country]/[slug]` certificate page. */
+/** Shared CMS-driven template for every `/global/[slug]` certificate page. */
 export function GlobalCertificatePage({ content }: GlobalCertificatePageProps) {
   const processImage = content.process.image;
 
@@ -148,7 +148,7 @@ export function GlobalCertificatePage({ content }: GlobalCertificatePageProps) {
               <span aria-hidden="true">/</span>
               <a
                 className="min-w-0 rounded-sm break-words focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky"
-                href={`/globals/${content.countrySlug}`}
+                href={`/global/${content.countrySlug}`}
               >
                 {content.countryName}
               </a>
@@ -156,7 +156,7 @@ export function GlobalCertificatePage({ content }: GlobalCertificatePageProps) {
               <a
                 aria-current="page"
                 className="min-w-0 rounded-sm break-words text-ice/75 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky"
-                href={`/globals/${content.countrySlug}/${content.slug}`}
+                href={`/global/${content.slug}`}
               >
                 {content.menuLabel}
               </a>

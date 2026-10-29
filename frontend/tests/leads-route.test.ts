@@ -15,7 +15,7 @@ const validBody = {
   website: "",
   pageTitle: "Company Registration",
   pathname:
-    "/corporate/company-registration/private-limited-company-registration-consultant",
+    "/corporate/private-limited-company-registration-consultant",
 };
 
 function leadRequest(
@@ -71,6 +71,20 @@ function stubFetch(
 }
 
 describe("POST /api/leads", () => {
+  for (const [pathname, destination] of [
+    ["/approval/isi-certificate", "technical"],
+    ["/global/certificate", "global"],
+  ]) {
+    it(`forwards ${pathname} leads to ${destination}`, async () => {
+      const fetchCalls = stubFetch(async () => new Response(null, { status: 204 }));
+      const response = await POST(leadRequest({ ...validBody, pathname }));
+      assert.equal(response.status, 200);
+      assert.equal(fetchCalls.length, 1);
+      assert.equal(String(fetchCalls[0][0]), `https://webhook.jrcompliance.com/${destination}`);
+      assert.equal(JSON.parse(String(fetchCalls[0][1]?.body)).page_name, `${validBody.pageTitle} - ${pathname}`);
+    });
+  }
+
   it("forwards one exact corporate payload and accepts an empty 204 response", async () => {
     const fetchCalls = stubFetch(async () => new Response(null, { status: 204 }));
 
@@ -94,7 +108,7 @@ describe("POST /api/leads", () => {
       phone: "+919876543210",
       message: "I need help with company registration.",
       page_name:
-        "Company Registration - /corporate/company-registration/private-limited-company-registration-consultant",
+        "Company Registration - /corporate/private-limited-company-registration-consultant",
       page_parameters: { utm_source: "google" },
     });
   });
@@ -121,7 +135,7 @@ describe("POST /api/leads", () => {
       phone: "+12133734253",
       message: "I need help with company registration.",
       page_name:
-        "Company Registration - /corporate/company-registration/private-limited-company-registration-consultant",
+        "Company Registration - /corporate/private-limited-company-registration-consultant",
     });
   });
 

@@ -11,21 +11,24 @@ The completed scope is the new home page, the shared-chrome editorial routes
 detail routes plus the first MCA Services, Import Export Service, Government
 License & Certification, IPR Services, FSSAI, SEBI Business Registration, Tax
 and Accounting, Labour Compliance, and Fund Raising routes under
-`/corporate/[category]/[slug]`, plus the first Bureau of Indian Standards and
-Pollution Advisory routes under categorized `/approval/{category}/{servicePath}`
-URLs resolved by `/approval/[...slug]`. The same Approval catch-all is also
-wired to seven empty, CMS-only detail-page families: Telecommunication
-Engineering Centre, Wireless Planning and Coordination, Bureau of Energy
-Efficiency, CDSCO Registration, AERB Approval, LMPC Certification, and STQC.
-Legacy uncategorized Corporate and Approval service URLs permanently redirect
-with 308 responses to their unique categorized canonical URLs.
+`/corporate/[slug]`. Bureau of Indian Standards, Pollution Advisory and the
+seven CMS-only Approval families use `/approval/[slug]`. Categories remain
+internal to the CMS/navigation registry, without a public category segment.
+Service slugs must be unique across collections within each family. Nested
+Approval identities retain their stored value and expose their final slug.
+Global country and certificate pages share `/global/[slug]`; certificate
+country relationships stay in Strapi, and all Global public slugs must be
+unique. Ambiguous destinations return 404 and stay out of static params and
+the sitemap. Former category/country URLs permanently redirect with queries
+preserved. CMS/fallback link fields normalize on read; no CMS migration is
+required.
 Those seven families deliberately contain no first page, local fallback, seed
 mirror, or initial CMS record. Other legacy routes stay out of scope until
 their content records and destinations are validated.
 
 The frontend and CMS also provide a separate, empty CMS-only Global system:
-country landing records render through `/globals/[country]`, and certificate
-records render through `/globals/[country]/[slug]`. The two Global collections
+country landing records render through `/global/[slug]`, and certificate
+records render through `/global/[slug]`. The two Global collections
 use their own content contracts and shared UI templates; they do not change or
 reuse the completed Corporate and Approval page structures. No Global record,
 fallback, seed file, or active public URL is bundled with the integration.
@@ -170,36 +173,36 @@ responsive legal template; they are not a generic page builder.
   optional icons rendered decoratively inside their themed circular artwork.
   Empty fields preserve the existing pages, and no fallback, seed mirror, or
   database backfill supplies them.
-- The first MCA Services page, `/corporate/mca-services/dsc-certificate`, uses
+- The first MCA Services page, `/mca-services/dsc-certificate`, uses
   the same fixed Tailwind template with its own dedicated `mca-service-page`
   CMS collection, typed fallback, migration record, cache tag, and legacy DSC
   content.
   The other MCA links remain intentionally out of scope until their routes and
   fixed content records are approved.
-- The first Import Export Service page, `/corporate/import-export/iec-registration`,
+- The first Import Export Service page, `/import-export/iec-registration`,
   and the first Government License & Certification page,
-  `/corporate/government-license-certification/ayush-license`,
+  `/government-license-certification/ayush-license`,
   use that same fixed template with separate dedicated CMS collections, typed
   fallbacks, migration mirrors, cache tags, and complete approved legacy
   content.
-- The first IPR Services page, `/corporate/ipr-services/trademark-registration`,
-  first FSSAI page, `/corporate/fssai/fssai-certificate`, and first SEBI
+- The first IPR Services page, `/ipr-services/trademark-registration`,
+  first FSSAI page, `/fssai/fssai-certificate`, and first SEBI
   Business Registration page,
-  `/corporate/sebi-business-registration/portfolio-manager-registration`,
+  `/sebi-business-registration/portfolio-manager-registration`,
   follow the same pattern
   through their own dedicated collections, typed fallbacks, migration mirrors,
   and cache tags.
-- The first Tax and Accounting page, `/corporate/tax-accounting/gst-registration`,
+- The first Tax and Accounting page, `/tax-accounting/gst-registration`,
   first Labour Compliance page,
-  `/corporate/labour-compliance/shop-and-establishment-act-registration`, and
-  first Fund Raising page, `/corporate/fund-raising/msme-registration`, also
+  `/labour-compliance/shop-and-establishment-act-registration`, and
+  first Fund Raising page, `/fund-raising/msme-registration`, also
   use the shared fixed template through dedicated `tax-accounting-page`,
   `labour-compliance-page`, and `fund-raising-page` collections, typed
   fallbacks, migration mirrors, and cache tags.
 - The first Bureau of Indian Standards page,
-  `/approval/bureau-indian-standards/isi-certificate`, and first Pollution
-  Advisory page, `/approval/pollution-advisory/epr-certification`, use the same
-  fixed template through the shared `/approval/[...slug]` route and dedicated
+  `/bureau-indian-standards/isi-certificate`, and first Pollution
+  Advisory page, `/pollution-advisory/epr-certification`, use the same
+  fixed template through the shared `app/approval/[slug]` route and dedicated
   `bureau-indian-standards-page` and `pollution-advisory-page` collections.
   Both first pages have typed fallbacks, migration mirrors, and cache tags;
   later complete Approval records are created and published only in Strapi.
@@ -211,13 +214,13 @@ responsive legal template; they are not a generic page builder.
   `cdsco-registration-page`, `aerb-approval-page`,
   `lmpc-certification-page`, and `stqc-page`. They share the fixed Company
   Registration template and strict category-scoped CMS-only validation through
-  `/approval/[...slug]`, but add no first routes, fallbacks, seed files, or
+  `app/approval/[slug]`, but add no first routes, fallbacks, seed files, or
   initial content records. Editors create and publish their first complete
   records directly in Strapi.
 - Two dedicated Global collections also begin empty. `global-country-page`
-  owns complete country landings for `/globals/[country]`, and
+  owns complete country landings for `/global/[slug]`, and
   `global-certificate-page` owns complete certificate pages for
-  `/globals/[country]/[slug]`. They render through two Global-specific,
+  `/global/[slug]`. They render through two Global-specific,
   responsive Tailwind templates and strict CMS-only loaders. Publishing a
   country or certificate record does not require another React route, but an
   incomplete, draft, unpublished, or unknown record returns 404. Navigation

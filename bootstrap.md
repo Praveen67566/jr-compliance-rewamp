@@ -33,8 +33,9 @@ Make only the smallest safe change needed for the request.
 - Keep page content loading through `lib/content.ts` and `lib/strapi.ts`.
 - Keep TypeScript contracts in `lib/types.ts`.
 - Keep fallback content in `data/*-fallback.ts`.
-- Keep repeated Company Registration routes in `app/corporate/[slug]` with one
-  shared Tailwind page component and the fixed typed fallback contract.
+- Keep public service URLs at `/corporate/[slug]`, `/approval/[slug]`, and
+  `/global/[slug]`, with no category or country segment. Categories remain
+  internal CMS/navigation groups. Preserve shared templates and typed contracts.
 - Match the Compliance Network theme from `theme.md`.
 - Do not create a new color palette.
 - Do not hard-code editor-managed copy in components if it belongs in Strapi/fallback data.
@@ -105,4 +106,5 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Only Ui Changes:-
+Now Based On CORPORATE_CMS_CONTENT_UPLOAD.md upload all the pages.
+

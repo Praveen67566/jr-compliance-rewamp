@@ -18,18 +18,18 @@ routes, and the three completed fixed legal routes:
 - `/privacy-policy`
 - `/terms-and-conditions`
 - `/purchase-and-billing`
-- `/corporate/[category]/[slug]` for the nineteen approved Company Registration
+- `/corporate/[slug]` for the nineteen approved Company Registration
   slugs, DSC, IEC Code, Ayush License, Trademark Registration, FSSAI Basic
   Registration, Portfolio Manager Registration, GST Registration, Shop &
   Establishment Registration, and MSME Registration
-- `/approval/{category}/{servicePath}` through `/approval/[...slug]` for ISI
+- `/approval/<slug>` for ISI
   Certification, EPR Certification, and later complete CMS-only records across
   all nine Approval families: Bureau of Indian Standards, Pollution Advisory,
   Telecommunication Engineering Centre, Wireless Planning and Coordination,
   Bureau of Energy Efficiency, CDSCO Registration, AERB Approval, LMPC
   Certification, and STQC
-- `/globals/[country]` for complete published CMS-only Global country landings
-- `/globals/[country]/[slug]` for complete published CMS-only Global
+- `/global/[slug]` for complete published CMS-only Global country landings
+- `/global/[slug]` for complete published CMS-only Global
   certificate pages
 
 The three legal routes are fixed sitemap entries, so the current sitemap
@@ -39,8 +39,8 @@ local route. Additional Corporate, Approval, and Global URLs appear in the
 sitemap only after complete records are published in Strapi.
 
 Corporate and Approval category slugs are fixed frontend identifiers. Existing
-uncategorized service URLs remain legacy entry points and return permanent 308
-redirects to a unique categorized canonical URL.
+prefixed service URLs remain legacy entry points and return permanent 308
+redirects to a unique direct family canonical URL.
 
 Content comes from Strapi when `STRAPI_URL` and `STRAPI_API_TOKEN` are configured.
 Implemented routes fall back to typed local content in
@@ -146,47 +146,28 @@ The main flow is:
 : Static Purchase and Billing route. Uses the same fixed collection contract
   and shared renderer without adding a root-level dynamic catch-all.
 
-`frontend/app/corporate/[category]/[slug]/page.tsx`
-: Categorized canonical route for the nineteen Company Registration pages plus
-  DSC, IEC Code, Ayush License, Trademark Registration, FSSAI Basic
-  Registration, Portfolio Manager Registration, GST Registration, Shop &
-  Establishment Registration, and MSME Registration. It validates the fixed
-  category, resolves the complete CMS-managed service slug only through that
-  category's collection, generates canonical static params and metadata, and
-  returns the framework 404 for unknown, incomplete, or wrong-category records.
+`frontend/app/corporate/[slug]/page.tsx`
+: Direct Corporate service route. It resolves the unique slug across Corporate
+  collections, renders the shared service template, and emits canonical
+  metadata/static params at `/corporate/<slug>`.
 
-`frontend/app/corporate/[category]/page.tsx`
-: Legacy one-segment route resolver. Its shared dynamic-segment name avoids a
-  Next.js route-tree conflict with the categorized child route while preserving
-  the public `/corporate/{legacySlug}` URL. A service path with one unique
-  collection match receives a permanent 308 redirect to its categorized
-  canonical URL; missing or ambiguous matches return the framework 404.
+`frontend/app/approval/[slug]/page.tsx`
+: Renders direct `/approval/<slug>` pages. Older categorized/nested URLs
+  use the separate `[...legacy]` child route for query-preserving 308 redirects.
 
-`frontend/app/approval/[...slug]/page.tsx`
-: Shared catch-all route for all nine Approval collections. A recognized first
-  segment selects the category collection, while every remaining segment is
-  preserved as the CMS-managed service path. A path that does not resolve
-  canonically is also checked as one complete legacy CMS service path; one
-  unique collection match receives a permanent 308 redirect to its categorized
-  URL. Unknown, incomplete, wrong-category, or ambiguous paths return the
-  framework 404. Canonical records generate categorized static params and
-  metadata.
+`frontend/app/global/[slug]/page.tsx`
+: Shared CMS-only route for country and certificate pages at `/global/<slug>`.
+  The slug must be unique across country landings and certificates, including
+  certificates from different countries. Old country/certificate paths redirect.
 
-`frontend/app/globals/[country]/page.tsx`
-: Shared country landing route. It awaits the dynamic country parameter,
-  discovers published `global-country-page` slugs for static generation and
-  the sitemap, generates record-owned metadata, and returns the framework 404
-  for a draft, unpublished, incomplete, unknown, or unavailable CMS record. It
-  uses async params, `revalidate = 60`, `dynamicParams = true`, and
-  `pageMetadata`.
-
+`frontend/app/[category]/page.tsx`,
+`frontend/app/[category]/[slug]/page.tsx`,
+`frontend/app/corporate/[slug]/[service]/page.tsx`, and
+`frontend/app/globals/[country]/page.tsx` /
 `frontend/app/globals/[country]/[slug]/page.tsx`
-: Shared certificate route. It resolves a published
-  `global-certificate-page` by the exact `countrySlug` and `slug`, discovers
-  published country/certificate paths, generates record-owned metadata, and
-  returns the framework 404 for any incomplete or non-matching record. It also
-  uses async params, `revalidate = 60`, `dynamicParams = true`, and
-  `pageMetadata`.
+: Compatibility redirects for former category/country URLs. They validate the
+  original collection/country relationship, preserve queries, and return 404
+  for missing, incomplete or ambiguous destinations.
 
 `frontend/app/icon.tsx`
 : Generates the app icon/fav icon through Next.
@@ -403,7 +384,7 @@ The main flow is:
   image, title, description and CTA, followed by the ordered certificate cards
   with required logos, descriptions, and links, then the shared closing CTA.
   Certificate links are managed on these country cards and should use the exact
-  `/globals/<country>/<certificate>` destination.
+  `/global/<certificate>` destination.
 
 `frontend/components/global/global-certificate-page.tsx`
 : Dedicated responsive certificate template. It renders the fixed
@@ -593,6 +574,18 @@ cached Global country and certificate loaders as `getGlobalCountryPage`,
 `getGlobalCountrySlugs`, `getGlobalCertificatePage`, and
 `getGlobalCertificatePaths`. Unavailable or incomplete Global content stays
 `null`, and discovery returns no Global path when Strapi is unavailable.
+
+`frontend/lib/service-route-config.ts`
+: Internal category metadata shared by routing, link normalization and lead
+  classification, plus validation of single country/slug segments.
+
+`frontend/lib/global-routes.ts`
+: Unique Global slug discovery and resolution across country and certificate
+  collections, with exact legacy country lookup for compatibility redirects.
+
+`frontend/lib/public-paths.ts`
+: Direct family URL normalization for CMS/fallback link fields, unique final-slug
+  resolution for nested CMS identities, and query-preserving redirect paths.
 
 `frontend/lib/service-routes.ts`
 : Typed registry for the ten Corporate and nine Approval category identifiers,

@@ -40,30 +40,15 @@ import {
   getWirelessPlanningCoordinationPage,
   getWirelessPlanningCoordinationSlugs,
 } from "@/lib/content";
+import {
+  serviceRouteDefinitions,
+  type FixedServiceContentType,
+  type ServiceRouteFamily,
+} from "@/lib/service-route-config";
+import { publicServiceSlug, uniqueServicePath, uniquePublicLinks } from "@/lib/public-paths";
 import type { CompanyRegistrationPageContent } from "@/lib/types";
 
-export type ServiceRouteFamily = "corporate" | "approval";
-
-export type FixedServiceContentType =
-  | "company-registration-page"
-  | "mca-service-page"
-  | "import-export-service-page"
-  | "government-license-certification-page"
-  | "ipr-service-page"
-  | "fssai-service-page"
-  | "sebi-business-registration-page"
-  | "tax-accounting-page"
-  | "labour-compliance-page"
-  | "fund-raising-page"
-  | "bureau-indian-standards-page"
-  | "pollution-advisory-page"
-  | "telecommunication-engineering-centre-page"
-  | "wireless-planning-coordination-page"
-  | "bureau-energy-efficiency-page"
-  | "cdsco-registration-page"
-  | "aerb-approval-page"
-  | "lmpc-certification-page"
-  | "stqc-page";
+export type { FixedServiceContentType, ServiceRouteFamily } from "@/lib/service-route-config";
 
 export type ServiceRouteCategory = {
   family: ServiceRouteFamily;
@@ -74,160 +59,31 @@ export type ServiceRouteCategory = {
   loadSlugs: () => Promise<string[]>;
 };
 
-export const serviceRouteRegistry = [
-  {
-    family: "corporate",
-    contentType: "company-registration-page",
-    categorySlug: "company-registration",
-    categoryLabel: "Company Registration",
-    loadPage: getCompanyRegistrationPage,
-    loadSlugs: getCompanyRegistrationSlugs,
-  },
-  {
-    family: "corporate",
-    contentType: "mca-service-page",
-    categorySlug: "mca-services",
-    categoryLabel: "MCA Services",
-    loadPage: getMcaServicePage,
-    loadSlugs: getMcaServiceSlugs,
-  },
-  {
-    family: "corporate",
-    contentType: "import-export-service-page",
-    categorySlug: "import-export",
-    categoryLabel: "Import Export",
-    loadPage: getImportExportServicePage,
-    loadSlugs: getImportExportServiceSlugs,
-  },
-  {
-    family: "corporate",
-    contentType: "government-license-certification-page",
-    categorySlug: "government-license-certification",
-    categoryLabel: "Government License & Certification",
-    loadPage: getGovernmentLicenseCertificationPage,
-    loadSlugs: getGovernmentLicenseCertificationSlugs,
-  },
-  {
-    family: "corporate",
-    contentType: "ipr-service-page",
-    categorySlug: "ipr-services",
-    categoryLabel: "IPR Services",
-    loadPage: getIprServicePage,
-    loadSlugs: getIprServiceSlugs,
-  },
-  {
-    family: "corporate",
-    contentType: "fssai-service-page",
-    categorySlug: "fssai",
-    categoryLabel: "FSSAI",
-    loadPage: getFssaiServicePage,
-    loadSlugs: getFssaiServiceSlugs,
-  },
-  {
-    family: "corporate",
-    contentType: "sebi-business-registration-page",
-    categorySlug: "sebi-business-registration",
-    categoryLabel: "SEBI Business Registration",
-    loadPage: getSebiBusinessRegistrationPage,
-    loadSlugs: getSebiBusinessRegistrationSlugs,
-  },
-  {
-    family: "corporate",
-    contentType: "tax-accounting-page",
-    categorySlug: "tax-accounting",
-    categoryLabel: "Tax & Accounting",
-    loadPage: getTaxAccountingPage,
-    loadSlugs: getTaxAccountingSlugs,
-  },
-  {
-    family: "corporate",
-    contentType: "labour-compliance-page",
-    categorySlug: "labour-compliance",
-    categoryLabel: "Labour Compliance",
-    loadPage: getLabourCompliancePage,
-    loadSlugs: getLabourComplianceSlugs,
-  },
-  {
-    family: "corporate",
-    contentType: "fund-raising-page",
-    categorySlug: "fund-raising",
-    categoryLabel: "Fund Raising",
-    loadPage: getFundRaisingPage,
-    loadSlugs: getFundRaisingSlugs,
-  },
-  {
-    family: "approval",
-    contentType: "bureau-indian-standards-page",
-    categorySlug: "bureau-indian-standards",
-    categoryLabel: "Bureau of Indian Standards",
-    loadPage: getBureauIndianStandardsPage,
-    loadSlugs: getBureauIndianStandardsSlugs,
-  },
-  {
-    family: "approval",
-    contentType: "pollution-advisory-page",
-    categorySlug: "pollution-advisory",
-    categoryLabel: "Pollution Advisory",
-    loadPage: getPollutionAdvisoryPage,
-    loadSlugs: getPollutionAdvisorySlugs,
-  },
-  {
-    family: "approval",
-    contentType: "telecommunication-engineering-centre-page",
-    categorySlug: "telecommunication-engineering-centre",
-    categoryLabel: "Telecommunication Engineering Centre",
-    loadPage: getTelecommunicationEngineeringCentrePage,
-    loadSlugs: getTelecommunicationEngineeringCentreSlugs,
-  },
-  {
-    family: "approval",
-    contentType: "wireless-planning-coordination-page",
-    categorySlug: "wireless-planning-coordination",
-    categoryLabel: "Wireless Planning and Coordination",
-    loadPage: getWirelessPlanningCoordinationPage,
-    loadSlugs: getWirelessPlanningCoordinationSlugs,
-  },
-  {
-    family: "approval",
-    contentType: "bureau-energy-efficiency-page",
-    categorySlug: "bureau-energy-efficiency",
-    categoryLabel: "Bureau of Energy Efficiency",
-    loadPage: getBureauEnergyEfficiencyPage,
-    loadSlugs: getBureauEnergyEfficiencySlugs,
-  },
-  {
-    family: "approval",
-    contentType: "cdsco-registration-page",
-    categorySlug: "cdsco-registration",
-    categoryLabel: "CDSCO Registration",
-    loadPage: getCdscoRegistrationPage,
-    loadSlugs: getCdscoRegistrationSlugs,
-  },
-  {
-    family: "approval",
-    contentType: "aerb-approval-page",
-    categorySlug: "aerb-approval",
-    categoryLabel: "AERB Approval",
-    loadPage: getAerbApprovalPage,
-    loadSlugs: getAerbApprovalSlugs,
-  },
-  {
-    family: "approval",
-    contentType: "lmpc-certification-page",
-    categorySlug: "lmpc-certification",
-    categoryLabel: "LMPC Certification",
-    loadPage: getLmpcCertificationPage,
-    loadSlugs: getLmpcCertificationSlugs,
-  },
-  {
-    family: "approval",
-    contentType: "stqc-page",
-    categorySlug: "stqc",
-    categoryLabel: "STQC",
-    loadPage: getStqcPage,
-    loadSlugs: getStqcSlugs,
-  },
-] as const satisfies readonly ServiceRouteCategory[];
+const serviceLoaders = {
+  "company-registration-page": { loadPage: getCompanyRegistrationPage, loadSlugs: getCompanyRegistrationSlugs },
+  "mca-service-page": { loadPage: getMcaServicePage, loadSlugs: getMcaServiceSlugs },
+  "import-export-service-page": { loadPage: getImportExportServicePage, loadSlugs: getImportExportServiceSlugs },
+  "government-license-certification-page": { loadPage: getGovernmentLicenseCertificationPage, loadSlugs: getGovernmentLicenseCertificationSlugs },
+  "ipr-service-page": { loadPage: getIprServicePage, loadSlugs: getIprServiceSlugs },
+  "fssai-service-page": { loadPage: getFssaiServicePage, loadSlugs: getFssaiServiceSlugs },
+  "sebi-business-registration-page": { loadPage: getSebiBusinessRegistrationPage, loadSlugs: getSebiBusinessRegistrationSlugs },
+  "tax-accounting-page": { loadPage: getTaxAccountingPage, loadSlugs: getTaxAccountingSlugs },
+  "labour-compliance-page": { loadPage: getLabourCompliancePage, loadSlugs: getLabourComplianceSlugs },
+  "fund-raising-page": { loadPage: getFundRaisingPage, loadSlugs: getFundRaisingSlugs },
+  "bureau-indian-standards-page": { loadPage: getBureauIndianStandardsPage, loadSlugs: getBureauIndianStandardsSlugs },
+  "pollution-advisory-page": { loadPage: getPollutionAdvisoryPage, loadSlugs: getPollutionAdvisorySlugs },
+  "telecommunication-engineering-centre-page": { loadPage: getTelecommunicationEngineeringCentrePage, loadSlugs: getTelecommunicationEngineeringCentreSlugs },
+  "wireless-planning-coordination-page": { loadPage: getWirelessPlanningCoordinationPage, loadSlugs: getWirelessPlanningCoordinationSlugs },
+  "bureau-energy-efficiency-page": { loadPage: getBureauEnergyEfficiencyPage, loadSlugs: getBureauEnergyEfficiencySlugs },
+  "cdsco-registration-page": { loadPage: getCdscoRegistrationPage, loadSlugs: getCdscoRegistrationSlugs },
+  "aerb-approval-page": { loadPage: getAerbApprovalPage, loadSlugs: getAerbApprovalSlugs },
+  "lmpc-certification-page": { loadPage: getLmpcCertificationPage, loadSlugs: getLmpcCertificationSlugs },
+  "stqc-page": { loadPage: getStqcPage, loadSlugs: getStqcSlugs },
+} satisfies Record<FixedServiceContentType, Pick<ServiceRouteCategory, "loadPage" | "loadSlugs">>;
+
+export const serviceRouteRegistry: ServiceRouteCategory[] = serviceRouteDefinitions.map(
+  (category) => ({ ...category, ...serviceLoaders[category.contentType] }),
+);
 
 const servicePathSegmentPattern = /^[A-Za-z0-9-_.~]+$/;
 
@@ -262,7 +118,7 @@ export function serviceCanonicalPath(
   category: Pick<ServiceRouteCategory, "family" | "categorySlug">,
   servicePath: string,
 ): string {
-  return `/${category.family}/${category.categorySlug}/${servicePath}`;
+  return `/${category.family}/${publicServiceSlug(servicePath)}`;
 }
 
 export type ServiceRouteEntry = {
@@ -294,11 +150,7 @@ export async function getServiceRouteEntries(
     }),
   );
 
-  return [
-    ...new Map(
-      categoryEntries.flat().map((entry) => [entry.canonicalPath, entry] as const),
-    ).values(),
-  ];
+  return uniquePublicLinks(categoryEntries.flat());
 }
 
 export type ServiceSitemapEntry = ServiceRouteEntry & {
@@ -345,6 +197,11 @@ export const getCategorizedServicePage = cache(async function getCategorizedServ
     return null;
   }
 
+  const entries = await getServiceRouteEntries(family);
+  if (!entries.some((entry) => entry.categorySlug === categorySlug && entry.servicePath === servicePath)) {
+    return null;
+  }
+
   const content = await category.loadPage(servicePath);
   return content
     ? {
@@ -354,6 +211,29 @@ export const getCategorizedServicePage = cache(async function getCategorizedServ
         canonicalPath: serviceCanonicalPath(category, servicePath),
       }
     : null;
+});
+
+/** Resolve a direct /corporate/slug or /approval/slug across that family's collections. */
+export const getPublicServicePage = cache(async function getPublicServicePage(
+  family: ServiceRouteFamily,
+  slug: string,
+): Promise<CategorizedServicePage | null> {
+  if (!isValidServicePath("corporate", slug)) return null;
+  const entry = (await getServiceRouteEntries(family)).find((candidate) => publicServiceSlug(candidate.servicePath) === slug);
+  return entry ? getCategorizedServicePage(family, entry.categorySlug, entry.servicePath) : null;
+});
+
+/** Compatibility lookup for the former /category/slug URLs. */
+export const getCategorizedPublicServicePage = cache(async function getCategorizedPublicServicePage(
+  categorySlug: string,
+  slug: string,
+): Promise<CategorizedServicePage | null> {
+  const category = serviceRouteRegistry.find((entry) => entry.categorySlug === categorySlug);
+  if (!category || !isValidServicePath("corporate", slug)) return null;
+
+  const paths = (await category.loadSlugs()).filter((path) => isValidServicePath(category.family, path));
+  const servicePath = uniqueServicePath(paths, slug);
+  return servicePath ? getCategorizedServicePage(category.family, categorySlug, servicePath) : null;
 });
 
 type LegacyServiceMatch = {
@@ -382,11 +262,12 @@ export const resolveLegacyService = cache(async function resolveLegacyService(
       }),
     )
   ).filter((category): category is ServiceRouteCategory => category !== null);
+  if (candidateCategories.length > 1) return { kind: "ambiguous" };
   const matches = (
     await Promise.all(
       candidateCategories.map(async (category) => {
-        const content = await category.loadPage(servicePath);
-        return content
+        const resolved = await getCategorizedServicePage(family, category.categorySlug, servicePath);
+        return resolved
           ? {
               category,
               servicePath,
@@ -416,6 +297,11 @@ export const resolveApprovalService = cache(async function resolveApprovalServic
     return { kind: "not-found" };
   }
 
+  if (!routePath.includes("/")) {
+    const resolved = await getPublicServicePage("approval", routePath);
+    return resolved ? { kind: "canonical", ...resolved } : { kind: "not-found" };
+  }
+
   const [possibleCategorySlug, ...serviceSegments] = routePath.split("/");
   const category = getServiceRouteCategory("approval", possibleCategorySlug);
 
@@ -425,14 +311,11 @@ export const resolveApprovalService = cache(async function resolveApprovalServic
     }
 
     const servicePath = serviceSegments.join("/");
-    const content = await category.loadPage(servicePath);
-    if (content) {
+    const resolved = await getCategorizedServicePage("approval", category.categorySlug, servicePath);
+    if (resolved) {
       return {
-        kind: "canonical",
-        category,
-        content,
-        servicePath,
-        canonicalPath: serviceCanonicalPath(category, servicePath),
+        kind: "redirect",
+        canonicalPath: resolved.canonicalPath,
       };
     }
   }

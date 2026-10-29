@@ -48,13 +48,13 @@ describe("CMS-only Global page system", () => {
     assert.equal(certificateAttributes.seo.component, "shared.seo");
   });
 
-  it("adds only the two shared dynamic Global route pages", () => {
+  it("renders Global content through the shared public routes", () => {
     const countryRoute = readFileSync(
-      repositoryFile("frontend/app/globals/[country]/page.tsx"),
+      repositoryFile("frontend/app/global/[slug]/page.tsx"),
       "utf8",
     );
     const certificateRoute = readFileSync(
-      repositoryFile("frontend/app/globals/[country]/[slug]/page.tsx"),
+      repositoryFile("frontend/app/global/[slug]/page.tsx"),
       "utf8",
     );
 

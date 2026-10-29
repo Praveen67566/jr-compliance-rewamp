@@ -1,37 +1,15 @@
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 
-import { GlobalCountryPage } from "@/components/global/global-country-page";
-import { getGlobalCountryPage, getGlobalCountrySlugs } from "@/lib/content";
-import { pageMetadata } from "@/lib/page-metadata";
+import { redirectPath, type RouteSearchParams } from "@/lib/public-paths";
 
-type GlobalCountryRouteProps = {
-  params: Promise<{ country: string }>;
-};
+import { getLegacyGlobalPage } from "@/lib/global-routes";
 
 export const revalidate = 60;
 export const dynamicParams = true;
 
-export async function generateStaticParams() {
-  return (await getGlobalCountrySlugs()).map((country) => ({ country }));
-}
-
-export async function generateMetadata({
-  params,
-}: GlobalCountryRouteProps): Promise<Metadata> {
+export default async function Page({ params, searchParams }: { params: Promise<{ country: string }>; searchParams: Promise<RouteSearchParams> }) {
   const { country } = await params;
-  const content = await getGlobalCountryPage(country);
-
-  return content ? pageMetadata(content.seo, `/globals/${country}`) : {};
-}
-
-export default async function Page({ params }: GlobalCountryRouteProps) {
-  const { country } = await params;
-  const content = await getGlobalCountryPage(country);
-
-  if (!content) {
-    notFound();
-  }
-
-  return <GlobalCountryPage content={content} />;
+  const content = await getLegacyGlobalPage(country);
+  if (!content) notFound();
+  permanentRedirect(redirectPath(content.canonicalPath, await searchParams));
 }

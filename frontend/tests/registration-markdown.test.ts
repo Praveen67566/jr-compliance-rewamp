@@ -7,6 +7,17 @@ import {
 } from "@/lib/registration-markdown";
 
 describe("registration rich-text markdown", () => {
+  it("uses direct family links in existing Markdown and pasted HTML", () => {
+    const html = renderRegistrationMarkdown([
+      "[Nidhi](/corporate/company-registration/nidhi-company-registration?source=article#faq)",
+      '<a href="/approval/bureau-indian-standards/isi-certificate">ISI</a>',
+      "[Country](/globals/india/certificate)",
+    ].join("\n\n"));
+    assert.match(html, /href="\/corporate\/nidhi-company-registration\?source=article#faq"/);
+    assert.match(html, /href="\/approval\/isi-certificate"/);
+    assert.match(html, /href="\/global\/certificate"/);
+  });
+
   it("renders the formatting exposed by the Strapi rich-text editor", () => {
     const html = renderRegistrationMarkdown(`**Bold heading**
 Second line

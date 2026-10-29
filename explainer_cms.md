@@ -34,8 +34,8 @@ The CMS provides content for:
 - future CMS-only AERB Approval paths through `aerb-approval-page`
 - future CMS-only LMPC Certification paths through `lmpc-certification-page`
 - future CMS-only STQC paths through `stqc-page`
-- future CMS-only `/globals/[country]` landings through `global-country-page`
-- future CMS-only `/globals/[country]/[slug]` certificate pages through
+- future CMS-only `/global/[slug]` landings through `global-country-page`
+- future CMS-only `/global/[slug]` certificate pages through
   `global-certificate-page`
 - shared header/footer and global consultation-form copy through the `site-setting` single type
 
@@ -412,7 +412,7 @@ route.
 : Empty dedicated fixed detail-page collection for STQC.
 
 `cms/src/api/global-country-page/`
-: Empty dedicated country-landing collection for `/globals/[country]`. A
+: Empty dedicated country-landing collection for `/global/[slug]`. A
   record owns its title, menu label, single-segment slug, country hero,
   certificate listing/cards, closing CTA, SEO, and sort order. It is a
   Global-specific fixed contract, not a service-detail collection or generic
@@ -420,7 +420,7 @@ route.
 
 `cms/src/api/global-certificate-page/`
 : Empty dedicated certificate collection for
-  `/globals/[country]/[slug]`. A record owns its title, menu label, country
+  `/global/[slug]`. A record owns its title, menu label, country
   name, single-segment country and certificate slugs, certificate hero,
   overview, neutral scope, process, JR Compliance role, conclusion, closing
   CTA, SEO, and sort order. It is separate from Corporate and Approval content.
@@ -649,7 +649,7 @@ PostgreSQL variables for local and deployed CMS environments are defined in
 - After deploying the two Global schemas, grant the existing server-side
   `next-site-reader` token `find` and `findOne` for both Global collections.
   Leave the Public role with no Global collection or Upload access. Publishing
-  a country does not edit navigation: add its exact `/globals/<country>` link
+  a country does not edit navigation: add its exact `/global/<country>` link
   under **Site Setting → Header Menu → Global**, and put certificate
   destinations on that country record's cards.
 - When a schema changes, update `cms/CONTENT_MODEL.md`, the Strapi schema files,

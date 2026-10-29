@@ -27,7 +27,7 @@ test("formats the four source columns in one Extra Content entry with headings a
   assert.equal(data.extraContent[0].description, "<h3>Documentation</h3>\n<ul>\n<li>PAN</li>\n<li>Address &lt;proof&gt;</li>\n</ul>\n\n<h3>Eligibility Criteria</h3>\n<ul>\n<li>A company</li>\n<li>An authorised signatory</li>\n</ul>\n\n<h3>Step-by-Step Process</h3>\n<ol>\n<li>Apply.</li>\n<li>Verify &amp; sign.</li>\n</ol>\n\n<h3>Who Needs</h3>\n<p>Companies and LLPs.</p>");
   assert.doesNotMatch(data.extraContent[0].description, /not-imported|<proof>/);
   assert.equal(singleParagraph("First line.\n\nSecond line."), "First line. Second line.");
-  assert.equal(data.seo.canonicalUrl, "/corporate/mca-services/organisation-dsc");
+  assert.equal(data.seo.canonicalUrl, "/corporate/organisation-dsc");
   assert.deepEqual(data.trustedLogos, { set: ["logo-one", "logo-two"] });
   for (const [field, value] of Object.entries(fixedContent)) assert.deepEqual(data[field], value);
   data.faqs.items[0].question = "changed locally";

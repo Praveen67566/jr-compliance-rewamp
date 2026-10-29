@@ -1,42 +1,15 @@
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 
-import { GlobalCertificatePage } from "@/components/global/global-certificate-page";
-import {
-  getGlobalCertificatePage,
-  getGlobalCertificatePaths,
-} from "@/lib/content";
-import { pageMetadata } from "@/lib/page-metadata";
+import { redirectPath, type RouteSearchParams } from "@/lib/public-paths";
 
-type GlobalCertificateRouteProps = {
-  params: Promise<{ country: string; slug: string }>;
-};
+import { getLegacyGlobalPage } from "@/lib/global-routes";
 
 export const revalidate = 60;
 export const dynamicParams = true;
 
-export async function generateStaticParams() {
-  return getGlobalCertificatePaths();
-}
-
-export async function generateMetadata({
-  params,
-}: GlobalCertificateRouteProps): Promise<Metadata> {
+export default async function Page({ params, searchParams }: { params: Promise<{ country: string; slug: string }>; searchParams: Promise<RouteSearchParams> }) {
   const { country, slug } = await params;
-  const content = await getGlobalCertificatePage(country, slug);
-
-  return content
-    ? pageMetadata(content.seo, `/globals/${country}/${slug}`)
-    : {};
-}
-
-export default async function Page({ params }: GlobalCertificateRouteProps) {
-  const { country, slug } = await params;
-  const content = await getGlobalCertificatePage(country, slug);
-
-  if (!content) {
-    notFound();
-  }
-
-  return <GlobalCertificatePage content={content} />;
+  const content = await getLegacyGlobalPage(country, slug);
+  if (!content) notFound();
+  permanentRedirect(redirectPath(content.canonicalPath, await searchParams));
 }

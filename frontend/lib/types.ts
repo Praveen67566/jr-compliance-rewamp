@@ -866,7 +866,7 @@ export type GlobalCertificateCard = {
 };
 
 /**
- * Editor-managed country landing content for `/globals/[country]`.
+ * Editor-managed country landing content for `/global/[slug]`.
  * The fixed shape is intentionally separate from Corporate and Approval pages.
  */
 export type GlobalCountryPageData = {
@@ -902,7 +902,7 @@ export type GlobalCertificateProcessStep = {
 };
 
 /**
- * Editor-managed certificate content for `/globals/[country]/[slug]`.
+ * Editor-managed certificate content for `/global/[slug]`.
  * Its fixed sequence reflects country certification content rather than the
  * Company Registration information architecture.
  */
