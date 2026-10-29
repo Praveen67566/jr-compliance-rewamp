@@ -178,7 +178,7 @@ export function Hero({ hero, leadForm, pageTitle, showConsultationForm = true }:
             card={certificationCard}
             className="hero-floating-card certification-card max-[561px]:relative! max-[561px]:inset-auto! max-[561px]:order-3 max-[561px]:max-w-none! max-[561px]:gap-2! max-[561px]:animate-none!"
           >
-            <span className="mini-seal max-[561px]:shrink-0">
+            <span className="mini-seal shrink-0">
               {certificationCard?.icon || certificationCard?.image ? (
                 <img src={certificationCard.icon ?? certificationCard.image} alt={certificationCard.iconAlt ?? certificationCard.imageAlt ?? ""} />
               ) : (
@@ -194,7 +194,7 @@ export function Hero({ hero, leadForm, pageTitle, showConsultationForm = true }:
             card={reachCard}
             className="hero-floating-card reach-card max-[561px]:relative! max-[561px]:inset-auto! max-[561px]:order-4 max-[561px]:max-w-none! max-[561px]:gap-2! max-[561px]:animate-none!"
           >
-            <span className="globe-mark max-[561px]:shrink-0">
+            <span className="globe-mark shrink-0">
               {reachCard?.icon || reachCard?.image ? (
                 <img src={reachCard.icon ?? reachCard.image} alt={reachCard.iconAlt ?? reachCard.imageAlt ?? ""} />
               ) : (

@@ -255,11 +255,6 @@ export function HomePage({ content }: HomePageProps) {
             {content.metrics.featureImage ? (
               <figure className="metrics-feature m-0 mt-5 overflow-hidden rounded-[20px] border border-sky/25 bg-navy-900">
                 <img className="h-auto w-full object-contain" src={content.metrics.featureImage} alt={content.metrics.featureImageAlt ?? ""} />
-                {content.metrics.featureTitle ? (
-                  <figcaption className="border-t border-sky/20 px-7 py-6 font-display text-[clamp(1.35rem,2vw,2.1rem)] leading-snug tracking-[-0.04em] text-cloud">
-                    {content.metrics.featureTitle}
-                  </figcaption>
-                ) : null}
               </figure>
             ) : null}
           </div>
