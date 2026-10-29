@@ -1,0 +1,3209 @@
+[2026-10-29 12:20:14.517] info: [transfer] Diagnostic log file: /Users/yalagalasrinivas/praveen-dev/jr-compliance-rewamp/cms/transfer_1793256614514.log (info-level messages are written here even without --verbose)
+[2026-10-29 12:20:14.517] info: [remote-source-provider] establishing websocket connection
+
+[2026-10-29 12:20:14.520] info: [local-destination-provider] validating options
+
+[2026-10-29 12:20:15.514] info: [remote-source-provider] established websocket connection
+
+[2026-10-29 12:20:15.515] info: [remote-source-provider] creating dispatcher
+
+[2026-10-29 12:20:15.515] info: [remote-source-provider] created dispatcher
+
+[2026-10-29 12:20:15.515] info: [remote-source-provider] initialize transfer
+
+[2026-10-29 12:20:15.516] info: [remote-source-provider] dispatching message command:init uuid:a06a67b2-b305-4c96-916d-4096675e3753 sent:0
+
+[2026-10-29 12:20:15.819] info: [pull-handler] received command:init uuid:a06a67b2-b305-4c96-916d-4096675e3753
+
+[2026-10-29 12:20:15.820] info: [remote-source-provider] received response to message command: init uuid: a06a67b2-b305-4c96-916d-4096675e3753 sent: 0
+
+[2026-10-29 12:20:15.821] info: [remote-source-provider] received response to message command: init uuid: a06a67b2-b305-4c96-916d-4096675e3753 sent: 0
+
+[2026-10-29 12:20:15.821] info: [remote-source-provider] initialized transfer 2d22e746-edb7-4ce6-8cbb-733792f84030
+
+[2026-10-29 12:20:15.822] info: [remote-source-provider] dispatching message action:bootstrap  uuid:5339e22b-5caf-4f52-bbdf-1b898d4f2b0b sent:0
+
+[2026-10-29 12:20:16.124] info: [pull-handler] received transfer action:bootstrap step:action uuid:5339e22b-5caf-4f52-bbdf-1b898d4f2b0b
+
+[2026-10-29 12:20:16.125] info: [remote-source-provider] received response to message action:bootstrap  uuid:5339e22b-5caf-4f52-bbdf-1b898d4f2b0b sent:0
+
+[2026-10-29 12:20:16.127] info: [remote-source-provider] received response to message action:bootstrap  uuid:5339e22b-5caf-4f52-bbdf-1b898d4f2b0b sent:0
+
+[2026-10-29 12:20:16.128] info: [remote-source-provider] dispatching message action:getMetadata  uuid:52156d30-9025-4541-964b-5e036f148356 sent:0
+
+[2026-10-29 12:20:16.433] info: [pull-handler] received transfer action:getMetadata step:action uuid:52156d30-9025-4541-964b-5e036f148356
+
+[2026-10-29 12:20:16.433] info: [remote-source-provider] received response to message action:getMetadata  uuid:52156d30-9025-4541-964b-5e036f148356 sent:0
+
+[2026-10-29 12:20:16.434] info: [local-source-provider] getting metadata
+
+[2026-10-29 12:20:16.434] info: [remote-source-provider] received response to message action:getMetadata  uuid:52156d30-9025-4541-964b-5e036f148356 sent:0
+
+[2026-10-29 12:20:16.434] info: [remote-source-provider] received response to message action:getMetadata  uuid:52156d30-9025-4541-964b-5e036f148356 sent:0
+
+[2026-10-29 12:20:16.435] info: [local-destination-provider] getting metadata
+
+[2026-10-29 12:20:16.435] info: [remote-source-provider] dispatching message action:getMetadata  uuid:6607356a-954c-4d39-ae08-3521c57f126c sent:0
+
+[2026-10-29 12:20:16.734] info: [pull-handler] received transfer action:getMetadata step:action uuid:6607356a-954c-4d39-ae08-3521c57f126c
+
+[2026-10-29 12:20:16.735] info: [remote-source-provider] received response to message action:getMetadata  uuid:6607356a-954c-4d39-ae08-3521c57f126c sent:0
+
+[2026-10-29 12:20:16.736] info: [local-source-provider] getting metadata
+
+[2026-10-29 12:20:16.736] info: [remote-source-provider] received response to message action:getMetadata  uuid:6607356a-954c-4d39-ae08-3521c57f126c sent:0
+
+[2026-10-29 12:20:16.736] info: [remote-source-provider] received response to message action:getMetadata  uuid:6607356a-954c-4d39-ae08-3521c57f126c sent:0
+
+[2026-10-29 12:20:16.736] info: [local-destination-provider] getting metadata
+
+[2026-10-29 12:20:16.737] info: [remote-source-provider] dispatching message action:getSchemas  uuid:ecad34bb-70db-4cf6-b584-169cb87a3958 sent:0
+
+[2026-10-29 12:20:17.034] info: [pull-handler] received transfer action:getSchemas step:action uuid:ecad34bb-70db-4cf6-b584-169cb87a3958
+
+[2026-10-29 12:20:17.034] info: [remote-source-provider] received response to message action:getSchemas  uuid:ecad34bb-70db-4cf6-b584-169cb87a3958 sent:0
+
+[2026-10-29 12:20:17.035] info: [local-source-provider] getting schemas
+
+[2026-10-29 12:20:17.035] info: [remote-source-provider] received response to message action:getSchemas  uuid:ecad34bb-70db-4cf6-b584-169cb87a3958 sent:0
+
+[2026-10-29 12:20:17.331] info: [remote-source-provider] received response to message action:getSchemas  uuid:ecad34bb-70db-4cf6-b584-169cb87a3958 sent:0
+
+[2026-10-29 12:20:17.332] info: [local-destination-provider] getting schema
+
+[2026-10-29 12:20:17.358] info: [local-destination-provider] creating assets backup directory
+
+[2026-10-29 12:20:17.363] info: [local-destination-provider] created assets backup directory /Users/yalagalasrinivas/praveen-dev/jr-compliance-rewamp/cms/public/uploads_backup_1793256614513
+
+[2026-10-29 12:20:17.364] info: [local-destination-provider] deleting all assets
+
+[2026-10-29 12:20:17.392] info: [local-destination-provider] deleted all assets
+
+[2026-10-29 12:20:17.392] info: [local-destination-provider] deleting record 
+
+[2026-10-29 12:20:19.690] info: [remote-source-provider] dispatching message action:start step:entities uuid:1911a126-eab1-466c-89d0-8355114473fb sent:0
+
+[2026-10-29 12:20:19.990] info: [pull-handler] received transfer action:start step:step uuid:1911a126-eab1-466c-89d0-8355114473fb
+
+[2026-10-29 12:20:19.990] info: [remote-source-provider] received response to message action:start step:entities uuid:1911a126-eab1-466c-89d0-8355114473fb sent:0
+
+[2026-10-29 12:20:19.990] info: [local-source-provider] creating entities read stream
+
+[2026-10-29 12:20:19.990] info: [remote-source-provider] received response to message action:start step:entities uuid:1911a126-eab1-466c-89d0-8355114473fb sent:0
+
+[2026-10-29 12:20:19.994] info: [remote-source-provider] received response to message action:start step:entities uuid:1911a126-eab1-466c-89d0-8355114473fb sent:0
+
+[2026-10-29 12:20:19.995] info: [local-destination-provider] creating entities stream
+
+[2026-10-29 12:20:36.742] info: [remote-source-provider] dispatching message action:end step:entities uuid:319615c3-7fe5-4588-92b7-73def0c32721 sent:0
+
+[2026-10-29 12:20:37.038] info: [pull-handler] received transfer action:end step:step uuid:319615c3-7fe5-4588-92b7-73def0c32721
+
+[2026-10-29 12:20:37.039] info: [remote-source-provider] received response to message action:end step:entities uuid:319615c3-7fe5-4588-92b7-73def0c32721 sent:0
+
+[2026-10-29 12:20:37.039] info: [remote-source-provider] received response to message action:end step:entities uuid:319615c3-7fe5-4588-92b7-73def0c32721 sent:0
+
+[2026-10-29 12:20:37.046] info: [remote-source-provider] dispatching message action:start step:assets uuid:265a9be2-41f4-4840-a465-851e483cd401 sent:0
+
+[2026-10-29 12:20:37.348] info: [pull-handler] received transfer action:start step:step uuid:265a9be2-41f4-4840-a465-851e483cd401
+
+[2026-10-29 12:20:37.349] info: [remote-source-provider] received response to message action:start step:assets uuid:265a9be2-41f4-4840-a465-851e483cd401 sent:0
+
+[2026-10-29 12:20:37.667] info: [local-source-provider] creating assets read stream
+
+[2026-10-29 12:20:37.667] info: [remote-source-provider] received response to message action:start step:assets uuid:265a9be2-41f4-4840-a465-851e483cd401 sent:0
+
+[2026-10-29 12:20:37.670] info: [remote-source-provider] received response to message action:start step:assets uuid:265a9be2-41f4-4840-a465-851e483cd401 sent:0
+
+[2026-10-29 12:20:37.671] info: [local-destination-provider] creating assets write stream
+
+[2026-10-29 12:20:37.709] info: [remote-source-provider] Asset 7f0b106d-e6e5-40c1-91fa-1cc482ea1260 starting
+
+[2026-10-29 12:20:37.712] info: [remote-source-provider] Ending asset stream for 7f0b106d-e6e5-40c1-91fa-1cc482ea1260
+
+[2026-10-29 12:20:38.013] info: [remote-source-provider] Asset 4da89a63-6542-403e-aa45-094280f1cefc starting
+
+[2026-10-29 12:20:38.014] info: [remote-source-provider] Ending asset stream for 4da89a63-6542-403e-aa45-094280f1cefc
+
+[2026-10-29 12:20:38.396] info: [remote-source-provider] Asset e0fd0195-73f5-4a27-b457-1ab1a6bcf623 starting
+
+[2026-10-29 12:20:38.398] info: [remote-source-provider] Ending asset stream for e0fd0195-73f5-4a27-b457-1ab1a6bcf623
+
+[2026-10-29 12:20:38.853] info: [remote-source-provider] Asset 79e474b4-0a15-4b92-8d66-2c9688b747b1 starting
+
+[2026-10-29 12:20:39.261] info: [remote-source-provider] Ending asset stream for 79e474b4-0a15-4b92-8d66-2c9688b747b1
+
+[2026-10-29 12:20:39.620] info: [remote-source-provider] Asset d5c01cb1-2975-4f74-9ca3-22c95366e517 starting
+
+[2026-10-29 12:20:39.622] info: [remote-source-provider] Ending asset stream for d5c01cb1-2975-4f74-9ca3-22c95366e517
+
+[2026-10-29 12:20:40.041] info: [remote-source-provider] Asset 0ad051aa-db79-46a5-8c16-968dc451ff2f starting
+
+[2026-10-29 12:20:40.348] info: [remote-source-provider] Ending asset stream for 0ad051aa-db79-46a5-8c16-968dc451ff2f
+
+[2026-10-29 12:20:40.660] info: [remote-source-provider] Asset 9514b1b2-3374-4515-8b57-ff7ea56cc98e starting
+
+[2026-10-29 12:20:40.661] info: [remote-source-provider] Ending asset stream for 9514b1b2-3374-4515-8b57-ff7ea56cc98e
+
+[2026-10-29 12:20:40.959] info: [remote-source-provider] Asset e230680b-c3a4-4aac-8ba6-fd2128a98563 starting
+
+[2026-10-29 12:20:40.961] info: [remote-source-provider] Ending asset stream for e230680b-c3a4-4aac-8ba6-fd2128a98563
+
+[2026-10-29 12:20:41.261] info: [remote-source-provider] Asset d792f690-44cd-4b01-87c1-89fde749df1b starting
+
+[2026-10-29 12:20:41.261] info: [remote-source-provider] Ending asset stream for d792f690-44cd-4b01-87c1-89fde749df1b
+
+[2026-10-29 12:20:41.558] info: [remote-source-provider] Asset 0abd54b8-fb2a-4dc5-ae04-216024c33f83 starting
+
+[2026-10-29 12:20:41.560] info: [remote-source-provider] Ending asset stream for 0abd54b8-fb2a-4dc5-ae04-216024c33f83
+
+[2026-10-29 12:20:41.861] info: [remote-source-provider] Asset fe3d0d42-f3f7-4df1-a866-d119412c4be8 starting
+
+[2026-10-29 12:20:41.862] info: [remote-source-provider] Ending asset stream for fe3d0d42-f3f7-4df1-a866-d119412c4be8
+
+[2026-10-29 12:20:42.170] info: [remote-source-provider] Asset ff741b35-20d6-438a-82d5-26a90c646be1 starting
+
+[2026-10-29 12:20:42.172] info: [remote-source-provider] Ending asset stream for ff741b35-20d6-438a-82d5-26a90c646be1
+
+[2026-10-29 12:20:42.477] info: [remote-source-provider] Asset 7e3eadad-8001-4fc7-807e-1b2b5d28a09b starting
+
+[2026-10-29 12:20:42.477] info: [remote-source-provider] Ending asset stream for 7e3eadad-8001-4fc7-807e-1b2b5d28a09b
+
+[2026-10-29 12:20:42.784] info: [remote-source-provider] Asset d6738c2d-04da-466d-820f-0822939ab9d3 starting
+
+[2026-10-29 12:20:42.785] info: [remote-source-provider] Ending asset stream for d6738c2d-04da-466d-820f-0822939ab9d3
+
+[2026-10-29 12:20:43.092] info: [remote-source-provider] Asset ec8e72eb-e83e-4fc4-a2e8-fe188aec2de2 starting
+
+[2026-10-29 12:20:43.094] info: [remote-source-provider] Ending asset stream for ec8e72eb-e83e-4fc4-a2e8-fe188aec2de2
+
+[2026-10-29 12:20:43.394] info: [remote-source-provider] Asset 347138d6-ed71-4b62-9446-89049981e3d3 starting
+
+[2026-10-29 12:20:43.396] info: [remote-source-provider] Ending asset stream for 347138d6-ed71-4b62-9446-89049981e3d3
+
+[2026-10-29 12:20:43.698] info: [remote-source-provider] Asset 09408a0b-e3d5-4f21-8aa6-c15cc1483481 starting
+
+[2026-10-29 12:20:43.699] info: [remote-source-provider] Ending asset stream for 09408a0b-e3d5-4f21-8aa6-c15cc1483481
+
+[2026-10-29 12:20:43.995] info: [remote-source-provider] Asset 5efbc443-21ea-4b01-8e04-e07539eb0d6e starting
+
+[2026-10-29 12:20:43.996] info: [remote-source-provider] Ending asset stream for 5efbc443-21ea-4b01-8e04-e07539eb0d6e
+
+[2026-10-29 12:20:44.299] info: [remote-source-provider] Asset 0db827a4-0f4a-4bb0-851b-3a60e393f524 starting
+
+[2026-10-29 12:20:44.300] info: [remote-source-provider] Ending asset stream for 0db827a4-0f4a-4bb0-851b-3a60e393f524
+
+[2026-10-29 12:20:44.596] info: [remote-source-provider] Asset 082e63d5-96f9-4bd8-bf4a-5ad4b8638e07 starting
+
+[2026-10-29 12:20:44.597] info: [remote-source-provider] Ending asset stream for 082e63d5-96f9-4bd8-bf4a-5ad4b8638e07
+
+[2026-10-29 12:20:44.897] info: [remote-source-provider] Asset ddc98d93-e33a-4df0-8a22-304852975f30 starting
+
+[2026-10-29 12:20:44.898] info: [remote-source-provider] Ending asset stream for ddc98d93-e33a-4df0-8a22-304852975f30
+
+[2026-10-29 12:20:45.195] info: [remote-source-provider] Asset 7835b623-8989-476b-9167-fa5dda42bc15 starting
+
+[2026-10-29 12:20:45.197] info: [remote-source-provider] Ending asset stream for 7835b623-8989-476b-9167-fa5dda42bc15
+
+[2026-10-29 12:20:45.499] info: [remote-source-provider] Asset d2cb183b-d6e3-4a17-88b3-29b71c29e8c0 starting
+
+[2026-10-29 12:20:45.501] info: [remote-source-provider] Ending asset stream for d2cb183b-d6e3-4a17-88b3-29b71c29e8c0
+
+[2026-10-29 12:20:45.797] info: [remote-source-provider] Asset efed6de4-327b-4a1d-be7d-18f1efdc2268 starting
+
+[2026-10-29 12:20:45.799] info: [remote-source-provider] Ending asset stream for efed6de4-327b-4a1d-be7d-18f1efdc2268
+
+[2026-10-29 12:20:46.102] info: [remote-source-provider] Asset 65861df9-e06d-4e58-950b-6c4c6f7fe83e starting
+
+[2026-10-29 12:20:46.103] info: [remote-source-provider] Ending asset stream for 65861df9-e06d-4e58-950b-6c4c6f7fe83e
+
+[2026-10-29 12:20:46.400] info: [remote-source-provider] Asset 87fa19d5-9d23-4513-9097-6c490e503e9f starting
+
+[2026-10-29 12:20:46.402] info: [remote-source-provider] Ending asset stream for 87fa19d5-9d23-4513-9097-6c490e503e9f
+
+[2026-10-29 12:20:46.703] info: [remote-source-provider] Asset 5776edc8-7be1-4a54-9ea0-b9c9587fa3ed starting
+
+[2026-10-29 12:20:46.705] info: [remote-source-provider] Ending asset stream for 5776edc8-7be1-4a54-9ea0-b9c9587fa3ed
+
+[2026-10-29 12:20:47.006] info: [remote-source-provider] Asset b95bbf11-0129-4a6e-8188-6479f698b825 starting
+
+[2026-10-29 12:20:47.006] info: [remote-source-provider] Ending asset stream for b95bbf11-0129-4a6e-8188-6479f698b825
+
+[2026-10-29 12:20:47.307] info: [remote-source-provider] Asset 7bb38494-3d1d-4818-a095-7e6de919a3d2 starting
+
+[2026-10-29 12:20:47.308] info: [remote-source-provider] Ending asset stream for 7bb38494-3d1d-4818-a095-7e6de919a3d2
+
+[2026-10-29 12:20:47.605] info: [remote-source-provider] Asset 5549adea-96a7-41e7-a5d5-f1f23773e326 starting
+
+[2026-10-29 12:20:47.607] info: [remote-source-provider] Ending asset stream for 5549adea-96a7-41e7-a5d5-f1f23773e326
+
+[2026-10-29 12:20:47.911] info: [remote-source-provider] Asset 5907c501-e1fe-4c1b-a818-b49ee3647033 starting
+
+[2026-10-29 12:20:47.912] info: [remote-source-provider] Ending asset stream for 5907c501-e1fe-4c1b-a818-b49ee3647033
+
+[2026-10-29 12:20:48.212] info: [remote-source-provider] Asset 3ace35cb-f1c0-4749-9ead-b026c808319d starting
+
+[2026-10-29 12:20:48.213] info: [remote-source-provider] Ending asset stream for 3ace35cb-f1c0-4749-9ead-b026c808319d
+
+[2026-10-29 12:20:48.516] info: [remote-source-provider] Asset 37fc5cc8-bc72-44c7-a24f-3aa3ed18ba1b starting
+
+[2026-10-29 12:20:48.517] info: [remote-source-provider] Ending asset stream for 37fc5cc8-bc72-44c7-a24f-3aa3ed18ba1b
+
+[2026-10-29 12:20:48.820] info: [remote-source-provider] Asset ecfdb5d1-7f27-4080-80f1-e5fa2787865e starting
+
+[2026-10-29 12:20:48.821] info: [remote-source-provider] Ending asset stream for ecfdb5d1-7f27-4080-80f1-e5fa2787865e
+
+[2026-10-29 12:20:49.122] info: [remote-source-provider] Asset 9b608bc5-48db-4db0-9316-7de82efd96fd starting
+
+[2026-10-29 12:20:49.122] info: [remote-source-provider] Ending asset stream for 9b608bc5-48db-4db0-9316-7de82efd96fd
+
+[2026-10-29 12:20:49.421] info: [remote-source-provider] Asset a9bd8130-0713-42f0-94dd-50b47ca2ae42 starting
+
+[2026-10-29 12:20:49.422] info: [remote-source-provider] Ending asset stream for a9bd8130-0713-42f0-94dd-50b47ca2ae42
+
+[2026-10-29 12:20:49.723] info: [remote-source-provider] Asset fa533eb4-d901-42a8-9e52-ee0739a32153 starting
+
+[2026-10-29 12:20:49.725] info: [remote-source-provider] Ending asset stream for fa533eb4-d901-42a8-9e52-ee0739a32153
+
+[2026-10-29 12:20:50.025] info: [remote-source-provider] Asset 01a54688-e6a7-4365-b598-33207134448a starting
+
+[2026-10-29 12:20:50.026] info: [remote-source-provider] Ending asset stream for 01a54688-e6a7-4365-b598-33207134448a
+
+[2026-10-29 12:20:50.324] info: [remote-source-provider] Asset b4e96e55-0429-4357-aa22-d9cd2dde43e9 starting
+
+[2026-10-29 12:20:50.324] info: [remote-source-provider] Ending asset stream for b4e96e55-0429-4357-aa22-d9cd2dde43e9
+
+[2026-10-29 12:20:50.626] info: [remote-source-provider] Asset 052a3252-df16-4c70-8485-795842c4f3f2 starting
+
+[2026-10-29 12:20:50.627] info: [remote-source-provider] Ending asset stream for 052a3252-df16-4c70-8485-795842c4f3f2
+
+[2026-10-29 12:20:50.924] info: [remote-source-provider] Asset c8c7327a-6c28-4e0f-8ee9-7d4167af2503 starting
+
+[2026-10-29 12:20:50.926] info: [remote-source-provider] Ending asset stream for c8c7327a-6c28-4e0f-8ee9-7d4167af2503
+
+[2026-10-29 12:20:51.229] info: [remote-source-provider] Asset 73d63040-e620-46af-b39b-fbca9561d473 starting
+
+[2026-10-29 12:20:51.230] info: [remote-source-provider] Ending asset stream for 73d63040-e620-46af-b39b-fbca9561d473
+
+[2026-10-29 12:20:51.530] info: [remote-source-provider] Asset 751bfdfa-c095-40fd-bdce-8a119a0421f9 starting
+
+[2026-10-29 12:20:51.532] info: [remote-source-provider] Ending asset stream for 751bfdfa-c095-40fd-bdce-8a119a0421f9
+
+[2026-10-29 12:20:51.829] info: [remote-source-provider] Asset 63c06ed8-db13-49cd-b084-8c849eb5b525 starting
+
+[2026-10-29 12:20:51.830] info: [remote-source-provider] Ending asset stream for 63c06ed8-db13-49cd-b084-8c849eb5b525
+
+[2026-10-29 12:20:52.135] info: [remote-source-provider] Asset ffca1f5b-de78-4706-aa5b-b4f33c5b91f0 starting
+
+[2026-10-29 12:20:52.136] info: [remote-source-provider] Ending asset stream for ffca1f5b-de78-4706-aa5b-b4f33c5b91f0
+
+[2026-10-29 12:20:52.433] info: [remote-source-provider] Asset 901ee3e2-439c-45f4-ac8d-2ee41f62c9af starting
+
+[2026-10-29 12:20:52.434] info: [remote-source-provider] Ending asset stream for 901ee3e2-439c-45f4-ac8d-2ee41f62c9af
+
+[2026-10-29 12:20:52.731] info: [remote-source-provider] Asset 93a8f93a-abaa-4fef-976d-8da37eb2281f starting
+
+[2026-10-29 12:20:52.732] info: [remote-source-provider] Ending asset stream for 93a8f93a-abaa-4fef-976d-8da37eb2281f
+
+[2026-10-29 12:20:53.035] info: [remote-source-provider] Asset 44f04882-1a0a-43aa-b5e8-c780785f3069 starting
+
+[2026-10-29 12:20:53.036] info: [remote-source-provider] Ending asset stream for 44f04882-1a0a-43aa-b5e8-c780785f3069
+
+[2026-10-29 12:20:53.339] info: [remote-source-provider] Asset 056293af-558d-4f2d-a8e3-00c4a31cebc6 starting
+
+[2026-10-29 12:20:53.341] info: [remote-source-provider] Ending asset stream for 056293af-558d-4f2d-a8e3-00c4a31cebc6
+
+[2026-10-29 12:20:53.644] info: [remote-source-provider] Asset 4d04fbfb-0b82-4001-8a0d-ab4d0b48d9b1 starting
+
+[2026-10-29 12:20:53.647] info: [remote-source-provider] Ending asset stream for 4d04fbfb-0b82-4001-8a0d-ab4d0b48d9b1
+
+[2026-10-29 12:20:53.945] info: [remote-source-provider] Asset 05196451-069b-4fd6-a64b-d1c2d011fdfb starting
+
+[2026-10-29 12:20:53.946] info: [remote-source-provider] Ending asset stream for 05196451-069b-4fd6-a64b-d1c2d011fdfb
+
+[2026-10-29 12:20:54.245] info: [remote-source-provider] Asset 50855e2e-fa83-479e-9519-bb3f4bea9596 starting
+
+[2026-10-29 12:20:54.246] info: [remote-source-provider] Ending asset stream for 50855e2e-fa83-479e-9519-bb3f4bea9596
+
+[2026-10-29 12:20:54.546] info: [remote-source-provider] Asset 555747d7-47b1-40f1-ae4b-78ee79d9ca67 starting
+
+[2026-10-29 12:20:54.547] info: [remote-source-provider] Ending asset stream for 555747d7-47b1-40f1-ae4b-78ee79d9ca67
+
+[2026-10-29 12:20:54.848] info: [remote-source-provider] Asset b3d15d92-40fd-48bc-b748-78a70c2cbc53 starting
+
+[2026-10-29 12:20:54.849] info: [remote-source-provider] Ending asset stream for b3d15d92-40fd-48bc-b748-78a70c2cbc53
+
+[2026-10-29 12:20:55.147] info: [remote-source-provider] Asset d97a3988-3b42-4275-a005-7c53b7488a3a starting
+
+[2026-10-29 12:20:55.148] info: [remote-source-provider] Ending asset stream for d97a3988-3b42-4275-a005-7c53b7488a3a
+
+[2026-10-29 12:20:55.448] info: [remote-source-provider] Asset 56e64cf0-2a73-471d-91b3-795af99753b7 starting
+
+[2026-10-29 12:20:55.449] info: [remote-source-provider] Ending asset stream for 56e64cf0-2a73-471d-91b3-795af99753b7
+
+[2026-10-29 12:20:55.751] info: [remote-source-provider] Asset b047e8b7-30ab-4ff9-aa58-0aa8c3e09b3c starting
+
+[2026-10-29 12:20:55.752] info: [remote-source-provider] Ending asset stream for b047e8b7-30ab-4ff9-aa58-0aa8c3e09b3c
+
+[2026-10-29 12:20:56.056] info: [remote-source-provider] Asset 2de975a2-eadb-4c8f-a623-8bb4c8ef64ae starting
+
+[2026-10-29 12:20:56.056] info: [remote-source-provider] Ending asset stream for 2de975a2-eadb-4c8f-a623-8bb4c8ef64ae
+
+[2026-10-29 12:20:56.355] info: [remote-source-provider] Asset 72dd9433-a33e-45cc-a845-595121d4ecd6 starting
+
+[2026-10-29 12:20:56.356] info: [remote-source-provider] Ending asset stream for 72dd9433-a33e-45cc-a845-595121d4ecd6
+
+[2026-10-29 12:20:56.656] info: [remote-source-provider] Asset 03a35c0b-0c02-4886-ac26-494e4b1e2e81 starting
+
+[2026-10-29 12:20:56.657] info: [remote-source-provider] Ending asset stream for 03a35c0b-0c02-4886-ac26-494e4b1e2e81
+
+[2026-10-29 12:20:56.955] info: [remote-source-provider] Asset b6bf4f06-3046-4868-bf2b-38fe993ffeda starting
+
+[2026-10-29 12:20:56.956] info: [remote-source-provider] Ending asset stream for b6bf4f06-3046-4868-bf2b-38fe993ffeda
+
+[2026-10-29 12:20:57.261] info: [remote-source-provider] Asset dfbfca0d-8ba0-4a7c-b327-31fbf4c9fe87 starting
+
+[2026-10-29 12:20:57.262] info: [remote-source-provider] Ending asset stream for dfbfca0d-8ba0-4a7c-b327-31fbf4c9fe87
+
+[2026-10-29 12:20:57.563] info: [remote-source-provider] Asset 938b0b60-dc93-47c1-acf4-6c2f3f37a7ad starting
+
+[2026-10-29 12:20:57.564] info: [remote-source-provider] Ending asset stream for 938b0b60-dc93-47c1-acf4-6c2f3f37a7ad
+
+[2026-10-29 12:20:57.865] info: [remote-source-provider] Asset 869c1af5-acb9-4b16-9c9e-a01a1d55143a starting
+
+[2026-10-29 12:20:57.865] info: [remote-source-provider] Ending asset stream for 869c1af5-acb9-4b16-9c9e-a01a1d55143a
+
+[2026-10-29 12:20:58.162] info: [remote-source-provider] Asset dfe46618-c044-44ae-852b-43dfbe0f5069 starting
+
+[2026-10-29 12:20:58.163] info: [remote-source-provider] Ending asset stream for dfe46618-c044-44ae-852b-43dfbe0f5069
+
+[2026-10-29 12:20:58.466] info: [remote-source-provider] Asset 10343d28-a75f-482a-a546-67c0395fddd7 starting
+
+[2026-10-29 12:20:58.467] info: [remote-source-provider] Ending asset stream for 10343d28-a75f-482a-a546-67c0395fddd7
+
+[2026-10-29 12:20:58.763] info: [remote-source-provider] Asset 7be91670-1891-4e93-b110-f8b571102b27 starting
+
+[2026-10-29 12:20:58.764] info: [remote-source-provider] Ending asset stream for 7be91670-1891-4e93-b110-f8b571102b27
+
+[2026-10-29 12:20:59.079] info: [remote-source-provider] Asset d93bc633-0d3b-4673-a1d0-e91d104abe3c starting
+
+[2026-10-29 12:20:59.079] info: [remote-source-provider] Ending asset stream for d93bc633-0d3b-4673-a1d0-e91d104abe3c
+
+[2026-10-29 12:20:59.400] info: [remote-source-provider] Asset 004dab5f-5772-4ab8-95b7-e1908c4c0c91 starting
+
+[2026-10-29 12:20:59.401] info: [remote-source-provider] Ending asset stream for 004dab5f-5772-4ab8-95b7-e1908c4c0c91
+
+[2026-10-29 12:20:59.706] info: [remote-source-provider] Asset afdf7d85-0fcf-444f-9083-5baf6a289e19 starting
+
+[2026-10-29 12:20:59.707] info: [remote-source-provider] Ending asset stream for afdf7d85-0fcf-444f-9083-5baf6a289e19
+
+[2026-10-29 12:21:00.017] info: [remote-source-provider] Asset 7f1de537-df7a-4a09-91b4-450b33d5cd61 starting
+
+[2026-10-29 12:21:00.018] info: [remote-source-provider] Ending asset stream for 7f1de537-df7a-4a09-91b4-450b33d5cd61
+
+[2026-10-29 12:21:00.315] info: [remote-source-provider] Asset f1075e2a-53c2-4fb7-aa27-a4620e7ddcbe starting
+
+[2026-10-29 12:21:00.317] info: [remote-source-provider] Ending asset stream for f1075e2a-53c2-4fb7-aa27-a4620e7ddcbe
+
+[2026-10-29 12:21:00.622] info: [remote-source-provider] Asset d5a7dbf4-380a-42a9-8f80-981e1b218d80 starting
+
+[2026-10-29 12:21:00.623] info: [remote-source-provider] Ending asset stream for d5a7dbf4-380a-42a9-8f80-981e1b218d80
+
+[2026-10-29 12:21:00.934] info: [remote-source-provider] Asset 9a379f56-0c10-4b82-bf8f-b5bbc40fef75 starting
+
+[2026-10-29 12:21:00.934] info: [remote-source-provider] Ending asset stream for 9a379f56-0c10-4b82-bf8f-b5bbc40fef75
+
+[2026-10-29 12:21:01.235] info: [remote-source-provider] Asset 5bf57e9c-878d-445f-9501-5c98c2704e03 starting
+
+[2026-10-29 12:21:01.236] info: [remote-source-provider] Ending asset stream for 5bf57e9c-878d-445f-9501-5c98c2704e03
+
+[2026-10-29 12:21:01.541] info: [remote-source-provider] Asset 444bd5bf-f91d-4f13-a3b0-2417c4266684 starting
+
+[2026-10-29 12:21:01.542] info: [remote-source-provider] Ending asset stream for 444bd5bf-f91d-4f13-a3b0-2417c4266684
+
+[2026-10-29 12:21:01.843] info: [remote-source-provider] Asset e829b547-5dad-4ee0-8e6b-4691ca082967 starting
+
+[2026-10-29 12:21:01.845] info: [remote-source-provider] Ending asset stream for e829b547-5dad-4ee0-8e6b-4691ca082967
+
+[2026-10-29 12:21:02.157] info: [remote-source-provider] Asset 78718323-8923-4ac6-a081-ce7b85602689 starting
+
+[2026-10-29 12:21:02.159] info: [remote-source-provider] Ending asset stream for 78718323-8923-4ac6-a081-ce7b85602689
+
+[2026-10-29 12:21:02.468] info: [remote-source-provider] Asset 6a5e542f-b221-409d-b7ed-cc108a075a10 starting
+
+[2026-10-29 12:21:02.470] info: [remote-source-provider] Ending asset stream for 6a5e542f-b221-409d-b7ed-cc108a075a10
+
+[2026-10-29 12:21:02.771] info: [remote-source-provider] Asset b603d601-1b0b-4122-9558-8b2be935cd65 starting
+
+[2026-10-29 12:21:02.772] info: [remote-source-provider] Ending asset stream for b603d601-1b0b-4122-9558-8b2be935cd65
+
+[2026-10-29 12:21:03.077] info: [remote-source-provider] Asset d2de670d-9efc-40bd-a3c4-c22b1be24c0f starting
+
+[2026-10-29 12:21:03.079] info: [remote-source-provider] Ending asset stream for d2de670d-9efc-40bd-a3c4-c22b1be24c0f
+
+[2026-10-29 12:21:03.380] info: [remote-source-provider] Asset d9306e52-3c91-4b51-9d29-1a544bc0be9e starting
+
+[2026-10-29 12:21:03.382] info: [remote-source-provider] Ending asset stream for d9306e52-3c91-4b51-9d29-1a544bc0be9e
+
+[2026-10-29 12:21:03.689] info: [remote-source-provider] Asset 44479c83-00da-40a0-bcef-e6df0d979209 starting
+
+[2026-10-29 12:21:03.690] info: [remote-source-provider] Ending asset stream for 44479c83-00da-40a0-bcef-e6df0d979209
+
+[2026-10-29 12:21:04.002] info: [remote-source-provider] Asset b8458db1-d5c4-4433-97d6-af83848c8836 starting
+
+[2026-10-29 12:21:04.003] info: [remote-source-provider] Ending asset stream for b8458db1-d5c4-4433-97d6-af83848c8836
+
+[2026-10-29 12:21:04.307] info: [remote-source-provider] Asset 706dc131-926b-484c-8074-dcffa529e7d1 starting
+
+[2026-10-29 12:21:04.307] info: [remote-source-provider] Ending asset stream for 706dc131-926b-484c-8074-dcffa529e7d1
+
+[2026-10-29 12:21:04.612] info: [remote-source-provider] Asset 834c3614-70d5-48e2-87e0-cabcf14350dc starting
+
+[2026-10-29 12:21:04.614] info: [remote-source-provider] Ending asset stream for 834c3614-70d5-48e2-87e0-cabcf14350dc
+
+[2026-10-29 12:21:04.913] info: [remote-source-provider] Asset 0ac3a61d-214b-4b6a-8253-99076017dcfc starting
+
+[2026-10-29 12:21:04.914] info: [remote-source-provider] Ending asset stream for 0ac3a61d-214b-4b6a-8253-99076017dcfc
+
+[2026-10-29 12:21:05.219] info: [remote-source-provider] Asset 47017222-1e93-49f1-9456-d567b7d7d779 starting
+
+[2026-10-29 12:21:05.221] info: [remote-source-provider] Ending asset stream for 47017222-1e93-49f1-9456-d567b7d7d779
+
+[2026-10-29 12:21:05.528] info: [remote-source-provider] Asset dc7ea673-6f27-414a-9faa-6503338b8c6f starting
+
+[2026-10-29 12:21:05.530] info: [remote-source-provider] Ending asset stream for dc7ea673-6f27-414a-9faa-6503338b8c6f
+
+[2026-10-29 12:21:05.835] info: [remote-source-provider] Asset 9bed1e51-6422-489b-b57a-1a2a686c30a1 starting
+
+[2026-10-29 12:21:05.836] info: [remote-source-provider] Ending asset stream for 9bed1e51-6422-489b-b57a-1a2a686c30a1
+
+[2026-10-29 12:21:06.145] info: [remote-source-provider] Asset 2129b4a8-3bb2-4da7-acfe-ec3e3385e787 starting
+
+[2026-10-29 12:21:06.147] info: [remote-source-provider] Ending asset stream for 2129b4a8-3bb2-4da7-acfe-ec3e3385e787
+
+[2026-10-29 12:21:06.447] info: [remote-source-provider] Asset 59bd3408-97a8-412a-b9f9-e41a3f8310e7 starting
+
+[2026-10-29 12:21:06.449] info: [remote-source-provider] Ending asset stream for 59bd3408-97a8-412a-b9f9-e41a3f8310e7
+
+[2026-10-29 12:21:06.756] info: [remote-source-provider] Asset ae2b4823-4822-4a7f-ba41-261cbcf65c43 starting
+
+[2026-10-29 12:21:06.757] info: [remote-source-provider] Ending asset stream for ae2b4823-4822-4a7f-ba41-261cbcf65c43
+
+[2026-10-29 12:21:07.063] info: [remote-source-provider] Asset 88ce208e-d82d-464b-b70d-5265016b433c starting
+
+[2026-10-29 12:21:07.064] info: [remote-source-provider] Ending asset stream for 88ce208e-d82d-464b-b70d-5265016b433c
+
+[2026-10-29 12:21:07.367] info: [remote-source-provider] Asset 1aa3b947-8a43-4489-a576-8e59ae670c66 starting
+
+[2026-10-29 12:21:07.368] info: [remote-source-provider] Ending asset stream for 1aa3b947-8a43-4489-a576-8e59ae670c66
+
+[2026-10-29 12:21:07.677] info: [remote-source-provider] Asset c227015d-295e-483c-a7f0-dcc16b47c968 starting
+
+[2026-10-29 12:21:07.679] info: [remote-source-provider] Ending asset stream for c227015d-295e-483c-a7f0-dcc16b47c968
+
+[2026-10-29 12:21:07.979] info: [remote-source-provider] Asset 16f41684-eea5-4c7a-8551-a0d555196c16 starting
+
+[2026-10-29 12:21:07.981] info: [remote-source-provider] Ending asset stream for 16f41684-eea5-4c7a-8551-a0d555196c16
+
+[2026-10-29 12:21:08.283] info: [remote-source-provider] Asset cbb8346c-8573-4c31-ad79-e42e82220abc starting
+
+[2026-10-29 12:21:08.285] info: [remote-source-provider] Ending asset stream for cbb8346c-8573-4c31-ad79-e42e82220abc
+
+[2026-10-29 12:21:08.595] info: [remote-source-provider] Asset 49d35d28-9b76-4a48-8492-fd5591601208 starting
+
+[2026-10-29 12:21:08.597] info: [remote-source-provider] Ending asset stream for 49d35d28-9b76-4a48-8492-fd5591601208
+
+[2026-10-29 12:21:08.990] info: [remote-source-provider] Asset 14cbfb90-ad45-44aa-935f-e867a077247a starting
+
+[2026-10-29 12:21:08.992] info: [remote-source-provider] Ending asset stream for 14cbfb90-ad45-44aa-935f-e867a077247a
+
+[2026-10-29 12:21:09.410] info: [remote-source-provider] Asset a2f908a2-8bf5-4f95-83b1-409d109e97b3 starting
+
+[2026-10-29 12:21:09.766] info: [remote-source-provider] Ending asset stream for a2f908a2-8bf5-4f95-83b1-409d109e97b3
+
+[2026-10-29 12:21:10.114] info: [remote-source-provider] Asset adeac564-fb5b-41bc-8a8c-7c05006fda29 starting
+
+[2026-10-29 12:21:10.116] info: [remote-source-provider] Ending asset stream for adeac564-fb5b-41bc-8a8c-7c05006fda29
+
+[2026-10-29 12:21:10.509] info: [remote-source-provider] Asset 66e68012-6c43-4d4b-b7d7-6973a2c13a81 starting
+
+[2026-10-29 12:21:10.513] info: [remote-source-provider] Ending asset stream for 66e68012-6c43-4d4b-b7d7-6973a2c13a81
+
+[2026-10-29 12:21:10.819] info: [remote-source-provider] Asset 002ef825-a669-467c-b8a5-1d4ba758e8d8 starting
+
+[2026-10-29 12:21:10.820] info: [remote-source-provider] Ending asset stream for 002ef825-a669-467c-b8a5-1d4ba758e8d8
+
+[2026-10-29 12:21:11.126] info: [remote-source-provider] Asset 43a090c8-09eb-4acd-9800-ae06b61b433a starting
+
+[2026-10-29 12:21:11.127] info: [remote-source-provider] Ending asset stream for 43a090c8-09eb-4acd-9800-ae06b61b433a
+
+[2026-10-29 12:21:11.445] info: [remote-source-provider] Asset 2d30dd2e-9ace-4126-a3ef-552b5350b9ee starting
+
+[2026-10-29 12:21:11.446] info: [remote-source-provider] Ending asset stream for 2d30dd2e-9ace-4126-a3ef-552b5350b9ee
+
+[2026-10-29 12:21:11.749] info: [remote-source-provider] Asset b5115c8b-d3ec-43fd-891b-c99f4295a792 starting
+
+[2026-10-29 12:21:11.750] info: [remote-source-provider] Ending asset stream for b5115c8b-d3ec-43fd-891b-c99f4295a792
+
+[2026-10-29 12:21:12.067] info: [remote-source-provider] Asset e62b953c-9bdd-4a36-ac11-0f45baefbc9f starting
+
+[2026-10-29 12:21:12.068] info: [remote-source-provider] Ending asset stream for e62b953c-9bdd-4a36-ac11-0f45baefbc9f
+
+[2026-10-29 12:21:12.371] info: [remote-source-provider] Asset 6c1efaa1-44f3-484c-a0d5-a7ea0a5af1d0 starting
+
+[2026-10-29 12:21:12.372] info: [remote-source-provider] Ending asset stream for 6c1efaa1-44f3-484c-a0d5-a7ea0a5af1d0
+
+[2026-10-29 12:21:12.697] info: [remote-source-provider] Asset db19c983-7a75-42ff-8f33-b4c6ca3d3175 starting
+
+[2026-10-29 12:21:12.698] info: [remote-source-provider] Ending asset stream for db19c983-7a75-42ff-8f33-b4c6ca3d3175
+
+[2026-10-29 12:21:12.997] info: [remote-source-provider] Asset 79e856d4-9452-4a5d-aa30-8ed7ce09ee35 starting
+
+[2026-10-29 12:21:12.998] info: [remote-source-provider] Ending asset stream for 79e856d4-9452-4a5d-aa30-8ed7ce09ee35
+
+[2026-10-29 12:21:13.299] info: [remote-source-provider] Asset 8e60eef4-8f0e-4635-95f2-e12688c70771 starting
+
+[2026-10-29 12:21:13.299] info: [remote-source-provider] Ending asset stream for 8e60eef4-8f0e-4635-95f2-e12688c70771
+
+[2026-10-29 12:21:13.597] info: [remote-source-provider] Asset ee57c77a-ff57-426f-b448-9e25df461bb1 starting
+
+[2026-10-29 12:21:13.597] info: [remote-source-provider] Ending asset stream for ee57c77a-ff57-426f-b448-9e25df461bb1
+
+[2026-10-29 12:21:13.896] info: [remote-source-provider] Asset e41084fd-207c-4487-bada-a507095889eb starting
+
+[2026-10-29 12:21:13.897] info: [remote-source-provider] Ending asset stream for e41084fd-207c-4487-bada-a507095889eb
+
+[2026-10-29 12:21:14.193] info: [remote-source-provider] Asset a2df7607-4ef0-474d-8b58-6c0cda24a62c starting
+
+[2026-10-29 12:21:14.193] info: [remote-source-provider] Ending asset stream for a2df7607-4ef0-474d-8b58-6c0cda24a62c
+
+[2026-10-29 12:21:14.493] info: [remote-source-provider] Asset 0a89d5a9-8fa5-408f-8a52-9d1b61c376d0 starting
+
+[2026-10-29 12:21:14.494] info: [remote-source-provider] Ending asset stream for 0a89d5a9-8fa5-408f-8a52-9d1b61c376d0
+
+[2026-10-29 12:21:14.796] info: [remote-source-provider] Asset 6a4b5418-437b-40fb-9f10-bde42e43561f starting
+
+[2026-10-29 12:21:14.797] info: [remote-source-provider] Ending asset stream for 6a4b5418-437b-40fb-9f10-bde42e43561f
+
+[2026-10-29 12:21:15.093] info: [remote-source-provider] Asset 5af84839-cd08-4ee9-b950-e03c6e83fefc starting
+
+[2026-10-29 12:21:15.094] info: [remote-source-provider] Ending asset stream for 5af84839-cd08-4ee9-b950-e03c6e83fefc
+
+[2026-10-29 12:21:15.390] info: [remote-source-provider] Asset ee82691f-9e38-45be-ac79-111a0189dbae starting
+
+[2026-10-29 12:21:15.390] info: [remote-source-provider] Ending asset stream for ee82691f-9e38-45be-ac79-111a0189dbae
+
+[2026-10-29 12:21:15.693] info: [remote-source-provider] Asset 0adc1a9d-9d77-4100-8653-52665132d5f0 starting
+
+[2026-10-29 12:21:15.694] info: [remote-source-provider] Ending asset stream for 0adc1a9d-9d77-4100-8653-52665132d5f0
+
+[2026-10-29 12:21:15.994] info: [remote-source-provider] Asset 2f40aa5b-d95e-4469-8235-b52dbe3330a4 starting
+
+[2026-10-29 12:21:15.995] info: [remote-source-provider] Ending asset stream for 2f40aa5b-d95e-4469-8235-b52dbe3330a4
+
+[2026-10-29 12:21:16.296] info: [remote-source-provider] Asset 18b9b9cc-ba19-41ca-8564-f39d212343f9 starting
+
+[2026-10-29 12:21:16.297] info: [remote-source-provider] Ending asset stream for 18b9b9cc-ba19-41ca-8564-f39d212343f9
+
+[2026-10-29 12:21:16.593] info: [remote-source-provider] Asset 5e1702b0-e403-4416-96f2-f3a824556962 starting
+
+[2026-10-29 12:21:16.594] info: [remote-source-provider] Ending asset stream for 5e1702b0-e403-4416-96f2-f3a824556962
+
+[2026-10-29 12:21:16.892] info: [remote-source-provider] Asset 034d01a3-4ea5-4750-9418-e74f3fb726f3 starting
+
+[2026-10-29 12:21:16.894] info: [remote-source-provider] Ending asset stream for 034d01a3-4ea5-4750-9418-e74f3fb726f3
+
+[2026-10-29 12:21:17.195] info: [remote-source-provider] Asset adae5332-af85-4848-b08e-0cf135047b3c starting
+
+[2026-10-29 12:21:17.195] info: [remote-source-provider] Ending asset stream for adae5332-af85-4848-b08e-0cf135047b3c
+
+[2026-10-29 12:21:17.493] info: [remote-source-provider] Asset c00f49e1-c2bf-4f5d-9c4e-0e7899c56e03 starting
+
+[2026-10-29 12:21:17.494] info: [remote-source-provider] Ending asset stream for c00f49e1-c2bf-4f5d-9c4e-0e7899c56e03
+
+[2026-10-29 12:21:17.811] info: [remote-source-provider] Asset 2ebfab4d-1786-4eff-bbf8-c41684137b0b starting
+
+[2026-10-29 12:21:17.813] info: [remote-source-provider] Ending asset stream for 2ebfab4d-1786-4eff-bbf8-c41684137b0b
+
+[2026-10-29 12:21:18.118] info: [remote-source-provider] Asset 596d7fdf-eace-40e9-b52b-780cfd03e654 starting
+
+[2026-10-29 12:21:18.119] info: [remote-source-provider] Ending asset stream for 596d7fdf-eace-40e9-b52b-780cfd03e654
+
+[2026-10-29 12:21:18.476] info: [remote-source-provider] Asset 7042a805-a21d-4df0-bf9a-f5dfd52d997a starting
+
+[2026-10-29 12:21:18.477] info: [remote-source-provider] Ending asset stream for 7042a805-a21d-4df0-bf9a-f5dfd52d997a
+
+[2026-10-29 12:21:18.779] info: [remote-source-provider] Asset c7ca2140-cf82-4544-8824-b251cd30b9e0 starting
+
+[2026-10-29 12:21:18.781] info: [remote-source-provider] Ending asset stream for c7ca2140-cf82-4544-8824-b251cd30b9e0
+
+[2026-10-29 12:21:19.090] info: [remote-source-provider] Asset e9af8844-fdd7-4fbf-a929-ad9de4600546 starting
+
+[2026-10-29 12:21:19.091] info: [remote-source-provider] Ending asset stream for e9af8844-fdd7-4fbf-a929-ad9de4600546
+
+[2026-10-29 12:21:19.390] info: [remote-source-provider] Asset 238a3629-b160-465e-bee3-bb62cdebef17 starting
+
+[2026-10-29 12:21:19.391] info: [remote-source-provider] Ending asset stream for 238a3629-b160-465e-bee3-bb62cdebef17
+
+[2026-10-29 12:21:19.691] info: [remote-source-provider] Asset c66a7575-36d2-41d1-a6fb-ed97ae9cef88 starting
+
+[2026-10-29 12:21:19.692] info: [remote-source-provider] Ending asset stream for c66a7575-36d2-41d1-a6fb-ed97ae9cef88
+
+[2026-10-29 12:21:20.019] info: [remote-source-provider] Asset 2abb646d-9679-47bc-909c-f75f6d173742 starting
+
+[2026-10-29 12:21:20.020] info: [remote-source-provider] Ending asset stream for 2abb646d-9679-47bc-909c-f75f6d173742
+
+[2026-10-29 12:21:20.344] info: [remote-source-provider] Asset 2cd18518-d1b6-442b-9ac5-b694fc6b2957 starting
+
+[2026-10-29 12:21:20.346] info: [remote-source-provider] Ending asset stream for 2cd18518-d1b6-442b-9ac5-b694fc6b2957
+
+[2026-10-29 12:21:20.685] info: [remote-source-provider] Asset 582030d3-a3aa-42af-9618-f38102de2001 starting
+
+[2026-10-29 12:21:20.687] info: [remote-source-provider] Ending asset stream for 582030d3-a3aa-42af-9618-f38102de2001
+
+[2026-10-29 12:21:21.039] info: [remote-source-provider] Asset feec689d-708f-453c-81b7-f97575d09cd0 starting
+
+[2026-10-29 12:21:21.040] info: [remote-source-provider] Ending asset stream for feec689d-708f-453c-81b7-f97575d09cd0
+
+[2026-10-29 12:21:21.337] info: [remote-source-provider] Asset b94863bc-d887-45cc-8255-dbad405d1ba4 starting
+
+[2026-10-29 12:21:21.338] info: [remote-source-provider] Ending asset stream for b94863bc-d887-45cc-8255-dbad405d1ba4
+
+[2026-10-29 12:21:21.634] info: [remote-source-provider] Asset 5df27454-988c-480a-b3dc-d102eae14f8b starting
+
+[2026-10-29 12:21:21.636] info: [remote-source-provider] Ending asset stream for 5df27454-988c-480a-b3dc-d102eae14f8b
+
+[2026-10-29 12:21:21.935] info: [remote-source-provider] Asset 88292047-5873-4f04-8050-6007c3e27293 starting
+
+[2026-10-29 12:21:21.936] info: [remote-source-provider] Ending asset stream for 88292047-5873-4f04-8050-6007c3e27293
+
+[2026-10-29 12:21:22.238] info: [remote-source-provider] Asset 90dd4754-45b9-447f-a39e-7ed397ba6694 starting
+
+[2026-10-29 12:21:22.239] info: [remote-source-provider] Ending asset stream for 90dd4754-45b9-447f-a39e-7ed397ba6694
+
+[2026-10-29 12:21:22.541] info: [remote-source-provider] Asset ae4c9227-1ee9-4361-80fa-d87704fe8bfb starting
+
+[2026-10-29 12:21:22.543] info: [remote-source-provider] Ending asset stream for ae4c9227-1ee9-4361-80fa-d87704fe8bfb
+
+[2026-10-29 12:21:22.840] info: [remote-source-provider] Asset 8088d31e-5293-4e0d-95d2-c8247ead5adf starting
+
+[2026-10-29 12:21:22.842] info: [remote-source-provider] Ending asset stream for 8088d31e-5293-4e0d-95d2-c8247ead5adf
+
+[2026-10-29 12:21:23.152] info: [remote-source-provider] Asset 2a364761-73e3-4266-be71-77d457e93e27 starting
+
+[2026-10-29 12:21:23.153] info: [remote-source-provider] Ending asset stream for 2a364761-73e3-4266-be71-77d457e93e27
+
+[2026-10-29 12:21:23.454] info: [remote-source-provider] Asset e6ca2cd7-910e-4fbc-ac52-24cc81016e21 starting
+
+[2026-10-29 12:21:23.455] info: [remote-source-provider] Ending asset stream for e6ca2cd7-910e-4fbc-ac52-24cc81016e21
+
+[2026-10-29 12:21:23.758] info: [remote-source-provider] Asset babac3e9-442b-4d6b-9db2-30b2841392f9 starting
+
+[2026-10-29 12:21:23.759] info: [remote-source-provider] Ending asset stream for babac3e9-442b-4d6b-9db2-30b2841392f9
+
+[2026-10-29 12:21:24.077] info: [remote-source-provider] Asset de635655-6e27-4f4a-94f2-8224be25ce5d starting
+
+[2026-10-29 12:21:24.078] info: [remote-source-provider] Ending asset stream for de635655-6e27-4f4a-94f2-8224be25ce5d
+
+[2026-10-29 12:21:24.400] info: [remote-source-provider] Asset 156b80bc-882a-451d-8f65-988e4499c863 starting
+
+[2026-10-29 12:21:24.402] info: [remote-source-provider] Ending asset stream for 156b80bc-882a-451d-8f65-988e4499c863
+
+[2026-10-29 12:21:24.712] info: [remote-source-provider] Asset 65927ff7-5a22-49d6-937a-3d0465ac7509 starting
+
+[2026-10-29 12:21:24.713] info: [remote-source-provider] Ending asset stream for 65927ff7-5a22-49d6-937a-3d0465ac7509
+
+[2026-10-29 12:21:25.032] info: [remote-source-provider] Asset 9276fef5-c1b8-452d-a51d-002d8e33972f starting
+
+[2026-10-29 12:21:25.034] info: [remote-source-provider] Ending asset stream for 9276fef5-c1b8-452d-a51d-002d8e33972f
+
+[2026-10-29 12:21:25.337] info: [remote-source-provider] Asset 111e6789-6809-4fd6-8d6a-8535a1897573 starting
+
+[2026-10-29 12:21:25.338] info: [remote-source-provider] Ending asset stream for 111e6789-6809-4fd6-8d6a-8535a1897573
+
+[2026-10-29 12:21:25.642] info: [remote-source-provider] Asset f7f58641-f39d-4e1a-8422-fdda63f537b3 starting
+
+[2026-10-29 12:21:25.643] info: [remote-source-provider] Ending asset stream for f7f58641-f39d-4e1a-8422-fdda63f537b3
+
+[2026-10-29 12:21:25.951] info: [remote-source-provider] Asset 05651666-794d-4a8b-b2bc-8c112881ba49 starting
+
+[2026-10-29 12:21:25.953] info: [remote-source-provider] Ending asset stream for 05651666-794d-4a8b-b2bc-8c112881ba49
+
+[2026-10-29 12:21:26.258] info: [remote-source-provider] Asset 7abdfd13-c7ce-4a33-a7bd-772b740a2c8d starting
+
+[2026-10-29 12:21:26.259] info: [remote-source-provider] Ending asset stream for 7abdfd13-c7ce-4a33-a7bd-772b740a2c8d
+
+[2026-10-29 12:21:26.570] info: [remote-source-provider] Asset fbef1a64-c5ff-47a0-98e9-04a4b8dd6ea1 starting
+
+[2026-10-29 12:21:26.571] info: [remote-source-provider] Ending asset stream for fbef1a64-c5ff-47a0-98e9-04a4b8dd6ea1
+
+[2026-10-29 12:21:26.874] info: [remote-source-provider] Asset f9b0d619-beff-4784-9f02-b700140b5056 starting
+
+[2026-10-29 12:21:26.875] info: [remote-source-provider] Ending asset stream for f9b0d619-beff-4784-9f02-b700140b5056
+
+[2026-10-29 12:21:27.184] info: [remote-source-provider] Asset 72c447e2-b7de-407d-9cf0-95d120754e71 starting
+
+[2026-10-29 12:21:27.185] info: [remote-source-provider] Ending asset stream for 72c447e2-b7de-407d-9cf0-95d120754e71
+
+[2026-10-29 12:21:27.487] info: [remote-source-provider] Asset 29d43115-aee9-4d04-b004-049b9c906a14 starting
+
+[2026-10-29 12:21:27.487] info: [remote-source-provider] Ending asset stream for 29d43115-aee9-4d04-b004-049b9c906a14
+
+[2026-10-29 12:21:27.804] info: [remote-source-provider] Asset 37145603-13d7-4a78-a63f-850221394f5f starting
+
+[2026-10-29 12:21:27.806] info: [remote-source-provider] Ending asset stream for 37145603-13d7-4a78-a63f-850221394f5f
+
+[2026-10-29 12:21:28.128] info: [remote-source-provider] Asset e6873163-3ded-498c-9403-f1c418ab73a5 starting
+
+[2026-10-29 12:21:28.130] info: [remote-source-provider] Ending asset stream for e6873163-3ded-498c-9403-f1c418ab73a5
+
+[2026-10-29 12:21:28.439] info: [remote-source-provider] Asset 06641efc-0468-4478-95c1-5cb94eecbe8c starting
+
+[2026-10-29 12:21:28.440] info: [remote-source-provider] Ending asset stream for 06641efc-0468-4478-95c1-5cb94eecbe8c
+
+[2026-10-29 12:21:28.759] info: [remote-source-provider] Asset dbd63149-14ec-4aaf-ab03-131ab6e27772 starting
+
+[2026-10-29 12:21:28.760] info: [remote-source-provider] Ending asset stream for dbd63149-14ec-4aaf-ab03-131ab6e27772
+
+[2026-10-29 12:21:29.058] info: [remote-source-provider] Asset 621f79f7-6608-4cb9-8b76-c78a46821448 starting
+
+[2026-10-29 12:21:29.059] info: [remote-source-provider] Ending asset stream for 621f79f7-6608-4cb9-8b76-c78a46821448
+
+[2026-10-29 12:21:29.423] info: [remote-source-provider] Asset ae57af3b-5fca-4ef2-a215-8a1dc7ba854f starting
+
+[2026-10-29 12:21:29.424] info: [remote-source-provider] Ending asset stream for ae57af3b-5fca-4ef2-a215-8a1dc7ba854f
+
+[2026-10-29 12:21:29.733] info: [remote-source-provider] Asset f030c7e9-863d-4e18-90bf-a67ff47ba5cb starting
+
+[2026-10-29 12:21:29.734] info: [remote-source-provider] Ending asset stream for f030c7e9-863d-4e18-90bf-a67ff47ba5cb
+
+[2026-10-29 12:21:30.034] info: [remote-source-provider] Asset 92744e48-b9a3-4b3c-8e75-5ba0628c84f4 starting
+
+[2026-10-29 12:21:30.035] info: [remote-source-provider] Ending asset stream for 92744e48-b9a3-4b3c-8e75-5ba0628c84f4
+
+[2026-10-29 12:21:30.341] info: [remote-source-provider] Asset 58f7f629-cccb-4247-bdc2-9637fac711cc starting
+
+[2026-10-29 12:21:30.342] info: [remote-source-provider] Ending asset stream for 58f7f629-cccb-4247-bdc2-9637fac711cc
+
+[2026-10-29 12:21:30.641] info: [remote-source-provider] Asset b60c96c7-a64e-4b40-8a97-b4c9f2177c9e starting
+
+[2026-10-29 12:21:30.643] info: [remote-source-provider] Ending asset stream for b60c96c7-a64e-4b40-8a97-b4c9f2177c9e
+
+[2026-10-29 12:21:30.941] info: [remote-source-provider] Asset f869998a-8bde-415f-af90-cb4be3e65638 starting
+
+[2026-10-29 12:21:30.942] info: [remote-source-provider] Ending asset stream for f869998a-8bde-415f-af90-cb4be3e65638
+
+[2026-10-29 12:21:31.244] info: [remote-source-provider] Asset de313eda-297f-47fa-9386-ed3673990ed7 starting
+
+[2026-10-29 12:21:31.245] info: [remote-source-provider] Ending asset stream for de313eda-297f-47fa-9386-ed3673990ed7
+
+[2026-10-29 12:21:31.544] info: [remote-source-provider] Asset e80eed7d-a3fe-4044-8dfd-02e8b0387a28 starting
+
+[2026-10-29 12:21:31.545] info: [remote-source-provider] Ending asset stream for e80eed7d-a3fe-4044-8dfd-02e8b0387a28
+
+[2026-10-29 12:21:31.841] info: [remote-source-provider] Asset 889bac23-66ce-4e19-b353-ea1930cf3fd7 starting
+
+[2026-10-29 12:21:31.842] info: [remote-source-provider] Ending asset stream for 889bac23-66ce-4e19-b353-ea1930cf3fd7
+
+[2026-10-29 12:21:32.139] info: [remote-source-provider] Asset b4f71e43-2883-4eb5-b90e-b79618033384 starting
+
+[2026-10-29 12:21:32.140] info: [remote-source-provider] Ending asset stream for b4f71e43-2883-4eb5-b90e-b79618033384
+
+[2026-10-29 12:21:32.485] info: [remote-source-provider] Asset 4a22c8ef-b801-4db5-98e0-bac0c3b5104a starting
+
+[2026-10-29 12:21:32.486] info: [remote-source-provider] Ending asset stream for 4a22c8ef-b801-4db5-98e0-bac0c3b5104a
+
+[2026-10-29 12:21:32.786] info: [remote-source-provider] Asset 80b599fc-edba-4ebc-aa87-485d65e70ac0 starting
+
+[2026-10-29 12:21:32.787] info: [remote-source-provider] Ending asset stream for 80b599fc-edba-4ebc-aa87-485d65e70ac0
+
+[2026-10-29 12:21:33.095] info: [remote-source-provider] Asset e47e4ef3-bd37-4104-b674-8b36d7dfda19 starting
+
+[2026-10-29 12:21:33.096] info: [remote-source-provider] Ending asset stream for e47e4ef3-bd37-4104-b674-8b36d7dfda19
+
+[2026-10-29 12:21:33.398] info: [remote-source-provider] Asset beecb6e8-e029-40e7-b034-b7310fbe4ad0 starting
+
+[2026-10-29 12:21:33.400] info: [remote-source-provider] Ending asset stream for beecb6e8-e029-40e7-b034-b7310fbe4ad0
+
+[2026-10-29 12:21:33.700] info: [remote-source-provider] Asset 8649b3b2-1e2e-4158-b8a2-3da0765db1d0 starting
+
+[2026-10-29 12:21:33.702] info: [remote-source-provider] Ending asset stream for 8649b3b2-1e2e-4158-b8a2-3da0765db1d0
+
+[2026-10-29 12:21:34.006] info: [remote-source-provider] Asset fb514a4c-3292-43ed-9bb9-77c82d2b68a9 starting
+
+[2026-10-29 12:21:34.007] info: [remote-source-provider] Ending asset stream for fb514a4c-3292-43ed-9bb9-77c82d2b68a9
+
+[2026-10-29 12:21:34.309] info: [remote-source-provider] Asset 5a92c929-9dca-4691-aa81-1c69106e4275 starting
+
+[2026-10-29 12:21:34.310] info: [remote-source-provider] Ending asset stream for 5a92c929-9dca-4691-aa81-1c69106e4275
+
+[2026-10-29 12:21:34.608] info: [remote-source-provider] Asset 0688df18-cdd5-466a-8d1b-c05dc76d7b6a starting
+
+[2026-10-29 12:21:34.610] info: [remote-source-provider] Ending asset stream for 0688df18-cdd5-466a-8d1b-c05dc76d7b6a
+
+[2026-10-29 12:21:34.912] info: [remote-source-provider] Asset 5271e803-6453-42a1-a8a6-45632f40afbb starting
+
+[2026-10-29 12:21:34.913] info: [remote-source-provider] Ending asset stream for 5271e803-6453-42a1-a8a6-45632f40afbb
+
+[2026-10-29 12:21:35.214] info: [remote-source-provider] Asset f6d58c26-f41e-4234-bb6c-6fc0f6665756 starting
+
+[2026-10-29 12:21:35.215] info: [remote-source-provider] Ending asset stream for f6d58c26-f41e-4234-bb6c-6fc0f6665756
+
+[2026-10-29 12:21:35.514] info: [remote-source-provider] Asset bf9574e3-2403-4e06-90e5-406ce9d5e502 starting
+
+[2026-10-29 12:21:35.516] info: [remote-source-provider] Ending asset stream for bf9574e3-2403-4e06-90e5-406ce9d5e502
+
+[2026-10-29 12:21:35.821] info: [remote-source-provider] Asset d30cc44c-cbee-4a89-9cbe-2fba7858ae4d starting
+
+[2026-10-29 12:21:35.822] info: [remote-source-provider] Ending asset stream for d30cc44c-cbee-4a89-9cbe-2fba7858ae4d
+
+[2026-10-29 12:21:36.130] info: [remote-source-provider] Asset 7317e6ff-72c1-4e92-9637-aa6f09d941b7 starting
+
+[2026-10-29 12:21:36.132] info: [remote-source-provider] Ending asset stream for 7317e6ff-72c1-4e92-9637-aa6f09d941b7
+
+[2026-10-29 12:21:36.435] info: [remote-source-provider] Asset c6124822-e06a-4726-b004-c1580fbc9941 starting
+
+[2026-10-29 12:21:36.436] info: [remote-source-provider] Ending asset stream for c6124822-e06a-4726-b004-c1580fbc9941
+
+[2026-10-29 12:21:36.744] info: [remote-source-provider] Asset dfd05ffe-f17a-4dc1-b249-6ecfc5d2450f starting
+
+[2026-10-29 12:21:36.745] info: [remote-source-provider] Ending asset stream for dfd05ffe-f17a-4dc1-b249-6ecfc5d2450f
+
+[2026-10-29 12:21:37.045] info: [remote-source-provider] Asset 871967c6-3875-46ec-9f92-d34067c7f255 starting
+
+[2026-10-29 12:21:37.047] info: [remote-source-provider] Ending asset stream for 871967c6-3875-46ec-9f92-d34067c7f255
+
+[2026-10-29 12:21:37.351] info: [remote-source-provider] Asset 25d325fd-dda6-433c-85ee-abaf73c5733e starting
+
+[2026-10-29 12:21:37.352] info: [remote-source-provider] Ending asset stream for 25d325fd-dda6-433c-85ee-abaf73c5733e
+
+[2026-10-29 12:21:37.668] info: [remote-source-provider] Asset 3f394ac0-01ea-4774-95c5-8989d0984329 starting
+
+[2026-10-29 12:21:37.669] info: [remote-source-provider] Ending asset stream for 3f394ac0-01ea-4774-95c5-8989d0984329
+
+[2026-10-29 12:21:37.973] info: [remote-source-provider] Asset d6c4ade9-5018-402a-8ca6-38de309eb89b starting
+
+[2026-10-29 12:21:37.974] info: [remote-source-provider] Ending asset stream for d6c4ade9-5018-402a-8ca6-38de309eb89b
+
+[2026-10-29 12:21:38.284] info: [remote-source-provider] Asset ec854a04-37f0-4a2e-a73f-6b19b83188ca starting
+
+[2026-10-29 12:21:38.285] info: [remote-source-provider] Ending asset stream for ec854a04-37f0-4a2e-a73f-6b19b83188ca
+
+[2026-10-29 12:21:38.594] info: [remote-source-provider] Asset b04d607d-0db1-49c4-92c2-2d99297e9aa4 starting
+
+[2026-10-29 12:21:38.596] info: [remote-source-provider] Ending asset stream for b04d607d-0db1-49c4-92c2-2d99297e9aa4
+
+[2026-10-29 12:21:38.924] info: [remote-source-provider] Asset b62cfa44-8416-44b5-a4f9-27fa93ff91ec starting
+
+[2026-10-29 12:21:38.926] info: [remote-source-provider] Ending asset stream for b62cfa44-8416-44b5-a4f9-27fa93ff91ec
+
+[2026-10-29 12:21:39.326] info: [remote-source-provider] Asset a1fd12cd-21ee-48a0-9dbd-9248c0d20f0f starting
+
+[2026-10-29 12:21:39.329] info: [remote-source-provider] Ending asset stream for a1fd12cd-21ee-48a0-9dbd-9248c0d20f0f
+
+[2026-10-29 12:21:39.656] info: [remote-source-provider] Asset 787b45aa-a5d8-406e-bc9e-cc32d87b978f starting
+
+[2026-10-29 12:21:39.657] info: [remote-source-provider] Ending asset stream for 787b45aa-a5d8-406e-bc9e-cc32d87b978f
+
+[2026-10-29 12:21:40.025] info: [remote-source-provider] Asset e5630946-c668-4a4c-bf51-5b75bbf307ec starting
+
+[2026-10-29 12:21:40.027] info: [remote-source-provider] Ending asset stream for e5630946-c668-4a4c-bf51-5b75bbf307ec
+
+[2026-10-29 12:21:40.330] info: [remote-source-provider] Asset ae91c276-86b7-4bf2-a840-c46444e1fd03 starting
+
+[2026-10-29 12:21:40.331] info: [remote-source-provider] Ending asset stream for ae91c276-86b7-4bf2-a840-c46444e1fd03
+
+[2026-10-29 12:21:40.632] info: [remote-source-provider] Asset 8c88f0cb-2c65-4449-8ff3-91028c9c046c starting
+
+[2026-10-29 12:21:40.634] info: [remote-source-provider] Ending asset stream for 8c88f0cb-2c65-4449-8ff3-91028c9c046c
+
+[2026-10-29 12:21:40.946] info: [remote-source-provider] Asset 29b216f9-6304-4a6d-9b47-4d3cea83cd41 starting
+
+[2026-10-29 12:21:40.947] info: [remote-source-provider] Ending asset stream for 29b216f9-6304-4a6d-9b47-4d3cea83cd41
+
+[2026-10-29 12:21:41.252] info: [remote-source-provider] Asset 5c40034a-2901-430c-9808-0c4a385f06b2 starting
+
+[2026-10-29 12:21:41.254] info: [remote-source-provider] Ending asset stream for 5c40034a-2901-430c-9808-0c4a385f06b2
+
+[2026-10-29 12:21:41.562] info: [remote-source-provider] Asset 511cdab0-fd29-4efc-8f5c-7e9f4fc87ab0 starting
+
+[2026-10-29 12:21:41.563] info: [remote-source-provider] Ending asset stream for 511cdab0-fd29-4efc-8f5c-7e9f4fc87ab0
+
+[2026-10-29 12:21:41.863] info: [remote-source-provider] Asset 8e211434-8375-470f-91ce-1564fa762734 starting
+
+[2026-10-29 12:21:41.864] info: [remote-source-provider] Ending asset stream for 8e211434-8375-470f-91ce-1564fa762734
+
+[2026-10-29 12:21:42.164] info: [remote-source-provider] Asset 7819ea11-d250-4bf5-8f9a-5315ff412393 starting
+
+[2026-10-29 12:21:42.165] info: [remote-source-provider] Ending asset stream for 7819ea11-d250-4bf5-8f9a-5315ff412393
+
+[2026-10-29 12:21:42.476] info: [remote-source-provider] Asset db12772c-6957-4436-8b1c-487d005028bd starting
+
+[2026-10-29 12:21:42.478] info: [remote-source-provider] Ending asset stream for db12772c-6957-4436-8b1c-487d005028bd
+
+[2026-10-29 12:21:42.792] info: [remote-source-provider] Asset ae8dde31-49a1-4021-aabb-f3de1a928a7e starting
+
+[2026-10-29 12:21:42.793] info: [remote-source-provider] Ending asset stream for ae8dde31-49a1-4021-aabb-f3de1a928a7e
+
+[2026-10-29 12:21:43.094] info: [remote-source-provider] Asset 7ef0322e-c7fe-4927-923a-2b68891b5de3 starting
+
+[2026-10-29 12:21:43.094] info: [remote-source-provider] Ending asset stream for 7ef0322e-c7fe-4927-923a-2b68891b5de3
+
+[2026-10-29 12:21:43.408] info: [remote-source-provider] Asset e15e1187-4ffe-437e-92dc-93ee13c9603a starting
+
+[2026-10-29 12:21:43.409] info: [remote-source-provider] Ending asset stream for e15e1187-4ffe-437e-92dc-93ee13c9603a
+
+[2026-10-29 12:21:43.711] info: [remote-source-provider] Asset 22b214bc-cac3-4df0-8861-7b4931eb56c5 starting
+
+[2026-10-29 12:21:43.712] info: [remote-source-provider] Ending asset stream for 22b214bc-cac3-4df0-8861-7b4931eb56c5
+
+[2026-10-29 12:21:44.036] info: [remote-source-provider] Asset dfc523bc-babf-466c-8891-a8ffacaa6d62 starting
+
+[2026-10-29 12:21:44.038] info: [remote-source-provider] Ending asset stream for dfc523bc-babf-466c-8891-a8ffacaa6d62
+
+[2026-10-29 12:21:44.447] info: [remote-source-provider] Asset 479443f6-54d4-4538-8e85-b276450eef70 starting
+
+[2026-10-29 12:21:44.449] info: [remote-source-provider] Ending asset stream for 479443f6-54d4-4538-8e85-b276450eef70
+
+[2026-10-29 12:21:44.780] info: [remote-source-provider] Asset 9f48defb-3f72-423c-98c8-9fe78839fb04 starting
+
+[2026-10-29 12:21:44.782] info: [remote-source-provider] Ending asset stream for 9f48defb-3f72-423c-98c8-9fe78839fb04
+
+[2026-10-29 12:21:45.149] info: [remote-source-provider] Asset d35be93b-6310-47bd-b70f-af468356b53b starting
+
+[2026-10-29 12:21:45.150] info: [remote-source-provider] Ending asset stream for d35be93b-6310-47bd-b70f-af468356b53b
+
+[2026-10-29 12:21:45.455] info: [remote-source-provider] Asset a15f6ed1-fde9-405b-b574-9f7818ef8fa9 starting
+
+[2026-10-29 12:21:45.457] info: [remote-source-provider] Ending asset stream for a15f6ed1-fde9-405b-b574-9f7818ef8fa9
+
+[2026-10-29 12:21:45.780] info: [remote-source-provider] Asset 4eeffa99-95e3-46ef-a4d6-2c29fda66e7a starting
+
+[2026-10-29 12:21:45.781] info: [remote-source-provider] Ending asset stream for 4eeffa99-95e3-46ef-a4d6-2c29fda66e7a
+
+[2026-10-29 12:21:46.194] info: [remote-source-provider] Asset 99292787-7a22-4b9f-a07f-e2f971a196ca starting
+
+[2026-10-29 12:21:46.499] info: [remote-source-provider] Ending asset stream for 99292787-7a22-4b9f-a07f-e2f971a196ca
+
+[2026-10-29 12:21:46.842] info: [remote-source-provider] Asset 351edc87-78cb-40fd-b32c-9a65b2f12683 starting
+
+[2026-10-29 12:21:46.845] info: [remote-source-provider] Ending asset stream for 351edc87-78cb-40fd-b32c-9a65b2f12683
+
+[2026-10-29 12:21:47.213] info: [remote-source-provider] Asset 0565dfb2-5db6-438c-896b-d5a424db3318 starting
+
+[2026-10-29 12:21:47.215] info: [remote-source-provider] Ending asset stream for 0565dfb2-5db6-438c-896b-d5a424db3318
+
+[2026-10-29 12:21:47.521] info: [remote-source-provider] Asset 2f843ae9-1096-4a74-827d-30d452fcb152 starting
+
+[2026-10-29 12:21:47.523] info: [remote-source-provider] Ending asset stream for 2f843ae9-1096-4a74-827d-30d452fcb152
+
+[2026-10-29 12:21:47.852] info: [remote-source-provider] Asset 62da5763-6be8-40a0-b6d6-16cee20b5622 starting
+
+[2026-10-29 12:21:47.852] info: [remote-source-provider] Ending asset stream for 62da5763-6be8-40a0-b6d6-16cee20b5622
+
+[2026-10-29 12:21:48.267] info: [remote-source-provider] Asset 60bab4dd-8b47-4e0e-bdab-d39a26c3ac50 starting
+
+[2026-10-29 12:21:48.587] info: [remote-source-provider] Ending asset stream for 60bab4dd-8b47-4e0e-bdab-d39a26c3ac50
+
+[2026-10-29 12:21:48.926] info: [remote-source-provider] Asset 69bccf63-6e9c-427a-8414-96613925a23d starting
+
+[2026-10-29 12:21:48.929] info: [remote-source-provider] Ending asset stream for 69bccf63-6e9c-427a-8414-96613925a23d
+
+[2026-10-29 12:21:49.301] info: [remote-source-provider] Asset 606b7e24-9725-4ad9-b0f6-c1991ccf40f1 starting
+
+[2026-10-29 12:21:49.302] info: [remote-source-provider] Ending asset stream for 606b7e24-9725-4ad9-b0f6-c1991ccf40f1
+
+[2026-10-29 12:21:49.608] info: [remote-source-provider] Asset 1d3a8a6f-4853-42f3-b8db-18c4ff4aeb6a starting
+
+[2026-10-29 12:21:49.608] info: [remote-source-provider] Ending asset stream for 1d3a8a6f-4853-42f3-b8db-18c4ff4aeb6a
+
+[2026-10-29 12:21:50.019] info: [remote-source-provider] Asset 3a104caf-cf37-41c3-9ba6-fd35a1946cf6 starting
+
+[2026-10-29 12:21:50.343] info: [remote-source-provider] Ending asset stream for 3a104caf-cf37-41c3-9ba6-fd35a1946cf6
+
+[2026-10-29 12:21:50.648] info: [remote-source-provider] Asset c24219fc-cce9-4094-815a-f6019b3107c3 starting
+
+[2026-10-29 12:21:50.649] info: [remote-source-provider] Ending asset stream for c24219fc-cce9-4094-815a-f6019b3107c3
+
+[2026-10-29 12:21:50.948] info: [remote-source-provider] Asset 72317be8-ed91-4562-8203-c8b0c7cee852 starting
+
+[2026-10-29 12:21:50.949] info: [remote-source-provider] Ending asset stream for 72317be8-ed91-4562-8203-c8b0c7cee852
+
+[2026-10-29 12:21:51.254] info: [remote-source-provider] Asset 754f3778-7f51-4bd3-8628-0d1c134fa5b6 starting
+
+[2026-10-29 12:21:51.255] info: [remote-source-provider] Ending asset stream for 754f3778-7f51-4bd3-8628-0d1c134fa5b6
+
+[2026-10-29 12:21:51.554] info: [remote-source-provider] Asset a5f27811-a7b3-4254-9a17-4b4e10e3fac7 starting
+
+[2026-10-29 12:21:51.556] info: [remote-source-provider] Ending asset stream for a5f27811-a7b3-4254-9a17-4b4e10e3fac7
+
+[2026-10-29 12:21:51.857] info: [remote-source-provider] Asset be58b61a-5306-4172-8328-010231153b3b starting
+
+[2026-10-29 12:21:51.857] info: [remote-source-provider] Ending asset stream for be58b61a-5306-4172-8328-010231153b3b
+
+[2026-10-29 12:21:52.168] info: [remote-source-provider] Asset 50abd7f7-e104-4658-9489-3c2e81cb3a48 starting
+
+[2026-10-29 12:21:52.169] info: [remote-source-provider] Ending asset stream for 50abd7f7-e104-4658-9489-3c2e81cb3a48
+
+[2026-10-29 12:21:52.472] info: [remote-source-provider] Asset 0e93a3da-c339-4706-9bdb-cf0a4f3df57f starting
+
+[2026-10-29 12:21:52.474] info: [remote-source-provider] Ending asset stream for 0e93a3da-c339-4706-9bdb-cf0a4f3df57f
+
+[2026-10-29 12:21:52.775] info: [remote-source-provider] Asset 4780ca1e-f6d5-4f27-813d-87830548de9d starting
+
+[2026-10-29 12:21:52.776] info: [remote-source-provider] Ending asset stream for 4780ca1e-f6d5-4f27-813d-87830548de9d
+
+[2026-10-29 12:21:53.074] info: [remote-source-provider] Asset ebb7de13-80f6-405f-9525-c3366cb1486d starting
+
+[2026-10-29 12:21:53.074] info: [remote-source-provider] Ending asset stream for ebb7de13-80f6-405f-9525-c3366cb1486d
+
+[2026-10-29 12:21:53.374] info: [remote-source-provider] Asset 71adae07-4015-445c-903c-adf941740218 starting
+
+[2026-10-29 12:21:53.376] info: [remote-source-provider] Ending asset stream for 71adae07-4015-445c-903c-adf941740218
+
+[2026-10-29 12:21:53.684] info: [remote-source-provider] Asset 60cc448e-40da-4bc9-87e8-2c62b7bcfd3b starting
+
+[2026-10-29 12:21:53.685] info: [remote-source-provider] Ending asset stream for 60cc448e-40da-4bc9-87e8-2c62b7bcfd3b
+
+[2026-10-29 12:21:53.983] info: [remote-source-provider] Asset d1a07bd6-0c62-4da7-9060-03a976430f28 starting
+
+[2026-10-29 12:21:53.984] info: [remote-source-provider] Ending asset stream for d1a07bd6-0c62-4da7-9060-03a976430f28
+
+[2026-10-29 12:21:54.285] info: [remote-source-provider] Asset 7aa2271d-0005-4c26-b496-45c10f7dd95a starting
+
+[2026-10-29 12:21:54.286] info: [remote-source-provider] Ending asset stream for 7aa2271d-0005-4c26-b496-45c10f7dd95a
+
+[2026-10-29 12:21:54.587] info: [remote-source-provider] Asset 405e733b-0bb4-4081-97be-28331a7e0d73 starting
+
+[2026-10-29 12:21:54.588] info: [remote-source-provider] Ending asset stream for 405e733b-0bb4-4081-97be-28331a7e0d73
+
+[2026-10-29 12:21:54.890] info: [remote-source-provider] Asset db3d3800-5cc1-49d9-8d78-ed2773dbccab starting
+
+[2026-10-29 12:21:54.891] info: [remote-source-provider] Ending asset stream for db3d3800-5cc1-49d9-8d78-ed2773dbccab
+
+[2026-10-29 12:21:55.198] info: [remote-source-provider] Asset 50125732-c77a-4f7c-ad3c-2e4bf30365c3 starting
+
+[2026-10-29 12:21:55.200] info: [remote-source-provider] Ending asset stream for 50125732-c77a-4f7c-ad3c-2e4bf30365c3
+
+[2026-10-29 12:21:55.507] info: [remote-source-provider] Asset f6da5fb7-a253-4b64-b828-45b8cd2f47db starting
+
+[2026-10-29 12:21:55.508] info: [remote-source-provider] Ending asset stream for f6da5fb7-a253-4b64-b828-45b8cd2f47db
+
+[2026-10-29 12:21:55.816] info: [remote-source-provider] Asset 907ed40e-5784-45e8-a726-e7b286434b37 starting
+
+[2026-10-29 12:21:55.817] info: [remote-source-provider] Ending asset stream for 907ed40e-5784-45e8-a726-e7b286434b37
+
+[2026-10-29 12:21:56.126] info: [remote-source-provider] Asset b639897e-9f1c-46eb-9f46-e634d7b1c9f7 starting
+
+[2026-10-29 12:21:56.126] info: [remote-source-provider] Ending asset stream for b639897e-9f1c-46eb-9f46-e634d7b1c9f7
+
+[2026-10-29 12:21:56.430] info: [remote-source-provider] Asset 51993ce5-cfe5-4e02-bed2-3d0877c55331 starting
+
+[2026-10-29 12:21:56.431] info: [remote-source-provider] Ending asset stream for 51993ce5-cfe5-4e02-bed2-3d0877c55331
+
+[2026-10-29 12:21:56.747] info: [remote-source-provider] Asset 9703bdae-6d55-48f5-beba-da8da47769d1 starting
+
+[2026-10-29 12:21:56.747] info: [remote-source-provider] Ending asset stream for 9703bdae-6d55-48f5-beba-da8da47769d1
+
+[2026-10-29 12:21:57.049] info: [remote-source-provider] Asset c0e93d91-3352-4ac7-ae42-b3b1a34488e8 starting
+
+[2026-10-29 12:21:57.050] info: [remote-source-provider] Ending asset stream for c0e93d91-3352-4ac7-ae42-b3b1a34488e8
+
+[2026-10-29 12:21:57.366] info: [remote-source-provider] Asset 775c6184-81b7-4177-b283-0d46ea873dbf starting
+
+[2026-10-29 12:21:57.368] info: [remote-source-provider] Ending asset stream for 775c6184-81b7-4177-b283-0d46ea873dbf
+
+[2026-10-29 12:21:57.666] info: [remote-source-provider] Asset 6490e3c7-2abd-45b2-882f-9cfbd953a7a3 starting
+
+[2026-10-29 12:21:57.667] info: [remote-source-provider] Ending asset stream for 6490e3c7-2abd-45b2-882f-9cfbd953a7a3
+
+[2026-10-29 12:21:57.979] info: [remote-source-provider] Asset 7594d149-9ded-4f61-a338-346dfb62ccc9 starting
+
+[2026-10-29 12:21:57.980] info: [remote-source-provider] Ending asset stream for 7594d149-9ded-4f61-a338-346dfb62ccc9
+
+[2026-10-29 12:21:58.284] info: [remote-source-provider] Asset 1f51da5d-829d-4fbc-b417-814330561cb3 starting
+
+[2026-10-29 12:21:58.285] info: [remote-source-provider] Ending asset stream for 1f51da5d-829d-4fbc-b417-814330561cb3
+
+[2026-10-29 12:21:58.585] info: [remote-source-provider] Asset de1c2a42-da4d-421b-9462-273ab2f4461b starting
+
+[2026-10-29 12:21:58.586] info: [remote-source-provider] Ending asset stream for de1c2a42-da4d-421b-9462-273ab2f4461b
+
+[2026-10-29 12:21:58.886] info: [remote-source-provider] Asset b46c6dcc-46f1-40d9-922b-fed78b779c64 starting
+
+[2026-10-29 12:21:58.887] info: [remote-source-provider] Ending asset stream for b46c6dcc-46f1-40d9-922b-fed78b779c64
+
+[2026-10-29 12:21:59.190] info: [remote-source-provider] Asset f05065ef-2c31-4994-b910-f9a3f83f6fb5 starting
+
+[2026-10-29 12:21:59.191] info: [remote-source-provider] Ending asset stream for f05065ef-2c31-4994-b910-f9a3f83f6fb5
+
+[2026-10-29 12:21:59.615] info: [remote-source-provider] Asset 24f8cb6b-93c7-48ad-a2d5-97f8d1eb19ad starting
+
+[2026-10-29 12:22:00.372] info: [remote-source-provider] Ending asset stream for 24f8cb6b-93c7-48ad-a2d5-97f8d1eb19ad
+
+[2026-10-29 12:22:00.783] info: [remote-source-provider] Asset 8d03be60-7972-4fa1-af85-4169d0de7777 starting
+
+[2026-10-29 12:22:01.089] info: [remote-source-provider] Ending asset stream for 8d03be60-7972-4fa1-af85-4169d0de7777
+
+[2026-10-29 12:22:01.420] info: [remote-source-provider] Asset 1c9107b9-f336-4b40-b939-bc4bd1fbc76b starting
+
+[2026-10-29 12:22:01.422] info: [remote-source-provider] Ending asset stream for 1c9107b9-f336-4b40-b939-bc4bd1fbc76b
+
+[2026-10-29 12:22:01.789] info: [remote-source-provider] Asset 74b0cabf-91a0-4341-bd19-6de4ccd9b26f starting
+
+[2026-10-29 12:22:01.791] info: [remote-source-provider] Ending asset stream for 74b0cabf-91a0-4341-bd19-6de4ccd9b26f
+
+[2026-10-29 12:22:02.095] info: [remote-source-provider] Asset c4856964-0929-4148-9e70-e5fb0976fad9 starting
+
+[2026-10-29 12:22:02.096] info: [remote-source-provider] Ending asset stream for c4856964-0929-4148-9e70-e5fb0976fad9
+
+[2026-10-29 12:22:02.395] info: [remote-source-provider] Asset d9e952aa-11fd-4886-a5be-58b1afba281a starting
+
+[2026-10-29 12:22:02.396] info: [remote-source-provider] Ending asset stream for d9e952aa-11fd-4886-a5be-58b1afba281a
+
+[2026-10-29 12:22:02.698] info: [remote-source-provider] Asset e0ea0337-1482-4aee-b98c-16fcac803215 starting
+
+[2026-10-29 12:22:02.699] info: [remote-source-provider] Ending asset stream for e0ea0337-1482-4aee-b98c-16fcac803215
+
+[2026-10-29 12:22:03.000] info: [remote-source-provider] Asset ad44e961-933a-4a83-b26b-ba6cf32c7d98 starting
+
+[2026-10-29 12:22:03.001] info: [remote-source-provider] Ending asset stream for ad44e961-933a-4a83-b26b-ba6cf32c7d98
+
+[2026-10-29 12:22:03.303] info: [remote-source-provider] Asset f4313502-a89c-4bb5-b1db-8387d3839a90 starting
+
+[2026-10-29 12:22:03.305] info: [remote-source-provider] Ending asset stream for f4313502-a89c-4bb5-b1db-8387d3839a90
+
+[2026-10-29 12:22:03.601] info: [remote-source-provider] Asset 5c55c4fa-b947-4e1a-af4c-d79c532aa9b6 starting
+
+[2026-10-29 12:22:03.602] info: [remote-source-provider] Ending asset stream for 5c55c4fa-b947-4e1a-af4c-d79c532aa9b6
+
+[2026-10-29 12:22:03.900] info: [remote-source-provider] Asset bee696d7-aded-41a2-87ec-63f54a0c7472 starting
+
+[2026-10-29 12:22:03.901] info: [remote-source-provider] Ending asset stream for bee696d7-aded-41a2-87ec-63f54a0c7472
+
+[2026-10-29 12:22:04.205] info: [remote-source-provider] Asset 2140e88d-c606-48ae-ab89-af0b393b44b1 starting
+
+[2026-10-29 12:22:04.205] info: [remote-source-provider] Ending asset stream for 2140e88d-c606-48ae-ab89-af0b393b44b1
+
+[2026-10-29 12:22:04.517] info: [remote-source-provider] Asset 0bbadf4f-bb90-478e-bb22-5bedec433adf starting
+
+[2026-10-29 12:22:04.519] info: [remote-source-provider] Ending asset stream for 0bbadf4f-bb90-478e-bb22-5bedec433adf
+
+[2026-10-29 12:22:04.820] info: [remote-source-provider] Asset ca95ddb0-0b92-494c-8314-2e245e5512e9 starting
+
+[2026-10-29 12:22:04.821] info: [remote-source-provider] Ending asset stream for ca95ddb0-0b92-494c-8314-2e245e5512e9
+
+[2026-10-29 12:22:05.127] info: [remote-source-provider] Asset a5ae317f-869b-4d70-9211-d31b588558aa starting
+
+[2026-10-29 12:22:05.128] info: [remote-source-provider] Ending asset stream for a5ae317f-869b-4d70-9211-d31b588558aa
+
+[2026-10-29 12:22:05.427] info: [remote-source-provider] Asset b8ad647a-1fdf-40e1-8602-e7f1384be411 starting
+
+[2026-10-29 12:22:05.428] info: [remote-source-provider] Ending asset stream for b8ad647a-1fdf-40e1-8602-e7f1384be411
+
+[2026-10-29 12:22:05.727] info: [remote-source-provider] Asset 399a9339-c2f4-4296-87e4-022b2f500610 starting
+
+[2026-10-29 12:22:05.728] info: [remote-source-provider] Ending asset stream for 399a9339-c2f4-4296-87e4-022b2f500610
+
+[2026-10-29 12:22:06.031] info: [remote-source-provider] Asset 71760053-98bc-45ec-ac75-70721afb36f5 starting
+
+[2026-10-29 12:22:06.032] info: [remote-source-provider] Ending asset stream for 71760053-98bc-45ec-ac75-70721afb36f5
+
+[2026-10-29 12:22:06.332] info: [remote-source-provider] Asset 5689fc78-3173-4e80-ab23-08ebd907fdbf starting
+
+[2026-10-29 12:22:06.334] info: [remote-source-provider] Ending asset stream for 5689fc78-3173-4e80-ab23-08ebd907fdbf
+
+[2026-10-29 12:22:06.634] info: [remote-source-provider] Asset 6edb4182-73a4-4776-8d4d-64d51dba8a8b starting
+
+[2026-10-29 12:22:06.636] info: [remote-source-provider] Ending asset stream for 6edb4182-73a4-4776-8d4d-64d51dba8a8b
+
+[2026-10-29 12:22:06.935] info: [remote-source-provider] Asset f1e47d81-82da-45d4-923f-7003e7cb2192 starting
+
+[2026-10-29 12:22:06.936] info: [remote-source-provider] Ending asset stream for f1e47d81-82da-45d4-923f-7003e7cb2192
+
+[2026-10-29 12:22:07.235] info: [remote-source-provider] Asset 4c0b8e21-2ad9-4eef-971f-5c04fbc7a0e7 starting
+
+[2026-10-29 12:22:07.236] info: [remote-source-provider] Ending asset stream for 4c0b8e21-2ad9-4eef-971f-5c04fbc7a0e7
+
+[2026-10-29 12:22:07.534] info: [remote-source-provider] Asset 5596a20f-3624-4282-a2b6-09e953184f21 starting
+
+[2026-10-29 12:22:07.536] info: [remote-source-provider] Ending asset stream for 5596a20f-3624-4282-a2b6-09e953184f21
+
+[2026-10-29 12:22:07.833] info: [remote-source-provider] Asset cdb2f045-bba4-4349-b7f6-29bc34491a0f starting
+
+[2026-10-29 12:22:07.834] info: [remote-source-provider] Ending asset stream for cdb2f045-bba4-4349-b7f6-29bc34491a0f
+
+[2026-10-29 12:22:08.135] info: [remote-source-provider] Asset bb02af3f-91f9-4a88-b64a-62d000a80052 starting
+
+[2026-10-29 12:22:08.136] info: [remote-source-provider] Ending asset stream for bb02af3f-91f9-4a88-b64a-62d000a80052
+
+[2026-10-29 12:22:08.438] info: [remote-source-provider] Asset 7ff3e3b3-9e2a-443b-abf0-7527f78474c5 starting
+
+[2026-10-29 12:22:08.439] info: [remote-source-provider] Ending asset stream for 7ff3e3b3-9e2a-443b-abf0-7527f78474c5
+
+[2026-10-29 12:22:08.740] info: [remote-source-provider] Asset 1f7d75d8-2c6c-4004-a2a4-f5d974467c5b starting
+
+[2026-10-29 12:22:08.742] info: [remote-source-provider] Ending asset stream for 1f7d75d8-2c6c-4004-a2a4-f5d974467c5b
+
+[2026-10-29 12:22:09.040] info: [remote-source-provider] Asset 8d4558ec-d99e-4a92-b3eb-35ac8da085c3 starting
+
+[2026-10-29 12:22:09.040] info: [remote-source-provider] Ending asset stream for 8d4558ec-d99e-4a92-b3eb-35ac8da085c3
+
+[2026-10-29 12:22:09.341] info: [remote-source-provider] Asset f7804fd4-e0a2-42ba-9c8c-cef3280f266d starting
+
+[2026-10-29 12:22:09.343] info: [remote-source-provider] Ending asset stream for f7804fd4-e0a2-42ba-9c8c-cef3280f266d
+
+[2026-10-29 12:22:09.647] info: [remote-source-provider] Asset 2ac56dd5-f86e-4324-aa88-a5d6c271b92a starting
+
+[2026-10-29 12:22:09.648] info: [remote-source-provider] Ending asset stream for 2ac56dd5-f86e-4324-aa88-a5d6c271b92a
+
+[2026-10-29 12:22:09.950] info: [remote-source-provider] Asset 231a2677-7c82-4b3b-be17-614a95488f0b starting
+
+[2026-10-29 12:22:09.951] info: [remote-source-provider] Ending asset stream for 231a2677-7c82-4b3b-be17-614a95488f0b
+
+[2026-10-29 12:22:10.257] info: [remote-source-provider] Asset b48d8949-4521-49d0-9945-0843649f182b starting
+
+[2026-10-29 12:22:10.258] info: [remote-source-provider] Ending asset stream for b48d8949-4521-49d0-9945-0843649f182b
+
+[2026-10-29 12:22:10.561] info: [remote-source-provider] Asset 9f5bafa7-02a0-4ac8-845e-450e44127116 starting
+
+[2026-10-29 12:22:10.562] info: [remote-source-provider] Ending asset stream for 9f5bafa7-02a0-4ac8-845e-450e44127116
+
+[2026-10-29 12:22:10.865] info: [remote-source-provider] Asset f9cb97a5-60a9-46fc-b8a1-77b848beb932 starting
+
+[2026-10-29 12:22:10.866] info: [remote-source-provider] Ending asset stream for f9cb97a5-60a9-46fc-b8a1-77b848beb932
+
+[2026-10-29 12:22:11.165] info: [remote-source-provider] Asset 5884a98d-8be8-410f-93d3-b46259ac10a5 starting
+
+[2026-10-29 12:22:11.166] info: [remote-source-provider] Ending asset stream for 5884a98d-8be8-410f-93d3-b46259ac10a5
+
+[2026-10-29 12:22:11.465] info: [remote-source-provider] Asset 6b1107f6-c7bd-4b73-a245-c6130669d48b starting
+
+[2026-10-29 12:22:11.467] info: [remote-source-provider] Ending asset stream for 6b1107f6-c7bd-4b73-a245-c6130669d48b
+
+[2026-10-29 12:22:11.770] info: [remote-source-provider] Asset 8114e431-5aac-4a48-b7c9-12c4643cc3b9 starting
+
+[2026-10-29 12:22:11.772] info: [remote-source-provider] Ending asset stream for 8114e431-5aac-4a48-b7c9-12c4643cc3b9
+
+[2026-10-29 12:22:12.233] info: [remote-source-provider] Asset da58fcde-f0a7-4823-ac9b-b23802ea1998 starting
+
+[2026-10-29 12:22:12.235] info: [remote-source-provider] Ending asset stream for da58fcde-f0a7-4823-ac9b-b23802ea1998
+
+[2026-10-29 12:22:12.535] info: [remote-source-provider] Asset 5f8dc5ca-2205-4119-bc8f-467e058b504c starting
+
+[2026-10-29 12:22:12.537] info: [remote-source-provider] Ending asset stream for 5f8dc5ca-2205-4119-bc8f-467e058b504c
+
+[2026-10-29 12:22:12.835] info: [remote-source-provider] Asset 97af1b98-e69a-4116-92df-fa93a3f2cf73 starting
+
+[2026-10-29 12:22:12.836] info: [remote-source-provider] Ending asset stream for 97af1b98-e69a-4116-92df-fa93a3f2cf73
+
+[2026-10-29 12:22:13.138] info: [remote-source-provider] Asset 497013e3-490b-4e0e-90c5-644cc5513486 starting
+
+[2026-10-29 12:22:13.139] info: [remote-source-provider] Ending asset stream for 497013e3-490b-4e0e-90c5-644cc5513486
+
+[2026-10-29 12:22:13.448] info: [remote-source-provider] Asset caa0ab9b-92c1-481c-a7f5-655bb9f7d5fd starting
+
+[2026-10-29 12:22:13.449] info: [remote-source-provider] Ending asset stream for caa0ab9b-92c1-481c-a7f5-655bb9f7d5fd
+
+[2026-10-29 12:22:13.747] info: [remote-source-provider] Asset 1a0a2295-b206-4c30-bd8d-0d7acaf661fa starting
+
+[2026-10-29 12:22:13.749] info: [remote-source-provider] Ending asset stream for 1a0a2295-b206-4c30-bd8d-0d7acaf661fa
+
+[2026-10-29 12:22:14.052] info: [remote-source-provider] Asset 2f284035-da89-4942-83b2-4aa79319ccb0 starting
+
+[2026-10-29 12:22:14.053] info: [remote-source-provider] Ending asset stream for 2f284035-da89-4942-83b2-4aa79319ccb0
+
+[2026-10-29 12:22:14.350] info: [remote-source-provider] Asset cb1adcea-6d53-4e12-8582-680982146a28 starting
+
+[2026-10-29 12:22:14.350] info: [remote-source-provider] Ending asset stream for cb1adcea-6d53-4e12-8582-680982146a28
+
+[2026-10-29 12:22:14.651] info: [remote-source-provider] Asset d3dd47a5-2380-4c75-8d6a-021eb3446088 starting
+
+[2026-10-29 12:22:14.652] info: [remote-source-provider] Ending asset stream for d3dd47a5-2380-4c75-8d6a-021eb3446088
+
+[2026-10-29 12:22:14.953] info: [remote-source-provider] Asset 8a7ece38-1f6e-47f0-9d06-764a6f2fc82a starting
+
+[2026-10-29 12:22:14.954] info: [remote-source-provider] Ending asset stream for 8a7ece38-1f6e-47f0-9d06-764a6f2fc82a
+
+[2026-10-29 12:22:15.253] info: [remote-source-provider] Asset 7144aef3-603b-42b9-a7a5-2a680f1d6b43 starting
+
+[2026-10-29 12:22:15.255] info: [remote-source-provider] Ending asset stream for 7144aef3-603b-42b9-a7a5-2a680f1d6b43
+
+[2026-10-29 12:22:15.562] info: [remote-source-provider] Asset 2ea700e4-b668-40ad-ac15-8b73078c986a starting
+
+[2026-10-29 12:22:15.564] info: [remote-source-provider] Ending asset stream for 2ea700e4-b668-40ad-ac15-8b73078c986a
+
+[2026-10-29 12:22:15.859] info: [remote-source-provider] Asset 68342480-5646-45f5-87c2-d06fb86ffc01 starting
+
+[2026-10-29 12:22:15.861] info: [remote-source-provider] Ending asset stream for 68342480-5646-45f5-87c2-d06fb86ffc01
+
+[2026-10-29 12:22:16.163] info: [remote-source-provider] Asset 78c24600-f93f-43bf-ab58-51fc8462204d starting
+
+[2026-10-29 12:22:16.164] info: [remote-source-provider] Ending asset stream for 78c24600-f93f-43bf-ab58-51fc8462204d
+
+[2026-10-29 12:22:16.464] info: [remote-source-provider] Asset 1ed83134-9ce5-4dbe-a824-e33bce849b9f starting
+
+[2026-10-29 12:22:16.464] info: [remote-source-provider] Ending asset stream for 1ed83134-9ce5-4dbe-a824-e33bce849b9f
+
+[2026-10-29 12:22:16.763] info: [remote-source-provider] Asset 9987de41-bb13-4e19-a12a-b91904d79cd8 starting
+
+[2026-10-29 12:22:16.765] info: [remote-source-provider] Ending asset stream for 9987de41-bb13-4e19-a12a-b91904d79cd8
+
+[2026-10-29 12:22:17.063] info: [remote-source-provider] Asset ad9e610e-30d0-4d44-a14d-663a24053ce3 starting
+
+[2026-10-29 12:22:17.065] info: [remote-source-provider] Ending asset stream for ad9e610e-30d0-4d44-a14d-663a24053ce3
+
+[2026-10-29 12:22:17.363] info: [remote-source-provider] Asset 4815e779-9eaf-469b-aa18-e8b07dc8b541 starting
+
+[2026-10-29 12:22:17.365] info: [remote-source-provider] Ending asset stream for 4815e779-9eaf-469b-aa18-e8b07dc8b541
+
+[2026-10-29 12:22:17.663] info: [remote-source-provider] Asset 6a09a2b5-1268-49d2-9515-f0d1a57d3f21 starting
+
+[2026-10-29 12:22:17.665] info: [remote-source-provider] Ending asset stream for 6a09a2b5-1268-49d2-9515-f0d1a57d3f21
+
+[2026-10-29 12:22:18.179] info: [remote-source-provider] Asset 6242a121-11fc-4602-9d57-18bb49c4ae50 starting
+
+[2026-10-29 12:22:18.180] info: [remote-source-provider] Ending asset stream for 6242a121-11fc-4602-9d57-18bb49c4ae50
+
+[2026-10-29 12:22:18.483] info: [remote-source-provider] Asset 223fcf88-3a32-4205-b66c-949d838418fa starting
+
+[2026-10-29 12:22:18.483] info: [remote-source-provider] Ending asset stream for 223fcf88-3a32-4205-b66c-949d838418fa
+
+[2026-10-29 12:22:18.792] info: [remote-source-provider] Asset 5102bdb7-172e-4c34-88ff-fc41a1fe8d02 starting
+
+[2026-10-29 12:22:18.794] info: [remote-source-provider] Ending asset stream for 5102bdb7-172e-4c34-88ff-fc41a1fe8d02
+
+[2026-10-29 12:22:19.095] info: [remote-source-provider] Asset 2c765eb5-fe06-4542-b692-e3dcef953403 starting
+
+[2026-10-29 12:22:19.095] info: [remote-source-provider] Ending asset stream for 2c765eb5-fe06-4542-b692-e3dcef953403
+
+[2026-10-29 12:22:19.396] info: [remote-source-provider] Asset a9989184-5232-4042-bcd6-ca8f5771d75e starting
+
+[2026-10-29 12:22:19.397] info: [remote-source-provider] Ending asset stream for a9989184-5232-4042-bcd6-ca8f5771d75e
+
+[2026-10-29 12:22:19.694] info: [remote-source-provider] Asset 28a74a66-6a83-48a4-af0a-6a263d5a63b0 starting
+
+[2026-10-29 12:22:19.694] info: [remote-source-provider] Ending asset stream for 28a74a66-6a83-48a4-af0a-6a263d5a63b0
+
+[2026-10-29 12:22:19.996] info: [remote-source-provider] Asset c612c739-adf5-4942-b6a3-12983c568318 starting
+
+[2026-10-29 12:22:19.998] info: [remote-source-provider] Ending asset stream for c612c739-adf5-4942-b6a3-12983c568318
+
+[2026-10-29 12:22:20.305] info: [remote-source-provider] Asset 697fee69-3abb-4d13-a117-dff017be1593 starting
+
+[2026-10-29 12:22:20.307] info: [remote-source-provider] Ending asset stream for 697fee69-3abb-4d13-a117-dff017be1593
+
+[2026-10-29 12:22:20.603] info: [remote-source-provider] Asset ffecd8d2-a2e7-45d6-a528-3e0a763f9040 starting
+
+[2026-10-29 12:22:20.603] info: [remote-source-provider] Ending asset stream for ffecd8d2-a2e7-45d6-a528-3e0a763f9040
+
+[2026-10-29 12:22:20.906] info: [remote-source-provider] Asset 0b930028-cad3-457d-9789-ab53f98f6afd starting
+
+[2026-10-29 12:22:20.907] info: [remote-source-provider] Ending asset stream for 0b930028-cad3-457d-9789-ab53f98f6afd
+
+[2026-10-29 12:22:21.203] info: [remote-source-provider] Asset 561af4ef-83d7-4270-b8b8-fb83c2862719 starting
+
+[2026-10-29 12:22:21.205] info: [remote-source-provider] Ending asset stream for 561af4ef-83d7-4270-b8b8-fb83c2862719
+
+[2026-10-29 12:22:21.512] info: [remote-source-provider] Asset 653f5588-daec-42e1-95eb-174de268c3a4 starting
+
+[2026-10-29 12:22:21.513] info: [remote-source-provider] Ending asset stream for 653f5588-daec-42e1-95eb-174de268c3a4
+
+[2026-10-29 12:22:21.823] info: [remote-source-provider] Asset 40e5346c-3145-4be9-b3a9-e0755a25a288 starting
+
+[2026-10-29 12:22:21.824] info: [remote-source-provider] Ending asset stream for 40e5346c-3145-4be9-b3a9-e0755a25a288
+
+[2026-10-29 12:22:22.126] info: [remote-source-provider] Asset fa1d22c9-4e36-4378-9211-7c5b7fcc9100 starting
+
+[2026-10-29 12:22:22.127] info: [remote-source-provider] Ending asset stream for fa1d22c9-4e36-4378-9211-7c5b7fcc9100
+
+[2026-10-29 12:22:22.439] info: [remote-source-provider] Asset dcd1f8f9-120b-48b1-b7b5-f5086acda2f3 starting
+
+[2026-10-29 12:22:22.440] info: [remote-source-provider] Ending asset stream for dcd1f8f9-120b-48b1-b7b5-f5086acda2f3
+
+[2026-10-29 12:22:22.738] info: [remote-source-provider] Asset 5e19d74e-3af8-466d-a766-081b77a1efce starting
+
+[2026-10-29 12:22:22.739] info: [remote-source-provider] Ending asset stream for 5e19d74e-3af8-466d-a766-081b77a1efce
+
+[2026-10-29 12:22:23.040] info: [remote-source-provider] Asset 9a95e2f9-bf1e-476e-8a71-64fc2da7bb8b starting
+
+[2026-10-29 12:22:23.041] info: [remote-source-provider] Ending asset stream for 9a95e2f9-bf1e-476e-8a71-64fc2da7bb8b
+
+[2026-10-29 12:22:23.345] info: [remote-source-provider] Asset 7d90d31e-3e91-4897-a19d-c2c485f990ec starting
+
+[2026-10-29 12:22:23.346] info: [remote-source-provider] Ending asset stream for 7d90d31e-3e91-4897-a19d-c2c485f990ec
+
+[2026-10-29 12:22:23.648] info: [remote-source-provider] Asset dd500f83-44c5-4b00-8608-9b761b106f40 starting
+
+[2026-10-29 12:22:23.649] info: [remote-source-provider] Ending asset stream for dd500f83-44c5-4b00-8608-9b761b106f40
+
+[2026-10-29 12:22:23.959] info: [remote-source-provider] Asset 93f3479c-c6e0-4564-a4b5-cf01114d29e6 starting
+
+[2026-10-29 12:22:23.960] info: [remote-source-provider] Ending asset stream for 93f3479c-c6e0-4564-a4b5-cf01114d29e6
+
+[2026-10-29 12:22:24.259] info: [remote-source-provider] Asset 48eb39ae-2b3a-4d48-ac04-ce5661022924 starting
+
+[2026-10-29 12:22:24.260] info: [remote-source-provider] Ending asset stream for 48eb39ae-2b3a-4d48-ac04-ce5661022924
+
+[2026-10-29 12:22:24.561] info: [remote-source-provider] Asset e1e6eb2a-02b1-4b64-a9a7-d75986c05df8 starting
+
+[2026-10-29 12:22:24.562] info: [remote-source-provider] Ending asset stream for e1e6eb2a-02b1-4b64-a9a7-d75986c05df8
+
+[2026-10-29 12:22:24.864] info: [remote-source-provider] Asset ce1b58f4-d152-410b-9a09-ea2d829c0954 starting
+
+[2026-10-29 12:22:24.865] info: [remote-source-provider] Ending asset stream for ce1b58f4-d152-410b-9a09-ea2d829c0954
+
+[2026-10-29 12:22:25.166] info: [remote-source-provider] Asset ecc51ec1-f1de-4050-8d8e-d9cee35058da starting
+
+[2026-10-29 12:22:25.167] info: [remote-source-provider] Ending asset stream for ecc51ec1-f1de-4050-8d8e-d9cee35058da
+
+[2026-10-29 12:22:25.467] info: [remote-source-provider] Asset 085da6b1-e442-402c-a0c7-6e7340d180b6 starting
+
+[2026-10-29 12:22:25.468] info: [remote-source-provider] Ending asset stream for 085da6b1-e442-402c-a0c7-6e7340d180b6
+
+[2026-10-29 12:22:25.765] info: [remote-source-provider] Asset 0daf8edc-ae1d-445a-9bbc-4241c4147969 starting
+
+[2026-10-29 12:22:25.766] info: [remote-source-provider] Ending asset stream for 0daf8edc-ae1d-445a-9bbc-4241c4147969
+
+[2026-10-29 12:22:26.064] info: [remote-source-provider] Asset d3195c2d-ded9-4867-9729-7ba14c434d31 starting
+
+[2026-10-29 12:22:26.065] info: [remote-source-provider] Ending asset stream for d3195c2d-ded9-4867-9729-7ba14c434d31
+
+[2026-10-29 12:22:26.364] info: [remote-source-provider] Asset 4e5dcd23-1a7c-4f0e-98e9-a33ec2372af6 starting
+
+[2026-10-29 12:22:26.365] info: [remote-source-provider] Ending asset stream for 4e5dcd23-1a7c-4f0e-98e9-a33ec2372af6
+
+[2026-10-29 12:22:26.706] info: [remote-source-provider] Asset 82a75161-5ae2-41e6-8172-bd7f8c11c3ed starting
+
+[2026-10-29 12:22:26.706] info: [remote-source-provider] Ending asset stream for 82a75161-5ae2-41e6-8172-bd7f8c11c3ed
+
+[2026-10-29 12:22:27.012] info: [remote-source-provider] Asset 287edbc8-1a61-4b85-b5a7-64b364b33cb9 starting
+
+[2026-10-29 12:22:27.013] info: [remote-source-provider] Ending asset stream for 287edbc8-1a61-4b85-b5a7-64b364b33cb9
+
+[2026-10-29 12:22:27.316] info: [remote-source-provider] Asset 8d2978b6-0c45-4634-ab7b-24d0554f6bf8 starting
+
+[2026-10-29 12:22:27.317] info: [remote-source-provider] Ending asset stream for 8d2978b6-0c45-4634-ab7b-24d0554f6bf8
+
+[2026-10-29 12:22:27.621] info: [remote-source-provider] Asset d854f78e-cbcc-4ff2-8cef-ac63bbe0799b starting
+
+[2026-10-29 12:22:27.622] info: [remote-source-provider] Ending asset stream for d854f78e-cbcc-4ff2-8cef-ac63bbe0799b
+
+[2026-10-29 12:22:27.922] info: [remote-source-provider] Asset 4fd70362-5eb4-4717-a015-95d24a57967f starting
+
+[2026-10-29 12:22:27.923] info: [remote-source-provider] Ending asset stream for 4fd70362-5eb4-4717-a015-95d24a57967f
+
+[2026-10-29 12:22:28.221] info: [remote-source-provider] Asset 115f6767-65d0-462a-ac0d-8db132b9def9 starting
+
+[2026-10-29 12:22:28.222] info: [remote-source-provider] Ending asset stream for 115f6767-65d0-462a-ac0d-8db132b9def9
+
+[2026-10-29 12:22:28.523] info: [remote-source-provider] Asset 5b785b62-805a-4386-97a2-a3ae771b809d starting
+
+[2026-10-29 12:22:28.525] info: [remote-source-provider] Ending asset stream for 5b785b62-805a-4386-97a2-a3ae771b809d
+
+[2026-10-29 12:22:28.822] info: [remote-source-provider] Asset ecce5b67-af85-4447-a8df-3b5868962a9d starting
+
+[2026-10-29 12:22:28.823] info: [remote-source-provider] Ending asset stream for ecce5b67-af85-4447-a8df-3b5868962a9d
+
+[2026-10-29 12:22:29.132] info: [remote-source-provider] Asset 0a204a89-bed1-4be1-a652-da9d4e4abfdc starting
+
+[2026-10-29 12:22:29.133] info: [remote-source-provider] Ending asset stream for 0a204a89-bed1-4be1-a652-da9d4e4abfdc
+
+[2026-10-29 12:22:29.450] info: [remote-source-provider] Asset 227f3751-98d9-4cc0-88ff-6ca1749a3b4e starting
+
+[2026-10-29 12:22:29.452] info: [remote-source-provider] Ending asset stream for 227f3751-98d9-4cc0-88ff-6ca1749a3b4e
+
+[2026-10-29 12:22:29.749] info: [remote-source-provider] Asset 0ea98aec-6e7a-4f29-b9b7-ba498573bc4a starting
+
+[2026-10-29 12:22:29.750] info: [remote-source-provider] Ending asset stream for 0ea98aec-6e7a-4f29-b9b7-ba498573bc4a
+
+[2026-10-29 12:22:30.061] info: [remote-source-provider] Asset 2ed3c4de-1966-44da-a138-f53c4e95618b starting
+
+[2026-10-29 12:22:30.062] info: [remote-source-provider] Ending asset stream for 2ed3c4de-1966-44da-a138-f53c4e95618b
+
+[2026-10-29 12:22:30.362] info: [remote-source-provider] Asset 27a31491-e2e5-4a93-96dd-5d72deaf5bc0 starting
+
+[2026-10-29 12:22:30.363] info: [remote-source-provider] Ending asset stream for 27a31491-e2e5-4a93-96dd-5d72deaf5bc0
+
+[2026-10-29 12:22:30.661] info: [remote-source-provider] Asset be9610a3-746e-40b2-b545-bd7aeded1708 starting
+
+[2026-10-29 12:22:30.663] info: [remote-source-provider] Ending asset stream for be9610a3-746e-40b2-b545-bd7aeded1708
+
+[2026-10-29 12:22:30.965] info: [remote-source-provider] Asset bd5859bc-5689-4cd1-90b0-ed24f9e11df8 starting
+
+[2026-10-29 12:22:30.966] info: [remote-source-provider] Ending asset stream for bd5859bc-5689-4cd1-90b0-ed24f9e11df8
+
+[2026-10-29 12:22:31.265] info: [remote-source-provider] Asset 6935f6db-d699-419f-aa3e-6399347372c1 starting
+
+[2026-10-29 12:22:31.267] info: [remote-source-provider] Ending asset stream for 6935f6db-d699-419f-aa3e-6399347372c1
+
+[2026-10-29 12:22:31.567] info: [remote-source-provider] Asset 50aa4638-75fc-415b-8af6-1a87aa724b6b starting
+
+[2026-10-29 12:22:31.568] info: [remote-source-provider] Ending asset stream for 50aa4638-75fc-415b-8af6-1a87aa724b6b
+
+[2026-10-29 12:22:31.866] info: [remote-source-provider] Asset 9dbf4891-0b52-4487-9efc-bcc79395b5e0 starting
+
+[2026-10-29 12:22:31.868] info: [remote-source-provider] Ending asset stream for 9dbf4891-0b52-4487-9efc-bcc79395b5e0
+
+[2026-10-29 12:22:32.175] info: [remote-source-provider] Asset 82a9dc14-626c-4d93-886f-37f270fdcd09 starting
+
+[2026-10-29 12:22:32.176] info: [remote-source-provider] Ending asset stream for 82a9dc14-626c-4d93-886f-37f270fdcd09
+
+[2026-10-29 12:22:32.483] info: [remote-source-provider] Asset 3d7de492-01b6-4dd0-80ab-cabdd4b570b3 starting
+
+[2026-10-29 12:22:32.484] info: [remote-source-provider] Ending asset stream for 3d7de492-01b6-4dd0-80ab-cabdd4b570b3
+
+[2026-10-29 12:22:32.784] info: [remote-source-provider] Asset aa079316-1566-4049-ad7c-d3ef13582ee3 starting
+
+[2026-10-29 12:22:32.785] info: [remote-source-provider] Ending asset stream for aa079316-1566-4049-ad7c-d3ef13582ee3
+
+[2026-10-29 12:22:33.089] info: [remote-source-provider] Asset 14ebf325-77a6-40e2-b859-a9e77a794c27 starting
+
+[2026-10-29 12:22:33.090] info: [remote-source-provider] Ending asset stream for 14ebf325-77a6-40e2-b859-a9e77a794c27
+
+[2026-10-29 12:22:33.391] info: [remote-source-provider] Asset ab48e8a2-76e1-48c2-b559-4b7adff6ecfe starting
+
+[2026-10-29 12:22:33.392] info: [remote-source-provider] Ending asset stream for ab48e8a2-76e1-48c2-b559-4b7adff6ecfe
+
+[2026-10-29 12:22:33.699] info: [remote-source-provider] Asset 4b7fbebe-14a8-4f81-9ed1-7355fec498e1 starting
+
+[2026-10-29 12:22:33.703] info: [remote-source-provider] Ending asset stream for 4b7fbebe-14a8-4f81-9ed1-7355fec498e1
+
+[2026-10-29 12:22:34.001] info: [remote-source-provider] Asset 4d7f877c-a6de-4f95-8951-b85739642f06 starting
+
+[2026-10-29 12:22:34.001] info: [remote-source-provider] Ending asset stream for 4d7f877c-a6de-4f95-8951-b85739642f06
+
+[2026-10-29 12:22:34.355] info: [remote-source-provider] Asset 7650d81c-903a-402c-848c-08fb04404ade starting
+
+[2026-10-29 12:22:34.356] info: [remote-source-provider] Ending asset stream for 7650d81c-903a-402c-848c-08fb04404ade
+
+[2026-10-29 12:22:34.770] info: [remote-source-provider] Asset 1dd0d9da-01bc-4387-b7e5-7ccebc1ead60 starting
+
+[2026-10-29 12:22:35.083] info: [remote-source-provider] Ending asset stream for 1dd0d9da-01bc-4387-b7e5-7ccebc1ead60
+
+[2026-10-29 12:22:35.422] info: [remote-source-provider] Asset 28dde048-d926-47c1-9675-80e0a0425302 starting
+
+[2026-10-29 12:22:35.424] info: [remote-source-provider] Ending asset stream for 28dde048-d926-47c1-9675-80e0a0425302
+
+[2026-10-29 12:22:35.790] info: [remote-source-provider] Asset cf1631e0-6467-4a3f-ae66-26a4a44a6f7f starting
+
+[2026-10-29 12:22:35.792] info: [remote-source-provider] Ending asset stream for cf1631e0-6467-4a3f-ae66-26a4a44a6f7f
+
+[2026-10-29 12:22:36.099] info: [remote-source-provider] Asset 0bb00c22-147b-44cc-a5f3-e18ee221dea7 starting
+
+[2026-10-29 12:22:36.100] info: [remote-source-provider] Ending asset stream for 0bb00c22-147b-44cc-a5f3-e18ee221dea7
+
+[2026-10-29 12:22:36.400] info: [remote-source-provider] Asset ed498f95-c675-426a-8f3d-482450a56be4 starting
+
+[2026-10-29 12:22:36.402] info: [remote-source-provider] Ending asset stream for ed498f95-c675-426a-8f3d-482450a56be4
+
+[2026-10-29 12:22:36.702] info: [remote-source-provider] Asset 2050c1ab-8096-45a4-8b72-f6513cd4280d starting
+
+[2026-10-29 12:22:36.703] info: [remote-source-provider] Ending asset stream for 2050c1ab-8096-45a4-8b72-f6513cd4280d
+
+[2026-10-29 12:22:37.001] info: [remote-source-provider] Asset 163b8b25-6ab4-468a-94ce-8c879ae61beb starting
+
+[2026-10-29 12:22:37.002] info: [remote-source-provider] Ending asset stream for 163b8b25-6ab4-468a-94ce-8c879ae61beb
+
+[2026-10-29 12:22:37.403] info: [remote-source-provider] Asset b964fff5-4ad7-4dd8-adbb-ceebe63e3c23 starting
+
+[2026-10-29 12:22:37.408] info: [remote-source-provider] Ending asset stream for b964fff5-4ad7-4dd8-adbb-ceebe63e3c23
+
+[2026-10-29 12:22:37.827] info: [remote-source-provider] Asset 4e0f161e-5b0a-4e4f-b765-f3d07750b213 starting
+
+[2026-10-29 12:22:38.228] info: [remote-source-provider] Ending asset stream for 4e0f161e-5b0a-4e4f-b765-f3d07750b213
+
+[2026-10-29 12:22:38.587] info: [remote-source-provider] Asset 8ba69968-113a-4726-a547-e70584168ce6 starting
+
+[2026-10-29 12:22:38.590] info: [remote-source-provider] Ending asset stream for 8ba69968-113a-4726-a547-e70584168ce6
+
+[2026-10-29 12:22:38.996] info: [remote-source-provider] Asset 8c417cce-d4f2-4193-a247-6be80206329d starting
+
+[2026-10-29 12:22:39.301] info: [remote-source-provider] Ending asset stream for 8c417cce-d4f2-4193-a247-6be80206329d
+
+[2026-10-29 12:22:39.610] info: [remote-source-provider] Asset f65b7f50-4d35-4aa3-837a-1f987d13cfd8 starting
+
+[2026-10-29 12:22:39.611] info: [remote-source-provider] Ending asset stream for f65b7f50-4d35-4aa3-837a-1f987d13cfd8
+
+[2026-10-29 12:22:40.011] info: [remote-source-provider] Asset 40a644ea-2331-45f3-b0a5-b01df108d898 starting
+
+[2026-10-29 12:22:40.013] info: [remote-source-provider] Ending asset stream for 40a644ea-2331-45f3-b0a5-b01df108d898
+
+[2026-10-29 12:22:40.415] info: [remote-source-provider] Asset 8244c636-e372-4386-a7b0-89aa716bd547 starting
+
+[2026-10-29 12:22:40.806] info: [remote-source-provider] Ending asset stream for 8244c636-e372-4386-a7b0-89aa716bd547
+
+[2026-10-29 12:22:41.169] info: [remote-source-provider] Asset 50824ad7-684f-42df-bfb1-b9bbe2c2ad35 starting
+
+[2026-10-29 12:22:41.171] info: [remote-source-provider] Ending asset stream for 50824ad7-684f-42df-bfb1-b9bbe2c2ad35
+
+[2026-10-29 12:22:41.587] info: [remote-source-provider] Asset e5fefc93-fb44-4ff8-b870-36217d97b94f starting
+
+[2026-10-29 12:22:41.895] info: [remote-source-provider] Ending asset stream for e5fefc93-fb44-4ff8-b870-36217d97b94f
+
+[2026-10-29 12:22:42.204] info: [remote-source-provider] Asset 0aadcbfc-0524-48a1-baae-20bb1d49f9e3 starting
+
+[2026-10-29 12:22:42.206] info: [remote-source-provider] Ending asset stream for 0aadcbfc-0524-48a1-baae-20bb1d49f9e3
+
+[2026-10-29 12:22:42.600] info: [remote-source-provider] Asset 6eb46124-d571-4afa-abdc-9760868144f1 starting
+
+[2026-10-29 12:22:42.602] info: [remote-source-provider] Ending asset stream for 6eb46124-d571-4afa-abdc-9760868144f1
+
+[2026-10-29 12:22:43.020] info: [remote-source-provider] Asset 3c403b74-133e-418f-8ca3-c7345e952458 starting
+
+[2026-10-29 12:22:43.439] info: [remote-source-provider] Ending asset stream for 3c403b74-133e-418f-8ca3-c7345e952458
+
+[2026-10-29 12:22:43.805] info: [remote-source-provider] Asset 5eb195ed-041e-4e50-ab96-47e2da615ce6 starting
+
+[2026-10-29 12:22:43.807] info: [remote-source-provider] Ending asset stream for 5eb195ed-041e-4e50-ab96-47e2da615ce6
+
+[2026-10-29 12:22:44.215] info: [remote-source-provider] Asset 219d215c-0608-406c-bc69-21faccaaf85f starting
+
+[2026-10-29 12:22:44.539] info: [remote-source-provider] Ending asset stream for 219d215c-0608-406c-bc69-21faccaaf85f
+
+[2026-10-29 12:22:44.848] info: [remote-source-provider] Asset 996b7395-19c0-4ca8-ad6b-019ab67f3f0e starting
+
+[2026-10-29 12:22:44.849] info: [remote-source-provider] Ending asset stream for 996b7395-19c0-4ca8-ad6b-019ab67f3f0e
+
+[2026-10-29 12:22:45.149] info: [remote-source-provider] Asset eeb3f5b8-2de9-4c00-80ef-a119269c79aa starting
+
+[2026-10-29 12:22:45.150] info: [remote-source-provider] Ending asset stream for eeb3f5b8-2de9-4c00-80ef-a119269c79aa
+
+[2026-10-29 12:22:45.462] info: [remote-source-provider] Asset c1cceb8d-8a20-4ff0-afec-cfdbb69473c0 starting
+
+[2026-10-29 12:22:45.463] info: [remote-source-provider] Ending asset stream for c1cceb8d-8a20-4ff0-afec-cfdbb69473c0
+
+[2026-10-29 12:22:45.768] info: [remote-source-provider] Asset b7e56841-b676-4a05-9ec1-ea12479f7f7d starting
+
+[2026-10-29 12:22:45.769] info: [remote-source-provider] Ending asset stream for b7e56841-b676-4a05-9ec1-ea12479f7f7d
+
+[2026-10-29 12:22:46.072] info: [remote-source-provider] Asset ba16dcb7-8594-4d7f-a062-4c1f32fb2a70 starting
+
+[2026-10-29 12:22:46.073] info: [remote-source-provider] Ending asset stream for ba16dcb7-8594-4d7f-a062-4c1f32fb2a70
+
+[2026-10-29 12:22:46.374] info: [remote-source-provider] Asset fe34f6e5-644e-407d-8ae2-a541a6ef9f1d starting
+
+[2026-10-29 12:22:46.375] info: [remote-source-provider] Ending asset stream for fe34f6e5-644e-407d-8ae2-a541a6ef9f1d
+
+[2026-10-29 12:22:46.678] info: [remote-source-provider] Asset 5fac9e7c-c947-4090-867f-07ab403055c5 starting
+
+[2026-10-29 12:22:46.679] info: [remote-source-provider] Ending asset stream for 5fac9e7c-c947-4090-867f-07ab403055c5
+
+[2026-10-29 12:22:46.976] info: [remote-source-provider] Asset dcb93ca9-2d5d-4391-bfc4-023efb3c50f4 starting
+
+[2026-10-29 12:22:46.977] info: [remote-source-provider] Ending asset stream for dcb93ca9-2d5d-4391-bfc4-023efb3c50f4
+
+[2026-10-29 12:22:47.276] info: [remote-source-provider] Asset 461a0b9d-45d5-4f50-baf7-a7a2ea1ed002 starting
+
+[2026-10-29 12:22:47.277] info: [remote-source-provider] Ending asset stream for 461a0b9d-45d5-4f50-baf7-a7a2ea1ed002
+
+[2026-10-29 12:22:47.573] info: [remote-source-provider] Asset 4d4242e8-b2e1-40a9-902e-33f5b2943890 starting
+
+[2026-10-29 12:22:47.573] info: [remote-source-provider] Ending asset stream for 4d4242e8-b2e1-40a9-902e-33f5b2943890
+
+[2026-10-29 12:22:47.872] info: [remote-source-provider] Asset 23d359f8-16d8-4211-a25a-c79c8af15f80 starting
+
+[2026-10-29 12:22:47.873] info: [remote-source-provider] Ending asset stream for 23d359f8-16d8-4211-a25a-c79c8af15f80
+
+[2026-10-29 12:22:48.235] info: [remote-source-provider] Asset 345e239c-1875-4a64-a630-c4334519ed8d starting
+
+[2026-10-29 12:22:48.237] info: [remote-source-provider] Ending asset stream for 345e239c-1875-4a64-a630-c4334519ed8d
+
+[2026-10-29 12:22:48.644] info: [remote-source-provider] Asset a99c53ca-35a2-4714-b837-09f77f1f1477 starting
+
+[2026-10-29 12:22:48.970] info: [remote-source-provider] Ending asset stream for a99c53ca-35a2-4714-b837-09f77f1f1477
+
+[2026-10-29 12:22:49.304] info: [remote-source-provider] Asset b9144adf-53a4-4d25-856c-9e016414b841 starting
+
+[2026-10-29 12:22:49.306] info: [remote-source-provider] Ending asset stream for b9144adf-53a4-4d25-856c-9e016414b841
+
+[2026-10-29 12:22:49.686] info: [remote-source-provider] Asset 0585e0ad-9c5f-4694-b447-ea4f446cfe0f starting
+
+[2026-10-29 12:22:49.689] info: [remote-source-provider] Ending asset stream for 0585e0ad-9c5f-4694-b447-ea4f446cfe0f
+
+[2026-10-29 12:22:49.998] info: [remote-source-provider] Asset 9107049d-a655-4c32-b5e9-755daeed38e2 starting
+
+[2026-10-29 12:22:49.999] info: [remote-source-provider] Ending asset stream for 9107049d-a655-4c32-b5e9-755daeed38e2
+
+[2026-10-29 12:22:50.304] info: [remote-source-provider] Asset 9e165743-4509-4cda-b478-7ebc69d5fb53 starting
+
+[2026-10-29 12:22:50.304] info: [remote-source-provider] Ending asset stream for 9e165743-4509-4cda-b478-7ebc69d5fb53
+
+[2026-10-29 12:22:50.608] info: [remote-source-provider] Asset 0783107a-689f-4485-b592-a4a5bc8ca7a8 starting
+
+[2026-10-29 12:22:50.609] info: [remote-source-provider] Ending asset stream for 0783107a-689f-4485-b592-a4a5bc8ca7a8
+
+[2026-10-29 12:22:50.905] info: [remote-source-provider] Asset c8e1340a-2479-4d8a-a7fc-97088696f2e5 starting
+
+[2026-10-29 12:22:50.906] info: [remote-source-provider] Ending asset stream for c8e1340a-2479-4d8a-a7fc-97088696f2e5
+
+[2026-10-29 12:22:51.209] info: [remote-source-provider] Asset 69165fae-54ba-4e65-80ce-dc41adf6931a starting
+
+[2026-10-29 12:22:51.209] info: [remote-source-provider] Ending asset stream for 69165fae-54ba-4e65-80ce-dc41adf6931a
+
+[2026-10-29 12:22:51.509] info: [remote-source-provider] Asset 394a1ee1-dc53-462d-aac2-0633d44a7357 starting
+
+[2026-10-29 12:22:51.510] info: [remote-source-provider] Ending asset stream for 394a1ee1-dc53-462d-aac2-0633d44a7357
+
+[2026-10-29 12:22:51.820] info: [remote-source-provider] Asset b8e9ff77-6d5b-490a-a6e4-86734259e086 starting
+
+[2026-10-29 12:22:51.821] info: [remote-source-provider] Ending asset stream for b8e9ff77-6d5b-490a-a6e4-86734259e086
+
+[2026-10-29 12:22:52.119] info: [remote-source-provider] Asset d5c2231d-80cb-4f22-84f3-f53a46e8f6dd starting
+
+[2026-10-29 12:22:52.120] info: [remote-source-provider] Ending asset stream for d5c2231d-80cb-4f22-84f3-f53a46e8f6dd
+
+[2026-10-29 12:22:52.420] info: [remote-source-provider] Asset 4fa378d2-df80-46b7-8f36-294dc283aa55 starting
+
+[2026-10-29 12:22:52.420] info: [remote-source-provider] Ending asset stream for 4fa378d2-df80-46b7-8f36-294dc283aa55
+
+[2026-10-29 12:22:52.722] info: [remote-source-provider] Asset 7beac3ea-941e-416b-8822-94ea1b7bfcd7 starting
+
+[2026-10-29 12:22:52.723] info: [remote-source-provider] Ending asset stream for 7beac3ea-941e-416b-8822-94ea1b7bfcd7
+
+[2026-10-29 12:22:53.021] info: [remote-source-provider] Asset bd486841-7f84-4e97-ab40-00463624b039 starting
+
+[2026-10-29 12:22:53.023] info: [remote-source-provider] Ending asset stream for bd486841-7f84-4e97-ab40-00463624b039
+
+[2026-10-29 12:22:53.325] info: [remote-source-provider] Asset ddc97aeb-4275-4df3-b755-193e5eb31230 starting
+
+[2026-10-29 12:22:53.326] info: [remote-source-provider] Ending asset stream for ddc97aeb-4275-4df3-b755-193e5eb31230
+
+[2026-10-29 12:22:53.632] info: [remote-source-provider] Asset 53a1a468-7387-45d9-b787-cf369abdb6e6 starting
+
+[2026-10-29 12:22:53.634] info: [remote-source-provider] Ending asset stream for 53a1a468-7387-45d9-b787-cf369abdb6e6
+
+[2026-10-29 12:22:53.980] info: [remote-source-provider] Asset 2e16fc77-1d04-4e18-9116-87c6bbe58eb6 starting
+
+[2026-10-29 12:22:53.981] info: [remote-source-provider] Ending asset stream for 2e16fc77-1d04-4e18-9116-87c6bbe58eb6
+
+[2026-10-29 12:22:54.291] info: [remote-source-provider] Asset 5bc940f9-e7c0-4185-b297-95178cbd2f9b starting
+
+[2026-10-29 12:22:54.292] info: [remote-source-provider] Ending asset stream for 5bc940f9-e7c0-4185-b297-95178cbd2f9b
+
+[2026-10-29 12:22:54.591] info: [remote-source-provider] Asset 4a56bb44-5cc4-4f4f-82b6-321aee88ef21 starting
+
+[2026-10-29 12:22:54.592] info: [remote-source-provider] Ending asset stream for 4a56bb44-5cc4-4f4f-82b6-321aee88ef21
+
+[2026-10-29 12:22:54.890] info: [remote-source-provider] Asset 53a1a57e-f94b-4cd0-b0d6-987073385c61 starting
+
+[2026-10-29 12:22:54.891] info: [remote-source-provider] Ending asset stream for 53a1a57e-f94b-4cd0-b0d6-987073385c61
+
+[2026-10-29 12:22:55.192] info: [remote-source-provider] Asset db2330f8-ff0c-48ab-b4ed-07f34de2128f starting
+
+[2026-10-29 12:22:55.194] info: [remote-source-provider] Ending asset stream for db2330f8-ff0c-48ab-b4ed-07f34de2128f
+
+[2026-10-29 12:22:55.490] info: [remote-source-provider] Asset 9ac7b9a1-d169-46e2-acdf-5d04b455131e starting
+
+[2026-10-29 12:22:55.491] info: [remote-source-provider] Ending asset stream for 9ac7b9a1-d169-46e2-acdf-5d04b455131e
+
+[2026-10-29 12:22:55.793] info: [remote-source-provider] Asset 97feb378-9c9c-4938-93a7-e791d7724a13 starting
+
+[2026-10-29 12:22:55.794] info: [remote-source-provider] Ending asset stream for 97feb378-9c9c-4938-93a7-e791d7724a13
+
+[2026-10-29 12:22:56.094] info: [remote-source-provider] Asset 96f0c765-2f0e-43ad-bfb2-cd120ab58c66 starting
+
+[2026-10-29 12:22:56.096] info: [remote-source-provider] Ending asset stream for 96f0c765-2f0e-43ad-bfb2-cd120ab58c66
+
+[2026-10-29 12:22:56.394] info: [remote-source-provider] Asset e307d015-4ad2-4a54-b3bf-e377332a9c44 starting
+
+[2026-10-29 12:22:56.394] info: [remote-source-provider] Ending asset stream for e307d015-4ad2-4a54-b3bf-e377332a9c44
+
+[2026-10-29 12:22:56.693] info: [remote-source-provider] Asset 9a1ea174-f1e9-48e8-b4e0-9a34237ed950 starting
+
+[2026-10-29 12:22:56.695] info: [remote-source-provider] Ending asset stream for 9a1ea174-f1e9-48e8-b4e0-9a34237ed950
+
+[2026-10-29 12:22:56.992] info: [remote-source-provider] Asset 4dc87905-18f1-4cc2-a8e3-0bc4cab03180 starting
+
+[2026-10-29 12:22:56.993] info: [remote-source-provider] Ending asset stream for 4dc87905-18f1-4cc2-a8e3-0bc4cab03180
+
+[2026-10-29 12:22:57.299] info: [remote-source-provider] Asset 5f85a88b-5af3-4f3a-8ec1-4a734ac152dd starting
+
+[2026-10-29 12:22:57.299] info: [remote-source-provider] Ending asset stream for 5f85a88b-5af3-4f3a-8ec1-4a734ac152dd
+
+[2026-10-29 12:22:57.596] info: [remote-source-provider] Asset 3713f3e3-3bd2-4a73-99d1-11d51b51fb9a starting
+
+[2026-10-29 12:22:57.597] info: [remote-source-provider] Ending asset stream for 3713f3e3-3bd2-4a73-99d1-11d51b51fb9a
+
+[2026-10-29 12:22:57.900] info: [remote-source-provider] Asset 96258a81-a846-49cb-b335-0211b0d3f7a0 starting
+
+[2026-10-29 12:22:57.901] info: [remote-source-provider] Ending asset stream for 96258a81-a846-49cb-b335-0211b0d3f7a0
+
+[2026-10-29 12:22:58.203] info: [remote-source-provider] Asset 7017db98-bb3a-4d7a-9a92-f0103fd5d574 starting
+
+[2026-10-29 12:22:58.205] info: [remote-source-provider] Ending asset stream for 7017db98-bb3a-4d7a-9a92-f0103fd5d574
+
+[2026-10-29 12:22:58.508] info: [remote-source-provider] Asset f6985aea-b6b8-4671-9c15-9c291613a94f starting
+
+[2026-10-29 12:22:58.509] info: [remote-source-provider] Ending asset stream for f6985aea-b6b8-4671-9c15-9c291613a94f
+
+[2026-10-29 12:22:58.820] info: [remote-source-provider] Asset 5820a46b-f376-453c-937c-a6834364cac4 starting
+
+[2026-10-29 12:22:58.821] info: [remote-source-provider] Ending asset stream for 5820a46b-f376-453c-937c-a6834364cac4
+
+[2026-10-29 12:22:59.124] info: [remote-source-provider] Asset 2d4468e0-1708-42eb-9fd2-754863300c72 starting
+
+[2026-10-29 12:22:59.125] info: [remote-source-provider] Ending asset stream for 2d4468e0-1708-42eb-9fd2-754863300c72
+
+[2026-10-29 12:22:59.436] info: [remote-source-provider] Asset 13b5b722-c385-4955-a1ce-25db55df0e74 starting
+
+[2026-10-29 12:22:59.437] info: [remote-source-provider] Ending asset stream for 13b5b722-c385-4955-a1ce-25db55df0e74
+
+[2026-10-29 12:22:59.740] info: [remote-source-provider] Asset ad337cab-125b-4dbe-805d-9a35b240088d starting
+
+[2026-10-29 12:22:59.741] info: [remote-source-provider] Ending asset stream for ad337cab-125b-4dbe-805d-9a35b240088d
+
+[2026-10-29 12:23:00.042] info: [remote-source-provider] Asset ea5afb20-a47b-4a73-9733-7bff41898b5c starting
+
+[2026-10-29 12:23:00.043] info: [remote-source-provider] Ending asset stream for ea5afb20-a47b-4a73-9733-7bff41898b5c
+
+[2026-10-29 12:23:00.352] info: [remote-source-provider] Asset b9042687-16e0-4b78-b2db-e3b9431065f0 starting
+
+[2026-10-29 12:23:00.353] info: [remote-source-provider] Ending asset stream for b9042687-16e0-4b78-b2db-e3b9431065f0
+
+[2026-10-29 12:23:00.660] info: [remote-source-provider] Asset d8ff46b6-af57-4990-9f63-4c5e9a190fb3 starting
+
+[2026-10-29 12:23:00.661] info: [remote-source-provider] Ending asset stream for d8ff46b6-af57-4990-9f63-4c5e9a190fb3
+
+[2026-10-29 12:23:00.971] info: [remote-source-provider] Asset f8356116-03e1-4737-9244-7e78ce47e6f7 starting
+
+[2026-10-29 12:23:00.972] info: [remote-source-provider] Ending asset stream for f8356116-03e1-4737-9244-7e78ce47e6f7
+
+[2026-10-29 12:23:01.294] info: [remote-source-provider] Asset 6d8a42dd-6e38-4845-ad6d-ed1314e4d6e4 starting
+
+[2026-10-29 12:23:01.295] info: [remote-source-provider] Ending asset stream for 6d8a42dd-6e38-4845-ad6d-ed1314e4d6e4
+
+[2026-10-29 12:23:01.596] info: [remote-source-provider] Asset 1e910042-a691-4e91-99df-f04a73eb2e38 starting
+
+[2026-10-29 12:23:01.598] info: [remote-source-provider] Ending asset stream for 1e910042-a691-4e91-99df-f04a73eb2e38
+
+[2026-10-29 12:23:01.900] info: [remote-source-provider] Asset db9604bb-086e-4a18-a47d-0136be69f4e6 starting
+
+[2026-10-29 12:23:01.902] info: [remote-source-provider] Ending asset stream for db9604bb-086e-4a18-a47d-0136be69f4e6
+
+[2026-10-29 12:23:02.205] info: [remote-source-provider] Asset 6437e1c2-f595-4973-be61-b1d1babda1cf starting
+
+[2026-10-29 12:23:02.206] info: [remote-source-provider] Ending asset stream for 6437e1c2-f595-4973-be61-b1d1babda1cf
+
+[2026-10-29 12:23:02.513] info: [remote-source-provider] Asset 0ec19c29-f33c-4706-b1df-3a268453e4fa starting
+
+[2026-10-29 12:23:02.514] info: [remote-source-provider] Ending asset stream for 0ec19c29-f33c-4706-b1df-3a268453e4fa
+
+[2026-10-29 12:23:02.828] info: [remote-source-provider] Asset 2f873a36-3b6f-4b6a-9642-ccbedd54ee82 starting
+
+[2026-10-29 12:23:02.830] info: [remote-source-provider] Ending asset stream for 2f873a36-3b6f-4b6a-9642-ccbedd54ee82
+
+[2026-10-29 12:23:03.138] info: [remote-source-provider] Asset 69f65d40-ad73-40cf-80b3-73923a516d5f starting
+
+[2026-10-29 12:23:03.139] info: [remote-source-provider] Ending asset stream for 69f65d40-ad73-40cf-80b3-73923a516d5f
+
+[2026-10-29 12:23:03.443] info: [remote-source-provider] Asset e6601359-7c1f-4b0c-af16-111a10a3cb76 starting
+
+[2026-10-29 12:23:03.445] info: [remote-source-provider] Ending asset stream for e6601359-7c1f-4b0c-af16-111a10a3cb76
+
+[2026-10-29 12:23:03.745] info: [remote-source-provider] Asset b86c6310-ba0d-4221-9fd9-5ebb44c49e7b starting
+
+[2026-10-29 12:23:03.746] info: [remote-source-provider] Ending asset stream for b86c6310-ba0d-4221-9fd9-5ebb44c49e7b
+
+[2026-10-29 12:23:04.062] info: [remote-source-provider] Asset 4dcaf6de-8b03-440f-807c-741cdb433980 starting
+
+[2026-10-29 12:23:04.064] info: [remote-source-provider] Ending asset stream for 4dcaf6de-8b03-440f-807c-741cdb433980
+
+[2026-10-29 12:23:04.379] info: [remote-source-provider] Asset 98b49088-c1f4-47b2-ae50-27432feeae3b starting
+
+[2026-10-29 12:23:04.381] info: [remote-source-provider] Ending asset stream for 98b49088-c1f4-47b2-ae50-27432feeae3b
+
+[2026-10-29 12:23:04.698] info: [remote-source-provider] Asset 6698b7f3-79b9-477c-8fae-725614972bc3 starting
+
+[2026-10-29 12:23:04.699] info: [remote-source-provider] Ending asset stream for 6698b7f3-79b9-477c-8fae-725614972bc3
+
+[2026-10-29 12:23:05.012] info: [remote-source-provider] Asset dee283b1-4cff-42d9-ba46-56e0cabbd2b7 starting
+
+[2026-10-29 12:23:05.013] info: [remote-source-provider] Ending asset stream for dee283b1-4cff-42d9-ba46-56e0cabbd2b7
+
+[2026-10-29 12:23:05.312] info: [remote-source-provider] Asset c13ee10d-126f-422b-8a48-10022beac40d starting
+
+[2026-10-29 12:23:05.314] info: [remote-source-provider] Ending asset stream for c13ee10d-126f-422b-8a48-10022beac40d
+
+[2026-10-29 12:23:05.614] info: [remote-source-provider] Asset 2fa60f48-2466-4e47-bf64-4bc7587b33bc starting
+
+[2026-10-29 12:23:05.615] info: [remote-source-provider] Ending asset stream for 2fa60f48-2466-4e47-bf64-4bc7587b33bc
+
+[2026-10-29 12:23:05.913] info: [remote-source-provider] Asset 604be1f4-f216-4d4c-a6af-856765bf6e95 starting
+
+[2026-10-29 12:23:05.913] info: [remote-source-provider] Ending asset stream for 604be1f4-f216-4d4c-a6af-856765bf6e95
+
+[2026-10-29 12:23:06.234] info: [remote-source-provider] Asset ff71c605-0e69-46fa-926d-c199c0b5325b starting
+
+[2026-10-29 12:23:06.235] info: [remote-source-provider] Ending asset stream for ff71c605-0e69-46fa-926d-c199c0b5325b
+
+[2026-10-29 12:23:06.534] info: [remote-source-provider] Asset a52036be-b573-4923-889f-682ce1652d2e starting
+
+[2026-10-29 12:23:06.534] info: [remote-source-provider] Ending asset stream for a52036be-b573-4923-889f-682ce1652d2e
+
+[2026-10-29 12:23:06.832] info: [remote-source-provider] Asset be6ab3d8-6e15-4bfd-84c7-39cce18ec12e starting
+
+[2026-10-29 12:23:06.832] info: [remote-source-provider] Ending asset stream for be6ab3d8-6e15-4bfd-84c7-39cce18ec12e
+
+[2026-10-29 12:23:07.133] info: [remote-source-provider] Asset e6960053-208e-492f-bc7c-df1515477cd9 starting
+
+[2026-10-29 12:23:07.134] info: [remote-source-provider] Ending asset stream for e6960053-208e-492f-bc7c-df1515477cd9
+
+[2026-10-29 12:23:07.449] info: [remote-source-provider] Asset 7abc72b7-2388-4f65-aa8f-f88dbd860762 starting
+
+[2026-10-29 12:23:07.451] info: [remote-source-provider] Ending asset stream for 7abc72b7-2388-4f65-aa8f-f88dbd860762
+
+[2026-10-29 12:23:07.758] info: [remote-source-provider] Asset 4de8f5c7-188c-438a-bd3a-1486b0e90629 starting
+
+[2026-10-29 12:23:07.759] info: [remote-source-provider] Ending asset stream for 4de8f5c7-188c-438a-bd3a-1486b0e90629
+
+[2026-10-29 12:23:08.079] info: [remote-source-provider] Asset 0848759a-42f5-45d1-8057-3fa50acbd4ba starting
+
+[2026-10-29 12:23:08.081] info: [remote-source-provider] Ending asset stream for 0848759a-42f5-45d1-8057-3fa50acbd4ba
+
+[2026-10-29 12:23:08.384] info: [remote-source-provider] Asset bc9bbe63-ffc0-438a-911f-f9bba4c55a16 starting
+
+[2026-10-29 12:23:08.385] info: [remote-source-provider] Ending asset stream for bc9bbe63-ffc0-438a-911f-f9bba4c55a16
+
+[2026-10-29 12:23:08.686] info: [remote-source-provider] Asset 9d6e3797-2e5b-486c-a951-266f01ebb9ff starting
+
+[2026-10-29 12:23:08.688] info: [remote-source-provider] Ending asset stream for 9d6e3797-2e5b-486c-a951-266f01ebb9ff
+
+[2026-10-29 12:23:08.987] info: [remote-source-provider] Asset 57b47295-56ff-4a3f-bcbd-4613da1527d3 starting
+
+[2026-10-29 12:23:08.988] info: [remote-source-provider] Ending asset stream for 57b47295-56ff-4a3f-bcbd-4613da1527d3
+
+[2026-10-29 12:23:09.290] info: [remote-source-provider] Asset 95a0b164-ed2d-42df-9ae0-f0987832276f starting
+
+[2026-10-29 12:23:09.291] info: [remote-source-provider] Ending asset stream for 95a0b164-ed2d-42df-9ae0-f0987832276f
+
+[2026-10-29 12:23:09.600] info: [remote-source-provider] Asset 9a103c89-5ecd-4c54-a8b9-641817d80a25 starting
+
+[2026-10-29 12:23:09.601] info: [remote-source-provider] Ending asset stream for 9a103c89-5ecd-4c54-a8b9-641817d80a25
+
+[2026-10-29 12:23:09.901] info: [remote-source-provider] Asset 75f1a196-22dc-41dc-992d-d35aa3f97945 starting
+
+[2026-10-29 12:23:09.901] info: [remote-source-provider] Ending asset stream for 75f1a196-22dc-41dc-992d-d35aa3f97945
+
+[2026-10-29 12:23:10.201] info: [remote-source-provider] Asset 549979ca-83b5-4c1f-a268-85dd80a726e3 starting
+
+[2026-10-29 12:23:10.202] info: [remote-source-provider] Ending asset stream for 549979ca-83b5-4c1f-a268-85dd80a726e3
+
+[2026-10-29 12:23:10.499] info: [remote-source-provider] Asset af7ac039-f117-42e5-a68f-a2fe06dcf2e9 starting
+
+[2026-10-29 12:23:10.500] info: [remote-source-provider] Ending asset stream for af7ac039-f117-42e5-a68f-a2fe06dcf2e9
+
+[2026-10-29 12:23:10.798] info: [remote-source-provider] Asset c6d63ca3-609a-4eaa-905d-aefa13ee4688 starting
+
+[2026-10-29 12:23:10.799] info: [remote-source-provider] Ending asset stream for c6d63ca3-609a-4eaa-905d-aefa13ee4688
+
+[2026-10-29 12:23:11.097] info: [remote-source-provider] Asset 1380089f-729f-4753-ab25-fa296d61b05e starting
+
+[2026-10-29 12:23:11.098] info: [remote-source-provider] Ending asset stream for 1380089f-729f-4753-ab25-fa296d61b05e
+
+[2026-10-29 12:23:11.394] info: [remote-source-provider] Asset 630fb6d6-5a77-421e-8006-e056f80584c9 starting
+
+[2026-10-29 12:23:11.395] info: [remote-source-provider] Ending asset stream for 630fb6d6-5a77-421e-8006-e056f80584c9
+
+[2026-10-29 12:23:11.694] info: [remote-source-provider] Asset ba0d1f22-7268-4b9f-9e2f-c09f685749db starting
+
+[2026-10-29 12:23:11.695] info: [remote-source-provider] Ending asset stream for ba0d1f22-7268-4b9f-9e2f-c09f685749db
+
+[2026-10-29 12:23:11.996] info: [remote-source-provider] Asset cd7a5eef-2676-4aa5-9318-d721b5a25b11 starting
+
+[2026-10-29 12:23:11.997] info: [remote-source-provider] Ending asset stream for cd7a5eef-2676-4aa5-9318-d721b5a25b11
+
+[2026-10-29 12:23:12.293] info: [remote-source-provider] Asset 2daeba9f-65bb-4b5a-b298-1f5fdf80ac4c starting
+
+[2026-10-29 12:23:12.294] info: [remote-source-provider] Ending asset stream for 2daeba9f-65bb-4b5a-b298-1f5fdf80ac4c
+
+[2026-10-29 12:23:12.608] info: [remote-source-provider] Asset a066f7d8-ff6b-4e01-84f4-649de323c2cc starting
+
+[2026-10-29 12:23:12.609] info: [remote-source-provider] Ending asset stream for a066f7d8-ff6b-4e01-84f4-649de323c2cc
+
+[2026-10-29 12:23:12.918] info: [remote-source-provider] Asset c8977ba8-666e-426b-84b5-3091bbc935f5 starting
+
+[2026-10-29 12:23:12.918] info: [remote-source-provider] Ending asset stream for c8977ba8-666e-426b-84b5-3091bbc935f5
+
+[2026-10-29 12:23:13.221] info: [remote-source-provider] Asset 37fcb439-f58a-402f-9bfb-6af6af95a611 starting
+
+[2026-10-29 12:23:13.223] info: [remote-source-provider] Ending asset stream for 37fcb439-f58a-402f-9bfb-6af6af95a611
+
+[2026-10-29 12:23:13.525] info: [remote-source-provider] Asset fec99237-c9ff-4678-be05-700f7f1800aa starting
+
+[2026-10-29 12:23:13.527] info: [remote-source-provider] Ending asset stream for fec99237-c9ff-4678-be05-700f7f1800aa
+
+[2026-10-29 12:23:13.837] info: [remote-source-provider] Asset 3f5c42da-d7f9-4f14-b094-47ddb2a3a60d starting
+
+[2026-10-29 12:23:13.837] info: [remote-source-provider] Ending asset stream for 3f5c42da-d7f9-4f14-b094-47ddb2a3a60d
+
+[2026-10-29 12:23:14.146] info: [remote-source-provider] Asset a9ad1495-ac2e-4e44-99cd-a69d8b59ac6e starting
+
+[2026-10-29 12:23:14.146] info: [remote-source-provider] Ending asset stream for a9ad1495-ac2e-4e44-99cd-a69d8b59ac6e
+
+[2026-10-29 12:23:14.451] info: [remote-source-provider] Asset 4f635932-0c00-48e2-a28e-4a59906734ac starting
+
+[2026-10-29 12:23:14.452] info: [remote-source-provider] Ending asset stream for 4f635932-0c00-48e2-a28e-4a59906734ac
+
+[2026-10-29 12:23:14.765] info: [remote-source-provider] Asset fec0d72a-16bf-4573-847f-c38a7d18d033 starting
+
+[2026-10-29 12:23:14.766] info: [remote-source-provider] Ending asset stream for fec0d72a-16bf-4573-847f-c38a7d18d033
+
+[2026-10-29 12:23:15.063] info: [remote-source-provider] Asset beeae327-04e1-49d7-90e5-bc304735362e starting
+
+[2026-10-29 12:23:15.065] info: [remote-source-provider] Ending asset stream for beeae327-04e1-49d7-90e5-bc304735362e
+
+[2026-10-29 12:23:15.370] info: [remote-source-provider] Asset 8f68fc34-7a97-45ca-a91a-7fd64e06462c starting
+
+[2026-10-29 12:23:15.371] info: [remote-source-provider] Ending asset stream for 8f68fc34-7a97-45ca-a91a-7fd64e06462c
+
+[2026-10-29 12:23:15.675] info: [remote-source-provider] Asset 8295bce9-22ec-4526-a336-ff95e4828285 starting
+
+[2026-10-29 12:23:15.676] info: [remote-source-provider] Ending asset stream for 8295bce9-22ec-4526-a336-ff95e4828285
+
+[2026-10-29 12:23:15.994] info: [remote-source-provider] Asset fceb48b7-b6bb-4293-8cb3-de809212b0b9 starting
+
+[2026-10-29 12:23:15.995] info: [remote-source-provider] Ending asset stream for fceb48b7-b6bb-4293-8cb3-de809212b0b9
+
+[2026-10-29 12:23:16.311] info: [remote-source-provider] Asset 70a7117a-d248-4b94-8f20-14fb0067d93e starting
+
+[2026-10-29 12:23:16.311] info: [remote-source-provider] Ending asset stream for 70a7117a-d248-4b94-8f20-14fb0067d93e
+
+[2026-10-29 12:23:16.612] info: [remote-source-provider] Asset 8a34a61c-7794-4278-b898-875980ac0cc4 starting
+
+[2026-10-29 12:23:16.613] info: [remote-source-provider] Ending asset stream for 8a34a61c-7794-4278-b898-875980ac0cc4
+
+[2026-10-29 12:23:16.934] info: [remote-source-provider] Asset 1fcf7da3-f909-4080-8f35-acda9d2ac5bb starting
+
+[2026-10-29 12:23:16.935] info: [remote-source-provider] Ending asset stream for 1fcf7da3-f909-4080-8f35-acda9d2ac5bb
+
+[2026-10-29 12:23:17.233] info: [remote-source-provider] Asset fa157ac7-d4ad-41ad-9a4c-775b48b62e19 starting
+
+[2026-10-29 12:23:17.234] info: [remote-source-provider] Ending asset stream for fa157ac7-d4ad-41ad-9a4c-775b48b62e19
+
+[2026-10-29 12:23:17.544] info: [remote-source-provider] Asset 485b9b37-121a-43de-97ad-4bdc9f8b45bd starting
+
+[2026-10-29 12:23:17.545] info: [remote-source-provider] Ending asset stream for 485b9b37-121a-43de-97ad-4bdc9f8b45bd
+
+[2026-10-29 12:23:17.844] info: [remote-source-provider] Asset 0bc89efd-d126-42d3-ad4c-04afaf535077 starting
+
+[2026-10-29 12:23:17.845] info: [remote-source-provider] Ending asset stream for 0bc89efd-d126-42d3-ad4c-04afaf535077
+
+[2026-10-29 12:23:18.149] info: [remote-source-provider] Asset ad3b403f-0820-4649-8eaf-9a69e247cde1 starting
+
+[2026-10-29 12:23:18.150] info: [remote-source-provider] Ending asset stream for ad3b403f-0820-4649-8eaf-9a69e247cde1
+
+[2026-10-29 12:23:18.453] info: [remote-source-provider] Asset 9f1fa04b-895a-4b14-b6fd-9d8d906a4c29 starting
+
+[2026-10-29 12:23:18.453] info: [remote-source-provider] Ending asset stream for 9f1fa04b-895a-4b14-b6fd-9d8d906a4c29
+
+[2026-10-29 12:23:18.753] info: [remote-source-provider] Asset c2d5f0e2-4774-47bf-b0ed-ea964941a64a starting
+
+[2026-10-29 12:23:18.754] info: [remote-source-provider] Ending asset stream for c2d5f0e2-4774-47bf-b0ed-ea964941a64a
+
+[2026-10-29 12:23:19.058] info: [remote-source-provider] Asset a0568b0b-a27e-4f5c-a444-147801b3df09 starting
+
+[2026-10-29 12:23:19.059] info: [remote-source-provider] Ending asset stream for a0568b0b-a27e-4f5c-a444-147801b3df09
+
+[2026-10-29 12:23:19.358] info: [remote-source-provider] Asset fb8110d8-0a98-4d11-a7c5-3a5f8b2f3162 starting
+
+[2026-10-29 12:23:19.359] info: [remote-source-provider] Ending asset stream for fb8110d8-0a98-4d11-a7c5-3a5f8b2f3162
+
+[2026-10-29 12:23:19.660] info: [remote-source-provider] Asset 47465285-d696-4f94-8225-25c8165f0bac starting
+
+[2026-10-29 12:23:19.661] info: [remote-source-provider] Ending asset stream for 47465285-d696-4f94-8225-25c8165f0bac
+
+[2026-10-29 12:23:19.972] info: [remote-source-provider] Asset 1e16bd85-80e1-414c-a692-bbb18d702672 starting
+
+[2026-10-29 12:23:19.973] info: [remote-source-provider] Ending asset stream for 1e16bd85-80e1-414c-a692-bbb18d702672
+
+[2026-10-29 12:23:20.278] info: [remote-source-provider] Asset dda1af90-3ed1-4138-964d-89aea996163e starting
+
+[2026-10-29 12:23:20.279] info: [remote-source-provider] Ending asset stream for dda1af90-3ed1-4138-964d-89aea996163e
+
+[2026-10-29 12:23:20.590] info: [remote-source-provider] Asset 67b009dc-9692-4d4e-86f6-85138a9fbbc9 starting
+
+[2026-10-29 12:23:20.592] info: [remote-source-provider] Ending asset stream for 67b009dc-9692-4d4e-86f6-85138a9fbbc9
+
+[2026-10-29 12:23:20.895] info: [remote-source-provider] Asset e3392527-6b98-4c2e-ab3f-55c4c99b5d26 starting
+
+[2026-10-29 12:23:20.896] info: [remote-source-provider] Ending asset stream for e3392527-6b98-4c2e-ab3f-55c4c99b5d26
+
+[2026-10-29 12:23:21.196] info: [remote-source-provider] Asset a17da3ee-a8ab-4f6c-ad6d-9fbcc5d015a8 starting
+
+[2026-10-29 12:23:21.198] info: [remote-source-provider] Ending asset stream for a17da3ee-a8ab-4f6c-ad6d-9fbcc5d015a8
+
+[2026-10-29 12:23:21.495] info: [remote-source-provider] Asset f6f59430-ef12-4317-90e1-6b4fd1ce71df starting
+
+[2026-10-29 12:23:21.496] info: [remote-source-provider] Ending asset stream for f6f59430-ef12-4317-90e1-6b4fd1ce71df
+
+[2026-10-29 12:23:21.796] info: [remote-source-provider] Asset ae15ece4-ccf0-4cd1-bb06-4069196e0050 starting
+
+[2026-10-29 12:23:21.797] info: [remote-source-provider] Ending asset stream for ae15ece4-ccf0-4cd1-bb06-4069196e0050
+
+[2026-10-29 12:23:22.103] info: [remote-source-provider] Asset b133d703-e855-4bc2-aa88-358517edd2c3 starting
+
+[2026-10-29 12:23:22.105] info: [remote-source-provider] Ending asset stream for b133d703-e855-4bc2-aa88-358517edd2c3
+
+[2026-10-29 12:23:22.412] info: [remote-source-provider] Asset f2d9f8cc-97a4-4144-bdee-a38f4211c85b starting
+
+[2026-10-29 12:23:22.413] info: [remote-source-provider] Ending asset stream for f2d9f8cc-97a4-4144-bdee-a38f4211c85b
+
+[2026-10-29 12:23:22.712] info: [remote-source-provider] Asset ed117729-39a7-4d65-932e-9d11226845c3 starting
+
+[2026-10-29 12:23:22.713] info: [remote-source-provider] Ending asset stream for ed117729-39a7-4d65-932e-9d11226845c3
+
+[2026-10-29 12:23:23.010] info: [remote-source-provider] Asset 54ccfcc3-5464-4db5-9924-dd965f387972 starting
+
+[2026-10-29 12:23:23.012] info: [remote-source-provider] Ending asset stream for 54ccfcc3-5464-4db5-9924-dd965f387972
+
+[2026-10-29 12:23:23.307] info: [remote-source-provider] Asset cb8a0756-477a-49ae-9853-7f7f2553bf89 starting
+
+[2026-10-29 12:23:23.308] info: [remote-source-provider] Ending asset stream for cb8a0756-477a-49ae-9853-7f7f2553bf89
+
+[2026-10-29 12:23:23.608] info: [remote-source-provider] Asset 080c790d-d898-4826-add6-312ec98a819a starting
+
+[2026-10-29 12:23:23.609] info: [remote-source-provider] Ending asset stream for 080c790d-d898-4826-add6-312ec98a819a
+
+[2026-10-29 12:23:23.914] info: [remote-source-provider] Asset 7c4f32d5-4d9c-4598-8fbb-ebbd39a76e3c starting
+
+[2026-10-29 12:23:23.915] info: [remote-source-provider] Ending asset stream for 7c4f32d5-4d9c-4598-8fbb-ebbd39a76e3c
+
+[2026-10-29 12:23:24.220] info: [remote-source-provider] Asset fa7b2167-da82-4889-8c23-ad9597a2712f starting
+
+[2026-10-29 12:23:24.221] info: [remote-source-provider] Ending asset stream for fa7b2167-da82-4889-8c23-ad9597a2712f
+
+[2026-10-29 12:23:24.528] info: [remote-source-provider] Asset b7754311-4a88-430f-a054-c3ef69a131ef starting
+
+[2026-10-29 12:23:24.529] info: [remote-source-provider] Ending asset stream for b7754311-4a88-430f-a054-c3ef69a131ef
+
+[2026-10-29 12:23:24.827] info: [remote-source-provider] Asset e38b2070-5561-4941-a55e-6b4d45eb9179 starting
+
+[2026-10-29 12:23:24.828] info: [remote-source-provider] Ending asset stream for e38b2070-5561-4941-a55e-6b4d45eb9179
+
+[2026-10-29 12:23:25.136] info: [remote-source-provider] Asset ebe520eb-566a-45b4-b1bb-bbb484f046e1 starting
+
+[2026-10-29 12:23:25.137] info: [remote-source-provider] Ending asset stream for ebe520eb-566a-45b4-b1bb-bbb484f046e1
+
+[2026-10-29 12:23:25.437] info: [remote-source-provider] Asset 3816cfbe-6545-4e8c-a0ae-9f5e9ca43b65 starting
+
+[2026-10-29 12:23:25.438] info: [remote-source-provider] Ending asset stream for 3816cfbe-6545-4e8c-a0ae-9f5e9ca43b65
+
+[2026-10-29 12:23:25.734] info: [remote-source-provider] Asset 0980084b-510f-4aa5-adec-8859753f41c9 starting
+
+[2026-10-29 12:23:25.735] info: [remote-source-provider] Ending asset stream for 0980084b-510f-4aa5-adec-8859753f41c9
+
+[2026-10-29 12:23:26.034] info: [remote-source-provider] Asset 5b4e596e-c611-4be3-89ff-be88bf6a18cd starting
+
+[2026-10-29 12:23:26.035] info: [remote-source-provider] Ending asset stream for 5b4e596e-c611-4be3-89ff-be88bf6a18cd
+
+[2026-10-29 12:23:26.333] info: [remote-source-provider] Asset 97813eb1-6cd0-49d9-914e-df56d0b4e371 starting
+
+[2026-10-29 12:23:26.334] info: [remote-source-provider] Ending asset stream for 97813eb1-6cd0-49d9-914e-df56d0b4e371
+
+[2026-10-29 12:23:26.635] info: [remote-source-provider] Asset 5838bf91-4aab-4153-b158-2238ec45878b starting
+
+[2026-10-29 12:23:26.636] info: [remote-source-provider] Ending asset stream for 5838bf91-4aab-4153-b158-2238ec45878b
+
+[2026-10-29 12:23:27.185] info: [remote-source-provider] Asset e1875cac-7a24-403c-97d2-f1a74e1aa368 starting
+
+[2026-10-29 12:23:27.186] info: [remote-source-provider] Ending asset stream for e1875cac-7a24-403c-97d2-f1a74e1aa368
+
+[2026-10-29 12:23:27.491] info: [remote-source-provider] Asset 51656f67-a0a4-49f4-98aa-08474c99d214 starting
+
+[2026-10-29 12:23:27.492] info: [remote-source-provider] Ending asset stream for 51656f67-a0a4-49f4-98aa-08474c99d214
+
+[2026-10-29 12:23:27.792] info: [remote-source-provider] Asset e783cb04-a595-49e9-8b5c-1439279a31ad starting
+
+[2026-10-29 12:23:27.793] info: [remote-source-provider] Ending asset stream for e783cb04-a595-49e9-8b5c-1439279a31ad
+
+[2026-10-29 12:23:28.095] info: [remote-source-provider] Asset c2bb6617-acbc-4aff-8e61-c10837e3c4f3 starting
+
+[2026-10-29 12:23:28.095] info: [remote-source-provider] Ending asset stream for c2bb6617-acbc-4aff-8e61-c10837e3c4f3
+
+[2026-10-29 12:23:28.393] info: [remote-source-provider] Asset 56903c2b-cd55-45eb-8284-588220effa98 starting
+
+[2026-10-29 12:23:28.394] info: [remote-source-provider] Ending asset stream for 56903c2b-cd55-45eb-8284-588220effa98
+
+[2026-10-29 12:23:28.709] info: [remote-source-provider] Asset cd37ed43-a3f6-4317-a2e2-0088bbb7707b starting
+
+[2026-10-29 12:23:28.711] info: [remote-source-provider] Ending asset stream for cd37ed43-a3f6-4317-a2e2-0088bbb7707b
+
+[2026-10-29 12:23:29.012] info: [remote-source-provider] Asset 200cfddb-8ab9-4ea9-91a5-5872726af3f5 starting
+
+[2026-10-29 12:23:29.013] info: [remote-source-provider] Ending asset stream for 200cfddb-8ab9-4ea9-91a5-5872726af3f5
+
+[2026-10-29 12:23:29.315] info: [remote-source-provider] Asset 8de9facb-4efd-4ce0-b0b1-7adfdcc0d25a starting
+
+[2026-10-29 12:23:29.317] info: [remote-source-provider] Ending asset stream for 8de9facb-4efd-4ce0-b0b1-7adfdcc0d25a
+
+[2026-10-29 12:23:29.636] info: [remote-source-provider] Asset 2def246d-e21f-4e52-af85-70ddc2b51ef7 starting
+
+[2026-10-29 12:23:29.638] info: [remote-source-provider] Ending asset stream for 2def246d-e21f-4e52-af85-70ddc2b51ef7
+
+[2026-10-29 12:23:29.959] info: [remote-source-provider] Asset d6e06dea-865e-4be7-ab47-509fb18419d6 starting
+
+[2026-10-29 12:23:29.961] info: [remote-source-provider] Ending asset stream for d6e06dea-865e-4be7-ab47-509fb18419d6
+
+[2026-10-29 12:23:30.270] info: [remote-source-provider] Asset f3cc11cf-ead9-439e-809c-d87d3e252a15 starting
+
+[2026-10-29 12:23:30.272] info: [remote-source-provider] Ending asset stream for f3cc11cf-ead9-439e-809c-d87d3e252a15
+
+[2026-10-29 12:23:30.588] info: [remote-source-provider] Asset 6582b303-16d1-4aad-b6e1-4a6df0db8189 starting
+
+[2026-10-29 12:23:30.589] info: [remote-source-provider] Ending asset stream for 6582b303-16d1-4aad-b6e1-4a6df0db8189
+
+[2026-10-29 12:23:30.887] info: [remote-source-provider] Asset 7f69d5ab-6600-41f3-b621-355441a1e7f3 starting
+
+[2026-10-29 12:23:30.888] info: [remote-source-provider] Ending asset stream for 7f69d5ab-6600-41f3-b621-355441a1e7f3
+
+[2026-10-29 12:23:31.188] info: [remote-source-provider] Asset 9cf2f29b-d008-425e-8bf7-5faa03dbf530 starting
+
+[2026-10-29 12:23:31.189] info: [remote-source-provider] Ending asset stream for 9cf2f29b-d008-425e-8bf7-5faa03dbf530
+
+[2026-10-29 12:23:31.493] info: [remote-source-provider] Asset fb0572bb-f0fa-4893-a9ba-1021da8866d1 starting
+
+[2026-10-29 12:23:31.494] info: [remote-source-provider] Ending asset stream for fb0572bb-f0fa-4893-a9ba-1021da8866d1
+
+[2026-10-29 12:23:31.794] info: [remote-source-provider] Asset 8d77d92d-7d30-4542-bb6f-67247cf43062 starting
+
+[2026-10-29 12:23:31.795] info: [remote-source-provider] Ending asset stream for 8d77d92d-7d30-4542-bb6f-67247cf43062
+
+[2026-10-29 12:23:32.099] info: [remote-source-provider] Asset 56d8f4fc-c8e2-47ad-ac1b-c70230dc0bad starting
+
+[2026-10-29 12:23:32.100] info: [remote-source-provider] Ending asset stream for 56d8f4fc-c8e2-47ad-ac1b-c70230dc0bad
+
+[2026-10-29 12:23:32.403] info: [remote-source-provider] Asset 0b7c156d-a20b-4d21-a4bb-28083a2c810d starting
+
+[2026-10-29 12:23:32.404] info: [remote-source-provider] Ending asset stream for 0b7c156d-a20b-4d21-a4bb-28083a2c810d
+
+[2026-10-29 12:23:32.865] info: [remote-source-provider] Asset 4ca8023f-0890-476b-a45a-8665acb52c68 starting
+
+[2026-10-29 12:23:32.866] info: [remote-source-provider] Ending asset stream for 4ca8023f-0890-476b-a45a-8665acb52c68
+
+[2026-10-29 12:23:33.416] info: [remote-source-provider] Asset 3b3da2f0-8e05-40f5-849f-2d614c3dabae starting
+
+[2026-10-29 12:23:33.417] info: [remote-source-provider] Ending asset stream for 3b3da2f0-8e05-40f5-849f-2d614c3dabae
+
+[2026-10-29 12:23:33.719] info: [remote-source-provider] Asset 897d1e27-8750-4053-91fb-b66fb1320565 starting
+
+[2026-10-29 12:23:33.720] info: [remote-source-provider] Ending asset stream for 897d1e27-8750-4053-91fb-b66fb1320565
+
+[2026-10-29 12:23:34.022] info: [remote-source-provider] Asset b5bd3dbe-e97e-4b03-abb4-69ccec2fa042 starting
+
+[2026-10-29 12:23:34.023] info: [remote-source-provider] Ending asset stream for b5bd3dbe-e97e-4b03-abb4-69ccec2fa042
+
+[2026-10-29 12:23:34.328] info: [remote-source-provider] Asset d730ef85-d056-4c3c-8b93-1061607aea87 starting
+
+[2026-10-29 12:23:34.328] info: [remote-source-provider] Ending asset stream for d730ef85-d056-4c3c-8b93-1061607aea87
+
+[2026-10-29 12:23:34.639] info: [remote-source-provider] Asset da870cae-0160-4b4b-994d-d9c38f4eff54 starting
+
+[2026-10-29 12:23:34.640] info: [remote-source-provider] Ending asset stream for da870cae-0160-4b4b-994d-d9c38f4eff54
+
+[2026-10-29 12:23:34.945] info: [remote-source-provider] Asset d1d0dce6-eb25-437c-b3ca-a4e974b8319c starting
+
+[2026-10-29 12:23:34.946] info: [remote-source-provider] Ending asset stream for d1d0dce6-eb25-437c-b3ca-a4e974b8319c
+
+[2026-10-29 12:23:35.249] info: [remote-source-provider] Asset de8f735a-008b-400d-91db-458e6f8bce82 starting
+
+[2026-10-29 12:23:35.250] info: [remote-source-provider] Ending asset stream for de8f735a-008b-400d-91db-458e6f8bce82
+
+[2026-10-29 12:23:35.554] info: [remote-source-provider] Asset 58d3b9a3-532f-403d-9609-6fcb01a61c4f starting
+
+[2026-10-29 12:23:35.555] info: [remote-source-provider] Ending asset stream for 58d3b9a3-532f-403d-9609-6fcb01a61c4f
+
+[2026-10-29 12:23:35.859] info: [remote-source-provider] Asset a097dc87-8822-40d3-9eef-30530a22373e starting
+
+[2026-10-29 12:23:35.860] info: [remote-source-provider] Ending asset stream for a097dc87-8822-40d3-9eef-30530a22373e
+
+[2026-10-29 12:23:36.160] info: [remote-source-provider] Asset 99c7aae3-8069-496a-9a0c-4e53ae72020f starting
+
+[2026-10-29 12:23:36.161] info: [remote-source-provider] Ending asset stream for 99c7aae3-8069-496a-9a0c-4e53ae72020f
+
+[2026-10-29 12:23:36.462] info: [remote-source-provider] Asset 18ec806b-b397-4d9e-b570-ae4b7ccb7c3f starting
+
+[2026-10-29 12:23:36.463] info: [remote-source-provider] Ending asset stream for 18ec806b-b397-4d9e-b570-ae4b7ccb7c3f
+
+[2026-10-29 12:23:36.765] info: [remote-source-provider] Asset bc0af4b5-7f77-4e6b-a2a3-296917f7004c starting
+
+[2026-10-29 12:23:36.766] info: [remote-source-provider] Ending asset stream for bc0af4b5-7f77-4e6b-a2a3-296917f7004c
+
+[2026-10-29 12:23:37.072] info: [remote-source-provider] Asset 360534c8-f2be-44dc-98c1-dc65d0d6cd06 starting
+
+[2026-10-29 12:23:37.073] info: [remote-source-provider] Ending asset stream for 360534c8-f2be-44dc-98c1-dc65d0d6cd06
+
+[2026-10-29 12:23:37.377] info: [remote-source-provider] Asset 2a615fe8-3f9c-4ae9-b771-9a8752f46055 starting
+
+[2026-10-29 12:23:37.379] info: [remote-source-provider] Ending asset stream for 2a615fe8-3f9c-4ae9-b771-9a8752f46055
+
+[2026-10-29 12:23:37.678] info: [remote-source-provider] Asset 08eba51b-ff83-421e-aeb8-5142ed994d3e starting
+
+[2026-10-29 12:23:37.680] info: [remote-source-provider] Ending asset stream for 08eba51b-ff83-421e-aeb8-5142ed994d3e
+
+[2026-10-29 12:23:37.985] info: [remote-source-provider] Asset 9971d848-7853-4479-add8-722e3b51dc66 starting
+
+[2026-10-29 12:23:37.986] info: [remote-source-provider] Ending asset stream for 9971d848-7853-4479-add8-722e3b51dc66
+
+[2026-10-29 12:23:38.286] info: [remote-source-provider] Asset bbcac225-8c3b-4172-ab73-516107ce850a starting
+
+[2026-10-29 12:23:38.286] info: [remote-source-provider] Ending asset stream for bbcac225-8c3b-4172-ab73-516107ce850a
+
+[2026-10-29 12:23:38.617] info: [remote-source-provider] Asset b724da81-6f42-45b1-9dca-0c7ef61fc8fb starting
+
+[2026-10-29 12:23:38.618] info: [remote-source-provider] Ending asset stream for b724da81-6f42-45b1-9dca-0c7ef61fc8fb
+
+[2026-10-29 12:23:39.025] info: [remote-source-provider] Asset ed2333aa-9cc0-43c4-a60d-77b09dd0afa7 starting
+
+[2026-10-29 12:23:39.027] info: [remote-source-provider] Ending asset stream for ed2333aa-9cc0-43c4-a60d-77b09dd0afa7
+
+[2026-10-29 12:23:39.457] info: [remote-source-provider] Asset e976641e-1d3a-4f3e-895c-de0c7d8defac starting
+
+[2026-10-29 12:23:39.459] info: [remote-source-provider] Ending asset stream for e976641e-1d3a-4f3e-895c-de0c7d8defac
+
+[2026-10-29 12:23:39.820] info: [remote-source-provider] Asset 8e18fdf4-cd3c-4a41-989b-44ec21673702 starting
+
+[2026-10-29 12:23:39.822] info: [remote-source-provider] Ending asset stream for 8e18fdf4-cd3c-4a41-989b-44ec21673702
+
+[2026-10-29 12:23:40.127] info: [remote-source-provider] Asset def657c7-3d42-4d89-8d20-1ff11d792817 starting
+
+[2026-10-29 12:23:40.129] info: [remote-source-provider] Ending asset stream for def657c7-3d42-4d89-8d20-1ff11d792817
+
+[2026-10-29 12:23:40.467] info: [remote-source-provider] Asset fe32c095-21f1-47fe-9fe2-10ac3bddc6a2 starting
+
+[2026-10-29 12:23:40.468] info: [remote-source-provider] Ending asset stream for fe32c095-21f1-47fe-9fe2-10ac3bddc6a2
+
+[2026-10-29 12:23:40.861] info: [remote-source-provider] Asset d8486e90-7155-4897-81a4-6281d801c14f starting
+
+[2026-10-29 12:23:40.864] info: [remote-source-provider] Ending asset stream for d8486e90-7155-4897-81a4-6281d801c14f
+
+[2026-10-29 12:23:41.189] info: [remote-source-provider] Asset d5d122b2-70e3-4f8a-a8dc-5bf140d5111d starting
+
+[2026-10-29 12:23:41.190] info: [remote-source-provider] Ending asset stream for d5d122b2-70e3-4f8a-a8dc-5bf140d5111d
+
+[2026-10-29 12:23:41.551] info: [remote-source-provider] Asset 61cfceaa-30fd-4df8-859d-c5cfe1460c4c starting
+
+[2026-10-29 12:23:41.553] info: [remote-source-provider] Ending asset stream for 61cfceaa-30fd-4df8-859d-c5cfe1460c4c
+
+[2026-10-29 12:23:41.856] info: [remote-source-provider] Asset a441a981-d62b-4b6f-80e0-fe419164ae21 starting
+
+[2026-10-29 12:23:41.857] info: [remote-source-provider] Ending asset stream for a441a981-d62b-4b6f-80e0-fe419164ae21
+
+[2026-10-29 12:23:42.161] info: [remote-source-provider] Asset ad1fc00c-1340-4cc4-a90d-f93dd90d71b3 starting
+
+[2026-10-29 12:23:42.162] info: [remote-source-provider] Ending asset stream for ad1fc00c-1340-4cc4-a90d-f93dd90d71b3
+
+[2026-10-29 12:23:42.463] info: [remote-source-provider] Asset 73bd2ff3-230e-4eb7-bc4c-360593d25993 starting
+
+[2026-10-29 12:23:42.463] info: [remote-source-provider] Ending asset stream for 73bd2ff3-230e-4eb7-bc4c-360593d25993
+
+[2026-10-29 12:23:42.802] info: [remote-source-provider] Asset d7bd0102-0fca-4f9f-a6d1-fb4b77f96bd7 starting
+
+[2026-10-29 12:23:42.804] info: [remote-source-provider] Ending asset stream for d7bd0102-0fca-4f9f-a6d1-fb4b77f96bd7
+
+[2026-10-29 12:23:43.186] info: [remote-source-provider] Asset c9a1d682-363f-49dd-bccc-1b22a0c4127d starting
+
+[2026-10-29 12:23:43.188] info: [remote-source-provider] Ending asset stream for c9a1d682-363f-49dd-bccc-1b22a0c4127d
+
+[2026-10-29 12:23:43.517] info: [remote-source-provider] Asset c52672d4-4500-4fd9-a532-7744663f3b30 starting
+
+[2026-10-29 12:23:43.519] info: [remote-source-provider] Ending asset stream for c52672d4-4500-4fd9-a532-7744663f3b30
+
+[2026-10-29 12:23:43.864] info: [remote-source-provider] Asset 5857d216-58c2-4b0e-9825-cb063d4ac6d7 starting
+
+[2026-10-29 12:23:43.866] info: [remote-source-provider] Ending asset stream for 5857d216-58c2-4b0e-9825-cb063d4ac6d7
+
+[2026-10-29 12:23:44.171] info: [remote-source-provider] Asset 81023201-bf0f-403f-9114-71a9dc8c3923 starting
+
+[2026-10-29 12:23:44.172] info: [remote-source-provider] Ending asset stream for 81023201-bf0f-403f-9114-71a9dc8c3923
+
+[2026-10-29 12:23:44.495] info: [remote-source-provider] Asset d3b41e67-6781-4954-ad9c-32855269f4e0 starting
+
+[2026-10-29 12:23:44.496] info: [remote-source-provider] Ending asset stream for d3b41e67-6781-4954-ad9c-32855269f4e0
+
+[2026-10-29 12:23:44.874] info: [remote-source-provider] Asset cb7b6b0a-3bf8-43ec-a118-9ce97c26239d starting
+
+[2026-10-29 12:23:44.877] info: [remote-source-provider] Ending asset stream for cb7b6b0a-3bf8-43ec-a118-9ce97c26239d
+
+[2026-10-29 12:23:45.199] info: [remote-source-provider] Asset 0b7447f9-f53f-4c51-8c09-0a682601999f starting
+
+[2026-10-29 12:23:45.200] info: [remote-source-provider] Ending asset stream for 0b7447f9-f53f-4c51-8c09-0a682601999f
+
+[2026-10-29 12:23:45.551] info: [remote-source-provider] Asset 269d8f04-2ff4-438c-b3a3-32930a7249cd starting
+
+[2026-10-29 12:23:45.553] info: [remote-source-provider] Ending asset stream for 269d8f04-2ff4-438c-b3a3-32930a7249cd
+
+[2026-10-29 12:23:45.948] info: [remote-source-provider] Asset d4d433fd-bbc8-4068-90e2-b53c43e3edba starting
+
+[2026-10-29 12:23:45.950] info: [remote-source-provider] Ending asset stream for d4d433fd-bbc8-4068-90e2-b53c43e3edba
+
+[2026-10-29 12:23:46.249] info: [remote-source-provider] Asset 47254376-f468-43ac-b666-5cf58795d8b7 starting
+
+[2026-10-29 12:23:46.250] info: [remote-source-provider] Ending asset stream for 47254376-f468-43ac-b666-5cf58795d8b7
+
+[2026-10-29 12:23:46.547] info: [remote-source-provider] Asset c9c54830-41f5-4311-b22b-6093980f84a9 starting
+
+[2026-10-29 12:23:46.548] info: [remote-source-provider] Ending asset stream for c9c54830-41f5-4311-b22b-6093980f84a9
+
+[2026-10-29 12:23:47.030] info: [remote-source-provider] Asset 224835b5-e6b4-4248-8b1f-fc7e6b0dde9a starting
+
+[2026-10-29 12:23:47.032] info: [remote-source-provider] Ending asset stream for 224835b5-e6b4-4248-8b1f-fc7e6b0dde9a
+
+[2026-10-29 12:23:47.408] info: [remote-source-provider] Asset 05429a5b-8f9a-4e27-a0ba-0023b47ab3a2 starting
+
+[2026-10-29 12:23:47.410] info: [remote-source-provider] Ending asset stream for 05429a5b-8f9a-4e27-a0ba-0023b47ab3a2
+
+[2026-10-29 12:23:47.739] info: [remote-source-provider] Asset e829648a-f9ca-4eb0-a318-436dabec072c starting
+
+[2026-10-29 12:23:47.741] info: [remote-source-provider] Ending asset stream for e829648a-f9ca-4eb0-a318-436dabec072c
+
+[2026-10-29 12:23:48.091] info: [remote-source-provider] Asset 03be406f-2b6c-4e60-bbcd-be0ccaf47fdf starting
+
+[2026-10-29 12:23:48.092] info: [remote-source-provider] Ending asset stream for 03be406f-2b6c-4e60-bbcd-be0ccaf47fdf
+
+[2026-10-29 12:23:48.398] info: [remote-source-provider] Asset 6589167f-61bc-4a09-925c-3134544d58e1 starting
+
+[2026-10-29 12:23:48.399] info: [remote-source-provider] Ending asset stream for 6589167f-61bc-4a09-925c-3134544d58e1
+
+[2026-10-29 12:23:48.725] info: [remote-source-provider] Asset a91caef6-2252-4e74-95ca-d3f41b6be5b8 starting
+
+[2026-10-29 12:23:48.727] info: [remote-source-provider] Ending asset stream for a91caef6-2252-4e74-95ca-d3f41b6be5b8
+
+[2026-10-29 12:23:49.113] info: [remote-source-provider] Asset 7756a909-3b6e-40e3-935f-a19a9e8e8d3f starting
+
+[2026-10-29 12:23:49.115] info: [remote-source-provider] Ending asset stream for 7756a909-3b6e-40e3-935f-a19a9e8e8d3f
+
+[2026-10-29 12:23:49.440] info: [remote-source-provider] Asset c65d85f1-0f8e-447e-b924-3c318d5df971 starting
+
+[2026-10-29 12:23:49.441] info: [remote-source-provider] Ending asset stream for c65d85f1-0f8e-447e-b924-3c318d5df971
+
+[2026-10-29 12:23:49.799] info: [remote-source-provider] Asset 8dbfb9c3-1bd6-413c-b84f-adcdca0f0c32 starting
+
+[2026-10-29 12:23:49.801] info: [remote-source-provider] Ending asset stream for 8dbfb9c3-1bd6-413c-b84f-adcdca0f0c32
+
+[2026-10-29 12:23:50.102] info: [remote-source-provider] Asset cf075e6a-bd59-4d8c-bdcd-132a532b4ccf starting
+
+[2026-10-29 12:23:50.103] info: [remote-source-provider] Ending asset stream for cf075e6a-bd59-4d8c-bdcd-132a532b4ccf
+
+[2026-10-29 12:23:50.399] info: [remote-source-provider] Asset d4b4f93b-4b3e-4aab-88f8-71a6df6ba382 starting
+
+[2026-10-29 12:23:50.400] info: [remote-source-provider] Ending asset stream for d4b4f93b-4b3e-4aab-88f8-71a6df6ba382
+
+[2026-10-29 12:23:50.701] info: [remote-source-provider] Asset 2289ee8f-9c80-40d9-8a0d-19d2feaa1431 starting
+
+[2026-10-29 12:23:50.701] info: [remote-source-provider] Ending asset stream for 2289ee8f-9c80-40d9-8a0d-19d2feaa1431
+
+[2026-10-29 12:23:51.033] info: [remote-source-provider] Asset de45f48d-e547-4831-a1fa-934fe27451a2 starting
+
+[2026-10-29 12:23:51.035] info: [remote-source-provider] Ending asset stream for de45f48d-e547-4831-a1fa-934fe27451a2
+
+[2026-10-29 12:23:51.436] info: [remote-source-provider] Asset 3a2463a5-1f9c-401b-97fb-4da9f2a8d188 starting
+
+[2026-10-29 12:23:51.438] info: [remote-source-provider] Ending asset stream for 3a2463a5-1f9c-401b-97fb-4da9f2a8d188
+
+[2026-10-29 12:23:51.763] info: [remote-source-provider] Asset eec9e8b8-e534-49ce-9f7d-1f5344d1a825 starting
+
+[2026-10-29 12:23:51.764] info: [remote-source-provider] Ending asset stream for eec9e8b8-e534-49ce-9f7d-1f5344d1a825
+
+[2026-10-29 12:23:52.125] info: [remote-source-provider] Asset 6d56f0b0-5af4-44f1-94e9-1dd9108be27d starting
+
+[2026-10-29 12:23:52.127] info: [remote-source-provider] Ending asset stream for 6d56f0b0-5af4-44f1-94e9-1dd9108be27d
+
+[2026-10-29 12:23:52.430] info: [remote-source-provider] Asset 4de56473-ad20-4471-91f1-9750e11fd00c starting
+
+[2026-10-29 12:23:52.431] info: [remote-source-provider] Ending asset stream for 4de56473-ad20-4471-91f1-9750e11fd00c
+
+[2026-10-29 12:23:52.729] info: [remote-source-provider] Asset 46ca66ba-10ab-4574-a6c6-80294428fd91 starting
+
+[2026-10-29 12:23:52.729] info: [remote-source-provider] Ending asset stream for 46ca66ba-10ab-4574-a6c6-80294428fd91
+
+[2026-10-29 12:23:53.031] info: [remote-source-provider] Asset c3ef2318-2ee0-436a-af96-8de1ba8e1b6a starting
+
+[2026-10-29 12:23:53.032] info: [remote-source-provider] Ending asset stream for c3ef2318-2ee0-436a-af96-8de1ba8e1b6a
+
+[2026-10-29 12:23:53.336] info: [remote-source-provider] Asset 1e6b6000-e770-4d65-970e-5da2401c095e starting
+
+[2026-10-29 12:23:53.337] info: [remote-source-provider] Ending asset stream for 1e6b6000-e770-4d65-970e-5da2401c095e
+
+[2026-10-29 12:23:53.634] info: [remote-source-provider] Asset b020b164-d7a0-4878-b7de-2db1c5ac219e starting
+
+[2026-10-29 12:23:53.635] info: [remote-source-provider] Ending asset stream for b020b164-d7a0-4878-b7de-2db1c5ac219e
+
+[2026-10-29 12:23:53.933] info: [remote-source-provider] Asset 6d38476b-bc3d-4fe1-b5cd-a2e5af1d160e starting
+
+[2026-10-29 12:23:53.934] info: [remote-source-provider] Ending asset stream for 6d38476b-bc3d-4fe1-b5cd-a2e5af1d160e
+
+[2026-10-29 12:23:54.246] info: [remote-source-provider] Asset 0198bbeb-486d-4c48-bfa3-7f393d151cc1 starting
+
+[2026-10-29 12:23:54.247] info: [remote-source-provider] Ending asset stream for 0198bbeb-486d-4c48-bfa3-7f393d151cc1
+
+[2026-10-29 12:23:54.543] info: [remote-source-provider] Asset ab0e6845-b6ea-4434-af01-f5b6c9ff9990 starting
+
+[2026-10-29 12:23:54.545] info: [remote-source-provider] Ending asset stream for ab0e6845-b6ea-4434-af01-f5b6c9ff9990
+
+[2026-10-29 12:23:54.847] info: [remote-source-provider] Asset edbaecb0-9882-48d3-81ee-364edb058787 starting
+
+[2026-10-29 12:23:54.848] info: [remote-source-provider] Ending asset stream for edbaecb0-9882-48d3-81ee-364edb058787
+
+[2026-10-29 12:23:55.152] info: [remote-source-provider] Asset a1cbac08-6718-46fe-8bc6-b144b88528aa starting
+
+[2026-10-29 12:23:55.153] info: [remote-source-provider] Ending asset stream for a1cbac08-6718-46fe-8bc6-b144b88528aa
+
+[2026-10-29 12:23:55.451] info: [remote-source-provider] Asset 0b027e11-9b04-4e2b-805e-8ef7fa486d55 starting
+
+[2026-10-29 12:23:55.452] info: [remote-source-provider] Ending asset stream for 0b027e11-9b04-4e2b-805e-8ef7fa486d55
+
+[2026-10-29 12:23:55.751] info: [remote-source-provider] Asset 9b8ff740-4ae7-4142-9241-193ab3462832 starting
+
+[2026-10-29 12:23:55.752] info: [remote-source-provider] Ending asset stream for 9b8ff740-4ae7-4142-9241-193ab3462832
+
+[2026-10-29 12:23:56.051] info: [remote-source-provider] Asset 8ce10960-520d-493c-af39-6c232b6f1c0c starting
+
+[2026-10-29 12:23:56.052] info: [remote-source-provider] Ending asset stream for 8ce10960-520d-493c-af39-6c232b6f1c0c
+
+[2026-10-29 12:23:56.355] info: [remote-source-provider] Asset 7a75ca6b-02c4-439c-a988-3ae7ed0c1bf0 starting
+
+[2026-10-29 12:23:56.356] info: [remote-source-provider] Ending asset stream for 7a75ca6b-02c4-439c-a988-3ae7ed0c1bf0
+
+[2026-10-29 12:23:56.654] info: [remote-source-provider] Asset 7595e0bf-ca6b-4b1c-9432-9a33315416b5 starting
+
+[2026-10-29 12:23:56.655] info: [remote-source-provider] Ending asset stream for 7595e0bf-ca6b-4b1c-9432-9a33315416b5
+
+[2026-10-29 12:23:56.961] info: [remote-source-provider] Asset 963b4d37-9a55-4063-8c0e-a8008b00f8dd starting
+
+[2026-10-29 12:23:56.963] info: [remote-source-provider] Ending asset stream for 963b4d37-9a55-4063-8c0e-a8008b00f8dd
+
+[2026-10-29 12:23:57.266] info: [remote-source-provider] Asset 49d51c8a-0b3c-4040-a56c-e56ecdb7ccd1 starting
+
+[2026-10-29 12:23:57.267] info: [remote-source-provider] Ending asset stream for 49d51c8a-0b3c-4040-a56c-e56ecdb7ccd1
+
+[2026-10-29 12:23:57.566] info: [remote-source-provider] Asset 246738e1-0a20-42a8-ac50-bb97cc89efb4 starting
+
+[2026-10-29 12:23:57.567] info: [remote-source-provider] Ending asset stream for 246738e1-0a20-42a8-ac50-bb97cc89efb4
+
+[2026-10-29 12:23:57.870] info: [remote-source-provider] Asset af77c972-634e-49ea-9031-e200a9e5069d starting
+
+[2026-10-29 12:23:57.871] info: [remote-source-provider] Ending asset stream for af77c972-634e-49ea-9031-e200a9e5069d
+
+[2026-10-29 12:23:58.171] info: [remote-source-provider] Asset a0171461-5606-4cf8-a6e7-d4b121ca8711 starting
+
+[2026-10-29 12:23:58.172] info: [remote-source-provider] Ending asset stream for a0171461-5606-4cf8-a6e7-d4b121ca8711
+
+[2026-10-29 12:23:58.503] info: [remote-source-provider] Asset 7d56d32e-beaa-44c5-80b2-1054d39bbc28 starting
+
+[2026-10-29 12:23:58.505] info: [remote-source-provider] Ending asset stream for 7d56d32e-beaa-44c5-80b2-1054d39bbc28
+
+[2026-10-29 12:23:58.892] info: [remote-source-provider] Asset 21587f9c-e706-4525-82e5-a193f958f51d starting
+
+[2026-10-29 12:23:58.892] info: [remote-source-provider] Ending asset stream for 21587f9c-e706-4525-82e5-a193f958f51d
+
+[2026-10-29 12:23:59.227] info: [remote-source-provider] Asset 9c120013-e5f4-4f13-a1f8-c03b94997d86 starting
+
+[2026-10-29 12:23:59.228] info: [remote-source-provider] Ending asset stream for 9c120013-e5f4-4f13-a1f8-c03b94997d86
+
+[2026-10-29 12:23:59.576] info: [remote-source-provider] Asset 1ef484f7-6073-4550-b401-266b74395cb4 starting
+
+[2026-10-29 12:23:59.578] info: [remote-source-provider] Ending asset stream for 1ef484f7-6073-4550-b401-266b74395cb4
+
+[2026-10-29 12:23:59.884] info: [remote-source-provider] Asset edfa46f5-22b8-41e9-8f97-c19fc9cc0c4a starting
+
+[2026-10-29 12:23:59.885] info: [remote-source-provider] Ending asset stream for edfa46f5-22b8-41e9-8f97-c19fc9cc0c4a
+
+[2026-10-29 12:24:00.180] info: [remote-source-provider] Asset 3276ccf4-6725-458a-8965-666a0b29cd78 starting
+
+[2026-10-29 12:24:00.180] info: [remote-source-provider] Ending asset stream for 3276ccf4-6725-458a-8965-666a0b29cd78
+
+[2026-10-29 12:24:00.516] info: [remote-source-provider] Asset 729872ba-97b9-438d-8107-07b0e752ae88 starting
+
+[2026-10-29 12:24:00.518] info: [remote-source-provider] Ending asset stream for 729872ba-97b9-438d-8107-07b0e752ae88
+
+[2026-10-29 12:24:00.893] info: [remote-source-provider] Asset 9dbb826e-316a-4e48-8384-2366cf83235c starting
+
+[2026-10-29 12:24:00.894] info: [remote-source-provider] Ending asset stream for 9dbb826e-316a-4e48-8384-2366cf83235c
+
+[2026-10-29 12:24:01.220] info: [remote-source-provider] Asset 07d9350e-5e36-4a5c-9470-516d33480ad7 starting
+
+[2026-10-29 12:24:01.221] info: [remote-source-provider] Ending asset stream for 07d9350e-5e36-4a5c-9470-516d33480ad7
+
+[2026-10-29 12:24:01.574] info: [remote-source-provider] Asset 1cf4093f-8615-41c1-9275-0888913c5eb3 starting
+
+[2026-10-29 12:24:01.576] info: [remote-source-provider] Ending asset stream for 1cf4093f-8615-41c1-9275-0888913c5eb3
+
+[2026-10-29 12:24:01.884] info: [remote-source-provider] Asset f0128296-aabd-4c35-ba9a-394161c4be99 starting
+
+[2026-10-29 12:24:01.885] info: [remote-source-provider] Ending asset stream for f0128296-aabd-4c35-ba9a-394161c4be99
+
+[2026-10-29 12:24:02.185] info: [remote-source-provider] Asset a01bad87-4974-4146-882e-d43665929b60 starting
+
+[2026-10-29 12:24:02.186] info: [remote-source-provider] Ending asset stream for a01bad87-4974-4146-882e-d43665929b60
+
+[2026-10-29 12:24:02.492] info: [remote-source-provider] Asset bacac3c5-beb5-4e60-976c-9bfa39c1685d starting
+
+[2026-10-29 12:24:02.493] info: [remote-source-provider] Ending asset stream for bacac3c5-beb5-4e60-976c-9bfa39c1685d
+
+[2026-10-29 12:24:02.796] info: [remote-source-provider] Asset 677c0a8a-5ded-455a-94ea-3ab08d488b97 starting
+
+[2026-10-29 12:24:02.797] info: [remote-source-provider] Ending asset stream for 677c0a8a-5ded-455a-94ea-3ab08d488b97
+
+[2026-10-29 12:24:03.108] info: [remote-source-provider] Asset 9c7f12ad-5460-48c4-9a20-d5b3f9863f4d starting
+
+[2026-10-29 12:24:03.109] info: [remote-source-provider] Ending asset stream for 9c7f12ad-5460-48c4-9a20-d5b3f9863f4d
+
+[2026-10-29 12:24:03.422] info: [remote-source-provider] Asset 7dcb02f0-4c1e-4c25-9bf1-acd72a116248 starting
+
+[2026-10-29 12:24:03.424] info: [remote-source-provider] Ending asset stream for 7dcb02f0-4c1e-4c25-9bf1-acd72a116248
+
+[2026-10-29 12:24:03.725] info: [remote-source-provider] Asset 6b2b2da4-a6fc-438b-b709-78abe15ff9e1 starting
+
+[2026-10-29 12:24:03.727] info: [remote-source-provider] Ending asset stream for 6b2b2da4-a6fc-438b-b709-78abe15ff9e1
+
+[2026-10-29 12:24:04.032] info: [remote-source-provider] Asset a0e2b4ec-c192-4fb3-bcdc-2ef4ff354e18 starting
+
+[2026-10-29 12:24:04.034] info: [remote-source-provider] Ending asset stream for a0e2b4ec-c192-4fb3-bcdc-2ef4ff354e18
+
+[2026-10-29 12:24:04.332] info: [remote-source-provider] Asset 6e605889-9014-44d6-9082-b6f5be2182f5 starting
+
+[2026-10-29 12:24:04.333] info: [remote-source-provider] Ending asset stream for 6e605889-9014-44d6-9082-b6f5be2182f5
+
+[2026-10-29 12:24:04.635] info: [remote-source-provider] Asset 63c2d92e-2ac9-414f-99c2-86b11c1ecdd1 starting
+
+[2026-10-29 12:24:04.636] info: [remote-source-provider] Ending asset stream for 63c2d92e-2ac9-414f-99c2-86b11c1ecdd1
+
+[2026-10-29 12:24:04.932] info: [remote-source-provider] Asset 4d506d7b-542b-4135-96ee-70060f8f3614 starting
+
+[2026-10-29 12:24:04.933] info: [remote-source-provider] Ending asset stream for 4d506d7b-542b-4135-96ee-70060f8f3614
+
+[2026-10-29 12:24:05.235] info: [remote-source-provider] Asset 37807545-d579-4651-8de4-cd0fb41d0038 starting
+
+[2026-10-29 12:24:05.236] info: [remote-source-provider] Ending asset stream for 37807545-d579-4651-8de4-cd0fb41d0038
+
+[2026-10-29 12:24:05.533] info: [remote-source-provider] Asset 67ca41a6-a891-4ef7-af85-8f45fbd06110 starting
+
+[2026-10-29 12:24:05.535] info: [remote-source-provider] Ending asset stream for 67ca41a6-a891-4ef7-af85-8f45fbd06110
+
+[2026-10-29 12:24:05.832] info: [remote-source-provider] Asset 18674c4c-deaa-490a-b452-2c5697c92e88 starting
+
+[2026-10-29 12:24:05.833] info: [remote-source-provider] Ending asset stream for 18674c4c-deaa-490a-b452-2c5697c92e88
+
+[2026-10-29 12:24:06.129] info: [remote-source-provider] Asset 0da7934c-609e-4c80-9b7d-1df30d0ba54a starting
+
+[2026-10-29 12:24:06.130] info: [remote-source-provider] Ending asset stream for 0da7934c-609e-4c80-9b7d-1df30d0ba54a
+
+[2026-10-29 12:24:06.428] info: [remote-source-provider] Asset c06b43e5-05cd-42a6-b512-067b3405a09d starting
+
+[2026-10-29 12:24:06.429] info: [remote-source-provider] Ending asset stream for c06b43e5-05cd-42a6-b512-067b3405a09d
+
+[2026-10-29 12:24:06.726] info: [remote-source-provider] Asset 59221b7d-2197-40e4-9cd4-10a5856ec046 starting
+
+[2026-10-29 12:24:06.727] info: [remote-source-provider] Ending asset stream for 59221b7d-2197-40e4-9cd4-10a5856ec046
+
+[2026-10-29 12:24:07.045] info: [remote-source-provider] Asset 12ca91e5-1d89-46a8-b62a-483bb510dce9 starting
+
+[2026-10-29 12:24:07.045] info: [remote-source-provider] Ending asset stream for 12ca91e5-1d89-46a8-b62a-483bb510dce9
+
+[2026-10-29 12:24:07.350] info: [remote-source-provider] Asset dbdc52c7-8b8d-4f23-a21f-a1f7083f3690 starting
+
+[2026-10-29 12:24:07.351] info: [remote-source-provider] Ending asset stream for dbdc52c7-8b8d-4f23-a21f-a1f7083f3690
+
+[2026-10-29 12:24:07.651] info: [remote-source-provider] Asset cc58d22b-bc10-47f5-92e0-c361ebf7d655 starting
+
+[2026-10-29 12:24:07.652] info: [remote-source-provider] Ending asset stream for cc58d22b-bc10-47f5-92e0-c361ebf7d655
+
+[2026-10-29 12:24:07.953] info: [remote-source-provider] Asset 4d3fbcce-2838-4875-a227-edc8e3e59828 starting
+
+[2026-10-29 12:24:07.953] info: [remote-source-provider] Ending asset stream for 4d3fbcce-2838-4875-a227-edc8e3e59828
+
+[2026-10-29 12:24:08.250] info: [remote-source-provider] Asset f77e51c0-6b65-42c6-9328-67e0ebc5329e starting
+
+[2026-10-29 12:24:08.251] info: [remote-source-provider] Ending asset stream for f77e51c0-6b65-42c6-9328-67e0ebc5329e
+
+[2026-10-29 12:24:08.548] info: [remote-source-provider] Asset 5edd470a-300e-4dda-a824-680d2bc0941d starting
+
+[2026-10-29 12:24:08.549] info: [remote-source-provider] Ending asset stream for 5edd470a-300e-4dda-a824-680d2bc0941d
+
+[2026-10-29 12:24:08.847] info: [remote-source-provider] Asset e3cf493b-a732-487e-8dfe-5e70e721b469 starting
+
+[2026-10-29 12:24:08.848] info: [remote-source-provider] Ending asset stream for e3cf493b-a732-487e-8dfe-5e70e721b469
+
+[2026-10-29 12:24:09.148] info: [remote-source-provider] Asset 98f295fe-f5d0-4861-8802-35ea3c9dd3fa starting
+
+[2026-10-29 12:24:09.149] info: [remote-source-provider] Ending asset stream for 98f295fe-f5d0-4861-8802-35ea3c9dd3fa
+
+[2026-10-29 12:24:09.448] info: [remote-source-provider] Asset acfbd73f-a181-49ee-aea9-b86bb80ad21b starting
+
+[2026-10-29 12:24:09.449] info: [remote-source-provider] Ending asset stream for acfbd73f-a181-49ee-aea9-b86bb80ad21b
+
+[2026-10-29 12:24:09.761] info: [remote-source-provider] Asset f952e4cb-3ef3-4c04-a4fb-4aabff102ef3 starting
+
+[2026-10-29 12:24:09.762] info: [remote-source-provider] Ending asset stream for f952e4cb-3ef3-4c04-a4fb-4aabff102ef3
+
+[2026-10-29 12:24:10.062] info: [remote-source-provider] Asset 26efc3f3-e82e-4aed-a9c3-6041aac5344a starting
+
+[2026-10-29 12:24:10.063] info: [remote-source-provider] Ending asset stream for 26efc3f3-e82e-4aed-a9c3-6041aac5344a
+
+[2026-10-29 12:24:10.368] info: [remote-source-provider] Asset 4dacefcd-67a0-411d-9f60-1bf86adf743a starting
+
+[2026-10-29 12:24:10.369] info: [remote-source-provider] Ending asset stream for 4dacefcd-67a0-411d-9f60-1bf86adf743a
+
+[2026-10-29 12:24:10.708] info: [remote-source-provider] Asset 0b143198-08ac-4f6d-ae25-8ae63b3f73c5 starting
+
+[2026-10-29 12:24:10.710] info: [remote-source-provider] Ending asset stream for 0b143198-08ac-4f6d-ae25-8ae63b3f73c5
+
+[2026-10-29 12:24:11.007] info: [remote-source-provider] Asset 5d55eb81-44f2-41ca-a595-2d8b891fd3e7 starting
+
+[2026-10-29 12:24:11.008] info: [remote-source-provider] Ending asset stream for 5d55eb81-44f2-41ca-a595-2d8b891fd3e7
+
+[2026-10-29 12:24:11.306] info: [remote-source-provider] Asset b8eb79e0-c8dc-42b1-8a1c-ed084cc6f13d starting
+
+[2026-10-29 12:24:11.307] info: [remote-source-provider] Ending asset stream for b8eb79e0-c8dc-42b1-8a1c-ed084cc6f13d
+
+[2026-10-29 12:24:11.608] info: [remote-source-provider] Asset e3586633-d7f6-4953-8fc8-e4b48546ab22 starting
+
+[2026-10-29 12:24:11.610] info: [remote-source-provider] Ending asset stream for e3586633-d7f6-4953-8fc8-e4b48546ab22
+
+[2026-10-29 12:24:11.907] info: [remote-source-provider] Asset fd5af51e-f9db-4344-86b3-d48252cd6485 starting
+
+[2026-10-29 12:24:11.908] info: [remote-source-provider] Ending asset stream for fd5af51e-f9db-4344-86b3-d48252cd6485
+
+[2026-10-29 12:24:12.207] info: [remote-source-provider] Asset f056fdb9-8e93-4853-a669-521da9471836 starting
+
+[2026-10-29 12:24:12.208] info: [remote-source-provider] Ending asset stream for f056fdb9-8e93-4853-a669-521da9471836
+
+[2026-10-29 12:24:12.511] info: [remote-source-provider] Asset c82ec9f7-7839-4c11-8a6e-30ec20abd33a starting
+
+[2026-10-29 12:24:12.512] info: [remote-source-provider] Ending asset stream for c82ec9f7-7839-4c11-8a6e-30ec20abd33a
+
+[2026-10-29 12:24:12.813] info: [remote-source-provider] Asset 57d27de7-d3bb-43f6-8dbd-4c884554a894 starting
+
+[2026-10-29 12:24:12.814] info: [remote-source-provider] Ending asset stream for 57d27de7-d3bb-43f6-8dbd-4c884554a894
+
+[2026-10-29 12:24:13.112] info: [remote-source-provider] Asset 380b7ce8-ca00-4c0c-bae0-032a22ecbc50 starting
+
+[2026-10-29 12:24:13.113] info: [remote-source-provider] Ending asset stream for 380b7ce8-ca00-4c0c-bae0-032a22ecbc50
+
+[2026-10-29 12:24:13.411] info: [remote-source-provider] Asset 1c8f95de-25c0-45e7-8771-48f96a52d147 starting
+
+[2026-10-29 12:24:13.412] info: [remote-source-provider] Ending asset stream for 1c8f95de-25c0-45e7-8771-48f96a52d147
+
+[2026-10-29 12:24:13.714] info: [remote-source-provider] Asset 8effe03e-282c-4a3e-bafe-b42041966132 starting
+
+[2026-10-29 12:24:13.715] info: [remote-source-provider] Ending asset stream for 8effe03e-282c-4a3e-bafe-b42041966132
+
+[2026-10-29 12:24:14.020] info: [remote-source-provider] Asset d27fbd43-77dd-4aa4-8573-6fdd1bc99f6d starting
+
+[2026-10-29 12:24:14.021] info: [remote-source-provider] Ending asset stream for d27fbd43-77dd-4aa4-8573-6fdd1bc99f6d
+
+[2026-10-29 12:24:14.317] info: [remote-source-provider] Asset 093aa750-626e-41dd-a260-589b3d300379 starting
+
+[2026-10-29 12:24:14.318] info: [remote-source-provider] Ending asset stream for 093aa750-626e-41dd-a260-589b3d300379
+
+[2026-10-29 12:24:14.623] info: [remote-source-provider] Asset f60bddfd-a58e-455f-9949-e7ec2159f38e starting
+
+[2026-10-29 12:24:14.624] info: [remote-source-provider] Ending asset stream for f60bddfd-a58e-455f-9949-e7ec2159f38e
+
+[2026-10-29 12:24:14.929] info: [remote-source-provider] Asset 4c45462b-5443-4c56-ab8b-daf9ad14e5e1 starting
+
+[2026-10-29 12:24:14.931] info: [remote-source-provider] Ending asset stream for 4c45462b-5443-4c56-ab8b-daf9ad14e5e1
+
+[2026-10-29 12:24:15.236] info: [remote-source-provider] Asset 6a50c7ad-e514-4520-b3e8-bcd886e76176 starting
+
+[2026-10-29 12:24:15.237] info: [remote-source-provider] Ending asset stream for 6a50c7ad-e514-4520-b3e8-bcd886e76176
+
+[2026-10-29 12:24:15.537] info: [remote-source-provider] Asset 1bc2292c-4218-4d24-996d-79b6f5bdc3fa starting
+
+[2026-10-29 12:24:15.538] info: [remote-source-provider] Ending asset stream for 1bc2292c-4218-4d24-996d-79b6f5bdc3fa
+
+[2026-10-29 12:24:15.837] info: [remote-source-provider] Asset ef3a4295-0cfd-4237-9ba8-7e136408aabe starting
+
+[2026-10-29 12:24:15.838] info: [remote-source-provider] Ending asset stream for ef3a4295-0cfd-4237-9ba8-7e136408aabe
+
+[2026-10-29 12:24:16.136] info: [remote-source-provider] Asset 540d7485-785b-4412-94b1-f3aeffa0af5d starting
+
+[2026-10-29 12:24:16.137] info: [remote-source-provider] Ending asset stream for 540d7485-785b-4412-94b1-f3aeffa0af5d
+
+[2026-10-29 12:24:16.438] info: [remote-source-provider] Asset 5eaffaba-e355-4d6d-ab11-4e5005fa2264 starting
+
+[2026-10-29 12:24:16.440] info: [remote-source-provider] Ending asset stream for 5eaffaba-e355-4d6d-ab11-4e5005fa2264
+
+[2026-10-29 12:24:16.754] info: [remote-source-provider] Asset 532a56f6-d233-4c57-a66a-6766d4f9aa8b starting
+
+[2026-10-29 12:24:16.755] info: [remote-source-provider] Ending asset stream for 532a56f6-d233-4c57-a66a-6766d4f9aa8b
+
+[2026-10-29 12:24:17.053] info: [remote-source-provider] Asset ec1e5d11-2e67-44af-ad68-846ef43315c8 starting
+
+[2026-10-29 12:24:17.055] info: [remote-source-provider] Ending asset stream for ec1e5d11-2e67-44af-ad68-846ef43315c8
+
+[2026-10-29 12:24:17.364] info: [remote-source-provider] Asset a67a0531-cb9e-4165-8eef-cad832e94b35 starting
+
+[2026-10-29 12:24:17.366] info: [remote-source-provider] Ending asset stream for a67a0531-cb9e-4165-8eef-cad832e94b35
+
+[2026-10-29 12:24:17.671] info: [remote-source-provider] Asset 39e38a86-bc26-407d-8de4-339b20ca041d starting
+
+[2026-10-29 12:24:17.672] info: [remote-source-provider] Ending asset stream for 39e38a86-bc26-407d-8de4-339b20ca041d
+
+[2026-10-29 12:24:17.971] info: [remote-source-provider] Asset 253fbd7c-0471-4521-b080-89a07b471a34 starting
+
+[2026-10-29 12:24:17.972] info: [remote-source-provider] Ending asset stream for 253fbd7c-0471-4521-b080-89a07b471a34
+
+[2026-10-29 12:24:18.270] info: [remote-source-provider] Asset 5549d003-fe92-4c89-9125-55661ba0fd8d starting
+
+[2026-10-29 12:24:18.271] info: [remote-source-provider] Ending asset stream for 5549d003-fe92-4c89-9125-55661ba0fd8d
+
+[2026-10-29 12:24:18.570] info: [remote-source-provider] Asset 552c2a9d-8315-4b47-946d-d5afb4182ca0 starting
+
+[2026-10-29 12:24:18.572] info: [remote-source-provider] Ending asset stream for 552c2a9d-8315-4b47-946d-d5afb4182ca0
+
+[2026-10-29 12:24:18.870] info: [remote-source-provider] Asset 10116b09-4cd1-48e4-9f9a-eeaf190d3eb7 starting
+
+[2026-10-29 12:24:18.871] info: [remote-source-provider] Ending asset stream for 10116b09-4cd1-48e4-9f9a-eeaf190d3eb7
+
+[2026-10-29 12:24:19.179] info: [remote-source-provider] Asset 17564a1a-adbc-4df6-9e80-a7131e90f86f starting
+
+[2026-10-29 12:24:19.180] info: [remote-source-provider] Ending asset stream for 17564a1a-adbc-4df6-9e80-a7131e90f86f
+
+[2026-10-29 12:24:19.483] info: [remote-source-provider] Asset d109913f-2971-4134-acf7-eef3e01fc15d starting
+
+[2026-10-29 12:24:19.484] info: [remote-source-provider] Ending asset stream for d109913f-2971-4134-acf7-eef3e01fc15d
+
+[2026-10-29 12:24:19.788] info: [remote-source-provider] Asset 2a216fd3-2e25-4cbe-9d2d-0d0b7cdad828 starting
+
+[2026-10-29 12:24:19.789] info: [remote-source-provider] Ending asset stream for 2a216fd3-2e25-4cbe-9d2d-0d0b7cdad828
+
+[2026-10-29 12:24:20.089] info: [remote-source-provider] Asset 4bb075be-8938-49fb-b488-5fadbc2a3644 starting
+
+[2026-10-29 12:24:20.090] info: [remote-source-provider] Ending asset stream for 4bb075be-8938-49fb-b488-5fadbc2a3644
+
+[2026-10-29 12:24:20.393] info: [remote-source-provider] Asset f5a7b13d-f209-493a-8c26-75cc73a07b3b starting
+
+[2026-10-29 12:24:20.394] info: [remote-source-provider] Ending asset stream for f5a7b13d-f209-493a-8c26-75cc73a07b3b
+
+[2026-10-29 12:24:20.692] info: [remote-source-provider] Asset 6d18f225-f0ff-45f9-93e6-999ca9b450a2 starting
+
+[2026-10-29 12:24:20.693] info: [remote-source-provider] Ending asset stream for 6d18f225-f0ff-45f9-93e6-999ca9b450a2
+
+[2026-10-29 12:24:20.993] info: [remote-source-provider] Asset bd1a8968-abf2-4f4c-be07-828ba2c124b4 starting
+
+[2026-10-29 12:24:20.994] info: [remote-source-provider] Ending asset stream for bd1a8968-abf2-4f4c-be07-828ba2c124b4
+
+[2026-10-29 12:24:21.291] info: [remote-source-provider] Asset 0b125c14-51ef-40a5-aed7-17ccb666b11f starting
+
+[2026-10-29 12:24:21.293] info: [remote-source-provider] Ending asset stream for 0b125c14-51ef-40a5-aed7-17ccb666b11f
+
+[2026-10-29 12:24:21.607] info: [remote-source-provider] Asset c611a048-7fdc-4138-861f-e62b4f6210c9 starting
+
+[2026-10-29 12:24:21.608] info: [remote-source-provider] Ending asset stream for c611a048-7fdc-4138-861f-e62b4f6210c9
+
+[2026-10-29 12:24:21.911] info: [remote-source-provider] Asset d8726fbc-0850-45e3-8de1-76701ab8cca0 starting
+
+[2026-10-29 12:24:21.912] info: [remote-source-provider] Ending asset stream for d8726fbc-0850-45e3-8de1-76701ab8cca0
+
+[2026-10-29 12:24:22.228] info: [remote-source-provider] Asset bcff70d1-c3bd-413f-aba5-13a8c2170a35 starting
+
+[2026-10-29 12:24:22.229] info: [remote-source-provider] Ending asset stream for bcff70d1-c3bd-413f-aba5-13a8c2170a35
+
+[2026-10-29 12:24:22.528] info: [remote-source-provider] Asset 23c96f09-cf3f-4bdd-93ad-55a407d26c8e starting
+
+[2026-10-29 12:24:22.529] info: [remote-source-provider] Ending asset stream for 23c96f09-cf3f-4bdd-93ad-55a407d26c8e
+
+[2026-10-29 12:24:22.825] info: [remote-source-provider] Asset cc573f9c-9b6c-42aa-9499-d2325bb9381c starting
+
+[2026-10-29 12:24:22.827] info: [remote-source-provider] Ending asset stream for cc573f9c-9b6c-42aa-9499-d2325bb9381c
+
+[2026-10-29 12:24:23.127] info: [remote-source-provider] Asset e7c84216-8094-4c2e-9bd3-3514a6f43ade starting
+
+[2026-10-29 12:24:23.129] info: [remote-source-provider] Ending asset stream for e7c84216-8094-4c2e-9bd3-3514a6f43ade
+
+[2026-10-29 12:24:23.441] info: [remote-source-provider] Asset be0ef5d5-39c3-4ba8-8dd5-cb3a6a3067da starting
+
+[2026-10-29 12:24:23.442] info: [remote-source-provider] Ending asset stream for be0ef5d5-39c3-4ba8-8dd5-cb3a6a3067da
+
+[2026-10-29 12:24:23.746] info: [remote-source-provider] Asset 326feb48-a8e8-44a5-b88f-c8ea059a8e39 starting
+
+[2026-10-29 12:24:23.747] info: [remote-source-provider] Ending asset stream for 326feb48-a8e8-44a5-b88f-c8ea059a8e39
+
+[2026-10-29 12:24:24.050] info: [remote-source-provider] Asset 3c063df8-0f09-41e6-98de-463d40cbcd4d starting
+
+[2026-10-29 12:24:24.051] info: [remote-source-provider] Ending asset stream for 3c063df8-0f09-41e6-98de-463d40cbcd4d
+
+[2026-10-29 12:24:24.354] info: [remote-source-provider] Asset 53c4249e-3a5d-4cf8-ae8b-0b7ac75d5160 starting
+
+[2026-10-29 12:24:24.355] info: [remote-source-provider] Ending asset stream for 53c4249e-3a5d-4cf8-ae8b-0b7ac75d5160
+
+[2026-10-29 12:24:24.652] info: [remote-source-provider] Asset 5e761163-dcdb-4dbc-905d-4672d886700a starting
+
+[2026-10-29 12:24:24.653] info: [remote-source-provider] Ending asset stream for 5e761163-dcdb-4dbc-905d-4672d886700a
+
+[2026-10-29 12:24:24.953] info: [remote-source-provider] Asset c82b8755-584a-483b-9d68-663c11db5fa1 starting
+
+[2026-10-29 12:24:24.954] info: [remote-source-provider] Ending asset stream for c82b8755-584a-483b-9d68-663c11db5fa1
+
+[2026-10-29 12:24:25.250] info: [remote-source-provider] Asset dc40b1ac-3adc-4d50-86e3-6d3b68307e41 starting
+
+[2026-10-29 12:24:25.252] info: [remote-source-provider] Ending asset stream for dc40b1ac-3adc-4d50-86e3-6d3b68307e41
+
+[2026-10-29 12:24:25.547] info: [remote-source-provider] Asset d6e4e73a-6bef-4732-8e98-481b3be39d07 starting
+
+[2026-10-29 12:24:25.548] info: [remote-source-provider] Ending asset stream for d6e4e73a-6bef-4732-8e98-481b3be39d07
+
+[2026-10-29 12:24:25.851] info: [remote-source-provider] Asset 8a014c4a-9ebe-4492-a1cc-65472cf5b292 starting
+
+[2026-10-29 12:24:25.852] info: [remote-source-provider] Ending asset stream for 8a014c4a-9ebe-4492-a1cc-65472cf5b292
+
+[2026-10-29 12:24:26.147] info: [remote-source-provider] Asset 4e8caa6a-6a38-4314-914d-99ed7ced7dfa starting
+
+[2026-10-29 12:24:26.148] info: [remote-source-provider] Ending asset stream for 4e8caa6a-6a38-4314-914d-99ed7ced7dfa
+
+[2026-10-29 12:24:26.447] info: [remote-source-provider] Asset 5311a96a-effa-4a0b-a8d2-953c1a0ecf04 starting
+
+[2026-10-29 12:24:26.448] info: [remote-source-provider] Ending asset stream for 5311a96a-effa-4a0b-a8d2-953c1a0ecf04
+
+[2026-10-29 12:24:26.745] info: [remote-source-provider] Asset ed11b004-f051-4403-86bb-b2d899a5bf57 starting
+
+[2026-10-29 12:24:26.746] info: [remote-source-provider] Ending asset stream for ed11b004-f051-4403-86bb-b2d899a5bf57
+
+[2026-10-29 12:24:27.042] info: [remote-source-provider] Asset 99ad0ae0-023e-47e5-a6f5-2fc834134dee starting
+
+[2026-10-29 12:24:27.043] info: [remote-source-provider] Ending asset stream for 99ad0ae0-023e-47e5-a6f5-2fc834134dee
+
+[2026-10-29 12:24:27.349] info: [remote-source-provider] Asset dd8d2244-8821-49fd-9a50-21057cd29449 starting
+
+[2026-10-29 12:24:27.350] info: [remote-source-provider] Ending asset stream for dd8d2244-8821-49fd-9a50-21057cd29449
+
+[2026-10-29 12:24:27.650] info: [remote-source-provider] Asset dcfa0b2f-12ff-43f3-8b45-8ba5076bc159 starting
+
+[2026-10-29 12:24:27.650] info: [remote-source-provider] Ending asset stream for dcfa0b2f-12ff-43f3-8b45-8ba5076bc159
+
+[2026-10-29 12:24:27.948] info: [remote-source-provider] Asset bb9104a7-6b62-4afb-bf52-4954bb6df257 starting
+
+[2026-10-29 12:24:27.949] info: [remote-source-provider] Ending asset stream for bb9104a7-6b62-4afb-bf52-4954bb6df257
+
+[2026-10-29 12:24:28.243] info: [remote-source-provider] Asset e88c1bfc-1e58-41ee-9858-d8c8b2f580d9 starting
+
+[2026-10-29 12:24:28.244] info: [remote-source-provider] Ending asset stream for e88c1bfc-1e58-41ee-9858-d8c8b2f580d9
+
+[2026-10-29 12:24:28.564] info: [remote-source-provider] Asset 6ea1bfb6-698d-4a03-ab4e-72749f0b1095 starting
+
+[2026-10-29 12:24:28.565] info: [remote-source-provider] Ending asset stream for 6ea1bfb6-698d-4a03-ab4e-72749f0b1095
+
+[2026-10-29 12:24:28.868] info: [remote-source-provider] Asset 261e16b4-d064-4293-97fa-b54289d5b7c1 starting
+
+[2026-10-29 12:24:28.870] info: [remote-source-provider] Ending asset stream for 261e16b4-d064-4293-97fa-b54289d5b7c1
+
+[2026-10-29 12:24:29.169] info: [remote-source-provider] Asset cbe5471b-8902-405d-98b9-484771e21922 starting
+
+[2026-10-29 12:24:29.169] info: [remote-source-provider] Ending asset stream for cbe5471b-8902-405d-98b9-484771e21922
+
+[2026-10-29 12:24:29.473] info: [remote-source-provider] Asset df066c7f-36a4-4433-b116-39ce9bada4ad starting
+
+[2026-10-29 12:24:29.474] info: [remote-source-provider] Ending asset stream for df066c7f-36a4-4433-b116-39ce9bada4ad
+
+[2026-10-29 12:24:29.774] info: [remote-source-provider] Asset 7654c97a-7edb-45cd-88bd-2c2bfe1d76ef starting
+
+[2026-10-29 12:24:29.775] info: [remote-source-provider] Ending asset stream for 7654c97a-7edb-45cd-88bd-2c2bfe1d76ef
+
+[2026-10-29 12:24:30.103] info: [remote-source-provider] Asset 54d7a5f6-415c-44ef-a8f3-f0583a45870d starting
+
+[2026-10-29 12:24:30.105] info: [remote-source-provider] Ending asset stream for 54d7a5f6-415c-44ef-a8f3-f0583a45870d
+
+[2026-10-29 12:24:30.419] info: [remote-source-provider] Asset 9fe24e73-4704-4443-b028-68b4480a59e6 starting
+
+[2026-10-29 12:24:30.421] info: [remote-source-provider] Ending asset stream for 9fe24e73-4704-4443-b028-68b4480a59e6
+
+[2026-10-29 12:24:30.722] info: [remote-source-provider] Asset 8e94fa23-01d9-419d-9e07-7d126f253e0d starting
+
+[2026-10-29 12:24:30.724] info: [remote-source-provider] Ending asset stream for 8e94fa23-01d9-419d-9e07-7d126f253e0d
+
+[2026-10-29 12:24:31.028] info: [remote-source-provider] Asset abcfc0cf-508e-4a28-93d6-cceac504fd0f starting
+
+[2026-10-29 12:24:31.030] info: [remote-source-provider] Ending asset stream for abcfc0cf-508e-4a28-93d6-cceac504fd0f
+
+[2026-10-29 12:24:31.325] info: [remote-source-provider] Asset 3d9e92f5-cdd8-4f63-94f8-959eaca20a23 starting
+
+[2026-10-29 12:24:31.327] info: [remote-source-provider] Ending asset stream for 3d9e92f5-cdd8-4f63-94f8-959eaca20a23
+
+[2026-10-29 12:24:31.629] info: [remote-source-provider] Asset ca047cbd-5dba-4e0c-b8bb-69faad8272f6 starting
+
+[2026-10-29 12:24:31.630] info: [remote-source-provider] Ending asset stream for ca047cbd-5dba-4e0c-b8bb-69faad8272f6
+
+[2026-10-29 12:24:31.927] info: [remote-source-provider] Asset 1c46002c-b488-40b9-ba08-85b250ceb2bb starting
+
+[2026-10-29 12:24:31.928] info: [remote-source-provider] Ending asset stream for 1c46002c-b488-40b9-ba08-85b250ceb2bb
+
+[2026-10-29 12:24:32.221] info: [remote-source-provider] Asset 1aac1459-30d6-42e5-b77c-44ffd44b297c starting
+
+[2026-10-29 12:24:32.222] info: [remote-source-provider] Ending asset stream for 1aac1459-30d6-42e5-b77c-44ffd44b297c
+
+[2026-10-29 12:24:32.531] info: [remote-source-provider] Asset f36b122b-ad80-4e19-bdaa-fa166eacab8e starting
+
+[2026-10-29 12:24:32.532] info: [remote-source-provider] Ending asset stream for f36b122b-ad80-4e19-bdaa-fa166eacab8e
+
+[2026-10-29 12:24:32.833] info: [remote-source-provider] Asset 3bd9dcbe-cc09-4da4-87f8-5ab75543e7a8 starting
+
+[2026-10-29 12:24:32.834] info: [remote-source-provider] Ending asset stream for 3bd9dcbe-cc09-4da4-87f8-5ab75543e7a8
+
+[2026-10-29 12:24:33.128] info: [remote-source-provider] Asset 3edafa18-d8a4-4d31-bff0-eb773a812e28 starting
+
+[2026-10-29 12:24:33.129] info: [remote-source-provider] Ending asset stream for 3edafa18-d8a4-4d31-bff0-eb773a812e28
+
+[2026-10-29 12:24:33.426] info: [remote-source-provider] Asset 9d726d4f-1044-4199-9bd2-763723eae6f4 starting
+
+[2026-10-29 12:24:33.427] info: [remote-source-provider] Ending asset stream for 9d726d4f-1044-4199-9bd2-763723eae6f4
+
+[2026-10-29 12:24:33.722] info: [remote-source-provider] Asset 3411986c-45eb-471d-a9dc-e64449dd8869 starting
+
+[2026-10-29 12:24:33.723] info: [remote-source-provider] Ending asset stream for 3411986c-45eb-471d-a9dc-e64449dd8869
+
+[2026-10-29 12:24:34.020] info: [remote-source-provider] Asset 9be16b8c-3679-47a7-8599-b5ad9ca1f0e6 starting
+
+[2026-10-29 12:24:34.020] info: [remote-source-provider] Ending asset stream for 9be16b8c-3679-47a7-8599-b5ad9ca1f0e6
+
+[2026-10-29 12:24:34.476] info: [remote-source-provider] Asset bbe4df8d-b5d8-4dc3-968e-4b6415788a09 starting
+
+[2026-10-29 12:24:34.477] info: [remote-source-provider] Ending asset stream for bbe4df8d-b5d8-4dc3-968e-4b6415788a09
+
+[2026-10-29 12:24:34.769] info: [remote-source-provider] Asset 07bfd2df-e56a-4aca-acd3-da63a8a283fa starting
+
+[2026-10-29 12:24:34.771] info: [remote-source-provider] Ending asset stream for 07bfd2df-e56a-4aca-acd3-da63a8a283fa
+
+[2026-10-29 12:24:35.066] info: [remote-source-provider] Asset e9d97542-1d7c-4d6c-a2d9-a138f5a4fdc9 starting
+
+[2026-10-29 12:24:35.067] info: [remote-source-provider] Ending asset stream for e9d97542-1d7c-4d6c-a2d9-a138f5a4fdc9
+
+[2026-10-29 12:24:35.377] info: [remote-source-provider] Asset 7981ae8f-4090-4381-98bb-acd1a97184d3 starting
+
+[2026-10-29 12:24:35.379] info: [remote-source-provider] Ending asset stream for 7981ae8f-4090-4381-98bb-acd1a97184d3
+
+[2026-10-29 12:24:35.682] info: [remote-source-provider] Asset d9220931-e44a-4265-af9f-605c2768be49 starting
+
+[2026-10-29 12:24:35.683] info: [remote-source-provider] Ending asset stream for d9220931-e44a-4265-af9f-605c2768be49
+
+[2026-10-29 12:24:35.981] info: [remote-source-provider] Asset 1b90f587-1a03-4dad-94b6-ebfbee2cf30d starting
+
+[2026-10-29 12:24:35.982] info: [remote-source-provider] Ending asset stream for 1b90f587-1a03-4dad-94b6-ebfbee2cf30d
+
+[2026-10-29 12:24:36.290] info: [remote-source-provider] Asset c9d9196a-3e7b-4045-87b1-5a74501811de starting
+
+[2026-10-29 12:24:36.291] info: [remote-source-provider] Ending asset stream for c9d9196a-3e7b-4045-87b1-5a74501811de
+
+[2026-10-29 12:24:36.583] info: [remote-source-provider] Asset e1157c25-202c-430a-82ac-df66f790990d starting
+
+[2026-10-29 12:24:36.585] info: [remote-source-provider] Ending asset stream for e1157c25-202c-430a-82ac-df66f790990d
+
+[2026-10-29 12:24:36.900] info: [remote-source-provider] Asset 253e8bba-738f-4414-afbd-cd708343a3ba starting
+
+[2026-10-29 12:24:36.902] info: [remote-source-provider] Ending asset stream for 253e8bba-738f-4414-afbd-cd708343a3ba
+
+[2026-10-29 12:24:37.199] info: [remote-source-provider] Asset 4177de07-9454-4dcf-8995-0368fb930d48 starting
+
+[2026-10-29 12:24:37.200] info: [remote-source-provider] Ending asset stream for 4177de07-9454-4dcf-8995-0368fb930d48
+
+[2026-10-29 12:24:37.505] info: [remote-source-provider] Asset dc410702-97a0-4b80-9970-c759017eff00 starting
+
+[2026-10-29 12:24:37.506] info: [remote-source-provider] Ending asset stream for dc410702-97a0-4b80-9970-c759017eff00
+
+[2026-10-29 12:24:37.800] info: [remote-source-provider] Asset 2cfba7ed-2a23-43bf-bcea-517ab4481bb7 starting
+
+[2026-10-29 12:24:37.801] info: [remote-source-provider] Ending asset stream for 2cfba7ed-2a23-43bf-bcea-517ab4481bb7
+
+[2026-10-29 12:24:38.096] info: [remote-source-provider] Asset 7574cf2c-d0aa-4f7e-9ff5-6ab972d98f98 starting
+
+[2026-10-29 12:24:38.098] info: [remote-source-provider] Ending asset stream for 7574cf2c-d0aa-4f7e-9ff5-6ab972d98f98
+
+[2026-10-29 12:24:38.402] info: [remote-source-provider] Asset 06366478-e1c7-40fc-bf16-f3cbeb3b6a25 starting
+
+[2026-10-29 12:24:38.404] info: [remote-source-provider] Ending asset stream for 06366478-e1c7-40fc-bf16-f3cbeb3b6a25
+
+[2026-10-29 12:24:38.701] info: [remote-source-provider] Asset 4058f83e-9604-403d-9b44-059742b72fe5 starting
+
+[2026-10-29 12:24:38.702] info: [remote-source-provider] Ending asset stream for 4058f83e-9604-403d-9b44-059742b72fe5
+
+[2026-10-29 12:24:38.999] info: [remote-source-provider] Asset 57b5bdf5-9f6f-4b53-9b9e-2516dae5bd8a starting
+
+[2026-10-29 12:24:39.000] info: [remote-source-provider] Ending asset stream for 57b5bdf5-9f6f-4b53-9b9e-2516dae5bd8a
+
+[2026-10-29 12:24:39.292] info: [remote-source-provider] Asset 3bb5854b-bc5d-46d7-bd77-8797192e5279 starting
+
+[2026-10-29 12:24:39.294] info: [remote-source-provider] Ending asset stream for 3bb5854b-bc5d-46d7-bd77-8797192e5279
+
+[2026-10-29 12:24:39.594] info: [remote-source-provider] Asset fe7280a4-00d1-4abe-b6d8-5059d3258d5e starting
+
+[2026-10-29 12:24:39.595] info: [remote-source-provider] Ending asset stream for fe7280a4-00d1-4abe-b6d8-5059d3258d5e
+
+[2026-10-29 12:24:39.908] info: [remote-source-provider] Asset ef861db7-fed7-4927-a98d-5e466907a5fd starting
+
+[2026-10-29 12:24:39.909] info: [remote-source-provider] Ending asset stream for ef861db7-fed7-4927-a98d-5e466907a5fd
+
+[2026-10-29 12:24:40.209] info: [remote-source-provider] Asset 1221e9c1-b436-4bc9-93f7-ce7616b33b05 starting
+
+[2026-10-29 12:24:40.210] info: [remote-source-provider] Ending asset stream for 1221e9c1-b436-4bc9-93f7-ce7616b33b05
+
+[2026-10-29 12:24:40.512] info: [remote-source-provider] Asset d037eb7c-5c12-46a4-8090-a98d9035cbe5 starting
+
+[2026-10-29 12:24:40.514] info: [remote-source-provider] Ending asset stream for d037eb7c-5c12-46a4-8090-a98d9035cbe5
+
+[2026-10-29 12:24:40.805] info: [remote-source-provider] Asset 2e8cacd5-d1bd-47d1-be24-d30830381fef starting
+
+[2026-10-29 12:24:40.806] info: [remote-source-provider] Ending asset stream for 2e8cacd5-d1bd-47d1-be24-d30830381fef
+
+[2026-10-29 12:24:41.103] info: [remote-source-provider] Asset 894f0042-4de8-466a-a561-1e8e9163cb12 starting
+
+[2026-10-29 12:24:41.105] info: [remote-source-provider] Ending asset stream for 894f0042-4de8-466a-a561-1e8e9163cb12
+
+[2026-10-29 12:24:41.409] info: [remote-source-provider] Asset 7b5f2d36-b940-420b-b317-d976a3204dc5 starting
+
+[2026-10-29 12:24:41.411] info: [remote-source-provider] Ending asset stream for 7b5f2d36-b940-420b-b317-d976a3204dc5
+
+[2026-10-29 12:24:41.710] info: [remote-source-provider] Asset 24ae3366-7118-4b6b-8efa-a559e81c59fe starting
+
+[2026-10-29 12:24:41.711] info: [remote-source-provider] Ending asset stream for 24ae3366-7118-4b6b-8efa-a559e81c59fe
+
+[2026-10-29 12:24:42.016] info: [remote-source-provider] Asset 3554ea5e-5d76-4c6d-a604-3bae618fcfe5 starting
+
+[2026-10-29 12:24:42.017] info: [remote-source-provider] Ending asset stream for 3554ea5e-5d76-4c6d-a604-3bae618fcfe5
+
+[2026-10-29 12:24:42.315] info: [remote-source-provider] Asset ddcf7e0d-92ef-44c8-b2ec-a8c1c9644fdf starting
+
+[2026-10-29 12:24:42.315] info: [remote-source-provider] Ending asset stream for ddcf7e0d-92ef-44c8-b2ec-a8c1c9644fdf
+
+[2026-10-29 12:24:42.610] info: [remote-source-provider] dispatching message action:end step:assets uuid:ad4bff1c-a41a-4823-ad54-9c20090bcd90 sent:0
+
+[2026-10-29 12:24:42.905] info: [pull-handler] received transfer action:end step:step uuid:ad4bff1c-a41a-4823-ad54-9c20090bcd90
+
+[2026-10-29 12:24:42.905] info: [remote-source-provider] received response to message action:end step:assets uuid:ad4bff1c-a41a-4823-ad54-9c20090bcd90 sent:0
+
+[2026-10-29 12:24:42.907] info: [remote-source-provider] received response to message action:end step:assets uuid:ad4bff1c-a41a-4823-ad54-9c20090bcd90 sent:0
+
+[2026-10-29 12:24:42.912] info: [local-destination-provider] removing assets backup
+
+[2026-10-29 12:24:42.995] info: [local-destination-provider] successfully removed assets backup
+
+[2026-10-29 12:24:42.996] info: [remote-source-provider] dispatching message action:start step:links uuid:460b3ba0-7602-4eec-81e5-03fc45c154f6 sent:0
+
+[2026-10-29 12:24:43.288] info: [pull-handler] received transfer action:start step:step uuid:460b3ba0-7602-4eec-81e5-03fc45c154f6
+
+[2026-10-29 12:24:43.289] info: [remote-source-provider] received response to message action:start step:links uuid:460b3ba0-7602-4eec-81e5-03fc45c154f6 sent:0
+
+[2026-10-29 12:24:43.289] info: [local-source-provider] creating links read stream
+
+[2026-10-29 12:24:43.289] info: [remote-source-provider] received response to message action:start step:links uuid:460b3ba0-7602-4eec-81e5-03fc45c154f6 sent:0
+
+[2026-10-29 12:24:43.290] info: [remote-source-provider] received response to message action:start step:links uuid:460b3ba0-7602-4eec-81e5-03fc45c154f6 sent:0
+
+[2026-10-29 12:24:43.291] info: [local-destination-provider] creating links write stream
+
+[2026-10-29 12:25:16.391] info: [remote-source-provider] dispatching message action:end step:links uuid:4856e69b-8bf2-4bc8-a969-17d423b1afc5 sent:0
+
+[2026-10-29 12:25:16.687] info: [pull-handler] received transfer action:end step:step uuid:4856e69b-8bf2-4bc8-a969-17d423b1afc5
+
+[2026-10-29 12:25:16.687] info: [remote-source-provider] received response to message action:end step:links uuid:4856e69b-8bf2-4bc8-a969-17d423b1afc5 sent:0
+
+[2026-10-29 12:25:16.692] info: [remote-source-provider] received response to message action:end step:links uuid:4856e69b-8bf2-4bc8-a969-17d423b1afc5 sent:0
+
+[2026-10-29 12:25:16.693] info: [remote-source-provider] dispatching message action:close  uuid:bbfcb136-b88b-4cf3-a0a0-edf8b6af5dc9 sent:0
+
+[2026-10-29 12:25:16.987] info: [pull-handler] received transfer action:close step:action uuid:bbfcb136-b88b-4cf3-a0a0-edf8b6af5dc9
+
+[2026-10-29 12:25:16.987] info: [remote-source-provider] received response to message action:close  uuid:bbfcb136-b88b-4cf3-a0a0-edf8b6af5dc9 sent:0
+
+[2026-10-29 12:25:16.989] info: [remote-source-provider] received response to message action:close  uuid:bbfcb136-b88b-4cf3-a0a0-edf8b6af5dc9 sent:0
+
