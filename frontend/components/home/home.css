@@ -3051,21 +3051,6 @@
 }
 
 @media (max-width: 560px) and (prefers-reduced-motion: no-preference) {
-  .service-card[data-mobile-reveal="pending"] {
-    animation: none;
-    opacity: 0;
-    transform: translateY(22px) scale(0.96);
-  }
-
-  .service-card[data-mobile-reveal="visible"] {
-    animation-fill-mode: backwards;
-  }
-
-  .service-card[data-mobile-reveal="visible"]::before {
-    animation: service-mobile-glow 4.8s ease-in-out infinite alternate;
-    animation-delay: inherit;
-  }
-
   .service-card:active {
     border-color: rgba(169, 229, 255, 0.68);
     transform: translateY(-8px);
@@ -3077,15 +3062,15 @@
   }
 }
 
-@keyframes service-mobile-glow {
+@keyframes service-mobile-slide-in {
   from {
-    opacity: 0.45;
-    transform: scale(1);
+    opacity: 0;
+    transform: translateX(22px);
   }
 
   to {
-    opacity: 0.8;
-    transform: scale(1.2);
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 

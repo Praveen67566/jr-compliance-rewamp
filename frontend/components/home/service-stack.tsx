@@ -9,56 +9,107 @@ type ServiceStackProps = {
   services: HomepageContent["services"];
 };
 
+const MOBILE_SLIDE_INTERVAL = 2000;
+
 export function ServiceStack({ services }: ServiceStackProps) {
-  const sectionRef = useRef<HTMLElement>(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
   const [activeId, setActiveId] = useState(services.categories[0]?.id);
   const activeCategory =
     services.categories.find((category) => category.id === activeId) ?? services.categories[0];
+  const serviceCount = activeCategory?.services.length ?? 0;
 
   useEffect(() => {
+    const slider = sliderRef.current;
+
+    if (!slider || serviceCount <= 2) {
+      return;
+    }
+
     const motionQuery = window.matchMedia("(max-width: 560px) and (prefers-reduced-motion: no-preference)");
-    const cards = sectionRef.current?.querySelectorAll<HTMLElement>(".service-card") ?? [];
-    let observer: IntersectionObserver | undefined;
+    let isVisible = !("IntersectionObserver" in window);
+    let isHovered = false;
+    let isInteracting = false;
+    let direction = 1;
+    let interval: number | undefined;
 
-    const updateMotion = () => {
-      observer?.disconnect();
-      cards.forEach((card) => delete card.dataset.mobileReveal);
+    const stopSliding = () => window.clearInterval(interval);
+    const updateSliding = () => {
+      stopSliding();
 
-      if (!motionQuery.matches || !("IntersectionObserver" in window)) {
+      if (!motionQuery.matches || !isVisible || isHovered || isInteracting
+        || document.hidden || slider.contains(document.activeElement)) {
         return;
       }
 
-      observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              (entry.target as HTMLElement).dataset.mobileReveal = "visible";
-              observer?.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.15 },
-      );
+      interval = window.setInterval(() => {
+        const cards = slider.querySelectorAll<HTMLElement>(".service-card");
 
-      cards.forEach((card) => {
-        card.dataset.mobileReveal = "pending";
-        observer?.observe(card);
-      });
+        if (cards.length <= 2) return;
+
+        const step = cards[1].offsetLeft - cards[0].offsetLeft;
+        const currentIndex = Math.round(slider.scrollLeft / step);
+        const lastIndex = cards.length - 2;
+
+        if (currentIndex >= lastIndex) direction = -1;
+        if (currentIndex <= 0) direction = 1;
+
+        const nextIndex = Math.max(0, Math.min(currentIndex + direction, lastIndex));
+        slider.scrollTo({ left: cards[nextIndex].offsetLeft - cards[0].offsetLeft });
+      }, MOBILE_SLIDE_INTERVAL);
     };
 
-    updateMotion();
-    motionQuery.addEventListener("change", updateMotion);
+    const observer = "IntersectionObserver" in window ? new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting && entry.intersectionRatio >= 0.5;
+      updateSliding();
+    }, { threshold: 0.5 }) : undefined;
+    const handlePointerEnter = (event: PointerEvent) => {
+      isHovered = event.pointerType === "mouse";
+      updateSliding();
+    };
+    const handlePointerLeave = () => { isHovered = false; updateSliding(); };
+    const handlePointerDown = () => { isInteracting = true; updateSliding(); };
+    const handlePointerUp = () => {
+      if (isInteracting) {
+        isInteracting = false;
+        updateSliding();
+      }
+    };
+
+    observer?.observe(slider);
+    motionQuery.addEventListener("change", updateSliding);
+    document.addEventListener("visibilitychange", updateSliding);
+    slider.addEventListener("focusin", updateSliding);
+    slider.addEventListener("focusout", updateSliding);
+    slider.addEventListener("pointerenter", handlePointerEnter);
+    slider.addEventListener("pointerleave", handlePointerLeave);
+    slider.addEventListener("pointerdown", handlePointerDown);
+    window.addEventListener("pointerup", handlePointerUp);
+    window.addEventListener("pointercancel", handlePointerUp);
+    updateSliding();
 
     return () => {
+      stopSliding();
       observer?.disconnect();
-      motionQuery.removeEventListener("change", updateMotion);
-      cards.forEach((card) => delete card.dataset.mobileReveal);
+      motionQuery.removeEventListener("change", updateSliding);
+      document.removeEventListener("visibilitychange", updateSliding);
+      slider.removeEventListener("focusin", updateSliding);
+      slider.removeEventListener("focusout", updateSliding);
+      slider.removeEventListener("pointerenter", handlePointerEnter);
+      slider.removeEventListener("pointerleave", handlePointerLeave);
+      slider.removeEventListener("pointerdown", handlePointerDown);
+      window.removeEventListener("pointerup", handlePointerUp);
+      window.removeEventListener("pointercancel", handlePointerUp);
     };
-  }, [activeCategory?.id, services.categories]);
+  }, [activeCategory?.id, serviceCount]);
 
   if (!activeCategory) {
     return null;
   }
+
+  const selectCategory = (id: string) => {
+    sliderRef.current?.scrollTo({ left: 0, behavior: "instant" });
+    setActiveId(id);
+  };
 
   const handleTabKeyDown = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
     const lastIndex = services.categories.length - 1;
@@ -80,12 +131,12 @@ export function ServiceStack({ services }: ServiceStackProps) {
 
     event.preventDefault();
     const nextCategory = services.categories[nextIndex];
-    setActiveId(nextCategory.id);
+    selectCategory(nextCategory.id);
     document.getElementById(`${nextCategory.id}-tab`)?.focus();
   };
 
   return (
-    <section className={`services-section services-section--${activeCategory.id} section`} id="services" ref={sectionRef}>
+    <section className={`services-section services-section--${activeCategory.id} section`} id="services">
       <span className="services-ambient services-ambient--one" aria-hidden="true" />
       <span className="services-ambient services-ambient--two" aria-hidden="true" />
       <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
@@ -104,7 +155,7 @@ export function ServiceStack({ services }: ServiceStackProps) {
                   className={activeCategory.id === category.id ? "active" : ""}
                   id={`${category.id}-tab`}
                   key={category.id}
-                  onClick={() => setActiveId(category.id)}
+                  onClick={() => selectCategory(category.id)}
                   onKeyDown={(event) => handleTabKeyDown(event, index)}
                   role="tab"
                   tabIndex={activeCategory.id === category.id ? 0 : -1}
@@ -127,16 +178,19 @@ export function ServiceStack({ services }: ServiceStackProps) {
             return (
               <div
                 aria-labelledby={`${category.id}-tab`}
-                className={`service-grid service-grid--${category.id}`}
+                className={`service-grid service-grid--${category.id} ${isActive
+                  ? "max-[561px]:-mx-1 max-[561px]:flex! max-[561px]:gap-[18px]! max-[561px]:overflow-x-auto max-[561px]:overscroll-x-contain max-[561px]:snap-x max-[561px]:snap-mandatory max-[561px]:scroll-px-1 max-[561px]:scroll-smooth max-[561px]:px-1 max-[561px]:py-3 max-[561px]:[scrollbar-width:none] max-[561px]:[&::-webkit-scrollbar]:hidden max-[561px]:motion-reduce:scroll-auto"
+                  : "max-[561px]:hidden!"}`}
                 hidden={!isActive}
                 id={`${category.id}-panel`}
                 key={category.id}
+                ref={isActive ? sliderRef : undefined}
                 role="tabpanel"
               >
                 {isActive
                   ? category.services.map((service, index) => (
                       <a
-                        className={`service-card max-[561px]:motion-reduce:animate-none! ${isGlobal ? "service-card--global" : ""}`}
+                        className={`service-card max-[561px]:basis-[calc(50%_-_9px)] max-[561px]:shrink-0 max-[561px]:snap-start max-[561px]:motion-safe:animate-[service-mobile-slide-in_500ms_cubic-bezier(0.22,1,0.36,1)_backwards]! max-[561px]:motion-reduce:animate-none! ${isGlobal ? "service-card--global" : ""}`}
                         href={service.href}
                         key={service.label}
                         {...linkTargetProps(service)}

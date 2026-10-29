@@ -106,11 +106,3 @@ If a command cannot be run, clearly explain why.
 ## Prompt:-
 
 Only Ui Changes:-
-
-1. see in the phone version image is not comming properly the home page image fix it via Ui.
-
-2. In Our Service Stack i want animation for cards so it looks more interactive for phone version only.
-
-3. the regulatory experties logos are so big for phones the rotating one.
-
-These all are only home page changes and only ui changes for phone fix all this only the ui don't do anything else.
