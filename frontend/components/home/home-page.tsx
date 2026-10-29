@@ -63,6 +63,7 @@ function RegulatorLogoList({
           <>
             {logo.src ? (
               <img
+                className="max-[561px]:max-h-8! max-[561px]:max-w-20!"
                 src={logo.src}
                 alt={logo.href || isCardDecorative ? "" : logo.name}
               />
@@ -79,14 +80,14 @@ function RegulatorLogoList({
 
         return (
           <li
-            className={`regulator-logo${isFiller ? " regulator-logo--filler" : ""}`}
+            className={`regulator-logo max-[561px]:min-h-14!${isFiller ? " regulator-logo--filler" : ""}`}
             data-index={String(sourceIndex + 1).padStart(2, "0")}
             aria-hidden={isCardDecorative ? "true" : undefined}
             key={`${listKey}-${logo.name}-${index}`}
           >
             {logo.href && !isCardDecorative ? (
               <a
-                className="regulator-logo-link"
+                className="regulator-logo-link max-[561px]:min-h-14!"
                 href={logo.href}
                 target="_blank"
                 rel="noreferrer"
@@ -95,7 +96,7 @@ function RegulatorLogoList({
                 {logoContent}
               </a>
             ) : (
-              <div className="regulator-logo-content">{logoContent}</div>
+              <div className="regulator-logo-content max-[561px]:min-h-14!">{logoContent}</div>
             )}
           </li>
         );
@@ -137,7 +138,7 @@ function RegulatorLogoMarquee({
   const offsetEntries = [...entries.slice(offset), ...entries.slice(0, offset)];
 
   return (
-    <div className="regulator-logo-marquee">
+    <div className="regulator-logo-marquee max-[561px]:[--regulator-logo-width:clamp(112px,32vw,156px)]! max-[561px]:mt-8! max-[561px]:[&_.regulator-logo-name]:text-xs!">
       <div className="regulator-logo-row regulator-logo-row--primary">
         <div className="regulator-logo-track">
           <RegulatorLogoList entries={entries} label={label} listKey="primary" />

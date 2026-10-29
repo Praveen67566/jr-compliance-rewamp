@@ -153,12 +153,18 @@ export function Hero({ hero, leadForm, pageTitle, showConsultationForm = true }:
             <ConsultationForm pageTitle={pageTitle} settings={leadForm} />
           </div>
         ) : (
-        <div className="hero-visual" aria-label="JR Compliance specialists">
+        <div
+          className="hero-visual max-[561px]:grid max-[561px]:min-h-0! max-[561px]:grid-cols-2 max-[561px]:gap-3"
+          aria-label="JR Compliance specialists"
+        >
           <div className="hero-visual-glow" aria-hidden="true" />
-          <div className="hero-photo-frame">
-            <img src={hero.image} alt={hero.imageAlt} />
+          <div className="hero-photo-frame max-[561px]:relative! max-[561px]:inset-auto! max-[561px]:order-2 max-[561px]:col-span-2 max-[561px]:transform-none!">
+            <img className="max-[561px]:aspect-auto! max-[561px]:h-auto! max-[561px]:object-contain!" src={hero.image} alt={hero.imageAlt} />
           </div>
-          <FloatingCard card={businessCard} className="hero-floating-card business-card">
+          <FloatingCard
+            card={businessCard}
+            className="hero-floating-card business-card max-[561px]:relative! max-[561px]:inset-auto! max-[561px]:order-1 max-[561px]:col-span-2 max-[561px]:justify-self-start max-[561px]:animate-none!"
+          >
             <span className="card-icon">
               {businessCard?.icon || businessCard?.image ? (
                 <img src={businessCard.icon ?? businessCard.image} alt={businessCard.iconAlt ?? businessCard.imageAlt ?? ""} />
@@ -168,7 +174,10 @@ export function Hero({ hero, leadForm, pageTitle, showConsultationForm = true }:
             </span>
             <span>{businessCard?.title}</span>
           </FloatingCard>
-          <FloatingCard card={certificationCard} className="hero-floating-card certification-card">
+          <FloatingCard
+            card={certificationCard}
+            className="hero-floating-card certification-card max-[561px]:relative! max-[561px]:inset-auto! max-[561px]:order-3 max-[561px]:max-w-none! max-[561px]:gap-2! max-[561px]:animate-none!"
+          >
             <span className="mini-seal">
               {certificationCard?.icon || certificationCard?.image ? (
                 <img src={certificationCard.icon ?? certificationCard.image} alt={certificationCard.iconAlt ?? certificationCard.imageAlt ?? ""} />
@@ -181,7 +190,10 @@ export function Hero({ hero, leadForm, pageTitle, showConsultationForm = true }:
               <strong>{certificationCard?.description}</strong>
             </div>
           </FloatingCard>
-          <FloatingCard card={reachCard} className="hero-floating-card reach-card">
+          <FloatingCard
+            card={reachCard}
+            className="hero-floating-card reach-card max-[561px]:relative! max-[561px]:inset-auto! max-[561px]:order-4 max-[561px]:max-w-none! max-[561px]:gap-2! max-[561px]:animate-none!"
+          >
             <span className="globe-mark">
               {reachCard?.icon || reachCard?.image ? (
                 <img src={reachCard.icon ?? reachCard.image} alt={reachCard.iconAlt ?? reachCard.imageAlt ?? ""} />

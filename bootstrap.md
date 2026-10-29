@@ -107,5 +107,10 @@ If a command cannot be run, clearly explain why.
 
 Only Ui Changes:-
 
-Now inhance the ui of header see the refernce image and go to the website:-
-https://www.jrcompliance.com/ and check the ui then inhance our correct one with improvements.
+1. see in the phone version image is not comming properly the home page image fix it via Ui.
+
+2. In Our Service Stack i want animation for cards so it looks more interactive for phone version only.
+
+3. the regulatory experties logos are so big for phones the rotating one.
+
+These all are only home page changes and only ui changes for phone fix all this only the ui don't do anything else.

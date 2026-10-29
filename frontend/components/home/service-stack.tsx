@@ -1,6 +1,6 @@
 "use client";
 
-import { type KeyboardEvent, useState } from "react";
+import { type KeyboardEvent, useEffect, useRef, useState } from "react";
 
 import { linkTargetProps } from "@/lib/link-props";
 import type { HomepageContent } from "@/lib/types";
@@ -10,9 +10,51 @@ type ServiceStackProps = {
 };
 
 export function ServiceStack({ services }: ServiceStackProps) {
+  const sectionRef = useRef<HTMLElement>(null);
   const [activeId, setActiveId] = useState(services.categories[0]?.id);
   const activeCategory =
     services.categories.find((category) => category.id === activeId) ?? services.categories[0];
+
+  useEffect(() => {
+    const motionQuery = window.matchMedia("(max-width: 560px) and (prefers-reduced-motion: no-preference)");
+    const cards = sectionRef.current?.querySelectorAll<HTMLElement>(".service-card") ?? [];
+    let observer: IntersectionObserver | undefined;
+
+    const updateMotion = () => {
+      observer?.disconnect();
+      cards.forEach((card) => delete card.dataset.mobileReveal);
+
+      if (!motionQuery.matches || !("IntersectionObserver" in window)) {
+        return;
+      }
+
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              (entry.target as HTMLElement).dataset.mobileReveal = "visible";
+              observer?.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.15 },
+      );
+
+      cards.forEach((card) => {
+        card.dataset.mobileReveal = "pending";
+        observer?.observe(card);
+      });
+    };
+
+    updateMotion();
+    motionQuery.addEventListener("change", updateMotion);
+
+    return () => {
+      observer?.disconnect();
+      motionQuery.removeEventListener("change", updateMotion);
+      cards.forEach((card) => delete card.dataset.mobileReveal);
+    };
+  }, [activeCategory?.id, services.categories]);
 
   if (!activeCategory) {
     return null;
@@ -43,7 +85,7 @@ export function ServiceStack({ services }: ServiceStackProps) {
   };
 
   return (
-    <section className={`services-section services-section--${activeCategory.id} section`} id="services">
+    <section className={`services-section services-section--${activeCategory.id} section`} id="services" ref={sectionRef}>
       <span className="services-ambient services-ambient--one" aria-hidden="true" />
       <span className="services-ambient services-ambient--two" aria-hidden="true" />
       <div className="site-container mx-auto w-full max-w-[1320px] px-8 max-[820px]:px-[22px] max-[560px]:px-[18px]">
@@ -94,7 +136,7 @@ export function ServiceStack({ services }: ServiceStackProps) {
                 {isActive
                   ? category.services.map((service, index) => (
                       <a
-                        className={`service-card ${isGlobal ? "service-card--global" : ""}`}
+                        className={`service-card max-[561px]:motion-reduce:animate-none! ${isGlobal ? "service-card--global" : ""}`}
                         href={service.href}
                         key={service.label}
                         {...linkTargetProps(service)}
