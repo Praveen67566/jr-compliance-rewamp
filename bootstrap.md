@@ -106,5 +106,4 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Now Based On CORPORATE_CMS_CONTENT_UPLOAD.md upload all the pages.
-
+Now read the GLOBAL_CMS_CONTENT_UPLOAD.md and upload the global pages.
