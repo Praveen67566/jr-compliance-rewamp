@@ -106,17 +106,4 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Only Ui Changes:-
-
-1. in the hero section of country page i don't want the images and i want the glob animation in the background which already exist in company registation pages only ui change and improve the design of hero section of country page.
-
-2. if in certification section of country pages there is only one certificate then show that in way that 
-  it doesn't feel empty.
-
-3. see the certificate page hero section too much space from the top and there also i want the glob animation and see the there no space between the certification title and description and title looks so big so inhance the hero section of certificate page.
-
-4. the overview section i exactly want as the sole-proprietorship-registration page.(certificate page)
-
-5. Scope and requirements looks too much boxes improve the ui of this also.(certificate page)
-
-6. else improve every section accordingly.
+Now implement the APPROVAL_CMS_CONTENT_UPLOAD.md

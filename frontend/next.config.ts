@@ -12,6 +12,20 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  async redirects() {
+    return [
+      {
+        source: "/approval/lmpc-pcr-certificate",
+        destination: "/approval/packaged-commodity-registration",
+        permanent: true,
+      },
+      {
+        source: "/approval/model-approval-certificate",
+        destination: "/approval/model-approval",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {
