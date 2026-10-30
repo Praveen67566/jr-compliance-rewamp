@@ -1,5 +1,6 @@
 import { RouteClosingCta } from "@/components/editorial/route-closing-cta";
 import { ConsultationForm } from "@/components/forms/consultation-form";
+import { GlobalProcessImage } from "@/components/global/global-process-image";
 import { SitePageShell } from "@/components/site-page-shell";
 import { linkTargetProps } from "@/lib/link-props";
 import type { GlobalCertificatePageContent, Link } from "@/lib/types";
@@ -22,21 +23,21 @@ function SectionHeading({ description, eyebrow, title, tone = "dark" }: SectionH
     <div className="min-w-0 max-w-[780px]">
       <span
         className={`mb-4 flex items-center gap-2 text-[0.7rem] font-extrabold uppercase tracking-[0.14em] ${
-          light ? "text-sky" : "text-cobalt-600"
+          light ? "text-sky" : "text-cobalt-700"
         }`}
       >
         <span aria-hidden="true" className="size-1.5 rounded-full bg-current" />
         {eyebrow}
       </span>
       <h2
-        className={`mb-0 break-words font-display text-[clamp(2.5rem,4vw,4.35rem)] leading-[0.97] tracking-[-0.045em] ${
+        className={`mb-0 break-words text-balance font-display text-[clamp(2.5rem,4vw,4.35rem)] leading-[0.97] tracking-[-0.045em] ${
           light ? "text-white" : "text-navy-950"
         }`}
       >
         {title}
       </h2>
       {description ? (
-        <p className={`mb-0 mt-6 break-words text-base leading-8 md:text-lg ${light ? "text-ice/72" : "text-navy-700/78"}`}>
+        <p className={`mb-0 mt-6 break-words text-base leading-8 ${light ? "text-ice/80" : "text-navy-700/85"}`}>
           {description}
         </p>
       ) : null}
@@ -47,10 +48,10 @@ function SectionHeading({ description, eyebrow, title, tone = "dark" }: SectionH
 function PrimaryLink({ link, light = false }: { link: Link; light?: boolean }) {
   return (
     <a
-      className={`inline-flex min-h-12 items-center justify-center gap-3 rounded-full border px-6 text-sm font-extrabold transition-[background-color,border-color,box-shadow,transform] duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 motion-safe:hover:-translate-y-0.5 ${
+      className={`inline-flex min-h-12 max-w-full items-center justify-center gap-4 rounded-full border px-6 py-3 text-sm font-extrabold transition-[background-color,border-color,box-shadow,transform] duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 motion-safe:hover:-translate-y-0.5 ${
         light
-          ? "border-cobalt-600/30 bg-cloud text-cobalt-700 shadow-[0_12px_30px_rgba(3,19,47,0.14)] hover:border-sky hover:bg-ice focus-visible:outline-sky"
-          : "border-sky bg-electric text-white shadow-[0_12px_34px_rgba(22,140,245,0.3)] hover:bg-cobalt-700 hover:shadow-[0_16px_42px_rgba(22,140,245,0.38)] focus-visible:outline-sky"
+          ? "border-cobalt-600/30 bg-cloud text-cobalt-700! shadow-[0_12px_30px_rgba(3,19,47,0.14)] hover:border-sky hover:bg-ice focus-visible:outline-sky"
+          : "border-sky/40 bg-[linear-gradient(115deg,var(--blue-electric),var(--blue-cobalt-700))] text-white shadow-[0_12px_34px_rgba(22,140,245,0.24)] hover:shadow-[0_16px_42px_rgba(22,140,245,0.38)] focus-visible:outline-sky"
       }`}
       href={link.href}
       {...linkTargetProps(link)}
@@ -76,7 +77,10 @@ function ComplianceNetworkVisual() {
         <span className="absolute -right-1 top-1/2 size-2.5 rounded-full border border-ice bg-electric shadow-[0_0_20px_rgba(139,220,255,0.9)]" />
       </div>
       <div className="absolute left-1/2 top-1/2 flex size-[27%] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-sky/50 bg-navy-950/86 shadow-[0_0_60px_rgba(22,140,245,0.4)]">
-        <span className="size-[44%] rounded-full border border-sky/55 bg-electric/20 shadow-[inset_0_0_30px_rgba(22,140,245,0.28)]" />
+        <svg className="size-[52%] text-sky" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <path d="M24 4 40 10v13c0 10-7 17-16 21C15 40 8 33 8 23V10L24 4Z" />
+          <path d="m16 23 6 6 12-13" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
       </div>
       <div className="absolute left-[10%] right-[10%] top-1/2 h-px bg-[linear-gradient(90deg,transparent,var(--blue-sky),transparent)] opacity-70">
         <span className="block h-full origin-left bg-[linear-gradient(90deg,transparent,var(--blue-electric),transparent)] motion-safe:animate-[service-route-sweep_5.5s_ease-in-out_infinite]" />
@@ -95,6 +99,13 @@ function ComplianceNetworkVisual() {
 /** Shared CMS-driven template for every `/global/[slug]` certificate page. */
 export function GlobalCertificatePage({ content }: GlobalCertificatePageProps) {
   const processImage = content.process.image;
+  const sections = [
+    { id: "overview", label: content.overview.eyebrow },
+    { id: "scope", label: content.scope.eyebrow },
+    { id: "process", label: content.process.eyebrow },
+    { id: "our-role", label: content.ourRole.eyebrow },
+    { id: "conclusion", label: content.conclusion.eyebrow },
+  ];
 
   return (
     <SitePageShell
@@ -131,95 +142,113 @@ export function GlobalCertificatePage({ content }: GlobalCertificatePageProps) {
           <span className="absolute right-[18%] top-[-3px] size-1.5 rounded-full bg-electric shadow-[0_0_14px_rgba(22,140,245,0.78)]" />
         </div>
 
-        <div className="mx-auto grid w-full max-w-[1320px] grid-cols-1 items-start gap-10 px-[18px] min-[560px]:px-[22px] min-[821px]:px-8 min-[980px]:grid-cols-[minmax(0,1.15fr)_minmax(360px,0.85fr)] min-[980px]:gap-12">
-          <div className="min-w-0">
-            <nav
-              aria-label="Breadcrumb"
-              className="mb-7 inline-flex max-w-full flex-wrap items-center gap-2 rounded-full border border-sky/18 bg-navy-900/70 px-4 py-2.5 text-xs font-bold text-sky shadow-[inset_0_1px_rgba(255,255,255,0.06)] backdrop-blur-sm"
+        <div className="mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
+          <nav
+            aria-label="Breadcrumb"
+            className="mb-10 flex max-w-full flex-wrap items-center gap-x-3 gap-y-2 border-b border-sky/15 pb-5 text-xs font-semibold text-sky min-[821px]:mb-14"
+          >
+            <a
+              className="rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky"
+              href="/"
             >
-              <a
-                className="rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky"
-                href="/"
-              >
-                Home
-              </a>
-              <span aria-hidden="true">/</span>
-              <span>Global</span>
-              <span aria-hidden="true">/</span>
-              <a
-                className="min-w-0 rounded-sm break-words focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky"
-                href={`/global/${content.countrySlug}`}
-              >
-                {content.countryName}
-              </a>
-              <span aria-hidden="true">/</span>
-              <a
-                aria-current="page"
-                className="min-w-0 rounded-sm break-words text-ice/75 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky"
-                href={`/global/${content.slug}`}
-              >
-                {content.menuLabel}
-              </a>
-            </nav>
+              Home
+            </a>
+            <span aria-hidden="true">/</span>
+            <span>Global</span>
+            <span aria-hidden="true">/</span>
+            <a
+              className="min-w-0 rounded-sm break-words focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky"
+              href={`/global/${content.countrySlug}`}
+            >
+              {content.countryName}
+            </a>
+            <span aria-hidden="true">/</span>
+            <a
+              aria-current="page"
+              className="min-w-0 rounded-sm break-words text-ice/75 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky"
+              href={`/global/${content.slug}`}
+            >
+              {content.menuLabel}
+            </a>
+          </nav>
 
-            <span className="mb-5 flex items-center gap-2 text-[0.7rem] font-extrabold uppercase tracking-[0.14em] text-sky">
-              <span aria-hidden="true" className="size-1.5 rounded-full bg-current" />
-              {content.hero.eyebrow}
-            </span>
-            <h1 className="mb-0 max-w-[880px] break-words font-display text-[clamp(3.25rem,5vw,5.8rem)] leading-[0.92] tracking-[-0.055em] text-white">
-              {content.hero.title}
-            </h1>
-            <p className="mb-0 mt-7 max-w-[760px] break-words text-base leading-8 text-ice/78 md:text-lg">
-              {content.hero.description}
-            </p>
-            <div className="mt-9">
-              <PrimaryLink link={content.hero.cta} />
+          <div className="grid grid-cols-1 items-center gap-10 min-[980px]:grid-cols-[minmax(0,1.15fr)_minmax(340px,0.85fr)] min-[1100px]:gap-20">
+            <div className="min-w-0">
+              <span className="mb-5 flex items-center gap-2 text-[0.7rem] font-extrabold uppercase tracking-[0.14em] text-sky">
+                <span aria-hidden="true" className="size-1.5 rounded-full bg-current" />
+                {content.hero.eyebrow}
+              </span>
+              <h1 className="mb-0 max-w-[880px] break-words text-balance font-display text-[clamp(3.25rem,5vw,5.8rem)] leading-[0.98] tracking-[-0.045em] text-cloud">
+                {content.hero.title}
+              </h1>
+              <p className="mb-0 mt-6 max-w-[650px] break-words text-base leading-[1.85] text-ice/80">
+                {content.hero.description}
+              </p>
+              <div className="mt-8">
+                <PrimaryLink link={content.hero.cta} />
+              </div>
             </div>
+
+            {content.site.leadForm.enabled ? (
+              <div className="relative z-[2] mx-auto w-full max-w-[480px]">
+                <ConsultationForm pageTitle={content.seo.title} settings={content.site.leadForm} />
+              </div>
+            ) : (
+              <ComplianceNetworkVisual />
+            )}
           </div>
-
-          {content.site.leadForm.enabled ? (
-            <div className="relative z-[2] mx-auto w-full max-w-[540px] self-start">
-              <ConsultationForm pageTitle={content.seo.title} settings={content.site.leadForm} />
-            </div>
-          ) : (
-            <ComplianceNetworkVisual />
-          )}
         </div>
       </section>
 
+      <nav aria-label="On this page" className="border-b border-cobalt-700/15 bg-cloud text-navy-700">
+        <ol className="mx-auto my-0 flex w-full max-w-[1320px] list-none flex-wrap gap-x-6 gap-y-1 px-[18px] py-4 min-[560px]:px-[22px] min-[821px]:justify-between min-[821px]:px-8">
+          {sections.map((section, index) => (
+            <li className="min-w-0" key={section.id}>
+              <a className="inline-flex min-h-11 items-center gap-2.5 rounded-sm py-2 text-xs font-semibold transition-colors hover:text-cobalt-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cobalt-700" href={`#${section.id}`}>
+                <span aria-hidden="true" className="text-cobalt-700/65">{String(index + 1).padStart(2, "0")}</span>
+                <span className="min-w-0 break-words">{section.label}</span>
+                <span aria-hidden="true" className="text-cobalt-700">↓</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+
       <section
-        className="relative isolate scroll-mt-28 overflow-hidden bg-[linear-gradient(180deg,var(--blue-cloud),var(--blue-ice))] py-14 text-navy-950 min-[560px]:py-18 min-[821px]:py-28"
+        className="relative isolate scroll-mt-[102px] overflow-hidden bg-[linear-gradient(180deg,var(--blue-cloud),var(--blue-ice))] py-14 text-navy-950 min-[560px]:py-18 min-[821px]:py-28"
         id="overview"
       >
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_12%_18%,rgba(22,140,245,0.1),transparent_24%),radial-gradient(circle_at_88%_78%,rgba(13,92,184,0.08),transparent_26%)]"
         />
-        <div className="mx-auto grid w-full max-w-[1320px] grid-cols-1 gap-10 px-[18px] min-[560px]:px-[22px] min-[821px]:px-8 min-[980px]:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)] min-[980px]:gap-16">
-          <SectionHeading eyebrow={content.overview.eyebrow} title={content.overview.title} />
-          <div className="min-w-0 overflow-hidden rounded-[28px] border border-cobalt-700/18 bg-cloud p-7 shadow-[0_24px_65px_rgba(3,19,47,0.11)] min-[560px]:p-10">
-            {content.overview.paragraphs.map((paragraph, index) => (
-              <div
-                className="grid min-w-0 grid-cols-1 gap-3 border-b border-cobalt-700/12 py-5 first:pt-0 last:border-0 last:pb-0 min-[560px]:grid-cols-[2.65rem_minmax(0,1fr)] min-[560px]:gap-4"
-                key={`${paragraph}-${index}`}
-              >
-                <span
-                  aria-hidden="true"
-                  className="flex size-10 items-center justify-center rounded-xl border border-cobalt-600/18 bg-ice text-[0.65rem] font-extrabold tracking-[0.12em] text-cobalt-600"
+        <div className="mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
+          <article className="relative isolate grid min-w-0 grid-cols-1 gap-8 overflow-hidden rounded-[24px] border border-cobalt-700/15 bg-cloud p-6 shadow-[0_18px_50px_rgba(3,19,47,0.07)] min-[560px]:p-10 min-[980px]:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] min-[980px]:gap-16 min-[1100px]:p-12">
+            <div aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-[linear-gradient(90deg,var(--blue-navy-700),var(--blue-electric),var(--blue-sky))]" />
+            <div className="min-w-0">
+              <SectionHeading eyebrow={content.overview.eyebrow} title={content.overview.title} />
+              <div aria-hidden="true" className="mt-8 flex max-w-40 items-center gap-2">
+                <span className="size-2 rounded-full bg-electric" />
+                <span className="h-px flex-1 bg-cobalt-700/25" />
+                <span className="size-1.5 rounded-full border border-cobalt-700/40" />
+              </div>
+            </div>
+            <div className="min-w-0 space-y-5">
+              {content.overview.paragraphs.map((paragraph, index) => (
+                <p
+                  className="mb-0 min-w-0 break-words text-base leading-8 text-navy-700/85"
+                  key={`${paragraph}-${index}`}
                 >
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <p className="mb-0 min-w-0 break-words text-base leading-8 text-navy-700/80 md:text-lg">
                   {paragraph}
                 </p>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </article>
         </div>
       </section>
 
       <section
-        className="relative isolate scroll-mt-28 overflow-hidden bg-navy-950 py-14 text-white min-[560px]:py-18 min-[821px]:py-28"
+        className="relative isolate scroll-mt-[102px] overflow-hidden bg-[linear-gradient(125deg,var(--blue-navy-950),var(--blue-navy-800))] py-14 text-white min-[560px]:py-18 min-[821px]:py-28"
         id="scope"
       >
         <div
@@ -237,25 +266,21 @@ export function GlobalCertificatePage({ content }: GlobalCertificatePageProps) {
             title={content.scope.title}
             tone="light"
           />
-          <ul className="m-0 mt-10 grid list-none grid-cols-1 gap-4 p-0 md:mt-14 md:grid-cols-2 xl:grid-cols-3">
+          <ul className="m-0 mt-10 grid list-none grid-cols-1 gap-3 p-0 md:mt-12 md:grid-cols-2 xl:grid-cols-3">
             {content.scope.items.map((item, index) => (
               <li
-                className="group relative min-w-0 overflow-hidden rounded-[22px] border border-sky/18 bg-white/[0.045] p-6 text-ice/78 transition-[background-color,border-color,transform] duration-300 hover:border-sky/45 hover:bg-white/[0.075] motion-safe:hover:-translate-y-1.5 min-[560px]:p-7"
+                className="relative min-w-0 overflow-hidden rounded-xl border border-sky/18 bg-cobalt-700/10 px-5 py-5 text-ice/85 min-[560px]:px-6"
                 key={`${item}-${index}`}
               >
                 <div className="relative flex min-w-0 items-start gap-4">
                   <span
                     aria-hidden="true"
-                    className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full border border-sky/35 bg-electric/15 text-[0.65rem] font-extrabold tracking-[0.1em] text-sky shadow-[0_0_20px_rgba(22,140,245,0.12)]"
+                    className="mt-2 flex size-3 shrink-0 items-center justify-center rounded-full border border-sky/50 bg-electric/20"
                   >
-                    {String(index + 1).padStart(2, "0")}
+                    <span className="size-1 rounded-full bg-sky" />
                   </span>
                   <span className="min-w-0 break-words text-[0.96rem] leading-7">{item}</span>
                 </div>
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-x-6 bottom-0 h-px origin-left scale-x-0 bg-[linear-gradient(90deg,transparent,var(--blue-sky),transparent)] transition-transform duration-500 motion-safe:group-hover:scale-x-100"
-                />
               </li>
             ))}
           </ul>
@@ -263,7 +288,7 @@ export function GlobalCertificatePage({ content }: GlobalCertificatePageProps) {
       </section>
 
       <section
-        className="relative isolate scroll-mt-28 overflow-hidden bg-ice py-14 text-navy-950 min-[560px]:py-18 min-[821px]:py-28"
+        className="relative isolate scroll-mt-[102px] overflow-hidden bg-ice py-14 text-navy-950 min-[560px]:py-18 min-[821px]:py-28"
         id="process"
       >
         <div
@@ -278,61 +303,45 @@ export function GlobalCertificatePage({ content }: GlobalCertificatePageProps) {
           />
 
           <div
-            className={`mt-10 grid grid-cols-1 gap-6 md:mt-14 ${
-              processImage ? "min-[1100px]:grid-cols-[minmax(0,1.18fr)_minmax(360px,0.82fr)]" : ""
+            className={`mt-10 grid grid-cols-1 items-start gap-8 md:mt-12 ${
+              processImage ? "min-[1100px]:grid-cols-[minmax(0,1.25fr)_minmax(0,0.75fr)] min-[1100px]:gap-12" : ""
             }`}
           >
-            <ol className={`m-0 grid list-none grid-cols-1 gap-4 p-0 ${processImage ? "md:grid-cols-2" : "md:grid-cols-2 lg:grid-cols-3"}`}>
+            <ol className={`m-0 grid list-none grid-cols-1 gap-4 p-0 ${processImage ? "" : "md:grid-cols-2 min-[1100px]:grid-cols-3"}`}>
               {content.process.steps.map((step, index) => (
                 <li
-                  className="group relative min-w-0 overflow-hidden rounded-[24px] border border-cobalt-700/15 bg-cloud p-6 shadow-[0_18px_48px_rgba(3,19,47,0.09)] transition-[border-color,box-shadow,transform] duration-300 hover:border-cobalt-600/45 hover:shadow-[0_26px_62px_rgba(13,92,184,0.15)] motion-safe:hover:-translate-y-2 min-[560px]:p-8"
+                  className="relative grid min-w-0 grid-cols-[2.75rem_minmax(0,1fr)] gap-4 rounded-[18px] border border-cobalt-700/15 bg-cloud p-5 shadow-[0_8px_24px_rgba(3,19,47,0.04)] min-[560px]:gap-5 min-[560px]:p-7"
                   key={`${step.title}-${index}`}
                 >
-                  <div className="relative flex items-center gap-3" aria-hidden="true">
-                    <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl border border-cobalt-600/25 bg-electric text-[0.68rem] font-extrabold tracking-[0.12em] text-white shadow-[0_10px_26px_rgba(22,140,245,0.22)]">
+                  <div className="relative flex flex-col items-center gap-3" aria-hidden="true">
+                    <span className="flex size-11 shrink-0 items-center justify-center rounded-full border border-cobalt-700/20 bg-ice text-xs font-extrabold tracking-[0.08em] text-cobalt-700">
                       {String(index + 1).padStart(2, "0")}
                     </span>
-                    <span className="h-px flex-1 bg-[linear-gradient(90deg,rgba(22,140,245,0.34),transparent)]" />
-                    <span className="size-2 rounded-full bg-electric/65" />
+                    <span className="min-h-5 w-px flex-1 bg-[linear-gradient(180deg,rgba(22,140,245,0.4),transparent)]" />
                   </div>
-                  <h3 className="relative mb-0 mt-8 break-words font-display text-[1.8rem] leading-[1.03] tracking-[-0.025em] text-navy-950">
-                    {step.title}
-                  </h3>
-                  <p className="relative mb-0 mt-4 break-words text-[0.94rem] leading-7 text-navy-700/76">
-                    {step.description}
-                  </p>
+                  <div className="min-w-0">
+                    <h3 className="mb-0 break-words font-display text-[1.65rem] leading-[1.1] tracking-[-0.025em] text-navy-950">
+                      {step.title}
+                    </h3>
+                    <p className="mb-0 mt-3 break-words text-[0.94rem] leading-7 text-navy-700/85">
+                      {step.description}
+                    </p>
+                  </div>
                 </li>
               ))}
             </ol>
 
             {processImage ? (
-              <figure className="relative min-h-[340px] overflow-hidden rounded-[28px] border border-cobalt-700/18 bg-navy-800 p-2 shadow-[0_24px_65px_rgba(3,19,47,0.18)] min-[560px]:p-3">
-                <img
-                  alt={processImage.alt}
-                  className="h-full min-h-[324px] w-full rounded-[20px] object-cover"
-                  loading="lazy"
-                  src={processImage.src}
-                />
-                <div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-2 rounded-[20px] bg-[linear-gradient(180deg,transparent_58%,rgba(3,15,43,0.68))] min-[560px]:inset-3"
-                />
-                <div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-x-[10%] bottom-[9%] flex items-center gap-3"
-                >
-                  <span className="size-2.5 rounded-full bg-sky shadow-[0_0_18px_rgba(139,220,255,0.9)]" />
-                  <span className="h-px flex-1 bg-[linear-gradient(90deg,var(--blue-sky),transparent)]" />
-                  <span className="size-1.5 rounded-full bg-electric" />
-                </div>
-              </figure>
+              <GlobalProcessImage image={processImage}>
+                <ComplianceNetworkVisual />
+              </GlobalProcessImage>
             ) : null}
           </div>
         </div>
       </section>
 
       <section
-        className="relative isolate scroll-mt-28 overflow-hidden bg-cobalt-700 py-14 text-white min-[560px]:py-18 min-[821px]:py-28"
+        className="relative isolate scroll-mt-[102px] overflow-hidden bg-[linear-gradient(120deg,var(--blue-navy-800),var(--blue-cobalt-700))] py-14 text-white min-[560px]:py-18 min-[821px]:py-28"
         id="our-role"
       >
         <div
@@ -359,7 +368,7 @@ export function GlobalCertificatePage({ content }: GlobalCertificatePageProps) {
           <ul className="m-0 grid list-none grid-cols-1 gap-3 p-0 md:grid-cols-2">
             {content.ourRole.items.map((item, index) => (
               <li
-                className="relative min-w-0 overflow-hidden rounded-[20px] border border-sky/22 bg-navy-950/52 p-5 shadow-[inset_0_1px_rgba(255,255,255,0.06)] backdrop-blur-sm min-[560px]:p-6"
+                className="relative min-w-0 overflow-hidden rounded-[16px] border border-sky/22 bg-navy-950/40 p-5 shadow-[inset_0_1px_rgba(139,220,255,0.06)] min-[560px]:p-6"
                 key={`${item}-${index}`}
               >
                 <div className="flex min-w-0 items-start gap-4">
@@ -378,7 +387,7 @@ export function GlobalCertificatePage({ content }: GlobalCertificatePageProps) {
       </section>
 
       <section
-        className="relative isolate scroll-mt-28 overflow-hidden bg-[linear-gradient(180deg,var(--blue-cloud),var(--blue-ice))] py-14 text-navy-950 min-[560px]:py-18 min-[821px]:py-28"
+        className="relative isolate scroll-mt-[102px] overflow-hidden bg-[linear-gradient(180deg,var(--blue-cloud),var(--blue-ice))] py-14 text-navy-950 min-[560px]:py-18 min-[821px]:py-28"
         id="conclusion"
       >
         <div
@@ -386,7 +395,7 @@ export function GlobalCertificatePage({ content }: GlobalCertificatePageProps) {
           className="pointer-events-none absolute -bottom-36 -left-36 -z-10 size-[420px] rounded-full border border-cobalt-600/12 shadow-[0_0_0_44px_rgba(22,140,245,0.035),0_0_0_94px_rgba(22,140,245,0.025)] motion-safe:animate-[route-orbit-drift_18s_ease-in-out_infinite]"
         />
         <div className="mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
-          <article className="grid min-w-0 overflow-hidden rounded-[30px] border border-cobalt-700/18 bg-cloud shadow-[0_28px_75px_rgba(3,19,47,0.12)] min-[980px]:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)]">
+          <article className="grid min-w-0 overflow-hidden rounded-[24px] border border-cobalt-700/15 bg-cloud shadow-[0_18px_50px_rgba(3,19,47,0.07)] min-[980px]:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)]">
             <div className="relative isolate min-w-0 overflow-hidden bg-[linear-gradient(145deg,var(--blue-navy-800),var(--blue-navy-950))] p-7 text-white min-[560px]:p-10 min-[821px]:p-12">
               <div
                 aria-hidden="true"
@@ -394,13 +403,13 @@ export function GlobalCertificatePage({ content }: GlobalCertificatePageProps) {
               />
               <SectionHeading eyebrow={content.conclusion.eyebrow} title={content.conclusion.title} tone="light" />
               <div className="mt-8">
-                <PrimaryLink link={content.conclusion.cta} />
+                <PrimaryLink link={content.conclusion.cta} light />
               </div>
             </div>
             <div className="min-w-0 p-7 min-[560px]:p-10 min-[821px]:p-12">
               {content.conclusion.paragraphs.map((paragraph, index) => (
                 <p
-                  className="mb-0 min-w-0 break-words border-b border-cobalt-700/12 py-5 text-base leading-8 text-navy-700/80 first:pt-0 last:border-0 last:pb-0 md:text-lg"
+                  className="mb-0 min-w-0 break-words py-3 text-base leading-8 text-navy-700/85 first:pt-0 last:pb-0"
                   key={`${paragraph}-${index}`}
                 >
                   {paragraph}

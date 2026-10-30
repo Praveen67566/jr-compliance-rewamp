@@ -10,7 +10,7 @@ type GlobalCountryPageProps = {
 function PrimaryLink({ link }: { link: Link }) {
   return (
     <a
-      className="inline-flex min-h-12 items-center justify-center gap-3 rounded-full border border-sky bg-electric px-6 text-sm font-extrabold text-white shadow-[0_12px_34px_rgba(22,140,245,0.3)] transition-[background-color,box-shadow,transform] duration-200 hover:bg-cobalt-700 hover:shadow-[0_16px_42px_rgba(22,140,245,0.38)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky motion-safe:hover:-translate-y-0.5"
+      className="inline-flex min-h-12 max-w-full items-center justify-center gap-4 rounded-full border border-sky/40 bg-[linear-gradient(115deg,var(--blue-electric),var(--blue-cobalt-700))] px-6 py-3 text-sm font-extrabold text-white shadow-[0_12px_34px_rgba(22,140,245,0.24)] transition-[box-shadow,transform] duration-200 hover:shadow-[0_16px_42px_rgba(22,140,245,0.38)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky motion-safe:hover:-translate-y-0.5"
       href={link.href}
       {...linkTargetProps(link)}
     >
@@ -57,70 +57,77 @@ export function GlobalCountryPage({ content }: GlobalCountryPageProps) {
           <span className="absolute right-[18%] top-[-3px] size-1.5 rounded-full bg-electric shadow-[0_0_14px_rgba(22,140,245,0.78)]" />
         </div>
 
-        <div className="mx-auto grid w-full max-w-[1320px] grid-cols-1 items-center gap-10 px-[18px] min-[560px]:px-[22px] min-[821px]:px-8 min-[980px]:grid-cols-[minmax(0,1.03fr)_minmax(380px,0.97fr)] min-[980px]:gap-14">
-          <div className="min-w-0">
-            <nav
-              aria-label="Breadcrumb"
-              className="mb-7 inline-flex max-w-full flex-wrap items-center gap-2 rounded-full border border-sky/18 bg-navy-900/70 px-4 py-2.5 text-xs font-bold text-sky shadow-[inset_0_1px_rgba(255,255,255,0.06)] backdrop-blur-sm"
+        <div className="mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
+          <nav
+            aria-label="Breadcrumb"
+            className="mb-10 flex max-w-full flex-wrap items-center gap-x-3 gap-y-2 border-b border-sky/15 pb-5 text-xs font-semibold text-sky min-[821px]:mb-14"
+          >
+            <a
+              className="rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky"
+              href="/"
             >
-              <a
-                className="rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky"
-                href="/"
-              >
-                Home
-              </a>
-              <span aria-hidden="true">/</span>
-              <span>Global</span>
-              <span aria-hidden="true">/</span>
-              <a
-                aria-current="page"
-                className="min-w-0 rounded-sm break-words text-ice/75 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky"
-                href={`/global/${content.slug}`}
-              >
+              Home
+            </a>
+            <span aria-hidden="true">/</span>
+            <span>Global</span>
+            <span aria-hidden="true">/</span>
+            <a
+              aria-current="page"
+              className="min-w-0 rounded-sm break-words text-ice/75 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky"
+              href={`/global/${content.slug}`}
+            >
+              {content.menuLabel}
+            </a>
+          </nav>
+
+          <div className="grid grid-cols-1 items-center gap-10 min-[980px]:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] min-[980px]:gap-16">
+            <div className="min-w-0">
+              <span className="mb-5 flex items-center gap-2 text-[0.7rem] font-extrabold uppercase tracking-[0.14em] text-sky">
+                <span aria-hidden="true" className="size-1.5 rounded-full bg-current" />
+                {content.hero.eyebrow}
+              </span>
+              <h1 className="mb-0 max-w-[820px] break-words text-balance font-display text-[clamp(3.25rem,5vw,5.8rem)] leading-[0.98] tracking-[-0.045em] text-cloud">
+                {content.hero.title}
+              </h1>
+              <p className="mb-0 mt-6 max-w-[650px] break-words text-base leading-[1.85] text-ice/80">
+                {content.hero.description}
+              </p>
+              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-5">
+                <PrimaryLink link={content.hero.cta} />
+                <a
+                  className="inline-flex min-h-11 items-center gap-3 rounded-sm text-sm font-semibold text-sky underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky"
+                  href="#certificates"
+                >
+                  {content.certificates.eyebrow}
+                  <span aria-hidden="true">↓</span>
+                </a>
+              </div>
+            </div>
+
+            <figure className="relative m-0 mx-auto w-full max-w-[580px] min-w-0 rounded-[24px] border border-sky/25 bg-navy-800/70 p-3 shadow-[0_28px_70px_rgba(0,8,34,0.32)] min-[560px]:p-4">
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -inset-5 -z-10 rounded-[40px] border border-sky/10"
+              />
+              <img
+                alt={content.hero.image.alt}
+                className="aspect-[1.75] h-auto w-full rounded-[14px] bg-navy-900 object-contain"
+                fetchPriority="high"
+                src={content.hero.image.src}
+              />
+              <figcaption className="flex items-center gap-3 px-1 pb-1 pt-5 text-sm font-semibold text-ice">
+                <span aria-hidden="true" className="size-2 shrink-0 rounded-full bg-sky shadow-[0_0_16px_rgba(139,220,255,0.65)]" />
                 {content.menuLabel}
-              </a>
-            </nav>
-
-            <span className="mb-5 flex items-center gap-2 text-[0.7rem] font-extrabold uppercase tracking-[0.14em] text-sky">
-              <span aria-hidden="true" className="size-1.5 rounded-full bg-current" />
-              {content.hero.eyebrow}
-            </span>
-            <h1 className="mb-0 max-w-[820px] break-words font-display text-[clamp(3.25rem,5vw,5.8rem)] leading-[0.92] tracking-[-0.055em] text-white">
-              {content.hero.title}
-            </h1>
-            <p className="mb-0 mt-7 max-w-[720px] break-words text-base leading-8 text-ice/78 md:text-lg">
-              {content.hero.description}
-            </p>
-            <div className="mt-9">
-              <PrimaryLink link={content.hero.cta} />
-            </div>
+                <span aria-hidden="true" className="h-px flex-1 bg-sky/20" />
+                <span aria-hidden="true" className="text-sky">↗</span>
+              </figcaption>
+            </figure>
           </div>
-
-          <figure className="relative mx-auto w-full max-w-[600px] min-w-0 overflow-hidden rounded-[30px] border border-sky/35 bg-navy-800/80 p-2 shadow-[0_32px_85px_rgba(0,8,34,0.46)] min-[560px]:p-3">
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-0 z-10 bg-[linear-gradient(180deg,transparent_56%,rgba(3,15,43,0.72)),radial-gradient(circle_at_76%_18%,rgba(139,220,255,0.2),transparent_28%)]"
-            />
-            <img
-              alt={content.hero.image.alt}
-              className="aspect-[1.12] h-auto w-full rounded-[22px] object-cover"
-              fetchPriority="high"
-              src={content.hero.image.src}
-            />
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-x-[9%] bottom-[10%] z-20 flex items-center gap-3"
-            >
-              <span className="size-2.5 shrink-0 rounded-full border-2 border-sky bg-electric shadow-[0_0_20px_rgba(139,220,255,0.9)]" />
-              <span className="h-px flex-1 bg-[linear-gradient(90deg,var(--blue-sky),rgba(139,220,255,0.12))]" />
-              <span className="size-1.5 shrink-0 rounded-full bg-sky" />
-            </div>
-          </figure>
         </div>
       </section>
 
       <section
-        className="relative isolate scroll-mt-28 overflow-hidden bg-[linear-gradient(180deg,var(--blue-cloud),var(--blue-ice))] py-14 text-navy-950 min-[560px]:py-18 min-[821px]:py-28"
+        className="relative isolate scroll-mt-[102px] overflow-hidden bg-[linear-gradient(180deg,var(--blue-cloud),var(--blue-ice))] py-14 text-navy-950 min-[560px]:py-18 min-[821px]:py-28"
         id="certificates"
       >
         <div
@@ -133,25 +140,30 @@ export function GlobalCountryPage({ content }: GlobalCountryPageProps) {
         />
 
         <div className="mx-auto w-full max-w-[1320px] px-[18px] min-[560px]:px-[22px] min-[821px]:px-8">
-          <div className="mb-10 max-w-[780px] min-w-0 md:mb-14">
-            <span className="mb-4 flex items-center gap-2 text-[0.7rem] font-extrabold uppercase tracking-[0.14em] text-cobalt-600">
-              <span aria-hidden="true" className="size-1.5 rounded-full bg-current" />
-              {content.certificates.eyebrow}
+          <div className="mb-8 flex flex-wrap items-end justify-between gap-6 border-b border-cobalt-700/15 pb-8 min-[821px]:mb-10">
+            <div className="max-w-[820px] min-w-0">
+              <span className="mb-4 flex items-center gap-2 text-[0.7rem] font-extrabold uppercase tracking-[0.14em] text-cobalt-700">
+                <span aria-hidden="true" className="size-1.5 rounded-full bg-current" />
+                {content.certificates.eyebrow}
+              </span>
+              <h2 className="mb-0 break-words text-balance font-display text-[clamp(2.5rem,4vw,4.35rem)] leading-[0.97] tracking-[-0.045em] text-navy-950">
+                {content.certificates.title}
+              </h2>
+              {content.certificates.description ? (
+                <p className="mb-0 mt-6 max-w-[720px] break-words text-base leading-8 text-navy-700/78 md:text-lg">
+                  {content.certificates.description}
+                </p>
+              ) : null}
+            </div>
+            <span aria-hidden="true" className="font-display text-5xl leading-none tracking-[-0.04em] text-cobalt-700/35">
+              {String(content.certificates.items.length).padStart(2, "0")}
             </span>
-            <h2 className="mb-0 break-words font-display text-[clamp(2.5rem,4vw,4.35rem)] leading-[0.97] tracking-[-0.045em] text-navy-950">
-              {content.certificates.title}
-            </h2>
-            {content.certificates.description ? (
-              <p className="mb-0 mt-6 max-w-[720px] break-words text-base leading-8 text-navy-700/78 md:text-lg">
-                {content.certificates.description}
-              </p>
-            ) : null}
           </div>
 
-          <ul className="m-0 grid list-none grid-cols-1 gap-5 p-0 md:grid-cols-2 xl:grid-cols-3">
+          <ul className={`m-0 grid list-none grid-cols-1 gap-5 p-0 min-[820px]:grid-cols-2 ${content.certificates.items.length > 4 ? "min-[1100px]:grid-cols-3" : ""}`}>
             {content.certificates.items.map((certificate, index) => (
               <li className="min-w-0" key={`${certificate.title}-${index}`}>
-                <article className="group relative flex h-full min-w-0 flex-col overflow-hidden rounded-[26px] border border-sky/22 bg-[linear-gradient(145deg,var(--blue-navy-800),var(--blue-navy-950))] p-6 text-white shadow-[0_22px_58px_rgba(3,19,47,0.2)] transition-[transform,border-color,box-shadow] duration-300 hover:border-sky/55 hover:shadow-[0_30px_72px_rgba(13,92,184,0.28)] motion-safe:hover:-translate-y-2 min-[560px]:p-8">
+                <article className="group relative flex h-full min-w-0 flex-col overflow-hidden rounded-[20px] border border-sky/22 bg-[linear-gradient(135deg,var(--blue-navy-800),var(--blue-navy-950))] p-6 text-white shadow-[0_12px_32px_rgba(3,19,47,0.12)] transition-[transform,border-color,box-shadow] duration-200 hover:border-sky/55 hover:shadow-[0_22px_48px_rgba(13,92,184,0.2)] focus-within:border-sky/70 focus-within:shadow-[0_22px_48px_rgba(13,92,184,0.2)] motion-safe:hover:-translate-y-2 min-[560px]:p-8">
                   <div
                     aria-hidden="true"
                     className="pointer-events-none absolute -right-16 -top-16 size-44 rounded-full border border-sky/12 bg-cobalt-700/10 transition-transform duration-500 motion-safe:group-hover:scale-110"
@@ -161,30 +173,32 @@ export function GlobalCountryPage({ content }: GlobalCountryPageProps) {
                     className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(139,220,255,0.82),transparent)] opacity-75"
                   />
 
-                  <div className="relative flex min-h-28 items-center justify-center overflow-hidden rounded-[20px] border border-sky/18 bg-cloud p-5 shadow-[inset_0_1px_rgba(255,255,255,0.7)]">
-                    <img
-                      alt={certificate.logo.alt}
-                      className="h-16 w-full max-w-[210px] object-contain"
-                      loading="lazy"
-                      src={certificate.logo.src}
-                    />
+                  <div className="relative mb-6 flex items-center justify-between gap-5">
+                    <div className="flex h-20 w-36 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-sky/18 bg-cloud p-2">
+                      <img
+                        alt={certificate.logo.alt}
+                        className="h-full w-full object-contain"
+                        loading="lazy"
+                        src={certificate.logo.src}
+                      />
+                    </div>
+                    <span className="font-display text-4xl leading-none tracking-[-0.04em] text-sky/40" aria-hidden="true">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
                   </div>
-                  <span className="relative mt-7 text-[0.68rem] font-extrabold tracking-[0.14em] text-sky" aria-hidden="true">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <h3 className="relative mb-0 mt-3 break-words font-display text-[1.95rem] leading-[1.02] tracking-[-0.03em] text-white">
+                  <h3 className="relative mb-0 max-w-[460px] break-words text-balance font-display text-[clamp(1.65rem,2.4vw,2.2rem)] leading-[1.1] tracking-[-0.025em] text-cloud">
                     {certificate.title}
                   </h3>
-                  <p className="relative mb-0 mt-4 flex-1 break-words text-[0.94rem] leading-7 text-ice/72">
+                  <p className="relative mb-0 mt-4 flex-1 break-words text-[0.94rem] leading-7 text-ice/80">
                     {certificate.description}
                   </p>
                   <a
-                    className="relative mt-7 inline-flex min-h-11 w-fit items-center gap-2 rounded-full border border-sky/35 px-5 text-sm font-extrabold text-sky transition-[background-color,border-color,color] duration-200 hover:border-sky hover:bg-electric hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky"
+                    className="relative mt-7 inline-flex min-h-12 w-full items-center justify-between gap-4 border-t border-sky/20 pt-4 text-sm font-bold text-sky transition-colors duration-200 hover:text-cloud focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky"
                     href={certificate.link.href}
                     {...linkTargetProps(certificate.link)}
                   >
                     {certificate.link.label}
-                    <span aria-hidden="true">↗</span>
+                    <span aria-hidden="true" className="flex size-8 shrink-0 items-center justify-center rounded-full border border-sky/30 bg-electric/10 transition-colors duration-200 group-hover:bg-electric/30 group-focus-within:bg-electric/30">↗</span>
                   </a>
                 </article>
               </li>

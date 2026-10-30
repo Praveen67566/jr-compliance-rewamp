@@ -106,4 +106,7 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Now read the GLOBAL_CMS_CONTENT_UPLOAD.md and upload the global pages.
+Only Ui Changes:-
+
+1. country pages ui looks so bad and also the certificate page improve the design according to the 
+   theme.md.
