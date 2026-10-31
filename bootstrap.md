@@ -106,4 +106,4 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Now implement the APPROVAL_CMS_CONTENT_UPLOAD.md
+Now implement corporate-approval-sticky-bar-content.md and apart from that don't change any content be careful.
