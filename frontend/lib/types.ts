@@ -704,7 +704,7 @@ export type CompanyRegistrationPageData = {
   hero: {
     eyebrow: string;
     title: string;
-    description: string;
+    description: RegistrationRichText;
     cta: Link;
   };
   /** Optional, editor-ordered client logos rendered directly after the hero. */
@@ -957,3 +957,23 @@ export type GlobalCertificatePageData = {
 };
 
 export type GlobalCertificatePageContent = PageChromeContent & GlobalCertificatePageData;
+
+/** Published CMS content exported by the public AI text endpoints. */
+export type CrawlerPage = {
+  category: string;
+  canonicalPath: string;
+} & (
+  | { kind: "service"; content: CompanyRegistrationPageData }
+  | { kind: "country"; content: GlobalCountryPageData }
+  | { kind: "certificate"; content: GlobalCertificatePageData }
+);
+
+export type CrawlerContent = {
+  company: {
+    name: string;
+    description: string;
+    phone?: string;
+    email?: string;
+  };
+  pages: CrawlerPage[];
+};

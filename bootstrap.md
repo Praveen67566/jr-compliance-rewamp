@@ -106,4 +106,19 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Now implement corporate-approval-sticky-bar-content.md and apart from that don't change any content be careful.
+Implement SEO and AI crawler support in my existing Next.js + Strapi project.
+
+Requirements
+
+1. robots.txt
+-> Allow search engines to crawl all public pages.
+-> Block private, admin, and internal routes where appropriate.
+-> Include the sitemap URL.
+2. llms.txt
+-> Dynamically generate an AI-friendly overview of JR Compliance.
+-> Include company information, service categories, short descriptions, and links to published service pages.
+-> Use actual data from Strapi.
+3. llms-full.txt
+-> Dynamically generate detailed content for all published service pages from Strapi.
+-> Include page titles, descriptions, headings, content, and canonical URLs.
+-> Keep the content updated when Strapi content changes.

@@ -3,6 +3,7 @@ import type {
   Faq,
   RegistrationBreakdownGroup,
   RegistrationDetail,
+  RegistrationRichText,
 } from "@/lib/types";
 
 type DetailTuple = readonly [title: string, description: string];
@@ -18,7 +19,7 @@ type RegistrationPageSource = {
   title: string;
   seoTitle: string;
   seoDescription: string;
-  heroDescription: string;
+  heroDescription: RegistrationRichText;
   overview: string | readonly string[];
   challenges: readonly DetailTuple[];
   advantages: readonly DetailTuple[];

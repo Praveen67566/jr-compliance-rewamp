@@ -233,3 +233,36 @@ if a webhook notification fails.
 Do not import legacy Webflow styles, scripts, or markup. Use the matching file
 under `../site/` only to verify approved content and media, then build original
 components. The visual contract for every new route is `../theme.md`.
+
+## Search and AI crawler files
+
+`/robots.txt` allows public-page and rendering-asset crawling, excludes API,
+admin, private, internal, preview and thank-you paths, and links to the sitemap
+using `SITE_URL`. The pre-launch site-wide `noindex,nofollow` metadata and HTTP
+header remain active. Use the prompt in
+[`maintenance-guides/replace-noindex-with-index-follow.md`](../maintenance-guides/replace-noindex-with-index-follow.md)
+when the site is ready for indexing; robots rules are not access control.
+
+`/llms.txt` provides the published Site Setting company name, tagline and
+contact details, followed by category-grouped service summaries and canonical
+links. `/llms-full.txt` adds public service headings, rich descriptions, optional
+sections, FAQs and Global country/certificate content as readable Markdown.
+Both are dynamic `text/plain; charset=utf-8` responses. They read all pages of
+all nineteen Corporate/Approval collections and both Global collections using
+explicit populate trees, `status=published` and the server-only
+`STRAPI_API_TOKEN`. The reader token needs read access to those collections and
+Site Setting. No schema, new token, public CMS permission, or seed is required.
+
+The AI exports omit drafts, incomplete records, CMS noindex pages and colliding
+public slugs; they never substitute local service copy. A missing CMS setup,
+missing company information, denied collection, or upstream failure returns a
+non-cacheable `503` with `Retry-After: 60`, rather than an incomplete successful
+export. CMS fetches share the existing 60-second cache and publish-webhook tags;
+the text responses themselves use `Cache-Control: no-store`. New publications,
+edits and unpublishing therefore need no frontend rebuild. With the signed
+webhook configured, the next read fetches changed content; otherwise the normal
+60-second data revalidation applies. `SITE_URL` must be the production origin
+before launch; local development otherwise uses `http://localhost:8123`.
+
+Run `npx tsx --test tests/llms.test.ts` for the focused HTTP-backed crawler
+checks, then the standard typecheck and production build.

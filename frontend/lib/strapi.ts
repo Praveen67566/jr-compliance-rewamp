@@ -19,6 +19,8 @@ import type {
   BureauIndianStandardsPageContent,
   ContactPageContent,
   ContactPoint,
+  CrawlerContent,
+  CrawlerPage,
   Faq,
   FaqCategory,
   FooterBadge,
@@ -86,6 +88,8 @@ import type {
 } from "@/lib/types";
 import { normalizeSchemaMarkup, normalizeSeoKeywords } from "@/lib/seo";
 import { youtubeEmbedUrl } from "@/lib/youtube";
+import { publicServiceSlug, uniquePublicLinks } from "@/lib/public-paths";
+import { serviceRouteDefinitions, isPublicCountrySlug } from "@/lib/service-route-config";
 
 type UnknownRecord = Record<string, unknown>;
 export type SingleTypeSlug =
@@ -2377,7 +2381,7 @@ function mapCmsOnlyFixedServiceDetailPage<T extends CompanyRegistrationPageConte
   const menuLabel = text(page.menuLabel);
   const pageTitle = text(page.title);
   const heroEyebrow = text(hero.eyebrow);
-  const heroDescription = text(hero.description);
+  const heroDescription = registrationRichText(hero.description);
   const heroCta = strictLink(hero.cta);
   const trustedLogos = mapLogos(page.trustedLogos, []);
   const overview = mapRegistrationOverview(page.overview);
@@ -2519,7 +2523,7 @@ function mapFixedServiceDetailPage<T extends CompanyRegistrationPageContent>(
     hero: {
       eyebrow: text(hero.eyebrow) ?? fallback.hero.eyebrow,
       title: text(page.title) ?? fallback.hero.title,
-      description: text(hero.description) ?? fallback.hero.description,
+      description: registrationRichText(hero.description) ?? fallback.hero.description,
       cta: link(hero.cta, fallback.hero.cta),
     },
     ...(trustedLogos.length ? { trustedLogos } : {}),
@@ -3605,4 +3609,114 @@ export async function getGlobalCertificatePageFromStrapi(
     );
     return null;
   }
+}
+
+/** Full, paginated published records; reuse the public templates' bounded populate trees. */
+async function getCrawlerEntries(
+  collectionPath: string,
+  contentSlug: RevalidatableContentSlug,
+  populate: PopulateTree,
+): Promise<unknown[]> {
+  const entries: unknown[] = [];
+  let page = 1;
+  let pageCount = 1;
+  do {
+    const params = new URLSearchParams({ status: "published" });
+    params.set("sort[0]", "sortOrder:asc");
+    params.set("sort[1]", "slug:asc");
+    params.set("pagination[page]", String(page));
+    params.set("pagination[pageSize]", "100");
+    params.set("pagination[withCount]", "true");
+    addPopulateTree(params, populate);
+    const response = await fetch(`${strapiUrl}/api/${collectionPath}?${params}`, {
+      headers: { Authorization: `Bearer ${strapiApiToken}` },
+      next: { revalidate: 60, tags: [strapiCacheTagBySlug[contentSlug]] },
+      signal: AbortSignal.timeout(15_000),
+    });
+    if (!response.ok) throw new Error(`Crawler CMS read failed: ${contentSlug} (${response.status})`);
+    const body = await response.json() as { data?: unknown; meta?: unknown };
+    if (!Array.isArray(body.data)) throw new Error(`Invalid crawler CMS response: ${contentSlug}`);
+    entries.push(...body.data);
+    pageCount = positiveInteger(record(record(body.meta).pagination).pageCount) ?? page;
+    page += 1;
+  } while (page <= pageCount);
+  return entries;
+}
+
+/** No local page fallback: an unavailable collection must not produce an incomplete export. */
+export async function getCrawlerContentFromStrapi(
+  chromeFallback: PageChromeContent,
+): Promise<CrawlerContent | null> {
+  if (!strapiUrl || !strapiApiToken) return null;
+
+  const settingsQuery = new URLSearchParams({ status: "published" });
+  settingsQuery.set("fields[0]", "siteName");
+  settingsQuery.set("fields[1]", "footerTagline");
+  addPopulateTree(settingsQuery, { contact: true });
+  const settingsRequest = fetch(`${strapiUrl}/api/site-setting?${settingsQuery}`, {
+    headers: { Authorization: `Bearer ${strapiApiToken}` },
+    next: { revalidate: 60, tags: [strapiCacheTagBySlug["site-setting"]] },
+    signal: AbortSignal.timeout(15_000),
+  }).then(async (response) => {
+    if (!response.ok) throw new Error(`Crawler company read failed (${response.status})`);
+    return (await response.json() as { data?: unknown }).data;
+  });
+  const [rawSettings, serviceGroups, countries, certificates] = await Promise.all([
+    settingsRequest,
+    Promise.all(fixedServiceCollections.map(async (collection) => ({
+      collection,
+      entries: await getCrawlerEntries(collection.collectionPath, collection.contentSlug, fixedServiceDetailPopulateTree),
+    }))),
+    getCrawlerEntries("global-country-pages", "global-country-page", globalCountryPopulateTree),
+    getCrawlerEntries("global-certificate-pages", "global-certificate-page", globalCertificatePopulateTree),
+  ]);
+  const settings = record(rawSettings);
+  const name = text(settings.siteName);
+  const description = text(settings.footerTagline);
+  if (!name || !description) return null;
+  const contact = record(settings.contact);
+  const candidates: Array<{ canonicalPath: string; page: CrawlerPage | null }> = [];
+
+  for (const { collection, entries } of serviceGroups) {
+    const category = serviceRouteDefinitions.find((item) => item.contentType === collection.contentSlug)!;
+    for (const rawPage of entries) {
+      const raw = record(rawPage);
+      const slug = text(raw.slug);
+      if (!slug || !strapiTimestamp(raw.publishedAt)) continue;
+      const segments = slug.split("/");
+      if ((category.family === "corporate" && segments.length !== 1) ||
+        !segments.every((segment) => /^[A-Za-z0-9-_.~]+$/.test(segment))) continue;
+      const content = mapCmsOnlyFixedServiceDetailPage(chromeFallback, slug, rawPage, rawSettings);
+      const canonicalPath = `/${category.family}/${publicServiceSlug(slug)}`;
+      candidates.push({
+        canonicalPath,
+        page: content && !content.seo.noIndex
+          ? { kind: "service", category: `${category.family === "corporate" ? "Corporate" : "Approval"} — ${category.categoryLabel}`, canonicalPath, content }
+          : null,
+      });
+    }
+  }
+  for (const [kind, entries] of [["country", countries], ["certificate", certificates]] as const) {
+    for (const rawPage of entries) {
+      const raw = record(rawPage);
+      const slug = text(raw.slug);
+      if (!slug || !isPublicCountrySlug(slug) || !strapiTimestamp(raw.publishedAt)) continue;
+      const canonicalPath = `/global/${slug}`;
+      const country = text(raw.countrySlug);
+      let page: CrawlerPage | null = null;
+      if (kind === "country") {
+        const content = mapCmsOnlyGlobalCountryPage(chromeFallback, slug, rawPage, rawSettings);
+        if (content && !content.seo.noIndex) page = { kind, category: "Global", canonicalPath, content };
+      } else if (country) {
+        const content = mapCmsOnlyGlobalCertificatePage(chromeFallback, country, slug, rawPage, rawSettings);
+        if (content && !content.seo.noIndex) page = { kind, category: `Global — ${content.countryName}`, canonicalPath, content };
+      }
+      candidates.push({ canonicalPath, page });
+    }
+  }
+
+  return {
+    company: { name, description, ...(text(contact.phoneDisplay) ? { phone: text(contact.phoneDisplay) } : {}), ...(text(contact.email) ? { email: text(contact.email) } : {}) },
+    pages: uniquePublicLinks(candidates).flatMap((entry) => entry.page ? [entry.page] : []),
+  };
 }

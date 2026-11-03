@@ -68,6 +68,7 @@ import {
   getCompanyRegistrationPageFromStrapi,
   getCompanyRegistrationSlugsFromStrapi,
   getContactPageFromStrapi,
+  getCrawlerContentFromStrapi,
   getFssaiServicePageFromStrapi,
   getFssaiServiceSlugsFromStrapi,
   getFundRaisingPageFromStrapi,
@@ -637,3 +638,8 @@ export const getGlobalCertificatePaths = cache(
     });
   },
 );
+
+/** AI exports deliberately bypass the local page fallbacks. */
+export const getCrawlerContent = cache(async function getCrawlerContent() {
+  return getCrawlerContentFromStrapi(cmsOnlyGlobalChromeFallback);
+});

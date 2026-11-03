@@ -162,14 +162,20 @@ function RegistrationRichTextView({
   value: RegistrationRichText;
   className: string;
   light?: boolean;
-  variant?: "default" | "article";
+  variant?: "default" | "article" | "hero";
   articleTitle?: string;
 }) {
   const isArticle = variant === "article";
-  const spacingClassName = isArticle ? "[&>*]:mb-0 [&>*+*]:mt-3!" : "[&>*+*]:mt-4";
+  const spacingClassName = isArticle
+    ? "[&>*]:mb-0 [&>*+*]:mt-3!"
+    : variant === "hero"
+      ? "[&>*]:mb-0 [&>*+*]:mt-4"
+      : "[&>*+*]:mt-4";
   const listClassName = isArticle
     ? "[&_ol]:list-decimal [&_ol]:space-y-2 [&_ol]:pl-6 [&_ol>li]:pl-1 [&_ol>li]:marker:font-semibold [&_ol>li]:marker:text-cobalt-700 [&_ul]:list-none [&_ul]:space-y-2 [&_ul]:py-1 [&_ul]:pl-0 [&_ul>li]:relative [&_ul>li]:pl-8 [&_ul>li]:before:absolute [&_ul>li]:before:left-0 [&_ul>li]:before:top-[0.25rem] [&_ul>li]:before:flex [&_ul>li]:before:size-[1.125rem] [&_ul>li]:before:items-center [&_ul>li]:before:justify-center [&_ul>li]:before:rounded-full [&_ul>li]:before:border [&_ul>li]:before:border-cobalt-600/25 [&_ul>li]:before:bg-ice [&_ul>li]:before:text-[0.6rem] [&_ul>li]:before:font-extrabold [&_ul>li]:before:leading-none [&_ul>li]:before:text-cobalt-700 [&_ul>li]:before:content-['✓']"
-    : "[&_li]:pl-1 [&_ol]:list-decimal [&_ol]:space-y-2 [&_ol]:pl-6 [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-6";
+    : variant === "hero"
+      ? "[&_li]:pl-2 [&_ol]:list-decimal [&_ol]:space-y-2 [&_ol]:pl-6 [&_ul]:list-['✓'] [&_ul]:space-y-3 [&_ul]:pl-6 [&_ul>li]:marker:font-extrabold [&_ul>li]:marker:text-sky"
+      : "[&_li]:pl-1 [&_ol]:list-decimal [&_ol]:space-y-2 [&_ol]:pl-6 [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-6";
   const headingClassName = isArticle
     ? "[&_h1]:text-[clamp(1.3rem,1.6vw,1.55rem)] [&_h1]:font-semibold! [&_h1]:leading-[1.25] [&_h1]:tracking-[-0.02em] [&_h2]:text-[clamp(1.125rem,1.4vw,1.375rem)] [&_h2]:font-semibold! [&_h2]:leading-[1.4] [&_h2]:tracking-[-0.015em] [&_h3]:text-[clamp(1rem,1.15vw,1.125rem)] [&_h3]:font-semibold! [&_h3]:leading-[1.5]"
     : "[&_h1]:font-display [&_h1]:text-[1.8rem] [&_h1]:leading-[1.05] [&_h2]:font-display [&_h2]:text-[1.55rem] [&_h2]:leading-[1.08] [&_h3]:font-display [&_h3]:text-[1.3rem] [&_h3]:leading-[1.12]";
@@ -963,9 +969,12 @@ export function CompanyRegistrationPage({
             <h1 className="mb-2 max-w-[880px] break-words font-display text-[clamp(3.25rem,5vw,5.8rem)] leading-[0.92] tracking-[-0.055em] text-white">
               {content.hero.title}
             </h1>
-            <p className="mb-0 mt-7 max-w-[760px] break-words text-base leading-8 text-ice/78 md:text-lg">
-              {content.hero.description}
-            </p>
+            <RegistrationRichTextView
+              className="mb-0 mt-7 max-w-[760px] break-words text-base leading-8 text-ice/78 md:text-lg"
+              light
+              value={content.hero.description}
+              variant="hero"
+            />
             <div className="mt-9 flex flex-wrap items-center gap-5">
               <a
                 className="inline-flex min-h-12 items-center justify-center gap-3 rounded-full border border-sky bg-electric px-6 text-sm font-extrabold text-white shadow-[0_10px_34px_rgba(22,140,245,0.32)] transition hover:bg-cobalt-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky"

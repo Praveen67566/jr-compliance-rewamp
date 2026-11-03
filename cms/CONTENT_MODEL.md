@@ -783,7 +783,7 @@ settings, colour pickers, Webflow IDs, or public form endpoints.
 | `registration.extra-content-sidebar-header` | `label` short text*, `avatars` multiple image media, `cta` `shared.cta`*; the frontend displays at most the first three avatars |
 | `registration.extra-content-sidebar-links` | `title` short text*, `links` repeatable `shared.link`* (minimum 1); reused by the fixed Related Guides and related-services fields |
 | `registration.written-by` | `label` short text* (default “Written By”), `name` short text*, `role` short text*, `avatar` single image media*, `experience` short text*, `biography` long text*, `verified` boolean* (default true), optional `logosLabel` short text (default “As seen on”), optional ordered many-to-many `logos` relation to `brand-logo` |
-| `registration.hero` | `eyebrow` short text*, `description` long text*, `cta` `shared.cta`*; page H1 comes from the parent `title` |
+| `registration.hero` | `eyebrow` short text*, `description` Rich Text (Markdown)*, `cta` `shared.cta`*; page H1 comes from the parent `title`; unordered description lists use sky-blue checkmarks |
 | `registration.overview` | `eyebrow` short text*, `title` short text*, `paragraphs` repeatable `registration.text-item`*; each paragraph supports headings, links, lists, and text marks |
 | `registration.card-section` | `eyebrow` short text*, `title` short text*, `items` repeatable `registration.detail-item`* |
 | `registration.youtube-video` | `title` short text*, `youtubeUrl` short text* |
@@ -798,9 +798,11 @@ Registration Rich Text fields use Strapi's Markdown editor. The shared service
 renderer preserves headings, paragraphs and line breaks, emphasis, underline,
 strikethrough, lists, quotes, links, code, tables, and images while sanitizing
 editor HTML and unsafe URL schemes before rendering. The same renderer is used
-for Overview, detail-card descriptions, Extra Content descriptions, and
-Breakdown text items. For Extra Content, put the article headline in the
-component's **Title** field and use the editor's **Heading 2** control (or `##`)
+for hero descriptions across all nineteen Corporate and Approval collections,
+Overview, detail-card descriptions, Extra Content descriptions, and Breakdown
+text items. Existing plain-text hero descriptions remain valid. For Extra
+Content, put the article headline in the component's **Title** field and use the
+editor's **Heading 2** control (or `##`)
 for left-aligned subsection headings in **Description**; do not repeat the
 article title as the first description heading. For backwards compatibility,
 the renderer safely removes that leading heading when it exactly duplicates the

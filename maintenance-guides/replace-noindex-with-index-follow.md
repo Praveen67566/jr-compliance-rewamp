@@ -8,6 +8,34 @@ in the CMS and the `/thank-you` page keep their individual restrictions.
 This file contains instructions only. Creating it does not change the website's
 current `noindex,nofollow` behavior.
 
+## Copy-and-paste launch prompt
+
+```text
+The JR Compliance website is now ready for public indexing. Read bootstrap.md,
+context.md, theme.md, explaner_frontend.md, and prod.md first.
+
+Remove the site-wide noindex,nofollow overrides from frontend/app/layout.tsx,
+frontend/lib/page-metadata.ts, and frontend/next.config.ts. Restore each page's
+Strapi SEO robots setting, defaulting to index,follow only when no page setting
+exists. A true seo.noIndex must take precedence over an index,follow string.
+Keep /thank-you and any CMS noindex pages excluded from indexing.
+
+Preserve the public crawling rules in frontend/app/robots.ts, its sitemap URL,
+and the private/admin/internal exclusions. Do not block /_next/ assets.
+Check /llms.txt and /llms-full.txt: they must return published Strapi content,
+direct /corporate/[slug], /approval/[slug], and /global/[slug] canonical URLs,
+and no draft, noindex, incomplete, ambiguous, or local-fallback service records.
+Use the production SITE_URL for all absolute URLs.
+
+Update the affected robots metadata tests. Run npm test, npm run typecheck, and
+npm run build in frontend. Report changed files and results. Prepare the change
+for review; do not deploy or change CMS content. Keep the work scoped to launch
+indexing and crawler checks.
+```
+
+Until that prompt is explicitly used for launch, leave all three site-wide
+noindex overrides active. The AI text routes retain the same HTTP restriction.
+
 ## 1. Remove the global metadata override
 
 In [`frontend/app/layout.tsx`](../frontend/app/layout.tsx), remove this line from
@@ -23,7 +51,7 @@ In [`frontend/lib/page-metadata.ts`](../frontend/lib/page-metadata.ts), add this
 immediately after `const image` inside `pageMetadata`:
 
 ```ts
-const robots = seo.robots ?? (seo.noIndex ? "noindex,nofollow" : "index,follow");
+const robots = seo.noIndex ? "noindex,nofollow" : (seo.robots ?? "index,follow");
 ```
 
 Inside the returned metadata object, replace:
@@ -110,5 +138,8 @@ After deployment, inspect a public page such as `/`:
   `X-Robots-Tag: noindex, nofollow` header.
 - `/thank-you` should continue to emit `noindex,nofollow`.
 
-Leave [`frontend/app/robots.ts`](../frontend/app/robots.ts) unchanged; it already
-allows public-page crawling and restricts `/api/`.
+Leave [`frontend/app/robots.ts`](../frontend/app/robots.ts) unchanged; it allows
+public-page crawling, includes the sitemap, and restricts API, admin, private,
+internal, preview, and thank-you paths. Check that `/llms.txt` and
+`/llms-full.txt` return `200` with the expected published Strapi content and
+that the global noindex response header has been removed from them at launch.
