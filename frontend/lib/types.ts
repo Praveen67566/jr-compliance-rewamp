@@ -199,6 +199,54 @@ export type LeadFormSettings = {
   experienceText?: string;
 };
 
+/** Fixed frontend-only campaign content; deliberately has no Strapi model. */
+export type BisCertificationAdPageData = {
+  seo: Seo;
+  title: string;
+  subtitle: string;
+  description: string;
+  brand: Logo;
+  serviceLogo: string;
+  homeLabel: string;
+  trustedLabel: string;
+  trustedBrands: Logo[];
+  consultationLabel: string;
+  call: Link;
+  trustPoints: string[];
+  form: LeadFormSettings;
+  impactLabel: string;
+  impactStats: Metric[];
+  processTitle: string;
+  process: { title: string; description: string }[];
+  documentsTitle: string;
+  documents: string[];
+  whyTitle: string;
+  serviceInfo: string;
+  highlights: { title: string; description: string }[];
+  benefits: { title: string; description: string }[];
+  faqTitle: string;
+  faqs: Faq[];
+  closingTitle: string;
+  closingDescription: string;
+  closingProof: string;
+  closingStats: Metric[];
+  closingCall: Link;
+  closingWhatsApp: Link;
+  stickyDescription: string;
+  stickyAudience: string;
+  stickyCta: string;
+  stickyMobileCta: string;
+  stickyNote: string;
+  whatsApp: {
+    href: string;
+    label: string;
+    badge: string;
+    assistant: string;
+    status: string;
+    message: string;
+  };
+};
+
 export type SiteSettings = {
   name: string;
   logo: string;

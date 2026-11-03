@@ -73,6 +73,7 @@ function stubFetch(
 describe("POST /api/leads", () => {
   for (const [pathname, destination] of [
     ["/approval/isi-certificate", "technical"],
+    ["/gpt-ad/bis-certification", "technical"],
     ["/global/certificate", "global"],
   ]) {
     it(`forwards ${pathname} leads to ${destination}`, async () => {

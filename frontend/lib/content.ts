@@ -5,6 +5,7 @@ import { isPublicCountrySlug } from "@/lib/service-route-config";
 import { publicSiteUrl } from "@/lib/site-url";
 
 import { fallbackAboutPage } from "@/data/about-page-fallback";
+import { bisCertificationAdPage } from "@/data/bis-certification-ad-fallback";
 import { fallbackCareersPage } from "@/data/careers-page-fallback";
 import {
   bureauIndianStandardsFallback,
@@ -147,6 +148,11 @@ function cachePublicPage<Args extends unknown[], Result>(loader: (...args: Args)
 export const getHomepage = cachePublicPage(async function getHomepage(): Promise<HomepageContent> {
   return (await getHomepageFromStrapi(fallbackHomepage)) ?? fallbackHomepage;
 });
+
+/** This campaign is intentionally local-only, including its form copy and logos. */
+export function getBisCertificationAdPage() {
+  return bisCertificationAdPage;
+}
 
 export const getAboutPage = cachePublicPage(async function getAboutPage(): Promise<AboutPageContent> {
   return (await getAboutPageFromStrapi(fallbackAboutPage)) ?? fallbackAboutPage;

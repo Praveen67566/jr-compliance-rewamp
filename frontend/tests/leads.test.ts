@@ -18,6 +18,9 @@ describe("leadTypeFromPath", () => {
     ["/corporate/private-limited-company", "corporate"],
     ["/corporate/company-registration/private-limited-company", "corporate"],
     ["/ad/campaign", "technical"],
+    ["/gpt-ad", "technical"],
+    ["/gpt-ad/bis-certification", "technical"],
+    ["/gpt-advertising", "global"],
     ["/contact-us", "global"],
     ["/corporate-services", "global"],
   ] as const;

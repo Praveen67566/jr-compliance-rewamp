@@ -170,6 +170,10 @@ export function leadTypeFromPath(pathname: string): LeadType {
     return "technical";
   }
 
+  if (pathname === "/gpt-ad" || pathname.startsWith("/gpt-ad/")) {
+    return "technical";
+  }
+
   return "global";
 }
 
