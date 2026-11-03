@@ -106,14 +106,4 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Now I am going to transfer the project from https://test.jrcompliance.com to https://jrcompliance.com/ a add page exist which is a frontend only page 
-
-https://www.jrcompliance.com/gpt-ad/bis-certification
-
-i don't want cms to integrate here for this page
-
-path of code:- /Users/yalagalasrinivas/praveen-dev/jr_website_25march/src/app/gpt-ad/bis-certification
-
-this is frontend only follow our theme but i want the exact connect and flow.
-
-Don't change anything else.
+Now i want to transfer Whole FSSAI section into approval with all the pages. is this feasible approach.
