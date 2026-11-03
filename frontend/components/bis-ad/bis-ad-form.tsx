@@ -85,13 +85,13 @@ export function BisAdForm({ settings, form, headingId }: {
   headingId?: string;
 }) {
   const id = useId();
-  const inputClass = "block min-h-12 w-full min-w-0 rounded-xl border border-sky/25 bg-navy-950/60 px-4 py-3 font-sans text-sm text-cloud outline-none placeholder:text-ice/60 focus-visible:border-sky focus-visible:ring-2 focus-visible:ring-electric/40";
+  const inputClass = "block min-h-12 w-full min-w-0 rounded-xl border border-sky/25 bg-navy-950/60 px-4 py-3 font-sans text-sm text-cloud outline-none placeholder:text-ice/60 focus-visible:border-sky focus-visible:ring-2 focus-visible:ring-electric/40 max-[559px]:px-3.5 max-[559px]:text-base";
   const stages = [form.values.name.trim().length >= 3, /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.values.email), /^\d{10}$/.test(form.values.phone)];
 
   return (
-    <div className="overflow-hidden rounded-[24px] border border-sky/30 bg-navy-800 shadow-[0_24px_60px_rgba(0,8,34,0.34)]">
-      <div className="border-b border-sky/20 bg-linear-to-br from-cobalt-700/40 to-navy-900 px-5 py-5 min-[560px]:px-6">
-        <h2 className="mb-1 pr-8 font-sans text-xl font-bold text-cloud" id={headingId ?? `${id}-heading`}>{settings.heading}</h2>
+    <div className="min-w-0 overflow-hidden rounded-[24px] border border-sky/30 bg-navy-800 shadow-[0_24px_60px_rgba(0,8,34,0.34)] max-[559px]:rounded-[20px]">
+      <div className="border-b border-sky/20 bg-linear-to-br from-cobalt-700/40 to-navy-900 px-5 py-5 min-[560px]:px-6 max-[559px]:p-4">
+        <h2 className={`mb-1 font-sans text-xl font-bold text-cloud max-[559px]:text-lg ${headingId ? "pr-8" : ""}`} id={headingId ?? `${id}-heading`}>{settings.heading}</h2>
         <p className="mb-4 text-xs text-ice/75">{settings.subtitle}</p>
         <ol className="m-0 flex list-none gap-2 p-0" aria-label="Contact detail progress">
           {stages.map((complete, index) => (
@@ -102,7 +102,7 @@ export function BisAdForm({ settings, form, headingId }: {
           ))}
         </ol>
       </div>
-      <form className="p-5 min-[560px]:p-6" onSubmit={form.submit} aria-busy={form.status === "submitting"} aria-labelledby={headingId ?? `${id}-heading`}>
+      <form className="p-5 min-[560px]:p-6 max-[559px]:p-4" onSubmit={form.submit} aria-busy={form.status === "submitting"} aria-labelledby={headingId ?? `${id}-heading`}>
         <fieldset className="m-0 min-w-0 space-y-3 border-0 p-0" disabled={form.status === "submitting" || form.status === "success"}>
           <legend className="sr-only">Consultation contact details</legend>
           <label className="sr-only" htmlFor={`${id}-name`}>{settings.nameLabel}</label>
