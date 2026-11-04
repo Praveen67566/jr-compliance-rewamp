@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+import { legacyFssaiServiceAliases, legacyFssaiServiceSlugs } from "./lib/service-route-config";
+
 const securityHeaders = [
   { key: "X-Robots-Tag", value: "noindex, nofollow" },
   { key: "X-Content-Type-Options", value: "nosniff" },
@@ -12,6 +14,16 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  async rewrites() {
+    return {
+      // Use the existing request-rendered compatibility route for query-aware 308s.
+      // Corporate service pages retain their existing static generation behavior.
+      beforeFiles: [{
+        source: `/corporate/:slug(${[...legacyFssaiServiceSlugs, ...Object.keys(legacyFssaiServiceAliases)].join("|")})`,
+        destination: "/fssai/:slug",
+      }],
+    };
+  },
   async redirects() {
     return [
       {

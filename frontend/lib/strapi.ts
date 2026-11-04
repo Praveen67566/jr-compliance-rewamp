@@ -536,6 +536,18 @@ function mapNavigation(value: unknown, fallback: NavigationItem[]): NavigationIt
     })
     .filter((item): item is NavigationItem => Boolean(item));
 
+  // Keep the published header aligned with FSSAI's route family while older
+  // Site Setting records still place the category under Corporate.
+  const corporate = menu.find((item) => item.label === "Corporate");
+  const approval = menu.find((item) => item.label === "Approval");
+  const fssai = corporate?.categories?.find((category) => category.title === "FSSAI");
+  if (corporate && approval && fssai) {
+    corporate.categories = corporate.categories?.filter((category) => category !== fssai);
+    if (!approval.categories?.some((category) => category.title === "FSSAI")) {
+      approval.categories = [...(approval.categories ?? []), fssai];
+    }
+  }
+
   return menu.length ? menu : fallback;
 }
 

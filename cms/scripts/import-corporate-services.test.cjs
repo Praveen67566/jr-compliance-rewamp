@@ -19,6 +19,27 @@ function menu() {
   ];
 }
 
+test("keeps FSSAI canonical and menu links under Approval without moving customized groups", () => {
+  const rows = ["Fssai Basic Registration", "Fssai State", "Water Report"].map(title => ({ ...row, category: "FSSAI", title }));
+  const header = menu();
+  header.push({ label: "Approval", categories: [{ title: "FSSAI", logo: { id: 92 }, links: rows.map(item => ({ label: item.title, href: "/#services", target: "same_tab" })) }] });
+  const original = structuredClone(header);
+  const pages = { "fssai-service-page": [{ documentId: "basic", menuLabel: "Fssai Basic Registration", slug: "fssai-certificate" }] };
+  const plan = planImport(rows, pages, header, ["logo"]);
+  assert.equal(plan.actions[0].existing.documentId, "basic");
+  assert.equal(plan.actions[1].data.seo.canonicalUrl, "/approval/fssai-state");
+  assert.equal(plan.actions[2].data.seo.canonicalUrl, "/approval/water-report");
+  assert.deepEqual(plan.headerMenu.at(-1).categories[0].links.map(link => link.href), ["/approval/fssai-certificate", "/approval/fssai-state", "/approval/water-report"]);
+  assert.deepEqual(plan.headerMenu.slice(0, -1), original.slice(0, -1));
+  assert.deepEqual(plan.headerMenu.at(-1).categories[0].logo, { id: 92 });
+  assert.deepEqual(header, original);
+  const after = { "fssai-service-page": plan.actions.map((action, index) => action.existing ?? { documentId: `new-${index}`, ...action.data }) };
+  assert.equal(planImport(rows, after, plan.headerMenu, ["logo"]).linkChanges.length, 0);
+  const unmoved = structuredClone(original);
+  unmoved[0].categories.push(unmoved.pop().categories[0]);
+  assert.throws(() => planImport(rows, pages, unmoved, ["logo"]), /Expected one header link for FSSAI/);
+});
+
 test("formats the four source columns in one Extra Content entry with headings and native lists", () => {
   const data = pageData(row, ["logo-one", "logo-two"]);
   assert.equal(data.hero.description, row.heroDescription);

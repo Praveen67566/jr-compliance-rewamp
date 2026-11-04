@@ -433,10 +433,12 @@ template without borrowing Trademark Registration content.
 
 ### `fssai-service-page` — API: `api::fssai-service-page.fssai-service-page`
 
-One published record per approved FSSAI `/<family>/<slug>` route. The first
+One published record per approved FSSAI `/approval/<slug>` route. The first
 approved record is `fssai-certificate`. Later complete records can be created
 and published only in Strapi; they use the same fixed service-detail template
-without borrowing FSSAI Basic Registration content.
+without borrowing FSSAI Basic Registration content. The collection, document IDs,
+stored slugs, media, and publication state remain unchanged by the family move.
+FSSAI shares Approval slug uniqueness checks; its enquiries use `technical` routing.
 
 | Field | Strapi field | Rules |
 | --- | --- | --- |
@@ -533,7 +535,7 @@ field and validation rules as `mca-service-page`, including the four optional
 card sections, with `menuLabel` matching the Bureau of Indian Standards navbar
 label. The stored `slug` may be
 a flat route segment or a slash-separated nested Approval path and must be
-globally unique across all nine Approval service collections.
+globally unique across all ten Approval service collections.
 
 The Approval `slug` UID uses the route-safe pattern
 `^[A-Za-z0-9-_.~]+(?:/[A-Za-z0-9-_.~]+)*$`, so editors may enter nested paths
@@ -548,7 +550,7 @@ can be published only in Strapi and use the same fixed field and validation
 rules as `mca-service-page`, including the four optional card sections, with
 `menuLabel` matching the Pollution Advisory navbar label. The stored `slug` may
 be a flat route segment or a slash-separated nested Approval path and must be
-globally unique across all nine Approval service collections.
+globally unique across all ten Approval service collections.
 
 ### Empty CMS-only Approval collections
 
@@ -572,7 +574,7 @@ Strapi is unavailable, their paths return 404 by design. They are fixed
 detail-page families, not records in the separate Home Service Stack
 `service-category` collection.
 
-All nine Approval collections use the same fixed fields as the other
+All ten Approval collections use the same fixed fields as the other
 service-detail collections: required `title`, `menuLabel`, route-safe `slug`,
 and `hero`; optional `trustedLogos`, `overview`, `challenges`, `advantages`,
 `process`, `whyChoose`, `extraContent`, `extraContentSidebarHeader`,
@@ -599,7 +601,7 @@ is omitted without invalidating the rest of the service record.
    **YouTube Videos**, **Breakdown**, **Results Section**, **Ticker CTA**, the
    enabled **Sticky Bar**, and optional icons only when approved content is available.
 3. Enter a route-safe relative `slug` with no leading slash. Manually verify
-   that the full path is unique across all nine Approval collections because a
+   that the full path is unique across all ten Approval collections because a
    Strapi UID is unique only within its own collection.
 4. Save and publish the complete record.
 5. Open **Site Setting → Header Menu**, point the matching navigation link to
@@ -870,7 +872,7 @@ invent claims or silently repair source inconsistencies.
 | `/corporate/iec-registration` (Import Export Service) | `site/corporate/iec-registration.html` | Page-specific IEC SEO, hero and overview, four IEC challenges, four advantages, six service steps, Why JR cards, Eligibility/Documents/Who Needs It breakdown, five FAQs, and shared final CTA. Exclude copied Private Limited Company challenges, hidden Products/process/templates/resources, unrelated testimonials, the Webflow form, and all legacy UI/transport code. |
 | `/corporate/ayush-license` (Government License & Certification) | `site/corporate/ayush-license.html` | Page-specific Ayush SEO, hero and overview, four Ayush challenges, four advantages, six service steps, Why JR cards, Eligibility/Documents/Who Needs It breakdown, five FAQs, and shared final CTA. Exclude copied Private Limited Company challenges, hidden Products/process/templates/resources, unrelated testimonials, the Webflow form, and all legacy UI/transport code. |
 | `/corporate/trademark-registration` (IPR Services) | `site/corporate/trademark-registration.html` | Page-specific Trademark SEO, hero and overview, six post-application/legal consideration cards, five benefits, six service steps, six Pricing package cards carried in the fixed `whyChoose` slot, Eligibility/Documents/Who Needs It breakdown, five FAQs, and shared final CTA. Exclude duplicated Private Limited Company sections, placeholders, unrelated resources/testimonials, Webflow forms, and all legacy UI/transport code. |
-| `/corporate/fssai-certificate` (FSSAI) | `site/corporate/fssai-certificate.html` | Page-specific FSSAI SEO, hero and overview, four service-scope cards, four benefits, six service steps, three Why JR cards, Who Needs It/Eligibility/Documents breakdown, five FAQs, and shared final CTA. Do not use `site/approval/wpc-certification.html`: that legacy destination contains WPC ETA content rather than FSSAI content. Exclude placeholders, unrelated resources/testimonials, Webflow forms, and all legacy UI/transport code. |
+| `/approval/fssai-certificate` (FSSAI) | `site/corporate/fssai-certificate.html` | Page-specific FSSAI SEO, hero and overview, four service-scope cards, four benefits, six service steps, three Why JR cards, Who Needs It/Eligibility/Documents breakdown, five FAQs, and shared final CTA. Do not use `site/approval/wpc-certification.html`: that legacy destination contains WPC ETA content rather than FSSAI content. Exclude placeholders, unrelated resources/testimonials, Webflow forms, and all legacy UI/transport code. |
 | `/corporate/portfolio-manager-registration` (SEBI Business Registration) | `site/corporate/portfolio-manager-registration.html` | Page-specific Portfolio Manager Registration SEO, hero and overview, four challenges, four advantages, six service steps, four Why Choose JR Compliance cards, Eligibility/Documents/Who Needs It breakdown, five FAQs, and shared final CTA. Use the documented and FAQ-consistent `₹5 crore` net-worth requirement throughout rather than the source's isolated conflicting `₹2 crore` statement. Exclude duplicated Private Limited Company sections, placeholders, unrelated resources/testimonials, Webflow forms, and all legacy UI/transport code. |
 | `/corporate/gst-registration` (Tax and Accounting) | `site/corporate/gst-registration.html` | Page-specific GST SEO, hero and overview, four challenges, three advantages, six service steps, four Why JR cards, Who Needs/Eligibility/Documents breakdown, five FAQs, and shared final CTA. Exclude copied company-registration sections, hidden placeholders, unrelated resources/testimonials, Webflow forms, and all legacy UI/transport code. |
 | `/corporate/shop-and-establishment-act-registration` (Labour Compliance) | `site/corporate/shop-and-establishment-act-registration.html` | Page-specific Shop & Establishment SEO, hero and overview, four challenges, four advantages, six service steps, four source support statements carried in the fixed `whyChoose` slot, Eligibility/Documents/Who Needs breakdown, five FAQs, and shared final CTA. Exclude copied company-registration sections, hidden placeholders, unrelated resources/testimonials, Webflow forms, and all legacy UI/transport code. |

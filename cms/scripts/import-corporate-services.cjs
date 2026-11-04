@@ -150,7 +150,7 @@ function pageData(row, logoIds) {
     extraContent: [{ title: row.title, description: extraContentHtml(row) }],
     ...structuredClone(fixedContent),
     seo: { metaTitle: row.title, metaDescription: row.heroDescription,
-      canonicalUrl: `/corporate/${slug}` },
+      canonicalUrl: `/${row.category === "FSSAI" ? "approval" : "corporate"}/${slug}` },
   };
 }
 
@@ -173,13 +173,15 @@ function planImport(rows, pages, headerMenu, logoIds) {
       assert.ok(!occupied.has(data.slug), `Corporate slug collision: ${data.slug}`);
       occupied.add(data.slug);
     }
-    const group = corporate.categories?.find(item => normalize(item.title) === normalize(row.category));
+    const family = row.category === "FSSAI" ? "approval" : "corporate";
+    const parent = family === "approval" ? menu.find(item => item.label === "Approval") : corporate;
+    const group = parent?.categories?.find(item => normalize(item.title) === normalize(row.category));
     const links = group?.links?.filter(link => normalize(link.label) === normalize(row.title)) ?? [];
     assert.equal(links.length, 1, `Expected one header link for ${row.category} / ${row.title}`);
     // Preserve the twelve original pages and their existing navigation; repair
     // links for newly imported pages on a subsequent run after an interruption.
-    if (!existingSlugs[row.title]) {
-      const href = `/corporate/${existing?.slug ?? data.slug}`;
+    if (!existingSlugs[row.title] || row.category === "FSSAI") {
+      const href = `/${family}/${existing?.slug ?? data.slug}`;
       if (links[0].href !== href) {
         linkChanges.push({ label: row.title, before: links[0].href, after: href });
         links[0].href = href;

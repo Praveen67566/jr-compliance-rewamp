@@ -249,3 +249,185 @@ Keep the current indexing restrictions throughout this task. Enable public
 indexing separately using
 [replace-noindex-with-index-follow.md](replace-noindex-with-index-follow.md)
 only after the FSSAI launch checks pass.
+
+## Implementation status — 4 November 2026
+
+Repository routing and fallback/source-mirror navigation now assign the unchanged
+`fssai-service-page` collection to Approval. Direct `/corporate/<fssai-slug>`,
+`/corporate/fssai/<slug>`, and `/fssai/<slug>` entry points validate the complete,
+unique destination before returning 308, preserving repeated and empty queries.
+Later complete FSSAI records use Approval and retain categorized compatibility
+lookups automatically. The ten verified historical direct Corporate identities
+use a narrowly scoped internal rewrite to the existing request-rendered FSSAI
+compatibility route, which returns the single public 308 after validation. This
+keeps Corporate static generation intact and avoids request-query access during
+on-demand static rendering. Unknown direct Corporate URLs keep their 404 behavior;
+ambiguous Approval destinations also return 404. The seven known historical
+identities above normalize to Approval, including Water Report, with queries and
+fragments intact. No additional fallback records were created.
+
+The shared CMS navigation mapper also moves an older published Corporate FSSAI
+group into Approval when reading Site Setting. It preserves its labels, logo,
+service order and link targets, and leaves an existing Approval FSSAI group in
+place. This makes the frontend header correct before the separate CMS content
+publication; the stored CMS menu itself remains unchanged. Verified against the
+running local frontend: Corporate has no FSSAI group, Approval has exactly one,
+and all seven links use `/approval/`. The header regression tests, frontend
+typecheck and build pass.
+
+The historical importer now uses Approval for FSSAI canonical/menu links and
+requires the FSSAI group to be under Approval; it does not move or replace menus.
+The seed guard retains its exact historical Corporate menu signatures and draft
+protection. No importer, seed runner, deployment, indexing change, schema change,
+or CMS content write was performed.
+
+### Read-only CMS inspection
+
+The configured reader at **http://localhost:1337** initially returned
+`ECONNREFUSED`, then became available during validation. Every published result
+page in all ten Approval collections was read: **7 FSSAI + 64 other Approval
+records**, with **no FSSAI public-slug collisions** and no additional FSSAI records.
+All seven records contain their required fields; the frontend and HTTP checks
+below validate their complete shared-template mapping.
+
+| Document ID | Stored slug | Current published FSSAI navigation href | New href / SEO canonical |
+| --- | --- | --- | --- |
+| `ybhg7qw8fjy7oq3kj8ts7pxn` | `fssai-certificate` | `/corporate/fssai-certificate` | `/approval/fssai-certificate` |
+| `q4y7bo5f9xwo7me6jo9jk8ru` | `fssai-state` | `/corporate/fssai/fssai-state` | `/approval/fssai-state` |
+| `xie17enf9kaopy3mfj5bde0f` | `fssai-central` | `/corporate/fssai/fssai-central` | `/approval/fssai-central` |
+| `kok1n1qmekjda5lx1hpxastd` | `fssai-modification` | `/corporate/fssai/fssai-modification` | `/approval/fssai-modification` |
+| `uhf5x13rtxsfxce7peegy9cr` | `fssai-renewal` | `/corporate/fssai/fssai-renewal` | `/approval/fssai-renewal` |
+| `tetpelgkwfvj63b4ubxz04ng` | `fssai-return` | `/corporate/fssai/fssai-return` | `/approval/fssai-return` |
+| `i1vou7rn1t16xgsnp4ayvexc` | `water-report` | `/corporate/fssai/water-report` | `/approval/water-report` |
+
+The seven labels match the inventory above. The published Site Setting document
+is `v4w3aoaqq0bnefh0vukpja0a`; FSSAI is still under Corporate, at
+`headerMenu[0].categories[5]` (component `1999`, with no logo selected). Its links
+have the order in the table. Approval is `headerMenu[1]`, with eight existing
+categories; the proposed move appends FSSAI at index `8` without reordering them.
+
+The seed's historical labels were checked against these published records,
+verifying the following compatibility targets:
+
+| Historical alias | Verified current stored slug |
+| --- | --- |
+| `fssai-state-license` | `fssai-state` |
+| `fssai-central-license` | `fssai-central` |
+| `fssai-return-filing` | `fssai-return` |
+
+These aliases now resolve directly to Approval from the old Corporate and FSSAI
+category URLs, retaining destination validation and queries. Old signature values
+remain intact in the seed guard. The unrelated `/approval/wpc-certification`
+destination is untouched.
+
+A published-content audit across all **42** CMS content types used explicit
+schema-derived population and pagination. It found exactly **14 old FSSAI URL
+fields**: the seven menu hrefs above and `seo.canonicalUrl` on each listed FSSAI
+document (currently `/corporate/<stored-slug>`). No other matching URL fields or
+Markdown/HTML prose links were found. This is a local snapshot; recheck the
+selected release environment immediately before applying the plan.
+
+Separate draft reads found matching editable content for Site Setting and all
+seven FSSAI documents (ignoring version/component IDs and lifecycle timestamps).
+Site Setting's published and draft `updatedAt` both equal
+`2026-11-03T11:46:28.529Z`. No pending draft difference was observed; recheck
+before any write because editors may change content after this snapshot.
+
+### Targeted CMS update plan — prepared, not applied
+
+No environment was identified and authorized for content writes. Before applying:
+
+1. Identify the intended staging/content environment; take and verify the
+   database/media backup described in `prod.md`. Read all published FSSAI records
+   and Approval records with pagination. Record document IDs, slugs, completeness,
+   and all slug conflicts; resolve conflicts explicitly before publication.
+2. Snapshot the complete published Site Setting and its separate draft, including
+   component IDs, FSSAI logo relation, order, labels and targets. Compare all
+   editable fields and timestamps. If any pending editor change exists, preserve
+   it and coordinate the publication with its owner; do not publish it incidentally.
+3. In Content Manager, move the existing **Header Menu → Corporate → FSSAI**
+   category to the end of **Approval → Categories**, preserving the complete
+   category and its internal order. If FSSAI is duplicated or already moved,
+   inspect that state explicitly. Do not replace the menu with the source mirror.
+4. For each complete published record verified in step 1, update only its FSSAI
+   menu link to the matching new URL in the seven-service table above (and the
+   exact `/approval/<final-slug>` for verified additions). The exact local changes
+   are `links[0..6].href` on the moved category and `seo.canonicalUrl` on the seven
+   document IDs above; both use the table's new URL column. Preserve link labels,
+   targets, category logo, all other categories, settings and ordering. Missing,
+   draft, incomplete and unknown services must not gain active links.
+5. Audit published footer links, service cards, related guides/services, CTAs,
+   explicit SEO canonicals and URL-bearing structured data. Prepare an exact
+   document-ID/field-path/before/after list using only verified FSSAI identities.
+   Review Markdown/HTML hyperlinks separately; runtime link-field normalization
+   deliberately leaves prose alone. Recheck drafts per affected document, and
+   save/publish only the reviewed URL edits using supported Strapi operations.
+6. Review the resulting content diff and publication state, then publish the
+   intended changes in the authorized environment. Verify signed cache invalidation
+   or wait for the 60-second interval. Check all seven pages plus verified additions,
+   old URL 308s, desktop/mobile navigation, canonical/OG URLs, sitemap and both
+   crawler exports against that CMS. Retain the exact pre-change snapshots for
+   targeted rollback without overwriting newer editor work.
+
+FSSAI enquiries inherit Approval's **technical** destination. Automated checks
+use mocked content and receivers; no production test lead was created. Business
+confirmation of this destination and the CMS-backed release checks remain pending.
+
+### Validation results
+
+- Frontend `npm run typecheck` and `npm run build`: passed.
+- Frontend `npm test`: **154 passed, 1 failed**. The existing
+  `tests/home-faq-rotation.test.ts:22` expects `60_000`, while the unchanged
+  homepage FAQ component exports `2_000` in the original repository revision.
+  That unrelated mismatch was left unchanged. All FSSAI checks passed.
+- CMS `npm run build`: passed. `node --test
+  scripts/import-corporate-services.test.cjs`: **8 passed**.
+  `../frontend/node_modules/.bin/tsx --test scripts/fssai-navigation.test.cjs`
+  from `cms`: **3 passed**.
+- Built frontend HTTP checks against the available local CMS: all **7** new
+  Approval pages returned **200** with their own existing titles; all **30**
+  old direct/categorized/alias URLs returned one **308** to the final Approval
+  path, preserving repeated tags, empty query values and campaign attribution.
+  Four unknown destinations returned **404**. Approval/FSSAI breadcrumbs,
+  canonical and Open Graph URLs, sitemap and both crawler exports passed;
+  the configured local `SITE_URL` origin was retained. Six unrelated routes and
+  both existing LMPC/model-approval redirects passed. Noindex headers remained.
+- Draft, incomplete, noindex, conflicting, future CMS-only and CMS-unavailable
+  behavior was checked with fixtures; only Basic Registration has a fallback.
+  Enquiry tests verify `technical` classification without contacting production
+  lead intake. Live CMS menu movement, its desktop/mobile presentation, signed
+  publication invalidation and staging receiver delivery remain release checks.
+
+### Changed files
+
+Only the following implementation, regression-test and documentation files were
+changed for this move. Existing user edits and transfer logs were preserved.
+
+```text
+frontend/lib/service-route-config.ts
+frontend/lib/service-routes.ts
+frontend/lib/public-paths.ts
+frontend/lib/strapi.ts
+frontend/next.config.ts
+frontend/app/corporate/[slug]/[service]/page.tsx
+frontend/data/homepage-fallback.ts
+frontend/tests/service-route-hierarchy.test.ts
+frontend/tests/public-service-routing.test.ts
+frontend/tests/public-paths.test.ts
+frontend/tests/llms.test.ts
+frontend/tests/leads.test.ts
+frontend/tests/service-detail-content.test.ts
+cms/src/seed/content.ts
+cms/src/seed/index.ts
+cms/scripts/import-corporate-services.cjs
+cms/scripts/import-corporate-services.test.cjs
+cms/scripts/fssai-navigation.test.cjs
+context.md
+explaner_frontend.md
+explainer_cms.md
+frontend/README.md
+cms/README.md
+cms/CONTENT_MODEL.md
+maintenance-guides/corporate-approval-sticky-bar-content.md
+maintenance-guides/move-fssai-to-approval-bootstrap.md
+```

@@ -19,12 +19,12 @@ routes, and the three completed fixed legal routes:
 - `/terms-and-conditions`
 - `/purchase-and-billing`
 - `/corporate/[slug]` for the nineteen approved Company Registration
-  slugs, DSC, IEC Code, Ayush License, Trademark Registration, FSSAI Basic
-  Registration, Portfolio Manager Registration, GST Registration, Shop &
+  slugs, DSC, IEC Code, Ayush License, Trademark Registration,
+  Portfolio Manager Registration, GST Registration, Shop &
   Establishment Registration, and MSME Registration
-- `/approval/<slug>` for ISI
+- `/approval/<slug>` for FSSAI, ISI
   Certification, EPR Certification, and later complete CMS-only records across
-  all nine Approval families: Bureau of Indian Standards, Pollution Advisory,
+  all ten Approval families: FSSAI, Bureau of Indian Standards, Pollution Advisory,
   Telecommunication Engineering Centre, Wireless Planning and Coordination,
   Bureau of Energy Efficiency, CDSCO Registration, AERB Approval, LMPC
   Certification, and STQC
@@ -61,6 +61,14 @@ The main flow is:
 4. If Strapi is missing or fails, local fallback data is used when available;
    CMS-only pages without a fallback return 404.
 5. Page components render inside `components/site-page-shell.tsx`, which adds the shared header and footer.
+
+FSSAI now belongs to Approval at `/approval/[slug]`, including Water Report and
+future complete published records in the unchanged `fssai-service-page` collection.
+Old direct Corporate and categorized FSSAI URLs redirect permanently after
+validating the destination; Basic Registration remains the only local fallback.
+Approval URLs send consultations as `technical`. The targeted CMS navigation
+publication and release-environment checks remain pending; see the
+[FSSAI implementation status](maintenance-guides/move-fssai-to-approval-bootstrap.md#implementation-status--4-november-2026).
 
 ## Root files
 
@@ -588,7 +596,7 @@ cached Global country and certificate loaders as `getGlobalCountryPage`,
   resolution for nested CMS identities, and query-preserving redirect paths.
 
 `frontend/lib/service-routes.ts`
-: Typed registry for the ten Corporate and nine Approval category identifiers,
+: Typed registry for the nine Corporate and ten Approval category identifiers,
   labels, content types, page loaders, and slug loaders. It builds categorized
   canonical paths and resolves unique legacy service paths for permanent 308
   redirects without changing CMS-managed service slugs.

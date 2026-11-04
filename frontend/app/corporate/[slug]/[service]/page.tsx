@@ -1,7 +1,7 @@
 import { notFound, permanentRedirect } from "next/navigation";
 
 import { redirectPath, type RouteSearchParams } from "@/lib/public-paths";
-import { getCategorizedServicePage } from "@/lib/service-routes";
+import { getCategorizedPublicServicePage, getCategorizedServicePage } from "@/lib/service-routes";
 
 export const revalidate = 60;
 export const dynamicParams = true;
@@ -12,7 +12,9 @@ export default async function Page({ params, searchParams }: {
   searchParams: Promise<RouteSearchParams>;
 }) {
   const { slug: category, service } = await params;
-  const resolved = await getCategorizedServicePage("corporate", category, service);
+  const resolved = category === "fssai"
+    ? await getCategorizedPublicServicePage(category, service)
+    : await getCategorizedServicePage("corporate", category, service);
   if (!resolved) notFound();
   permanentRedirect(redirectPath(resolved.canonicalPath, await searchParams));
 }

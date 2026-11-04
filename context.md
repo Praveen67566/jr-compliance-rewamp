@@ -9,9 +9,9 @@ standalone, responsive Next.js application with a Strapi v5 content boundary.
 The completed scope is the new home page, the shared-chrome editorial routes
 (`/about-us`, `/careers`, `/contact-us`), and the nineteen Company Registration
 detail routes plus the first MCA Services, Import Export Service, Government
-License & Certification, IPR Services, FSSAI, SEBI Business Registration, Tax
+License & Certification, IPR Services, SEBI Business Registration, Tax
 and Accounting, Labour Compliance, and Fund Raising routes under
-`/corporate/[slug]`. Bureau of Indian Standards, Pollution Advisory and the
+`/corporate/[slug]`. FSSAI, Bureau of Indian Standards, Pollution Advisory and the
 seven CMS-only Approval families use `/approval/[slug]`. Categories remain
 internal to the CMS/navigation registry, without a public category segment.
 Service slugs must be unique across collections within each family. Nested
@@ -37,6 +37,14 @@ The footer legal routes `/privacy-policy`, `/terms-and-conditions`, and
 `/purchase-and-billing` are also complete. They use one fixed `legal-page`
 collection, one typed semantic Blocks fallback/migration mirror, and one shared
 responsive legal template; they are not a generic page builder.
+
+FSSAI now belongs to Approval at `/approval/[slug]`, including Water Report and
+future complete published records in the unchanged `fssai-service-page` collection.
+Old direct Corporate and categorized FSSAI URLs redirect permanently after
+validating the destination; Basic Registration remains the only local fallback.
+Approval URLs send consultations as `technical`. The targeted CMS navigation
+publication and release-environment checks remain pending; see the
+[FSSAI implementation status](maintenance-guides/move-fssai-to-approval-bootstrap.md#implementation-status--4-november-2026).
 
 ## Non-negotiable rules
 
@@ -186,7 +194,7 @@ responsive legal template; they are not a generic page builder.
   fallbacks, migration mirrors, cache tags, and complete approved legacy
   content.
 - The first IPR Services page, `/ipr-services/trademark-registration`,
-  first FSSAI page, `/fssai/fssai-certificate`, and first SEBI
+  first FSSAI page, `/approval/fssai-certificate`, and first SEBI
   Business Registration page,
   `/sebi-business-registration/portfolio-manager-registration`,
   follow the same pattern

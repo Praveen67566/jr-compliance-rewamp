@@ -45,7 +45,7 @@ import {
   type FixedServiceContentType,
   type ServiceRouteFamily,
 } from "@/lib/service-route-config";
-import { publicServiceSlug, uniqueServicePath, uniquePublicLinks } from "@/lib/public-paths";
+import { normalizeFssaiSlug, publicServiceSlug, uniqueServicePath, uniquePublicLinks } from "@/lib/public-paths";
 import type { CompanyRegistrationPageContent } from "@/lib/types";
 
 export type { FixedServiceContentType, ServiceRouteFamily } from "@/lib/service-route-config";
@@ -232,7 +232,7 @@ export const getCategorizedPublicServicePage = cache(async function getCategoriz
   if (!category || !isValidServicePath("corporate", slug)) return null;
 
   const paths = (await category.loadSlugs()).filter((path) => isValidServicePath(category.family, path));
-  const servicePath = uniqueServicePath(paths, slug);
+  const servicePath = uniqueServicePath(paths, categorySlug === "fssai" ? normalizeFssaiSlug(slug) : slug);
   return servicePath ? getCategorizedServicePage(category.family, categorySlug, servicePath) : null;
 });
 

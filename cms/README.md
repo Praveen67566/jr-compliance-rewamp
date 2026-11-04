@@ -13,7 +13,7 @@ This is the Strapi v5 TypeScript CMS for the active JR Compliance routes:
 - `/corporate/iec-registration` — `import-export-service-page` collection (first approved Import Export Service route)
 - `/corporate/ayush-license` — `government-license-certification-page` collection (first approved Government License & Certification route)
 - `/corporate/trademark-registration` — `ipr-service-page` collection (first approved IPR Services route)
-- `/corporate/fssai-certificate` — `fssai-service-page` collection (first approved FSSAI route)
+- `/approval/fssai-certificate` — `fssai-service-page` collection (first approved FSSAI route)
 - `/corporate/portfolio-manager-registration` — `sebi-business-registration-page` collection (first approved SEBI Business Registration route)
 - `/corporate/gst-registration` — `tax-accounting-page` collection (first approved Tax and Accounting route)
 - `/corporate/shop-and-establishment-act-registration` — `labour-compliance-page` collection (first approved Labour Compliance route)
@@ -33,7 +33,7 @@ This is the Strapi v5 TypeScript CMS for the active JR Compliance routes:
 
 Later approved records in any of the eighteen extensible service families use
 their dedicated fixed collection contract. Corporate records render at
-globally unique `/corporate/[slug]` routes. All nine Approval families—Bureau
+globally unique `/corporate/[slug]` routes. All ten Approval families—FSSAI, Bureau
 of Indian Standards, Pollution Advisory, Telecommunication Engineering Centre,
 Wireless Planning and Coordination, Bureau of Energy Efficiency, CDSCO
 Registration, AERB Approval, LMPC Certification, and STQC—render through
@@ -42,7 +42,15 @@ path without a leading slash. Flat values such as `isi-certificate` and
 slash-separated nested values such as
 `bis-certification/fmcs-bis-certification` are accepted; each segment may
 contain only letters, numbers, `-`, `_`, `.`, and `~`. Manually keep the full
-route path unique across all nine Approval collections.
+route path unique across all ten Approval collections.
+
+FSSAI now belongs to Approval at `/approval/[slug]`, including Water Report and
+future complete published records in the unchanged `fssai-service-page` collection.
+Old direct Corporate and categorized FSSAI URLs redirect permanently after
+validating the destination; Basic Registration remains the only local fallback.
+Approval URLs send consultations as `technical`. The targeted CMS navigation
+publication and release-environment checks remain pending; see the
+[FSSAI implementation status](../maintenance-guides/move-fssai-to-approval-bootstrap.md#implementation-status--4-november-2026).
 
 The exact editorial contract lives in [CONTENT_MODEL.md](./CONTENT_MODEL.md).
 Next.js owns the Compliance Network layout, interaction, and motion; Strapi owns
@@ -321,7 +329,7 @@ three matching internal routes and publish Site Setting.
 To publish the first page in one of the seven empty Approval collections, open
 that collection in Content Manager, create a record, and complete every fixed
 section, `menuLabel`, SEO field, `sortOrder`, and route-safe `slug`. Verify that
-the full slug is unique across all nine Approval collections, then save and
+the full slug is unique across all ten Approval collections, then save and
 publish the record. Update the matching **Site Setting → Header Menu** link to
 `/approval/<slug>` and publish Site Setting. The shared route and sitemap
 discover the record automatically; no fallback, seed file, React page, or code

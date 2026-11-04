@@ -17,7 +17,7 @@ The CMS provides content for:
 - `/corporate/iec-registration` through `import-export-service-page`
 - `/corporate/ayush-license` through `government-license-certification-page`
 - `/corporate/trademark-registration` through `ipr-service-page`
-- `/corporate/fssai-certificate` through `fssai-service-page`
+- `/approval/fssai-certificate` through `fssai-service-page`
 - `/corporate/portfolio-manager-registration` through `sebi-business-registration-page`
 - `/corporate/gst-registration` through `tax-accounting-page`
 - `/corporate/shop-and-establishment-act-registration` through `labour-compliance-page`
@@ -94,6 +94,14 @@ The main CMS flow is:
    country/certificate route segments.
 4. `cms/src/revalidation.ts` can notify Next.js after publish changes.
 5. Next.js revalidates the affected cache tags and fetches fresh CMS content.
+
+FSSAI now belongs to Approval at `/approval/[slug]`, including Water Report and
+future complete published records in the unchanged `fssai-service-page` collection.
+Old direct Corporate and categorized FSSAI URLs redirect permanently after
+validating the destination; Basic Registration remains the only local fallback.
+Approval URLs send consultations as `technical`. The targeted CMS navigation
+publication and release-environment checks remain pending; see the
+[FSSAI implementation status](maintenance-guides/move-fssai-to-approval-bootstrap.md#implementation-status--4-november-2026).
 
 ## Root files
 
@@ -349,9 +357,10 @@ is the first approved record; later complete records are added and published in
 Strapi without a new frontend route.
 
 `cms/src/api/fssai-service-page/`
-: Dedicated fixed detail-page records for FSSAI. FSSAI Basic Registration is
-the first approved record; later complete records are added and published in
-Strapi without a new frontend route.
+: Dedicated fixed detail-page records for FSSAI under `/approval/[slug]`. FSSAI
+Basic Registration is the only local fallback; later complete records, including
+Water Report, are published in Strapi without a new frontend route. Collection,
+document IDs, stored slugs, content and publication state stay unchanged.
 
 `cms/src/api/sebi-business-registration-page/`
 : Dedicated fixed detail-page records for SEBI Business Registration. Portfolio

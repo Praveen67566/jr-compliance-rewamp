@@ -1,4 +1,4 @@
-import { serviceCategory } from "@/lib/service-route-config";
+import { legacyFssaiServiceAliases, legacyFssaiServiceSlugs, serviceCategory } from "@/lib/service-route-config";
 
 export type PublicGlobalLink = {
   kind: "country" | "certificate";
@@ -38,6 +38,13 @@ export function redirectPath(pathname: string, searchParams: RouteSearchParams):
   return query.size ? `${pathname}?${query}` : pathname;
 }
 
+const legacyFssaiSlugs = new Set<string>(legacyFssaiServiceSlugs);
+const legacyFssaiAliases = new Map<string, string>(Object.entries(legacyFssaiServiceAliases));
+
+export function normalizeFssaiSlug(slug: string): string {
+  return legacyFssaiAliases.get(slug) ?? slug;
+}
+
 export function publicHref(
   href: string,
   siteOrigin?: string,
@@ -64,11 +71,16 @@ export function publicHref(
   if ((family === "globals" || family === "global") && categorySlug) {
     pathname = `/global/${publicServiceSlug(segments.slice(1).join("/"))}`;
   } else if (family === "corporate" || family === "approval") {
-    pathname = `/${family}/${publicServiceSlug(segments.slice(1).join("/"))}`;
+    const movedFssai = family === "corporate" && (
+      (segments.length === 2 && legacyFssaiSlugs.has(normalizeFssaiSlug(categorySlug))) ||
+      (categorySlug === "fssai" && rest.length === 1)
+    );
+    const slug = publicServiceSlug(segments.slice(1).join("/"));
+    pathname = `/${movedFssai ? "approval" : family}/${movedFssai ? normalizeFssaiSlug(slug) : slug}`;
   } else {
     const category = serviceCategory(family);
     if (category && categorySlug && !rest.length) {
-      pathname = `/${category.family}/${categorySlug}`;
+      pathname = `/${category.family}/${category.categorySlug === "fssai" ? normalizeFssaiSlug(categorySlug) : categorySlug}`;
     } else {
       const matches = globalEntries.filter((entry) => entry.kind === "country"
         ? segments.length === 1 && entry.country === family

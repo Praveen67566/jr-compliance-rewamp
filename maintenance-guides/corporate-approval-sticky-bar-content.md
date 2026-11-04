@@ -12,6 +12,11 @@ This document makes no frontend, schema, fallback, navigation, or CMS-record cha
 - Service names and stored slugs come from the published CMS records, including imported services beyond the bundled frontend fallbacks. Category labels come from `frontend/lib/service-route-config.ts`.
 - This is a local content snapshot. The local CMS HTTP server was unavailable during preparation, so public-page rendering and the deployed CMS were not verified.
 
+The repository moved FSSAI to `/approval/[slug]` on **4 November 2026**. The
+FSSAI URLs and family totals below remain the historical 31 October snapshot;
+CMS content publication is pending. See the
+[FSSAI implementation status](move-fssai-to-approval-bootstrap.md#implementation-status--4-november-2026).
+
 Home, About, Careers, Contact, legal, thank-you, and Global pages are outside this guide.
 Category names are internal groups; do not add category segments to the public URLs.
 

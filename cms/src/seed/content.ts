@@ -111,11 +111,6 @@ export const initialSite = {
           ["Design Registration", "/#services"], ["Patent Registration", "/#services"],
           ["Legal Agreement", "/#services"], ["Logo Designing", "/#services"],
         ]),
-        menuCategory("FSSAI", [
-          ["Fssai Basic Registration", "/corporate/fssai-certificate"], ["Fssai State", "/#services"],
-          ["Fssai Central", "/#services"], ["Fssai Modification", "/#services"],
-          ["Fssai Renewal", "/#services"], ["Fssai Return", "/#services"], ["Water Report", "/#services"],
-        ]),
         menuCategory("SEBI Business Registration", [["Portfolio Manager Registration", "/corporate/portfolio-manager-registration"]]),
         menuCategory("Tax and Accounting", [
           ["GST Registration", "/corporate/gst-registration"], ["GST Return", "/#services"],
@@ -192,6 +187,11 @@ export const initialSite = {
           ["Information Security Testing", "/stqc/information-security-testing"], ["e-Procurement (ePS)", "/stqc/e-procurement-certification"],
           ["QR Code Scanner", "/stqc/qr-code-scanner-certification"], ["IoT System Certification", "/stqc/iot-system-certification"],
           ["NCMC Certification", "/stqc/ncmc-certification"], ["Toll Management (TMS)", "/stqc/toll-management-certification"],
+        ]),
+        menuCategory("FSSAI", [
+          ["Fssai Basic Registration", "/approval/fssai-certificate"], ["Fssai State", "/#services"],
+          ["Fssai Central", "/#services"], ["Fssai Modification", "/#services"],
+          ["Fssai Renewal", "/#services"], ["Fssai Return", "/#services"], ["Water Report", "/#services"],
         ]),
       ],
     },

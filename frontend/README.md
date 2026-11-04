@@ -5,9 +5,9 @@ home page, `/about-us`, `/careers`, `/contact-us`, the three fixed footer/legal
 routes (`/privacy-policy`, `/terms-and-conditions`, and
 `/purchase-and-billing`), and nineteen Company Registration pages plus the
 first MCA Services, Import Export Service, Government License & Certification,
-IPR Services, FSSAI, and SEBI Business Registration, Tax and Accounting,
+IPR Services and SEBI Business Registration, Tax and Accounting,
 Labour Compliance, and Fund Raising pages under
-`/corporate/[slug]`, plus ISI Certification and EPR Certification at
+`/corporate/[slug]`, plus FSSAI, ISI Certification and EPR Certification at
 `/approval/[slug]`. Category names are internal CMS/navigation groups.
 It is intentionally separate from the legacy Webflow export in `../site`. The
 shared public detail route is also connected to seven empty CMS-only collections for
@@ -33,6 +33,14 @@ Existing nested Approval identities retain their stored value and expose only
 the final service slug. Slugs must be unique across all collections in the
 same family; conflicts return 404 and are excluded from static generation and
 the sitemap. The same slug may exist once in Corporate and once in Approval.
+
+FSSAI now belongs to Approval at `/approval/[slug]`, including Water Report and
+future complete published records in the unchanged `fssai-service-page` collection.
+Old direct Corporate and categorized FSSAI URLs redirect permanently after
+validating the destination; Basic Registration remains the only local fallback.
+Approval URLs send consultations as `technical`. The targeted CMS navigation
+publication and release-environment checks remain pending; see the
+[FSSAI implementation status](../maintenance-guides/move-fssai-to-approval-bootstrap.md#implementation-status--4-november-2026).
 
 Global country landings and certificates share `/global/<slug>`. Certificate
 country relationships stay in Strapi. Certificate slugs must be unique across
@@ -116,8 +124,8 @@ configuration or the Strapi token.
   `cdsco-registration-page`, `aerb-approval-page`,
   `lmpc-certification-page`, `stqc-page`, `global-country-page`, and
   `global-certificate-page` collection entries into the UI contracts.
-- `lib/service-routes.ts` is the typed frontend registry for all ten Corporate
-  and nine Approval category identifiers, labels, collection loaders, canonical
+- `lib/service-routes.ts` is the typed frontend registry for all nine Corporate
+  and ten Approval category identifiers, labels, collection loaders, canonical
   paths, and unique legacy-route resolution. CMS service slugs remain unchanged.
 - Legal reads filter one of the three fixed slugs, request only published
   records, explicitly populate the ordered legal sections and SEO share image,

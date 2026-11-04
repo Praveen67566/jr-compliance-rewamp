@@ -54,7 +54,7 @@ const expectedRegistry = [
     "getIprServiceSlugs",
   ],
   [
-    "corporate",
+    "approval",
     "fssai-service-page",
     "fssai",
     "FSSAI",
@@ -181,8 +181,8 @@ describe("fixed service route hierarchy", () => {
 
     assert.deepEqual(mappings, expectedRegistry);
     assert.equal(mappings.length, 19);
-    assert.equal(mappings.filter(([family]) => family === "corporate").length, 10);
-    assert.equal(mappings.filter(([family]) => family === "approval").length, 9);
+    assert.equal(mappings.filter(([family]) => family === "corporate").length, 9);
+    assert.equal(mappings.filter(([family]) => family === "approval").length, 10);
     assert.equal(new Set(mappings.map(([, , slug]) => slug)).size, 19);
     assert.equal(new Set(mappings.map(([, contentType]) => contentType)).size, 19);
   });

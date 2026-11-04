@@ -13,6 +13,9 @@ describe("leadTypeFromPath", () => {
   const cases = [
     ["/approval", "technical"],
     ["/approval/isi-certificate", "technical"],
+    ["/approval/fssai-certificate", "technical"],
+    ["/approval/water-report", "technical"],
+    ["/fssai/fssai-state", "technical"],
     ["/approval/approval/isi-certificate", "technical"],
     ["/corporate", "corporate"],
     ["/corporate/private-limited-company", "corporate"],

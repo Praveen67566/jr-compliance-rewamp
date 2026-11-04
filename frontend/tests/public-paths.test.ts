@@ -41,6 +41,36 @@ describe("direct family URLs", () => {
     ]) assert.equal(publicHref(href, "https://test.jrcompliance.com"), href);
   });
 
+  it("moves known FSSAI links, including Water Report and verified historical aliases", () => {
+    const slugs = ["fssai-certificate", "fssai-state", "fssai-central", "fssai-modification", "fssai-renewal", "fssai-return", "water-report"];
+    const suffix = "?utm_source=google&tag=one&tag=two&empty=#faq";
+    for (const slug of slugs) {
+      for (const prefix of ["/corporate/", "/corporate/fssai/", "/fssai/", "/approval/"]) {
+        assert.equal(publicHref(`${prefix}${slug}${suffix}`), `/approval/${slug}${suffix}`);
+      }
+    }
+    assert.equal(publicHref("https://www.jrcompliance.com/corporate/water-report#scope"), "/approval/water-report#scope");
+    assert.equal(publicHref("/corporate/fssai/new-editor-service"), "/approval/new-editor-service");
+    for (const [alias, slug] of [["fssai-state-license", "fssai-state"], ["fssai-central-license", "fssai-central"], ["fssai-return-filing", "fssai-return"]]) {
+      for (const prefix of ["/corporate/", "/corporate/fssai/", "/fssai/"]) {
+        assert.equal(publicHref(`${prefix}${alias}${suffix}`), `/approval/${slug}${suffix}`);
+      }
+    }
+    for (const href of ["/corporate/fssai-unknown", "/corporate/unrelated/water-report", "https://other.example/corporate/water-report", "/uploads/fssai-certificate.svg", "/approval/wpc-certification"]) {
+      assert.equal(publicHref(href), href === "/corporate/unrelated/water-report" ? "/corporate/water-report" : href);
+    }
+    const original = {
+      href: "/corporate/water-report#scope", canonicalUrl: "/corporate/fssai-state",
+      description: "[Water Report](/corporate/water-report)", media: { url: "/uploads/fssai.svg" },
+    };
+    const normalized = publicContentLinks(original, "https://www.jr.test");
+    assert.equal(normalized.href, "/approval/water-report#scope");
+    assert.equal(normalized.canonicalUrl, "/approval/fssai-state");
+    assert.equal(normalized.description, original.description);
+    assert.deepEqual(normalized.media, original.media);
+    assert.equal(original.href, "/corporate/water-report#scope");
+  });
+
   it("excludes every owner of a colliding direct URL", () => {
     const duplicate = { ...entries[0], categorySlug: "mca-services" };
     assert.deepEqual(uniquePublicLinks([...entries, duplicate]), [entries[1]]);

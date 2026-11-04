@@ -241,6 +241,22 @@ function previousCategorizedHeaderMenu(
 ): ComparableHeaderItem[] {
   const menu = comparableHeaderMenu(initialSite.headerMenu) ?? [];
 
+  // Reconstruct the historical Corporate placement for exact-signature checks.
+  // The current source mirror puts FSSAI under Approval; old signatures must not change.
+  const corporate = menu.find((item) => item.label === "Corporate");
+  const approval = menu.find((item) => item.label === "Approval");
+  const fssai = approval?.categories?.find((category) => category.title === "FSSAI");
+  if (corporate?.categories && approval?.categories && fssai) {
+    approval.categories = approval.categories.filter((category) => category !== fssai);
+    corporate.categories.splice(
+      corporate.categories.findIndex((category) => category.title === "IPR Services") + 1,
+      0,
+      { ...fssai, links: fssai.links.map((link) => ({
+        ...link, href: link.href?.replace("/approval/fssai-certificate", "/corporate/fssai-certificate"),
+      })) },
+    );
+  }
+
   return menu.map((item) => ({
     ...item,
     ...(item.categories

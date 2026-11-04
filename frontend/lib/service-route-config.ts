@@ -5,7 +5,7 @@ export const serviceRouteDefinitions = [
   { family: "corporate", contentType: "import-export-service-page", categorySlug: "import-export", categoryLabel: "Import Export" },
   { family: "corporate", contentType: "government-license-certification-page", categorySlug: "government-license-certification", categoryLabel: "Government License & Certification" },
   { family: "corporate", contentType: "ipr-service-page", categorySlug: "ipr-services", categoryLabel: "IPR Services" },
-  { family: "corporate", contentType: "fssai-service-page", categorySlug: "fssai", categoryLabel: "FSSAI" },
+  { family: "approval", contentType: "fssai-service-page", categorySlug: "fssai", categoryLabel: "FSSAI" },
   { family: "corporate", contentType: "sebi-business-registration-page", categorySlug: "sebi-business-registration", categoryLabel: "SEBI Business Registration" },
   { family: "corporate", contentType: "tax-accounting-page", categorySlug: "tax-accounting", categoryLabel: "Tax & Accounting" },
   { family: "corporate", contentType: "labour-compliance-page", categorySlug: "labour-compliance", categoryLabel: "Labour Compliance" },
@@ -24,6 +24,19 @@ export const serviceRouteDefinitions = [
 export type ServiceRouteDefinition = (typeof serviceRouteDefinitions)[number];
 export type ServiceRouteFamily = ServiceRouteDefinition["family"];
 export type FixedServiceContentType = ServiceRouteDefinition["contentType"];
+
+/** Historical FSSAI identities are compatibility inputs, never page discovery. */
+export const legacyFssaiServiceSlugs = [
+  "fssai-certificate", "fssai-state", "fssai-central", "fssai-modification",
+  "fssai-renewal", "fssai-return", "water-report",
+] as const;
+
+/** Historical seed labels checked against the published local records. */
+export const legacyFssaiServiceAliases = {
+  "fssai-state-license": "fssai-state",
+  "fssai-central-license": "fssai-central",
+  "fssai-return-filing": "fssai-return",
+} as const;
 
 export function serviceCategory(categorySlug: string): ServiceRouteDefinition | undefined {
   return serviceRouteDefinitions.find((category) => category.categorySlug === categorySlug);

@@ -106,4 +106,4 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Now i want to transfer Whole FSSAI section into approval with all the pages. is this feasible approach.
+Now in maintenance-guides you have to implement move-fssai-to-approval-bootstrap.md and only do this nothing else i don't want anything else to be changed.

@@ -82,6 +82,13 @@ const server = createServer((request, response) => {
     }
     if (url.pathname === "/api/mca-service-pages") data = [service("collision")];
     if (url.pathname === "/api/lmpc-certification-pages") data = [service("lmpc/packaged-commodity-registration")];
+    if (url.pathname === "/api/fssai-service-pages") data = [
+      ...["fssai-certificate", "fssai-state", "fssai-central", "fssai-modification", "fssai-renewal", "fssai-return", "water-report"].map((slug) => service(slug)),
+      service("food-hidden", { seo: { robots: "noindex,follow" } }),
+      service("food-draft", { publishedAt: null }), service("food-incomplete", { hero: null }),
+      service("food-collision"),
+    ];
+    if (url.pathname === "/api/pollution-advisory-pages") data = [service("food-collision")];
     if (url.pathname === "/api/global-country-pages") data = [globalPage("india"), globalPage("global-collision")];
     if (url.pathname === "/api/global-certificate-pages") data = [globalPage("global-certificate"), globalPage("global-collision")];
   }
@@ -148,6 +155,20 @@ describe("published CMS crawler files", () => {
     assert.match(body, /Canonical URL: https:\/\/www\.jr\.test\/approval\/packaged-commodity-registration/);
     assert.match(body, /\[Related service\]\(https:\/\/www\.jr\.test\/corporate\/company-beta\)/);
     assert.doesNotMatch(body, /PRIVATE_SCRIPT|PRIVATE_EDITOR_NOTES|<script|<h3|<ul|old-category/);
+  });
+
+  it("exports FSSAI only under Approval in both crawler files with the existing exclusions", async () => {
+    for (const full of [false, true]) {
+      const response = await llms.crawlerTextResponse(full);
+      assert.equal(response.status, 200);
+      const body = await response.text();
+      assert.ok(body.includes("Approval — FSSAI"));
+      for (const slug of ["fssai-certificate", "fssai-state", "fssai-central", "fssai-modification", "fssai-renewal", "fssai-return", "water-report"]) {
+        assert.ok(body.includes(`https://www.jr.test/approval/${slug}`));
+        assert.ok(!body.includes(`/corporate/${slug}`));
+      }
+      assert.doesNotMatch(body, /food-hidden|food-draft|food-incomplete|food-collision|Corporate — FSSAI/);
+    }
   });
 
   it("reads newly published content without a rebuild or a local fallback", async () => {

@@ -1232,7 +1232,9 @@ describe("service-detail content mirrors", () => {
       (category) => category.title === "Government License & Certification",
     );
     const ipr = corporate?.categories?.find((category) => category.title === "IPR Services");
-    const fssai = corporate?.categories?.find((category) => category.title === "FSSAI");
+    const approval = fallbackHomepage.navigation.find((item) => item.label === "Approval");
+    const fssai = approval?.categories?.find((category) => category.title === "FSSAI");
+    assert.ok(!corporate?.categories?.some((category) => category.title === "FSSAI"));
     const sebi = corporate?.categories?.find(
       (category) => category.title === "SEBI Business Registration",
     );
@@ -1255,7 +1257,7 @@ describe("service-detail content mirrors", () => {
     assert.ok(government?.links.slice(1).every((link) => link.href === "/#services"));
     assert.equal(ipr?.links[0]?.href, "/corporate/trademark-registration");
     assert.ok(ipr?.links.slice(1).every((link) => link.href === "/#services"));
-    assert.equal(fssai?.links[0]?.href, "/corporate/fssai-certificate");
+    assert.equal(fssai?.links[0]?.href, "/approval/fssai-certificate");
     assert.ok(fssai?.links.slice(1).every((link) => link.href === "/#services"));
     assert.equal(
       sebi?.links[0]?.href,
