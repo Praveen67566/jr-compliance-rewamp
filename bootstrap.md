@@ -106,14 +106,183 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Apart from this task don't change anything else in existing flow:-
+This change is frontend only i don't want exiting website flow to be affected add only this new add page.
 
-1. Integrate the provided Google Tag Manager script into the existing Next.js frontend.
+# Task 13 — Build Static BIS Certification Ads Landing Page
 
-script:- 
-<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-K938HN3"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-</script>
+## Project Details
+
+- **Website:** https://jrcompliance.com
+- **New Route:** `/ads/bis`
+- **Framework:** Next.js 16 App Router
+- **Reference Website:** https://corpbiz.io/ads/bis
+- **Content:** Use the complete "BIS CERTIFICATE-LANDING PAGE CONTENT" provided with this task.
+- **Design Theme:** Follow the existing JR Compliance website theme.
+
+## Objective
+
+Build a professional, responsive, conversion-focused static BIS Certification landing page.
+
+Study the reference website carefully and reproduce its overall layout structure, section arrangement, card designs, navigation flow, form placement, and CTA positioning.
+
+However, use JR Compliance branding, existing theme colors, typography, and reusable components. Do not copy Corpbiz branding, source code, images, or proprietary assets.
+
+## Implementation Requirements
+
+### 1. Static Page
+
+- Create the page at `frontend/src/app/ads/bis/page.tsx`, or the equivalent route location in the existing project.
+- Keep all landing page content static within the frontend.
+- Do not fetch page content from Strapi.
+- Do not modify the database or backend.
+- Ensure the page loads independently without affecting other routes.
+
+### 2. Page Content and Section Structure
+
+Use the exact content supplied for this task and arrange the sections in the following order:
+
+1. **Hero Section**
+   - Main BIS Certification heading.
+   - ISI Mark, Hallmarking, FMCS, BIS Lab Recognition, and CRS services.
+   - 2000+ Certifications, Industry Expert Consultants, 500+ Product Categories, and Pan India Service.
+   - Free consultation CTA and WhatsApp CTA.
+   - Lead generation form displayed prominently.
+
+2. **Complete BIS Certification Consultation Assistance**
+   - Compliance Assessment.
+   - Lab Testing Support.
+   - BIS Portal Filing Assistance.
+   - Factory Audit Coordination.
+   - Query Response Guidance.
+   - Post Certificate Compliance.
+
+3. **Our BIS Certifications Consultations for Quick Approval**
+   - ISI Mark Certification.
+   - CRS Registration.
+   - FMCS Certification.
+   - Hallmarking.
+   - ISI Mark Renewal.
+   - BIS Lab Recognition.
+
+4. **Legal Penalties of Selling Without a BIS Certificate**
+   - Imprisonment.
+   - Import Detention.
+   - Financial Fines.
+   - Online Marketplace Ban.
+   - Product Seizure.
+   - Court Injunction.
+
+5. **Why JR Compliance for BIS Certificate?**
+   - Easy and Legal Market Entry.
+   - Customer Trust and Credibility.
+   - E-Commerce Compliance.
+   - Government Tenders.
+   - Global Market Credibility.
+   - Quick BIS Certificate Issuance.
+
+6. **6 Steps of BIS Certification Process**
+   - Compliance Assessment.
+   - Product Testing.
+   - BIS Portal Filing.
+   - Factory Inspection.
+   - Query Response.
+   - Issuance of Certification.
+
+7. **Mandatory Documents for BIS Certification**
+   - All nine document categories from the supplied content.
+
+8. **Who Needs a BIS Certificate?**
+   - All eight customer categories from the supplied content.
+
+9. **Frequently Asked Questions**
+   - Include all 10 provided FAQs.
+   - Implement an accessible accordion layout.
+
+10. **Final Conversion Section**
+    - Strong consultation CTA.
+    - Call expert button.
+    - WhatsApp expert chat button.
+
+Do not omit any supplied content, headings, descriptions, bullet points, or FAQs.
+
+Do not invent testimonials, ratings, offers, or additional company statistics. Flag factual or legal claims that require verification, particularly penalties, regulatory applicability, certification timelines, and approval guarantees, before production publication.
+
+### 3. UI/UX Design
+
+- Follow the existing JR Compliance theme.
+- Use the reference page for visual structure and layout inspiration.
+- Create modern cards, sections, icons, and spacing.
+- Use consistent typography and branding.
+- Provide a responsive desktop and mobile layout.
+- Add a mobile sticky CTA if appropriate.
+- Include section navigation with anchor links.
+- Keep the page conversion-focused.
+- Avoid unnecessary animations and heavy dependencies.
+
+### 4. Lead Generation Form
+
+- Reuse the existing JR Compliance lead form functionality and API.
+- Include Name, Phone, Email, and State where supported by the existing integration.
+- Preserve the existing API payload contract.
+- Capture UTM parameters and page source information.
+- Set the lead source/page identification to `/ads/bis`.
+- Include proper validation, loading state, and submission feedback.
+- Ensure the form actually submits leads to the existing backend.
+
+### 5. Call and WhatsApp CTAs
+
+- Reuse existing JR Compliance phone and WhatsApp contact configuration.
+- Make all consultation buttons functional.
+- Scroll to the lead form or open the appropriate contact action.
+- Preserve existing WhatsApp click tracking where available.
+- Do not use any Corpbiz contact information.
+
+### 6. Google Tag Manager
+
+- Reuse the existing `GTM-K938HN3` integration if installed.
+- Preserve UTM tracking.
+- Track landing page CTA interactions using the existing tracking conventions.
+- Avoid duplicate GTM initialization.
+- Respect the existing cookie consent and privacy preferences.
+
+### 7. SEO, Accessibility, and Performance
+
+- Add page-specific title and description metadata.
+- Follow the existing canonical and robots conventions for ads landing pages.
+- Use semantic HTML and proper heading hierarchy.
+- Follow WCAG 2.2 AA frontend accessibility practices.
+- Support keyboard navigation and screen readers.
+- Optimize images, fonts, and loading performance.
+- Prevent unnecessary layout shifts.
+- Keep the page mobile-friendly.
+
+## Strict Restrictions
+
+1. Do not modify Strapi.
+2. Do not modify backend APIs or database schemas.
+3. Do not change existing website routes.
+4. Do not disturb existing pages or functionality.
+5. Do not change the global website theme.
+6. Do not unnecessarily modify the existing header or footer.
+7. Do not add unnecessary dependencies.
+8. Do not deploy automatically.
+9. Keep the implementation confined to the frontend.
+
+## Final Verification
+
+After implementation:
+
+- Verify `/ads/bis` loads correctly.
+- Verify all supplied content appears in the correct order.
+- Compare the layout structure against the reference website.
+- Test desktop, tablet, and mobile layouts.
+- Test lead form submission.
+- Test all Call and WhatsApp CTAs.
+- Test UTM capture and existing tracking.
+- Verify accessibility and performance.
+- Run the available lint, type-check, and build commands.
+- Confirm existing website pages are unaffected.
+
+**Expected Result:** A complete static BIS Certification advertising landing page at `https://jrcompliance.com/ads/bis`, inspired by the reference layout, containing all provided JR Compliance content, using the existing website theme, and integrating with the existing lead generation and tracking systems.
+
+Implement the page completely rather than creating only a wireframe or placeholder.

@@ -284,6 +284,41 @@ export type PageChromeContent = {
   updatedAt?: string;
 };
 
+/** Fixed, frontend-only content for the /ads/bis-certification campaign. */
+export type BisAdsCard = {
+  title: string;
+  description?: string;
+  items?: string[];
+};
+
+export type BisAdsCardSection = {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  cards: BisAdsCard[];
+};
+
+export type BisAdsPageData = {
+  seo: Seo;
+  hero: { eyebrow: string; title: string; services: string[]; proof: string[]; audiences: string[] };
+  header: { message: string; whatsAppLabel: string; callLabel: string; consultationLabel: string; menuLabel: string };
+  consultationLabel: string;
+  whatsAppLabel: string;
+  stickyBar: StickyBarContent;
+  sectionNavigation: Link[];
+  assistance: BisAdsCardSection;
+  certifications: BisAdsCardSection;
+  penalties: BisAdsCardSection & { ctaLabel: string; consultationLabel: string; whatsAppLabel: string };
+  whyUs: BisAdsCardSection;
+  process: BisAdsCardSection & { consultationLabel: string; expertLabel: string };
+  documents: BisAdsCardSection;
+  audience: { title: string; description: string; items: string[] };
+  faqs: { title: string; items: Faq[] };
+  closing: { title: string; description: string; callLabel: string };
+};
+
+export type BisAdsPageContent = PageChromeContent & BisAdsPageData & { whatsAppHref: string; trustedLabel: string; trustedBrands: Logo[] };
+
 export type StickyBarImage = {
   src: string;
   alt: string;

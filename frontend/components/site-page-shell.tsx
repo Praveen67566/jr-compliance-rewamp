@@ -1,4 +1,4 @@
-import type { PropsWithChildren } from "react";
+import type { PropsWithChildren, ReactNode } from "react";
 
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -8,13 +8,14 @@ import { DismissibleContactLink } from "@/components/accessibility/dismissible-c
 import type { PageChromeContent, Seo, StickyBarContent } from "@/lib/types";
 
 type SitePageShellProps = PropsWithChildren<
-  PageChromeContent & { seo?: Seo; stickyBar?: StickyBarContent }
+  PageChromeContent & { seo?: Seo; stickyBar?: StickyBarContent; header?: ReactNode }
 >;
 
 /** Shared, content-driven chrome for the home page and every editorial route. */
 export function SitePageShell({
   children,
   footer,
+  header,
   navigation,
   seo,
   site,
@@ -23,7 +24,7 @@ export function SitePageShell({
   return (
     <div className="site-shell pb-[var(--sticky-cta-offset,0px)]">
       <SeoJsonLd schemaMarkup={seo?.schemaMarkup} />
-      <SiteHeader navigation={navigation} site={site} />
+      {header ?? <SiteHeader navigation={navigation} site={site} />}
       <main id="main-content" tabIndex={-1}>{children}</main>
       <SiteFooter footer={footer} site={site} />
       {stickyBar ? <StickyCtaBar content={stickyBar} /> : null}

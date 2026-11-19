@@ -6,6 +6,7 @@ import { publicSiteUrl } from "@/lib/site-url";
 
 import { fallbackAboutPage } from "@/data/about-page-fallback";
 import { bisCertificationAdPage } from "@/data/bis-certification-ad-fallback";
+import { bisAdsPage } from "@/data/bis-ads-fallback";
 import { fallbackCareersPage } from "@/data/careers-page-fallback";
 import {
   bureauIndianStandardsFallback,
@@ -108,6 +109,7 @@ import {
 import type {
   AboutPageContent,
   AerbApprovalPageContent,
+  BisAdsPageContent,
   BureauEnergyEfficiencyPageContent,
   CareersPageContent,
   BureauIndianStandardsPageContent,
@@ -148,6 +150,22 @@ function cachePublicPage<Args extends unknown[], Result>(loader: (...args: Args)
 export const getHomepage = cachePublicPage(async function getHomepage(): Promise<HomepageContent> {
   return (await getHomepageFromStrapi(fallbackHomepage)) ?? fallbackHomepage;
 });
+
+/** Static campaign and shared fallback chrome; deliberately makes no CMS request. */
+export function getBisAdsPage(): BisAdsPageContent {
+  return {
+    ...bisAdsPage,
+    site: {
+      ...fallbackHomepage.site,
+      whatsAppHref: bisCertificationAdPage.whatsApp.href,
+    },
+    navigation: fallbackHomepage.navigation,
+    footer: fallbackHomepage.footer,
+    whatsAppHref: bisCertificationAdPage.whatsApp.href,
+    trustedLabel: bisCertificationAdPage.trustedLabel,
+    trustedBrands: fallbackHomepage.trustedLogos.slice(0, 6),
+  };
+}
 
 /** This campaign is intentionally local-only, including its form copy and logos. */
 export function getBisCertificationAdPage() {

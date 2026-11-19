@@ -155,6 +155,10 @@ export function normalizeLeadPathname(value: unknown): string | null {
 }
 
 export function leadTypeFromPath(pathname: string): LeadType {
+  // Only this new static campaign joins the existing technical lead destination.
+  if (pathname === "/ads/bis" || pathname === "/ads/bis/") return "technical";
+  if (pathname === "/ads/bis-certification" || pathname === "/ads/bis-certification/") return "technical";
+
   const category = serviceCategory(pathname.split("/")[1]);
   if (category) return category.family === "approval" ? "technical" : "corporate";
 

@@ -373,7 +373,7 @@ export function ConsultationForm({
         >
           <legend className="sr-only">Consultation contact details</legend>
           <div>
-            <label className="mb-1.5 block text-xs font-semibold text-ice" htmlFor={`${fieldId}-name`}>{settings.nameLabel}</label>
+            <label className="sr-only" htmlFor={`${fieldId}-name`}>{settings.nameLabel}</label>
             <div className={`${fieldShell} ${errors.name ? "border-sky-strong" : ""}`}>
               <span className="pointer-events-none absolute left-3 grid size-8 place-items-center rounded-lg border border-sky/12 bg-white/[0.055] text-sky/70 transition-colors group-focus-within/field:text-sky"><InputIcon kind="name" /></span>
               <input
@@ -396,7 +396,7 @@ export function ConsultationForm({
           </div>
 
           <div>
-            <label className="mb-1.5 block text-xs font-semibold text-ice" htmlFor={`${fieldId}-email`}>{settings.emailLabel}</label>
+            <label className="sr-only" htmlFor={`${fieldId}-email`}>{settings.emailLabel}</label>
             <div className={`${fieldShell} ${errors.email ? "border-sky-strong" : ""}`}>
               <span className="pointer-events-none absolute left-3 grid size-8 place-items-center rounded-lg border border-sky/12 bg-white/[0.055] text-sky/70 transition-colors group-focus-within/field:text-sky"><InputIcon kind="email" /></span>
               <input
@@ -418,14 +418,14 @@ export function ConsultationForm({
           </div>
 
           <div>
-            <label className="mb-1.5 block text-xs font-semibold text-ice" htmlFor={`${fieldId}-phone`} id={`${fieldId}-phone-label`}>{settings.phoneLabel}</label>
+            <label className="sr-only" htmlFor={`${fieldId}-phone`} id={`${fieldId}-phone-label`}>{settings.phoneLabel}</label>
             <div
               aria-labelledby={`${fieldId}-phone-label`}
               className={`${fieldShell} ${errors.phone ? "border-sky-strong" : ""}`}
               role="group"
             >
               <div className="absolute inset-y-0 left-0 w-28 rounded-l-xl border-r border-sky/15 bg-white/[0.055]">
-                <label className="mb-1.5 block text-xs font-semibold text-ice" htmlFor={`${fieldId}-phone-country`}>
+                <label className="sr-only" htmlFor={`${fieldId}-phone-country`}>
                   Country calling code
                 </label>
                 <select
@@ -505,7 +505,7 @@ export function ConsultationForm({
               </span>
             </button>
             <div className="pt-2.5" hidden={!messageExpanded} id={`${fieldId}-message-panel`}>
-              <label className="mb-1.5 block text-xs font-semibold text-ice" htmlFor={`${fieldId}-message`}>
+              <label className="sr-only" htmlFor={`${fieldId}-message`}>
                 {settings.messageLabel} (optional)
               </label>
               <textarea
