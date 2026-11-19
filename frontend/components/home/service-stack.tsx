@@ -1,5 +1,7 @@
 "use client";
 
+import { motionPreference } from "@/lib/motion-preference";
+
 import { type KeyboardEvent, useEffect, useRef, useState } from "react";
 
 import { linkTargetProps } from "@/lib/link-props";
@@ -14,6 +16,7 @@ const MOBILE_SLIDE_INTERVAL = 2000;
 export function ServiceStack({ services }: ServiceStackProps) {
   const sliderRef = useRef<HTMLDivElement>(null);
   const [activeId, setActiveId] = useState(services.categories[0]?.id);
+  const [rotationPaused, setRotationPaused] = useState(false);
   const activeCategory =
     services.categories.find((category) => category.id === activeId) ?? services.categories[0];
   const serviceCount = activeCategory?.services.length ?? 0;
@@ -21,11 +24,11 @@ export function ServiceStack({ services }: ServiceStackProps) {
   useEffect(() => {
     const slider = sliderRef.current;
 
-    if (!slider || serviceCount <= 2) {
+    if (!slider || serviceCount <= 2 || rotationPaused) {
       return;
     }
 
-    const motionQuery = window.matchMedia("(max-width: 560px) and (prefers-reduced-motion: no-preference)");
+    const motionQuery = motionPreference("(max-width: 560px) and (prefers-reduced-motion: no-preference)");
     let isVisible = !("IntersectionObserver" in window);
     let isHovered = false;
     let isInteracting = false;
@@ -100,7 +103,7 @@ export function ServiceStack({ services }: ServiceStackProps) {
       window.removeEventListener("pointerup", handlePointerUp);
       window.removeEventListener("pointercancel", handlePointerUp);
     };
-  }, [activeCategory?.id, serviceCount]);
+  }, [activeCategory?.id, serviceCount, rotationPaused]);
 
   if (!activeCategory) {
     return null;
@@ -232,6 +235,11 @@ export function ServiceStack({ services }: ServiceStackProps) {
               </div>
             );
           })}
+        </div>
+        <div className="mt-5 flex flex-wrap justify-center gap-3 min-[562px]:hidden" aria-label="Service carousel controls">
+          <button className="preference-button" type="button" onClick={() => { setRotationPaused(true); sliderRef.current?.scrollBy({ left: -(sliderRef.current.clientWidth / 2) }); }}>Previous services</button>
+          <button className="preference-button" type="button" onClick={() => { setRotationPaused(true); sliderRef.current?.scrollBy({ left: sliderRef.current.clientWidth / 2 }); }}>Next services</button>
+          <button className="preference-button" type="button" aria-pressed={rotationPaused} onClick={() => setRotationPaused((paused) => !paused)}>Pause automatic services</button>
         </div>
       </div>
     </section>

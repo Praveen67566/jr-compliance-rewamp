@@ -1,5 +1,7 @@
 "use client";
 
+import { motionPreference } from "@/lib/motion-preference";
+
 import { useEffect, useId, useRef, useState } from "react";
 
 import { linkTargetProps } from "@/lib/link-props";
@@ -92,7 +94,7 @@ export function StickyCtaBar({ content }: StickyCtaBarProps) {
 
   useEffect(() => {
     const compactQuery = window.matchMedia("(max-width: 820px)");
-    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const motionQuery = motionPreference("(prefers-reduced-motion: reduce)");
     let observedForm: HTMLElement | null = null;
     const formObserver = new ResizeObserver(updateVisibility);
 
@@ -152,6 +154,7 @@ export function StickyCtaBar({ content }: StickyCtaBarProps) {
 
     const updateOffset = () => {
       shell.style.setProperty("--sticky-cta-offset", isVisible ? `${bar.offsetHeight}px` : "0px");
+      document.documentElement.style.setProperty("--sticky-cta-offset", isVisible ? `${bar.offsetHeight}px` : "0px");
     };
 
     updateOffset();
@@ -161,6 +164,7 @@ export function StickyCtaBar({ content }: StickyCtaBarProps) {
     return () => {
       observer.disconnect();
       shell.style.removeProperty("--sticky-cta-offset");
+      document.documentElement.style.removeProperty("--sticky-cta-offset");
     };
   }, [isVisible]);
 

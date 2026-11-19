@@ -1,5 +1,7 @@
 "use client";
 
+import { motionPreference } from "@/lib/motion-preference";
+
 import { type FocusEvent, useEffect, useState } from "react";
 
 import type { Logo } from "@/lib/types";
@@ -90,7 +92,7 @@ export function TrustedBrandsMarquee({ logos }: TrustedBrandsMarqueeProps) {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
-    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const motionQuery = motionPreference("(prefers-reduced-motion: reduce)");
     const handleMotionPreferenceChange = () => setPrefersReducedMotion(motionQuery.matches);
 
     handleMotionPreferenceChange();

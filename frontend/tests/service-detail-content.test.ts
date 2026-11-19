@@ -482,8 +482,10 @@ describe("service-detail content mirrors", () => {
     assert.ok(breakdownIndex < tickerIndex);
     assert.ok(tickerIndex < faqIndex);
     assert.match(component, /loading="lazy"/);
-    assert.match(component, /referrerPolicy="strict-origin-when-cross-origin"/);
-    assert.match(component, /allowFullScreen/);
+    const consentVideo = readFileSync(resolve(repositoryRoot, "frontend/components/privacy/consent-video.tsx"), "utf8");
+    assert.match(consentVideo, /referrerPolicy="strict-origin-when-cross-origin"/);
+    assert.match(consentVideo, /allowFullScreen/);
+    assert.match(consentVideo, /allowed\("marketing"\)/);
     assert.match(component, /src=\{video\.embedUrl\}/);
     assert.match(component, /title=\{video\.title\}/);
     assert.match(component, /\{content\.breakdown \? \(/);

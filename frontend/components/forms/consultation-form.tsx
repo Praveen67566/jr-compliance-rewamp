@@ -329,7 +329,7 @@ export function ConsultationForm({
   }
 
   const fieldShell =
-    "group/field relative flex min-h-12 items-center rounded-xl border border-sky/20 bg-navy-950/45 text-ice shadow-[inset_0_1px_rgba(255,255,255,0.06)] transition-[border-color,background-color,box-shadow] duration-200 hover:border-sky/35 focus-within:border-sky/70 focus-within:bg-navy-950/70 focus-within:shadow-[0_0_0_3px_rgba(22,140,245,0.12),inset_0_1px_rgba(255,255,255,0.08)]";
+    "group/field relative flex min-h-12 items-center rounded-xl border border-sky/60 bg-navy-950/45 text-ice shadow-[inset_0_1px_rgba(255,255,255,0.06)] transition-[border-color,background-color,box-shadow] duration-200 hover:border-sky/35 focus-within:border-sky/70 focus-within:bg-navy-950/70 focus-within:shadow-[0_0_0_3px_rgba(22,140,245,0.12),inset_0_1px_rgba(255,255,255,0.08)]";
   const inputClass =
     "m-0 h-12 w-full appearance-none rounded-xl border-0 bg-transparent pr-3.5 font-sans text-[0.9rem] text-white outline-none placeholder:text-ice/60 disabled:cursor-wait disabled:opacity-60";
 
@@ -343,7 +343,7 @@ export function ConsultationForm({
         <h2 className="font-sans text-[clamp(1.4rem,3vw,1.75rem)] font-extrabold leading-tight tracking-[-0.025em]" id={`${fieldId}-heading`}>
           {settings.heading}
         </h2>
-        <p className="mb-0 mt-1.5 text-[0.8rem] text-ice/62">{settings.subtitle}</p>
+        <p className="mb-0 mt-1.5 text-[0.8rem] text-ice/75">{settings.subtitle}</p>
         <div className="mt-4 grid grid-cols-3 gap-2" aria-label="Contact detail progress" role="list">
           {completedStages.map((complete, index) => (
             <span
@@ -361,6 +361,7 @@ export function ConsultationForm({
       </div>
 
       <form
+        aria-labelledby={`${fieldId}-heading`}
         aria-busy={status === "submitting"}
         className="space-y-3 px-5 py-[18px] sm:px-[22px]"
         noValidate
@@ -372,7 +373,7 @@ export function ConsultationForm({
         >
           <legend className="sr-only">Consultation contact details</legend>
           <div>
-            <label className="sr-only" htmlFor={`${fieldId}-name`}>{settings.nameLabel}</label>
+            <label className="mb-1.5 block text-xs font-semibold text-ice" htmlFor={`${fieldId}-name`}>{settings.nameLabel}</label>
             <div className={`${fieldShell} ${errors.name ? "border-sky-strong" : ""}`}>
               <span className="pointer-events-none absolute left-3 grid size-8 place-items-center rounded-lg border border-sky/12 bg-white/[0.055] text-sky/70 transition-colors group-focus-within/field:text-sky"><InputIcon kind="name" /></span>
               <input
@@ -395,7 +396,7 @@ export function ConsultationForm({
           </div>
 
           <div>
-            <label className="sr-only" htmlFor={`${fieldId}-email`}>{settings.emailLabel}</label>
+            <label className="mb-1.5 block text-xs font-semibold text-ice" htmlFor={`${fieldId}-email`}>{settings.emailLabel}</label>
             <div className={`${fieldShell} ${errors.email ? "border-sky-strong" : ""}`}>
               <span className="pointer-events-none absolute left-3 grid size-8 place-items-center rounded-lg border border-sky/12 bg-white/[0.055] text-sky/70 transition-colors group-focus-within/field:text-sky"><InputIcon kind="email" /></span>
               <input
@@ -417,14 +418,14 @@ export function ConsultationForm({
           </div>
 
           <div>
-            <label className="sr-only" htmlFor={`${fieldId}-phone`} id={`${fieldId}-phone-label`}>{settings.phoneLabel}</label>
+            <label className="mb-1.5 block text-xs font-semibold text-ice" htmlFor={`${fieldId}-phone`} id={`${fieldId}-phone-label`}>{settings.phoneLabel}</label>
             <div
               aria-labelledby={`${fieldId}-phone-label`}
               className={`${fieldShell} ${errors.phone ? "border-sky-strong" : ""}`}
               role="group"
             >
               <div className="absolute inset-y-0 left-0 w-28 rounded-l-xl border-r border-sky/15 bg-white/[0.055]">
-                <label className="sr-only" htmlFor={`${fieldId}-phone-country`}>
+                <label className="mb-1.5 block text-xs font-semibold text-ice" htmlFor={`${fieldId}-phone-country`}>
                   Country calling code
                 </label>
                 <select
@@ -504,13 +505,13 @@ export function ConsultationForm({
               </span>
             </button>
             <div className="pt-2.5" hidden={!messageExpanded} id={`${fieldId}-message-panel`}>
-              <label className="sr-only" htmlFor={`${fieldId}-message`}>
+              <label className="mb-1.5 block text-xs font-semibold text-ice" htmlFor={`${fieldId}-message`}>
                 {settings.messageLabel} (optional)
               </label>
               <textarea
                 aria-describedby={`${fieldId}-message-hint${errors.message ? ` ${fieldId}-message-error` : ""}`}
                 aria-invalid={Boolean(errors.message)}
-                className={`m-0 min-h-20 w-full appearance-none resize-y rounded-xl border bg-navy-950/45 px-3.5 py-3 font-sans text-[0.9rem] leading-5 text-white outline-none transition-[border-color,background-color,box-shadow] duration-200 placeholder:text-ice/60 focus:border-sky/70 focus:bg-navy-950/70 focus:shadow-[0_0_0_3px_rgba(22,140,245,0.12)] disabled:cursor-wait disabled:opacity-60 ${errors.message ? "border-sky-strong" : "border-sky/20"}`}
+                className={`m-0 min-h-20 w-full appearance-none resize-y rounded-xl border bg-navy-950/45 px-3.5 py-3 font-sans text-[0.9rem] leading-5 text-white outline-none transition-[border-color,background-color,box-shadow] duration-200 placeholder:text-ice/60 focus:border-sky/70 focus:bg-navy-950/70 focus:shadow-[0_0_0_3px_rgba(22,140,245,0.12)] disabled:cursor-wait disabled:opacity-60 ${errors.message ? "border-sky-strong" : "border-sky/60"}`}
                 id={`${fieldId}-message`}
                 maxLength={LEAD_MESSAGE_MAX_LENGTH}
                 minLength={5}
@@ -527,7 +528,7 @@ export function ConsultationForm({
             </div>
           </div>
 
-          <div className="absolute -left-[10000px] top-auto size-px overflow-hidden">
+          <div className="hidden" aria-hidden="true">
             <label htmlFor={`${fieldId}-website`}>Leave this field empty</label>
             <input
               autoComplete="off"
@@ -568,7 +569,7 @@ export function ConsultationForm({
             {errors.consent ? <p className="mb-0 mt-1 pl-[1.65rem] text-xs text-sky-strong" id={`${fieldId}-consent-error`}>{errors.consent}</p> : null}
           </div>
 
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 px-0.5 pt-0.5 text-[0.72rem] text-ice/58">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 px-0.5 pt-0.5 text-[0.72rem] text-ice/75">
             <span className="inline-flex items-center gap-1.5"><ReassuranceIcon kind="secure" /> {settings.secureLabel}</span>
             <span className="inline-flex items-center gap-1.5"><ReassuranceIcon kind="time" /> {settings.durationLabel}</span>
             <span className="ml-auto">{settings.noSpamLabel}</span>
@@ -586,7 +587,7 @@ export function ConsultationForm({
           </button>
         </fieldset>
 
-        <div role={status === "error" ? "alert" : "status"} aria-live="polite">
+        <div role="status" aria-atomic="true">
           {feedback ? (
             <p className={`mb-0 text-center text-[0.7rem] leading-4 ${status === "success" ? "text-sky" : "text-sky-strong"}`}>
               {feedback}
@@ -598,10 +599,10 @@ export function ConsultationForm({
       {settings.trustItems.length ? (
         <div className="border-t border-sky/18 bg-white/[0.045] px-5 py-4 text-center sm:px-[22px]">
           {settings.trustHeading ? <h3 className="text-xs font-extrabold text-ice/72">{settings.trustHeading}</h3> : null}
-          {settings.trustDescription ? <p className="mb-0 mt-1 text-[0.7rem] text-ice/50">{settings.trustDescription}</p> : null}
+          {settings.trustDescription ? <p className="mb-0 mt-1 text-[0.7rem] text-ice/75">{settings.trustDescription}</p> : null}
           <div className="mt-3 flex flex-wrap items-center justify-center gap-x-5 gap-y-2.5">
             {settings.trustItems.map((item) => {
-              const mark = item.logo ? <img className="max-h-6 max-w-28 object-contain opacity-72 grayscale" src={item.logo} alt={item.name} /> : <span className="text-[0.7rem] font-extrabold text-ice/62">{item.name}</span>;
+              const mark = item.logo ? <img className="max-h-6 max-w-28 object-contain opacity-72 grayscale" src={item.logo} alt={item.name} /> : <span className="text-[0.7rem] font-extrabold text-ice/75">{item.name}</span>;
               return item.link ? (
                 <a href={item.link.href} key={item.name} {...linkTargetProps(item.link)} aria-label={item.link.label}>{mark}</a>
               ) : <span key={item.name}>{mark}</span>;
@@ -611,7 +612,7 @@ export function ConsultationForm({
       ) : null}
 
       {settings.experienceText ? (
-        <div className="flex items-center justify-center gap-2 border-t border-sky/15 bg-white/[0.025] px-5 py-2.5 text-[0.72rem] text-ice/58">
+        <div className="flex items-center justify-center gap-2 border-t border-sky/15 bg-white/[0.025] px-5 py-2.5 text-[0.72rem] text-ice/75">
           <svg aria-hidden="true" className="size-4 text-sky" fill="none" viewBox="0 0 24 24">
             <circle cx="12" cy="8" r="5" stroke="currentColor" strokeWidth="1.8" />
             <path d="m9 12-1 9 4-2 4 2-1-9" stroke="currentColor" strokeLinejoin="round" strokeWidth="1.8" />

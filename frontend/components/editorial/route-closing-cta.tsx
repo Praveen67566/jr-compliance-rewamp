@@ -1,5 +1,7 @@
 "use client";
 
+import { motionPreference } from "@/lib/motion-preference";
+
 import { type FocusEvent, useCallback, useEffect, useRef, useState } from "react";
 
 import { linkTargetProps } from "@/lib/link-props";
@@ -85,7 +87,7 @@ export function RouteClosingCta({
       return undefined;
     }
 
-    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const motionQuery = motionPreference("(prefers-reduced-motion: reduce)");
     let observer: IntersectionObserver | null = null;
 
     const applyMotionPreference = () => {

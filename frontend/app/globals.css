@@ -47,6 +47,8 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: var(--site-header-height, 102px);
+  scroll-padding-bottom: calc(var(--sticky-cta-offset, 0px) + 6rem);
 }
 
 body {
@@ -67,6 +69,50 @@ button {
   color: inherit;
   font: inherit;
 }
+
+/* Shared keyboard, reflow and form primitives. The two-colour ring works on ice and navy. */
+:focus-visible {
+  outline: 3px solid var(--blue-cobalt-700) !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 6px var(--blue-cloud) !important;
+}
+
+:where(a, button, input, select, textarea, summary, [tabindex]) {
+  scroll-margin-block: calc(var(--site-header-height, 102px) + 1rem) calc(var(--sticky-cta-offset, 0px) + 6rem);
+}
+
+:where(button, summary) { min-height: 24px; min-width: 24px; }
+:where(input, select, textarea) { font: inherit; }
+:where(input[type="checkbox"]) { min-width: 24px; min-height: 24px; }
+:where(main, nav, section, article, footer) { min-width: 0; overflow-wrap: anywhere; }
+[hidden] { display: none !important; }
+
+.skip-link {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 200;
+  transform: translateY(-200%);
+  border: 2px solid var(--blue-cobalt-700);
+  border-radius: 0.5rem;
+  background: var(--blue-cloud);
+  color: var(--blue-navy-950);
+  padding: 0.75rem 1rem;
+  font-weight: 700;
+}
+.skip-link:focus { transform: none; }
+
+html[data-reduce-motion="true"] *,
+html[data-reduce-motion="true"] *::before,
+html[data-reduce-motion="true"] *::after {
+  animation-delay: 0s !important;
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  scroll-behavior: auto !important;
+  transition-delay: 0s !important;
+  transition-duration: 0.01ms !important;
+}
+html[data-reduce-motion="true"] { scroll-behavior: auto; }
 
 img {
   display: block;
@@ -91,6 +137,18 @@ h3 {
   @apply py-28 max-[820px]:py-[72px] max-[560px]:py-14;
 }
 
+.site-floating-control {
+  bottom: calc(1rem + max(env(safe-area-inset-bottom), var(--sticky-cta-offset, 0px)));
+}
+.site-floating-control--left { left: calc(1rem + env(safe-area-inset-left)); }
+.site-floating-control--right { right: calc(1rem + env(safe-area-inset-right)); }
+
+@media (min-width: 560px) {
+  .site-floating-control { bottom: calc(1.5rem + max(env(safe-area-inset-bottom), var(--sticky-cta-offset, 0px))); }
+  .site-floating-control--left { left: calc(1.5rem + env(safe-area-inset-left)); }
+  .site-floating-control--right { right: calc(1.5rem + env(safe-area-inset-right)); }
+}
+
 .eyebrow {
   @apply flex items-center gap-2 text-[0.73rem] leading-[1.2] font-extrabold uppercase tracking-[0.12em] text-[var(--blue-sky)] before:size-1.5 before:rounded-full before:bg-current before:content-[''];
 }
@@ -111,9 +169,11 @@ h3 {
   *,
   *::before,
   *::after {
+    animation-delay: 0s !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
+    transition-delay: 0s !important;
     transition-duration: 0.01ms !important;
   }
 }

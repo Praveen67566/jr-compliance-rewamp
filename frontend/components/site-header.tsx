@@ -144,7 +144,7 @@ function HeaderMegaMenu({ item, menuId, site, onClose }: {
               onChange={(event) => setQuery(event.target.value)}
             />
           </label>
-          <p className="mb-3 mt-5! px-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-sky/65">{item.label}</p>
+          <p className="mb-3 mt-5! px-2 text-[0.625rem] font-semibold uppercase tracking-[0.16em] text-sky/65">{item.label}</p>
           <div
             className="min-h-0 flex-1 space-y-1 overflow-y-auto overscroll-contain pr-2 [scrollbar-color:var(--blue-cobalt-600)_transparent] [scrollbar-width:thin]"
             aria-label={`${item.label} service categories`}
@@ -166,7 +166,7 @@ function HeaderMegaMenu({ item, menuId, site, onClose }: {
               const isSelected = index === selectedIndex;
               return (
                 <button
-                  className={`group/category flex min-h-[58px] w-full cursor-pointer appearance-none items-center gap-3 rounded-xl border px-3 py-3 text-left text-[13px]! leading-snug! transition-[background-color,border-color,color] duration-200 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-sky ${isSelected
+                  className={`group/category flex min-h-[58px] w-full cursor-pointer appearance-none items-center gap-3 rounded-xl border px-3 py-3 text-left text-[0.8125rem]! leading-snug! transition-[background-color,border-color,color] duration-200 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-sky ${isSelected
                     ? "border-sky/45 bg-electric/20 font-semibold! text-cloud! shadow-[inset_3px_0_var(--blue-sky)]"
                     : "border-transparent bg-transparent font-medium! text-sky-strong/80! hover:border-sky/20 hover:bg-sky/8 hover:text-cloud!"}`}
                   key={category.title}
@@ -230,11 +230,11 @@ function HeaderMegaMenu({ item, menuId, site, onClose }: {
                 <CategoryIcon title={selectedCategory?.title ?? item.label} logo={selectedCategory?.logo} />
               </span>
               <div className="min-w-0">
-                <p className="mb-1 truncate text-[13px] font-semibold text-navy-950">{selectedCategory?.title ?? item.label}</p>
+                <p className="mb-1 truncate text-[0.8125rem] font-semibold text-navy-950">{selectedCategory?.title ?? item.label}</p>
                 <p className="m-0 text-xs text-cobalt-700" role="status">{serviceCount} {serviceCount === 1 ? "service" : "services"}{search ? " matching your search" : " available"}</p>
               </div>
             </div>
-            <a className="inline-flex shrink-0 items-center gap-3 rounded-xl border border-electric/30 bg-cobalt-700 px-4 py-3 text-[13px] font-semibold text-cloud! transition hover:bg-navy-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric" href={sharedHref(site.headerCta.href)} {...linkTargetProps(site.headerCta)} onClick={onClose}>{site.headerCta.label}<span aria-hidden="true">↗</span></a>
+            <a className="inline-flex shrink-0 items-center gap-3 rounded-xl border border-electric/30 bg-cobalt-700 px-4 py-3 text-[0.8125rem] font-semibold text-cloud! transition hover:bg-navy-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric" href={sharedHref(site.headerCta.href)} {...linkTargetProps(site.headerCta)} onClick={onClose}>{site.headerCta.label}<span aria-hidden="true">↗</span></a>
           </div>
         </section>
       </div>
@@ -265,10 +265,20 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
   }, [closeAll]);
 
   useEffect(() => {
+    const header = headerRef.current;
+    if (!header) return;
+    const measure = () => document.documentElement.style.setProperty("--site-header-height", `${header.offsetHeight}px`);
+    const observer = new ResizeObserver(measure);
+    observer.observe(header);
+    measure();
+    return () => { observer.disconnect(); document.documentElement.style.removeProperty("--site-header-height"); };
+  }, []);
+
+  useEffect(() => {
     if (!openMenu && !mobileOpen) return;
 
     const closeOnOutsidePointerDown = (event: PointerEvent) => {
-      const boundary = window.matchMedia("(min-width: 981px)").matches
+      const boundary = window.matchMedia("(min-width: 981px)").matches && document.documentElement.dataset.textEnlarged !== "true"
         ? desktopNavigationRef.current
         : headerRef.current;
 
@@ -285,6 +295,7 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
     <header
       ref={headerRef}
       className="site-header min-[981px]:py-2!"
+      onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) closeAll(); }}
       onKeyDown={(event) => {
         if (event.key === "Escape") {
           const trigger = headerRef.current?.querySelector<HTMLButtonElement>('[aria-expanded="true"]');
@@ -317,6 +328,12 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
                       type="button"
                       aria-expanded={isOpen}
                       aria-controls={menuId}
+                      onKeyDown={(event) => {
+                        if (event.key !== "ArrowDown") return;
+                        event.preventDefault();
+                        setOpenMenu(item.label);
+                        window.setTimeout(() => document.getElementById(menuId)?.querySelector<HTMLElement>("input, button, a")?.focus(), 0);
+                      }}
                       onClick={() => {
                         if (isOpen) {
                           setOpenMenu(null);
@@ -345,7 +362,7 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
                   {hasCategories && isOpen ? (
                     <HeaderMegaMenu item={item} menuId={menuId} site={site} onClose={closeAll} />
                   ) : hasChildren && isOpen ? (
-                    <div className="nav-popover">
+                    <div className="nav-popover" id={menuId}>
                       <span className="popover-kicker">{item.label}</span>
                       {item.children?.map((child) => (
                         <a
@@ -439,10 +456,10 @@ export function SiteHeader({ navigation, site }: SiteHeaderProps) {
               </svg>
             </span>
             <span className="flex flex-col pr-1 max-[1100px]:hidden">
-              <span className="text-[7px] font-semibold uppercase leading-none tracking-[0.16em] text-cobalt-700/60">
+              <span className="text-[0.4375rem] font-semibold uppercase leading-none tracking-[0.16em] text-cobalt-700/60">
                 Call us
               </span>
-              <span className="mt-1 whitespace-nowrap text-[11px] font-semibold leading-none tracking-[0.01em] text-navy-950">
+              <span className="mt-1 whitespace-nowrap text-[0.6875rem] font-semibold leading-none tracking-[0.01em] text-navy-950">
                 {site.phone}
               </span>
             </span>

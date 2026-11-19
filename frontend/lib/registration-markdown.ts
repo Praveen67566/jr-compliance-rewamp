@@ -3,6 +3,13 @@ import sanitizeHtml from "sanitize-html";
 
 import { publicHref } from "@/lib/public-paths";
 
+/** Rich text is nested below the template's existing section/card heading. */
+export function nestRegistrationHeadings(html: string): string {
+  return html.replace(/<(\/?)(h[1-6])(?=[\s>])/g, (_match, closing: string, tag: string) =>
+    `<${closing}h${Math.min(6, Math.max(3, Number(tag.slice(1)) + 1))}`,
+  );
+}
+
 const registrationMarkdown = new MarkdownIt({
   breaks: true,
   html: true,

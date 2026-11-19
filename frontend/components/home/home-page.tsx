@@ -139,7 +139,7 @@ function RegulatorLogoMarquee({
 
   return (
     <div className="regulator-logo-marquee max-[561px]:[--regulator-logo-width:clamp(112px,32vw,156px)]! max-[561px]:mt-8! max-[561px]:[&_.regulator-logo-name]:text-xs!">
-      <div className="regulator-logo-row regulator-logo-row--primary">
+      <div className="regulator-logo-row regulator-logo-row--primary" tabIndex={0} role="region" aria-label="Regulatory expertise organisations">
         <div className="regulator-logo-track">
           <RegulatorLogoList entries={entries} label={label} listKey="primary" />
           <RegulatorLogoList entries={entries} isClone isDecorative listKey="primary-clone" />

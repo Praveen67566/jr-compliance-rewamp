@@ -119,7 +119,7 @@ export function AboutPage({ content }: AboutPageProps) {
             </div>
             {content.story.description ? <p>{content.story.description}</p> : null}
           </div>
-          <div className="about-timeline" aria-label={content.story.title}>
+          <div className="about-timeline" role="region" tabIndex={0} aria-label={content.story.title}>
             <div className="about-timeline-track">
               {[false, true].map((isDuplicate) => (
                 <div

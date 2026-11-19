@@ -527,7 +527,7 @@
     padding: 9px 10px;
   }
 
-  .faq-item > button {
+  .faq-question {
     font-size: 0.97rem;
     gap: 17px;
     padding: 18px 0;

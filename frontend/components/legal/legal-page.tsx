@@ -193,7 +193,7 @@ export function LegalPage({ content }: LegalPageProps) {
                     className="block rounded-lg px-3 py-2.5 text-[0.84rem] font-bold leading-5 text-navy-700/80! transition-colors hover:bg-ice hover:text-cobalt-700! focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-600"
                     href={`#${section.anchor}`}
                   >
-                    <span className="mr-2 text-[0.66rem] tracking-[0.1em] text-cobalt-600" aria-hidden="true">
+                    <span className="mr-2 text-[0.66rem] tracking-[0.1em] text-cobalt-700" aria-hidden="true">
                       {String(index + 1).padStart(2, "0")}
                     </span>
                     {section.title}
@@ -217,7 +217,7 @@ export function LegalPage({ content }: LegalPageProps) {
                   id={section.anchor}
                   key={section.anchor}
                 >
-                  <span className="text-[0.68rem] font-extrabold tracking-[0.14em] text-cobalt-600" aria-hidden="true">
+                  <span className="text-[0.68rem] font-extrabold tracking-[0.14em] text-cobalt-700" aria-hidden="true">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <h2 className="mt-3 break-words font-display text-[clamp(2rem,4vw,3.15rem)] leading-[1.02] tracking-[-0.04em] text-navy-950">

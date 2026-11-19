@@ -4,9 +4,13 @@ import { describe, it } from "node:test";
 import {
   renderRegistrationArticleMarkdown,
   renderRegistrationMarkdown,
+  nestRegistrationHeadings,
 } from "@/lib/registration-markdown";
 
 describe("registration rich-text markdown", () => {
+  it("nests CMS headings below their template heading without changing prose", () => {
+    assert.equal(nestRegistrationHeadings('<h1>Title</h1><h2>Section</h2><h3>Detail</h3><p>h1 text</p>'), '<h3>Title</h3><h3>Section</h3><h4>Detail</h4><p>h1 text</p>');
+  });
   it("uses direct family links in existing Markdown and pasted HTML", () => {
     const html = renderRegistrationMarkdown([
       "[Nidhi](/corporate/company-registration/nidhi-company-registration?source=article#faq)",

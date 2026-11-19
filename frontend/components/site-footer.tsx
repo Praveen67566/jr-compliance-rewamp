@@ -1,4 +1,5 @@
 import { linkTargetProps } from "@/lib/link-props";
+import { PrivacyPreferencesButton } from "@/components/privacy/privacy-provider";
 import type { FooterLinkGroup, HomepageContent } from "@/lib/types";
 
 type SiteFooterProps = Pick<HomepageContent, "site" | "footer">;
@@ -130,6 +131,7 @@ export function SiteFooter({ site, footer }: SiteFooterProps) {
             <span>{site.copyrightText}</span>
           </div>
           <div className="footer-bottom-legal">
+            <PrivacyPreferencesButton />
             {site.legalLinks.map((link) => (
               <a href={sharedHref(link.href)} key={link.label} {...linkTargetProps(link)}>
                 {link.label}

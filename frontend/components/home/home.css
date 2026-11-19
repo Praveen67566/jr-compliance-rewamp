@@ -2603,7 +2603,7 @@
   border-bottom: 0;
 }
 
-.faq-item > button {
+.faq-question {
   align-items: center;
   background: transparent;
   border: 0;
@@ -2619,8 +2619,8 @@
   width: 100%;
 }
 
-.faq-item > button:hover,
-.faq-item > button:focus-visible {
+.faq-question:hover,
+.faq-question:focus-visible {
   color: var(--blue-sky-strong);
   outline: none;
 }

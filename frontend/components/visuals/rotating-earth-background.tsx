@@ -1,5 +1,7 @@
 "use client";
 
+import { motionPreference } from "@/lib/motion-preference";
+
 import { useEffect, useRef, useState } from "react";
 
 import styles from "./rotating-earth-background.module.css";
@@ -22,7 +24,7 @@ export function RotatingEarthBackground({
   const [motionAllowed, setMotionAllowed] = useState(false);
 
   useEffect(() => {
-    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const motionQuery = motionPreference("(prefers-reduced-motion: reduce)");
     const syncMotionPreference = () => setMotionAllowed(!motionQuery.matches);
 
     syncMotionPreference();

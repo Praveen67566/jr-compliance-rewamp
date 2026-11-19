@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { ConsentVideo } from "@/components/privacy/consent-video";
 
 import { ServiceFaqList } from "@/components/company-registration/service-faq-list";
 import { RouteClosingCta } from "@/components/editorial/route-closing-cta";
@@ -10,6 +11,7 @@ import { linkTargetProps } from "@/lib/link-props";
 import {
   renderRegistrationArticleMarkdown,
   renderRegistrationMarkdown,
+  nestRegistrationHeadings,
 } from "@/lib/registration-markdown";
 import type {
   CompanyRegistrationPageContent,
@@ -77,7 +79,7 @@ function SectionHeading({
     <div className={`${compact ? "mb-8 md:mb-10" : "mb-10 md:mb-14"} min-w-0 max-w-[760px]`}>
       <span
         className={`mb-4 flex items-center gap-2 text-[0.7rem] font-extrabold uppercase tracking-[0.14em] ${
-          light ? "text-sky" : "text-cobalt-600"
+          light ? "text-sky" : "text-cobalt-700"
         }`}
       >
         <span className="size-1.5 rounded-full bg-current" aria-hidden="true" />
@@ -137,7 +139,7 @@ function registrationInlineContent(nodes: LegalInlineNode[], keyPrefix: string, 
     return href ? (
       <a
         className={`rounded-sm font-bold underline decoration-sky/55 underline-offset-4 transition-colors hover:text-sky focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky focus-visible:ring-offset-2 ${
-          light ? "text-sky" : "text-cobalt-700 hover:text-cobalt-600"
+          light ? "text-sky" : "text-cobalt-700 hover:text-cobalt-700"
         }`}
         href={href}
         key={key}
@@ -196,9 +198,9 @@ function RegistrationRichTextView({
       <div
         className={richTextClassName}
         dangerouslySetInnerHTML={{
-          __html: isArticle
+          __html: nestRegistrationHeadings(isArticle
             ? renderRegistrationArticleMarkdown(value, { articleTitle })
-            : renderRegistrationMarkdown(value),
+            : renderRegistrationMarkdown(value)),
         }}
       />
     );
@@ -227,7 +229,7 @@ function RegistrationRichTextView({
           );
         }
 
-        const Heading = block.level === 2 ? "h2" : block.level === 3 ? "h3" : "h4";
+        const Heading = block.level === 2 ? "h3" : block.level === 3 ? "h4" : "h5";
         return (
           <Heading key={key}>
             {registrationInlineContent(block.children, key, light)}
@@ -300,7 +302,7 @@ function DetailCard({ item, index, light = false }: { item: RegistrationDetail; 
           <DecorativeCardIcon size="standard" src={item.icon} surface={light ? "light" : "dark"} />
         </span>
       ) : null}
-      <span className={`text-[0.68rem] font-extrabold tracking-[0.14em] ${light ? "text-sky" : "text-cobalt-600"}`}>
+      <span className={`text-[0.68rem] font-extrabold tracking-[0.14em] ${light ? "text-sky" : "text-cobalt-700"}`}>
         {String(index + 1).padStart(2, "0")}
       </span>
       <h3
@@ -543,15 +545,7 @@ function YouTubeVideosSection({ section }: { section: YouTubeVideoSection }) {
             key={`${video.embedUrl}-${index}`}
           >
             <div className="relative aspect-video overflow-hidden border-b border-sky/15 bg-navy-900">
-              <iframe
-                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-                className="absolute inset-0 h-full w-full border-0"
-                loading="lazy"
-                referrerPolicy="strict-origin-when-cross-origin"
-                src={video.embedUrl}
-                title={video.title}
-              />
+              <ConsentVideo src={video.embedUrl} title={video.title} />
             </div>
             <figcaption className="flex min-w-0 items-center gap-3 p-4 min-[560px]:p-5">
               <span className="flex size-9 shrink-0 items-center justify-center rounded-full border border-sky/30 bg-electric/12 text-[0.62rem] font-extrabold tracking-[0.1em] text-sky">
@@ -619,7 +613,7 @@ function ExtraContentSidebar({
           </span>
           <span className="min-w-0 flex-1 break-words text-[0.98rem] font-medium leading-6 text-navy-700/76">
             {header.label}{" "}
-            <strong className="font-semibold text-cobalt-600">{header.cta.label}</strong>
+            <strong className="font-semibold text-cobalt-700">{header.cta.label}</strong>
           </span>
           <span
             aria-hidden="true"
@@ -701,7 +695,7 @@ function ExtraContentSidebar({
                       <span className="min-w-0 break-words">{item.label}</span>
                       <span
                         aria-hidden="true"
-                        className="shrink-0 text-base text-navy-700/45 transition-transform group-hover/link:translate-x-0.5 group-hover/link:text-cobalt-600"
+                        className="shrink-0 text-base text-navy-700/45 transition-transform group-hover/link:translate-x-0.5 group-hover/link:text-cobalt-700"
                       >
                         →
                       </span>
@@ -727,6 +721,8 @@ function WrittenByLogoMarquee({
   return (
     <div
       aria-label={label || "Author credentials and recognition logos"}
+      role="region"
+      tabIndex={0}
       className="group/written-logos min-w-0 overflow-hidden border-t border-cobalt-700/10 pt-3 motion-reduce:overflow-x-auto min-[821px]:border-l min-[821px]:border-t-0 min-[821px]:pl-5 min-[821px]:pt-0"
     >
       {label ? (
@@ -794,7 +790,7 @@ function WrittenBySection({ section }: { section: RegistrationWrittenBy }) {
         className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-[linear-gradient(90deg,var(--blue-cobalt-700),var(--blue-electric),var(--blue-sky))]"
       />
       <div className="p-4 min-[560px]:px-5 min-[560px]:py-4">
-        <p className="mb-3 text-[0.625rem] font-extrabold uppercase tracking-[0.14em] text-cobalt-600">
+        <p className="mb-3 text-[0.625rem] font-extrabold uppercase tracking-[0.14em] text-cobalt-700">
           {section.label}
         </p>
 
@@ -826,6 +822,7 @@ function WrittenBySection({ section }: { section: RegistrationWrittenBy }) {
                 </h2>
                 {section.verified ? (
                   <span
+                    role="img"
                     aria-label="Verified author"
                     className="inline-flex size-[18px] shrink-0 items-center justify-center rounded-full bg-cobalt-700 text-cloud shadow-[0_4px_12px_rgba(13,92,184,0.22)]"
                     title="Verified author"

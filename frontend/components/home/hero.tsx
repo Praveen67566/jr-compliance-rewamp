@@ -1,5 +1,7 @@
 "use client";
 
+import { motionPreference } from "@/lib/motion-preference";
+
 import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 
@@ -31,7 +33,7 @@ function usePrefersReducedMotion() {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const mediaQuery = motionPreference("(prefers-reduced-motion: reduce)");
     const updatePreference = () => setPrefersReducedMotion(mediaQuery.matches);
 
     updatePreference();
@@ -134,7 +136,7 @@ export function Hero({ hero, leadForm, pageTitle, showConsultationForm = true }:
                 ))}
               </span>
               <span className="hero-rotating-word" aria-hidden="true">{displayedWord}</span>
-              <span className="sr-only">{activeWord}</span>
+              <span className="sr-only">{rotatingWords.join(", ")}</span>
             </span>
             <br />
             {hero.suffix}

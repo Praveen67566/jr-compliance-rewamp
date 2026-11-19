@@ -1,5 +1,7 @@
 "use client";
 
+import { motionPreference } from "@/lib/motion-preference";
+
 import { type FocusEvent, type ReactNode, useCallback, useEffect, useRef, useState } from "react";
 
 type KeychainRevealSectionProps = {
@@ -96,7 +98,7 @@ export function KeychainRevealSection({ children, className, itemCount, labelled
       return undefined;
     }
 
-    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const motionQuery = motionPreference("(prefers-reduced-motion: reduce)");
     let observer: IntersectionObserver | null = null;
 
     const applyMotionPreference = () => {
