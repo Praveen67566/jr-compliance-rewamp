@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { AccessibilityToolbar } from "@/components/accessibility/accessibility-toolbar";
+import { GoogleTagManager } from "@/components/privacy/google-tag-manager";
 import { PrivacyProvider } from "@/components/privacy/privacy-provider";
 import "./globals.css";
 import "../components/site-header.css";
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html className={inter.variable} lang="en">
       <body>
         <PrivacyProvider>
+          <GoogleTagManager />
           <a className="skip-link" href="#main-content">Skip to main content</a>
           {children}
           <AccessibilityToolbar />

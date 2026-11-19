@@ -4,6 +4,12 @@ import { build } from "esbuild";
 import { resolve } from "node:path";
 
 let bundle: string;
+test.beforeEach(async ({ page }) => {
+  await page.route("https://www.googletagmanager.com/gtm.js?id=GTM-K938HN3", (route) => route.fulfill({
+    contentType: "text/javascript", body: "window.testGtmLoads = (window.testGtmLoads || 0) + 1;",
+  }));
+});
+
 test.beforeAll(async () => {
   const result = await build({ entryPoints: [resolve("tests/browser/fixtures/controls.tsx")], bundle: true, write: false, platform: "browser", jsx: "automatic", define: { "process.env.NODE_ENV": '"test"' }, alias: { "next/navigation": resolve("tests/browser/fixtures/navigation.ts"), "@": resolve(".") } });
   bundle = result.outputFiles[0].text;
@@ -20,11 +26,11 @@ async function fixture(page: Page) {
   await expect(page.getByRole("heading", { name: "Preference controls test" })).toBeVisible();
 }
 
-test("no misleading banner; shared landmarks, skip link, forms and dialogs", async ({ page }) => {
+test("GTM consent banner; shared landmarks, skip link, forms and dialogs", async ({ page }) => {
   await page.goto("/contact-us");
   await expect(page.getByRole("main")).toHaveCount(1);
   await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
-  await expect(page.getByRole("heading", { name: "Your privacy choices" })).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Your privacy choices" })).toBeVisible();
   await page.keyboard.press("Tab");
   await expect(page.getByRole("link", { name: "Skip to main content" })).toBeFocused();
   await page.keyboard.press("Enter");
@@ -37,9 +43,9 @@ test("no misleading banner; shared landmarks, skip link, forms and dialogs", asy
   expect(results.violations).toEqual([]);
 });
 
-test("privacy choices are editable and persistent on pages without optional integrations", async ({ page }) => {
+test("privacy choices are editable and persistent across pages", async ({ page }) => {
   await page.goto("/privacy-policy");
-  await page.getByRole("button", { name: "Privacy preferences", exact: true }).click();
+  await page.getByRole("button", { name: "Customize Preferences", exact: true }).click();
   for (const name of [/^Optional preferences/, /^Analytics/, /^External media/]) {
     const choice = page.getByRole("checkbox", { name });
     await expect(choice).toBeEnabled();
@@ -57,6 +63,61 @@ test("privacy choices are editable and persistent on pages without optional inte
   await expect(page.getByRole("checkbox", { name: /^Analytics/ })).not.toBeChecked();
   await page.getByRole("button", { name: "Save preferences", exact: true }).click();
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem("jr-consent")!))).toMatchObject({ preferences: true, analytics: false, marketing: true });
+});
+
+test("GTM waits for both categories, loads once per document, and receives withdrawal", async ({ page }) => {
+  const requests: string[] = [];
+  page.on("request", (request) => {
+    if (request.url() === "https://www.googletagmanager.com/gtm.js?id=GTM-K938HN3") requests.push(request.url());
+  });
+  await page.goto("/contact-us");
+  await page.getByRole("button", { name: "Reject All", exact: true }).click();
+  await page.reload();
+  await page.getByRole("button", { name: "Privacy preferences", exact: true }).click();
+  await page.getByRole("checkbox", { name: /^Analytics/ }).check();
+  await page.getByRole("button", { name: "Save preferences", exact: true }).click();
+  expect(requests).toEqual([]);
+  expect(await page.evaluate("typeof window.gtag")).toBe("undefined");
+
+  await page.getByRole("button", { name: "Privacy preferences", exact: true }).click();
+  await page.getByRole("checkbox", { name: /^External media/ }).check();
+  await page.getByRole("button", { name: "Save preferences", exact: true }).click();
+  await expect.poll(() => page.evaluate("window.testGtmLoads || 0")).toBe(1);
+  expect(await page.evaluate("window.dataLayer.filter(entry => entry[0] === 'js').length")).toBe(1);
+  expect(await page.evaluate("window.dataLayer.filter(entry => entry.event === 'gtm.js').length")).toBe(1);
+  await page.locator('a[href="/about-us"]').first().click();
+  await expect(page).toHaveURL(/\/about-us$/);
+  await expect.poll(() => page.evaluate("window.testGtmLoads || 0")).toBe(1);
+
+  await page.getByRole("button", { name: "Privacy preferences", exact: true }).click();
+  await page.getByRole("button", { name: "Withdraw consent", exact: true }).click();
+  expect(await page.evaluate("Array.from(window.dataLayer.at(-1))")).toEqual([
+    "consent", "update", {
+      analytics_storage: "denied", ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied",
+    },
+  ]);
+  await page.getByRole("button", { name: "Privacy preferences", exact: true }).click();
+  await page.getByRole("checkbox", { name: /^Analytics/ }).check();
+  await page.getByRole("checkbox", { name: /^External media/ }).check();
+  await page.getByRole("button", { name: "Save preferences", exact: true }).click();
+  expect(await page.evaluate("Array.from(window.dataLayer.at(-1))")).toEqual([
+    "consent", "update", {
+      analytics_storage: "granted", ad_storage: "granted", ad_user_data: "granted", ad_personalization: "granted",
+    },
+  ]);
+  expect(requests).toHaveLength(2);
+});
+
+test("GPC blocks GTM even with saved analytics and marketing permission", async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "globalPrivacyControl", { value: true });
+    localStorage.setItem("jr-consent", JSON.stringify({ version: 1, updatedAt: new Date().toISOString(), preferences: false, analytics: true, marketing: true }));
+  });
+  await page.goto("/contact-us");
+  await page.getByRole("button", { name: "Privacy preferences", exact: true }).click();
+  await expect(page.getByRole("checkbox", { name: /^External media/ })).toBeDisabled();
+  await expect(page.locator("#google-tag-manager")).toHaveCount(0);
+  expect(await page.evaluate("typeof window.gtag")).toBe("undefined");
 });
 
 test("FAQ questions keep their full-width themed controls and expand correctly", async ({ page }) => {
