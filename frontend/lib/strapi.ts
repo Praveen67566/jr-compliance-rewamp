@@ -2038,16 +2038,35 @@ function strictLegalInlineNodes(value: unknown): LegalInlineNode[] | null {
     : null;
 }
 
-function strictLegalBlocks(value: unknown, allowEmpty = false): LegalContentBlock[] | null {
+function strictLegalBlocks(
+  value: unknown,
+  allowEmpty = false,
+  ignoreBlankParagraphs = false,
+): LegalContentBlock[] | null {
   if (!Array.isArray(value)) {
     return null;
   }
 
-  if (!value.length) {
+  const source = ignoreBlankParagraphs
+    ? value.filter((entry) => {
+        const block = record(entry);
+        return !(
+          block.type === "paragraph" &&
+          Array.isArray(block.children) &&
+          block.children.length > 0 &&
+          block.children.every((child) => {
+            const node = record(child);
+            return node.type === "text" && typeof node.text === "string" && !node.text.trim();
+          })
+        );
+      })
+    : value;
+
+  if (!source.length) {
     return allowEmpty ? [] : null;
   }
 
-  const blocks = value.map((entry): LegalContentBlock | null => {
+  const blocks = source.map((entry): LegalContentBlock | null => {
     const block = record(entry);
     const children = strictLegalInlineNodes(block.children);
 
@@ -2088,12 +2107,12 @@ function strictLegalBlocks(value: unknown, allowEmpty = false): LegalContentBloc
     : null;
 }
 
-function strictLegalSections(value: unknown): LegalSection[] | null {
+function strictLegalSections(value: unknown, ignoreBlankParagraphs = false): LegalSection[] | null {
   const source = asArray(value);
   const sections = source.map((entry) => {
     const section = record(entry);
     const title = text(section.title);
-    const body = strictLegalBlocks(section.body);
+    const body = strictLegalBlocks(section.body, false, ignoreBlankParagraphs);
     return title && body ? { title, body } : null;
   });
 
@@ -2109,8 +2128,9 @@ function mapLegalPage(
 ): LegalPageContent {
   const page = record(rawPage);
   const settings = record(rawSettings);
-  const introduction = strictLegalBlocks(page.introduction, true);
-  const sections = strictLegalSections(page.sections);
+  const ignoreBlankParagraphs = fallback.slug === "privacy-policy";
+  const introduction = strictLegalBlocks(page.introduction, true, ignoreBlankParagraphs);
+  const sections = strictLegalSections(page.sections, ignoreBlankParagraphs);
 
   return {
     ...mapPageChrome(fallback, rawSettings),
