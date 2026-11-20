@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 
-import { LegalPage } from "@/components/legal/legal-page";
 import { getLegalPage } from "@/lib/content";
 import { pageMetadata } from "@/lib/page-metadata";
+
+import { PrivacyPolicyContent } from "./privacy-policy-content";
 
 export const revalidate = 60;
 
@@ -13,5 +14,5 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function PrivacyPolicyPage() {
   const content = await getLegalPage("privacy-policy");
-  return <LegalPage content={content} />;
+  return <PrivacyPolicyContent content={content} />;
 }

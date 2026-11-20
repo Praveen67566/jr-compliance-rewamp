@@ -187,7 +187,9 @@ describe("fixed legal-page system", () => {
       assert.match(route, /export const revalidate = 60/);
       assert.match(route, /generateMetadata/);
       assert.ok(route.includes(`pageMetadata(content.seo, "/${slug}")`));
-      assert.match(route, /<LegalPage content=\{content\} \/>/);
+      assert.match(route, slug === "privacy-policy"
+        ? /<PrivacyPolicyContent content=\{content\} \/>/
+        : /<LegalPage content=\{content\} \/>/);
     }
 
     const adapter = source("frontend/lib/strapi.ts");
