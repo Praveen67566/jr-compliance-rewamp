@@ -157,6 +157,7 @@ export function getBisAdsPage(): BisAdsPageContent {
     ...bisAdsPage,
     site: {
       ...fallbackHomepage.site,
+      logo: "/images/jrc-logo.png",
       whatsAppHref: bisCertificationAdPage.whatsApp.href,
     },
     navigation: fallbackHomepage.navigation,

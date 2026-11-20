@@ -67,8 +67,8 @@ export function BisAdsHeader({ content }: { content: BisAdsPageContent }) {
       </p>
     </div>
     <div className="mx-auto flex min-h-[74px] max-w-[1320px] flex-wrap items-center justify-between gap-x-4 gap-y-2 px-[18px] py-3 min-[560px]:px-[22px] min-[1100px]:gap-x-5 min-[1100px]:px-8">
-      <a href="/" className="shrink-0 rounded" aria-label={`${content.site.name} home`}>
-        <img src={content.site.logo} alt={content.site.name} width={172} height={48} className="h-auto w-[124px] min-[390px]:w-[150px] min-[560px]:w-[172px]" />
+      <a href="/" className="relative block h-12 w-[124px] shrink-0 overflow-hidden rounded min-[390px]:w-[150px] min-[560px]:w-[172px]" aria-label={`${content.site.name} home`}>
+        <img src={content.site.logo} alt={content.site.name} width={1563} height={547} className="absolute left-0 top-1/2 h-auto w-full -translate-y-1/2" />
       </a>
       <nav id={menuId} aria-label="BIS certification sections" className={`${open ? "flex" : "hidden"} order-3 w-full flex-col gap-1 border-t border-cobalt-700/15 pt-3 min-[1100px]:order-none min-[1100px]:flex min-[1100px]:w-auto min-[1100px]:flex-row min-[1100px]:flex-wrap min-[1100px]:border-0 min-[1100px]:pt-0`}>
         {content.sectionNavigation.map((link) => <a key={link.href} href={link.href} aria-current={active === link.href ? "location" : undefined} className="inline-flex min-h-11 items-center rounded-lg px-2.5 text-sm font-semibold underline-offset-4 hover:bg-ice aria-[current=location]:bg-ice aria-[current=location]:text-cobalt-700 aria-[current=location]:underline" data-bis-cta="navigation" data-bis-location="header">{link.label}</a>)}

@@ -58,12 +58,12 @@ function Actions({ content, location, consultationLabel = content.consultationLa
   </div>;
 }
 
-function Card({ card, index, dark = false, centered = false, danger = false }: { card: BisAdsCard; index: number; dark?: boolean; centered?: boolean; danger?: boolean }) {
-  return <article className={`relative h-full min-w-0 rounded-xl border p-6 ${danger ? "border-red-200 bg-white text-navy-700 shadow-[0_8px_28px_rgba(185,28,28,0.06)]" : dark ? "border-sky/25 bg-navy-900/65 text-ice" : "border-cobalt-700/15 bg-white text-navy-700 shadow-[0_8px_28px_rgba(3,19,47,0.04)]"} ${centered ? danger ? "border-b-2 border-b-red-500" : "border-b-2 border-b-electric" : ""}`}>
-    <span className={`mb-4 grid size-11 place-items-center rounded-xl ${centered ? "mx-auto" : ""} ${danger ? "bg-red-50 text-red-700 ring-1 ring-red-100" : dark ? "bg-cobalt-700/30 text-sky" : "bg-ice text-cobalt-700"}`}>{danger ? <PenaltyIcon kind={index} /> : <Icon kind={index} />}</span>
-    <h3 className={`mb-3 text-lg font-bold! leading-snug tracking-[-0.02em] ${centered ? "text-center" : ""} ${danger ? "text-red-900" : dark ? "text-cloud" : "text-navy-950"}`}>{card.title}</h3>
+function Card({ card, index, dark = false, centered = false, danger = false, aligned = false }: { card: BisAdsCard; index: number; dark?: boolean; centered?: boolean; danger?: boolean; aligned?: boolean }) {
+  return <article className={`relative h-full min-w-0 rounded-xl border p-6 ${aligned ? "row-span-4 grid grid-rows-subgrid gap-y-4 text-left" : ""} ${danger ? "border-red-200 bg-white text-navy-700 shadow-[0_8px_28px_rgba(185,28,28,0.06)]" : dark ? "border-sky/25 bg-navy-900/65 text-ice" : "border-cobalt-700/15 bg-white text-navy-700 shadow-[0_8px_28px_rgba(3,19,47,0.04)]"} ${centered ? danger ? "border-b-2 border-b-red-500" : "border-b-2 border-b-electric" : ""}`}>
+    <span className={`${aligned ? "self-start" : "mb-4"} grid size-11 place-items-center rounded-xl ${centered ? "mx-auto" : ""} ${danger ? "bg-red-50 text-red-700 ring-1 ring-red-100" : dark ? "bg-cobalt-700/30 text-sky" : "bg-ice text-cobalt-700"}`}>{danger ? <PenaltyIcon kind={index} /> : <Icon kind={index} />}</span>
+    <h3 className={`${aligned ? "mb-0" : "mb-3"} text-lg font-bold! leading-snug tracking-[-0.02em] ${centered ? "text-center" : ""} ${danger ? "text-red-900" : dark ? "text-cloud" : "text-navy-950"}`}>{card.title}</h3>
     {card.description ? <p className={`mb-0 text-base leading-7 ${centered ? "text-center" : ""}`}>{card.description}</p> : null}
-    {card.items ? <ul className="mb-0 mt-3 list-none space-y-2 p-0">{card.items.map((item) => <li className="flex items-start gap-2.5 text-base leading-7" key={item}><span aria-hidden="true" className={`mt-[0.65rem] size-1.5 shrink-0 rounded-full ${dark ? "bg-sky" : "bg-cobalt-700"}`} /><span>{item}</span></li>)}</ul> : null}
+    {card.items ? <ul className={`mb-0 ${aligned ? "mt-0 self-start" : "mt-3"} list-none space-y-2 p-0`}>{card.items.map((item) => <li className="flex items-start gap-2.5 text-base leading-7" key={item}><span aria-hidden="true" className={`mt-[0.65rem] size-1.5 shrink-0 rounded-full ${dark ? "bg-sky" : "bg-cobalt-700"}`} /><span>{item}</span></li>)}</ul> : null}
   </article>;
 }
 
@@ -81,12 +81,12 @@ function ProcessCard({ card, index }: { card: BisAdsCard; index: number }) {
   </li>;
 }
 
-function CardSection({ id, section, dark = false, tinted = false, centered = false, children }: { id: string; section: BisAdsCardSection; dark?: boolean; tinted?: boolean; centered?: boolean; children?: ReactNode }) {
+function CardSection({ id, section, dark = false, tinted = false, centered = false, aligned = false, children }: { id: string; section: BisAdsCardSection; dark?: boolean; tinted?: boolean; centered?: boolean; aligned?: boolean; children?: ReactNode }) {
   return <section id={id} aria-labelledby={`${id}-heading`} className={`${rhythm} ${dark ? bluefield : tinted ? "bg-ice text-navy-950" : "bg-cloud text-navy-950"}`}>
     {dark ? <GridArtwork /> : null}
     <div className={container}>
       <Heading id={id} title={section.title} eyebrow={section.eyebrow} description={section.description} dark={dark} />
-      <div className="grid gap-4 min-[560px]:grid-cols-2 min-[1100px]:grid-cols-3 min-[1100px]:gap-5">{section.cards.map((card, index) => <Card card={card} key={card.title} index={index} dark={dark} centered={centered} />)}</div>
+      <div className="grid gap-4 min-[560px]:grid-cols-2 min-[1100px]:grid-cols-3 min-[1100px]:gap-5">{section.cards.map((card, index) => <Card card={card} key={card.title} index={index} dark={dark} centered={centered} aligned={aligned} />)}</div>
       {children ? <div className="mt-9 min-[821px]:mt-12">{children}</div> : null}
     </div>
   </section>;
@@ -126,7 +126,7 @@ export function BisAdsPage({ content }: { content: Content }) {
       </div>
 
       <CardSection id="assistance" section={content.assistance}><Actions content={content} location="assistance" /></CardSection>
-      <CardSection id="certifications" section={content.certifications} centered tinted />
+      <CardSection id="certifications" section={content.certifications} aligned tinted />
 
       <section id="penalties" aria-labelledby="penalties-heading" className={`${rhythm} bg-linear-to-b from-red-50 to-cloud text-navy-950`}>
         <div className={container}>

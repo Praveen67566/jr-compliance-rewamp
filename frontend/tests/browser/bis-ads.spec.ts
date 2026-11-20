@@ -12,7 +12,7 @@ test.beforeEach(async ({ page }) => {
 test("static copy, section sequence, metadata, anchors and contact destinations", async ({ page }) => {
   const response = await page.goto("/ads/bis-certification");
   expect(response?.status()).toBe(200);
-  await expect(page.locator("[data-bis-announcement]")).toHaveText("Affordable BIS Certification with Expert Support | 5,000+ Certifications · Expert Standards Team");
+  await expect(page.locator("[data-bis-announcement]")).toHaveText("Affordable BIS Certification with Expert Support | 10,000+ Certifications · Expert Standards Team");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(bisAdsPage.hero.title);
   expect(await page.locator("main > section").evaluateAll((sections) => sections.map((section) => section.getAttribute("aria-labelledby")))).toEqual([
     "bis-hero-heading", "assistance-heading", "certifications-heading", "penalties-heading", "why-jr-heading", "process-heading", "documents-heading", "eligibility-heading", "faqs-heading", "bis-closing-heading",

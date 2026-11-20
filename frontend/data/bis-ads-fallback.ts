@@ -27,7 +27,7 @@ export const bisAdsPage: BisAdsPageData = {
   stickyBar: {
     title: "BIS Certification",
     description: "ISI Mark · CRS · FMCS",
-    brandLogo: { src: "/images/jr-logo.svg", alt: "JR Compliance" },
+    brandLogo: { src: "/images/jrc-logo.png", alt: "JR Compliance" },
     points: [
       { title: "Compliance Assessment", description: "Product and scheme guidance" },
       { title: "Lab Testing Support", description: "Sample and test report assistance" },
