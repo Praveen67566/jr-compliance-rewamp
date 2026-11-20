@@ -82,11 +82,14 @@ function ProcessCard({ card, index }: { card: BisAdsCard; index: number }) {
 }
 
 function CardSection({ id, section, dark = false, tinted = false, centered = false, aligned = false, children }: { id: string; section: BisAdsCardSection; dark?: boolean; tinted?: boolean; centered?: boolean; aligned?: boolean; children?: ReactNode }) {
+  const gridColumns = id === "certifications" && section.cards.length === 5
+    ? "min-[560px]:grid-cols-4 min-[560px]:[&>article]:col-span-2 min-[560px]:[&>article:last-child]:col-start-2 min-[1100px]:grid-cols-6 min-[1100px]:[&>article:nth-child(4)]:col-start-2 min-[1100px]:[&>article:last-child]:col-start-4"
+    : "min-[560px]:grid-cols-2 min-[1100px]:grid-cols-3";
   return <section id={id} aria-labelledby={`${id}-heading`} className={`${rhythm} ${dark ? bluefield : tinted ? "bg-ice text-navy-950" : "bg-cloud text-navy-950"}`}>
     {dark ? <GridArtwork /> : null}
     <div className={container}>
       <Heading id={id} title={section.title} eyebrow={section.eyebrow} description={section.description} dark={dark} />
-      <div className="grid gap-4 min-[560px]:grid-cols-2 min-[1100px]:grid-cols-3 min-[1100px]:gap-5">{section.cards.map((card, index) => <Card card={card} key={card.title} index={index} dark={dark} centered={centered} aligned={aligned} />)}</div>
+      <div className={`grid gap-4 min-[1100px]:gap-5 ${gridColumns}`}>{section.cards.map((card, index) => <Card card={card} key={card.title} index={index} dark={dark} centered={centered} aligned={aligned} />)}</div>
       {children ? <div className="mt-9 min-[821px]:mt-12">{children}</div> : null}
     </div>
   </section>;
