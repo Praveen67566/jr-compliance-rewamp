@@ -5,15 +5,15 @@ import type { BisAdsPageData } from "@/lib/types";
 export const bisAdsPage: BisAdsPageData = {
   seo: {
     title: "BIS Certification Online – CRS & ISI Mark Registration | JR Compliance",
-    description: "BIS certification consultation for ISI Mark, CRS, FMCS, Hallmarking and BIS Lab Recognition. Speak with JR Compliance for documentation, testing and application support.",
+    description: "BIS certification consultation for ISI Mark, CRS, FMCS and BIS Lab Recognition. Speak with JR Compliance for documentation, testing and application support.",
     noIndex: true,
   },
   hero: {
     eyebrow: "India’s leading BIS Certification Consultancy.",
     title: "BIS Certification Online - CRS and ISI Mark Registration",
-    services: ["ISI Mark", "Hallmarking", "FMCS", "BIS Lab Recognition", "CRS Electronics"],
+    services: ["ISI Mark", "FMCS", "BIS Lab Recognition", "CRS Electronics"],
     proof: ["10000+ Certifications", "Industry Expert Consultants", "500+ Product Categories", "Pan-India Service."],
-    audiences: ["Electronics manufacturers", "Domestic manufacturers", "Product importers", "Jewellery retailers"],
+    audiences: ["Electronics manufacturers", "Domestic manufacturers", "Product importers"],
   },
   header: {
     message: "Affordable BIS Certification with Expert Support | 10,000+ Certifications · Expert Standards Team",
@@ -132,7 +132,7 @@ export const bisAdsPage: BisAdsPageData = {
   audience: {
     title: "Who needs a BIS Certificate?",
     description: "Individuals and entities that need a BIS certificate before legal market entry.",
-    items: ["Electronics importers and manufacturers.", "Cement, steel, and construction product manufacturers.", "Electrical equipment manufacturers.", "Infant food, toy and baby product companies.", "Gold and silver jewellery retailers.", "Importers of mandatory BIS product categories", "Foreign manufacturers exporting to India (FMCS)", "E-commerce sellers of electronics & appliances"],
+    items: ["Electronics importers and manufacturers.", "Cement, steel, and construction product manufacturers.", "Electrical equipment manufacturers.", "Infant food, toy and baby product companies.", "Importers of mandatory BIS product categories", "Foreign manufacturers exporting to India (FMCS)", "E-commerce sellers of electronics & appliances"],
   },
   faqs: {
     title: "FAQs",
