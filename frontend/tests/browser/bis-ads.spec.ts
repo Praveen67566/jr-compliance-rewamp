@@ -6,7 +6,7 @@ test.beforeEach(async ({ page }) => {
   // Keep optional vendors and test enquiries on this machine.
   await page.route("https://www.googletagmanager.com/**", (route) => route.fulfill({ contentType: "text/javascript", body: "" }));
   await page.route("https://connect.facebook.net/**", (route) => route.fulfill({ contentType: "text/javascript", body: "" }));
-  await page.addInitScript(() => localStorage.setItem("jr-consent", JSON.stringify({ version: 1, updatedAt: new Date().toISOString(), preferences: false, analytics: false, marketing: false })));
+  await page.addInitScript(() => localStorage.setItem("jr-consent", JSON.stringify({ version: 2, region: "unknown", revision: "2", updatedAt: new Date().toISOString(), preferences: false, analytics: false, marketing: false })));
 });
 
 test("static copy, section sequence, metadata, anchors and contact destinations", async ({ page }) => {
@@ -189,11 +189,11 @@ test("CTA events respect consent, revocation and GPC without duplicate GTM", asy
   await click();
   expect(await page.evaluate("window.dataLayer?.filter(e => e.event === 'cta_click').length ?? 0")).toBe(0);
   const setConsent = async (enabled: boolean) => page.evaluate((value) => {
-    localStorage.setItem("jr-consent", JSON.stringify({ version: 1, updatedAt: new Date().toISOString(), preferences: false, analytics: value, marketing: value }));
+    localStorage.setItem("jr-consent", JSON.stringify({ version: 2, region: "unknown", revision: "2", updatedAt: new Date().toISOString(), preferences: false, analytics: value, marketing: value }));
     dispatchEvent(new StorageEvent("storage", { key: "jr-consent" }));
   }, enabled);
   await setConsent(true);
-  await expect(page.locator('script#google-tag-manager')).toHaveCount(1);
+  await expect(page.locator('iframe#google-tag-manager')).toHaveCount(1);
   await click();
   expect(await page.evaluate("window.dataLayer.filter(e => e.event === 'cta_click').at(-1)")).toMatchObject({ event: "cta_click", cta_type: "consultation", cta_location: "hero", page_path: "/ads/bis-certification" });
   // Prevent an external WhatsApp visit while exercising the actual tracked anchor.
@@ -213,5 +213,5 @@ test("CTA events respect consent, revocation and GPC without duplicate GTM", asy
   await page.evaluate(() => { Object.defineProperty(navigator, "globalPrivacyControl", { configurable: true, value: true }); dispatchEvent(new Event("pageshow")); });
   await click();
   expect(await page.evaluate("window.dataLayer.filter(e => e.event === 'cta_click').length")).toBe(1);
-  expect(await page.evaluate("window.dataLayer.filter(e => e.event === 'gtm.js').length")).toBe(1);
+  await expect(page.locator("#google-tag-manager")).toHaveCount(0);
 });

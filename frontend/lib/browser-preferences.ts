@@ -1,17 +1,15 @@
-import type { AccessibilityPreferences, AccessibilityProfile } from "./types";
-export type { AccessibilityPreferences, AccessibilityProfile } from "./types";
+import type { AccessibilityPreferences, AccessibilityProfile, ConsentPolicy, ConsentRecord, ConsentChoices, OptionalCategory } from "./types";
+export type { AccessibilityPreferences, AccessibilityProfile, ConsentRecord, ConsentChoices, OptionalCategory } from "./types";
 
 export const ACCESSIBILITY_STORAGE_KEY = "jr-accessibility-v1";
 export const CONSENT_STORAGE_KEY = "jr-consent";
-export const CONSENT_POLICY_VERSION = 1;
+export const CONSENT_POLICY_VERSION = 2;
+export const defaultConsentPolicy: ConsentPolicy = { region: "unknown", revision: "2", maxAgeDays: null, gpc: false };
 
 export const accessibilityProfileIds: AccessibilityProfile[] = ["seizureSafe", "blind", "adhdFriendly", "cognitive", "motorImpaired", "lowVision"];
 export const defaultAccessibility: AccessibilityPreferences = {
   textScale: 100, highContrast: false, reduceMotion: false, dyslexiaFont: false, profiles: [],
 };
-export type OptionalCategory = "preferences" | "analytics" | "marketing";
-export type ConsentChoices = Record<OptionalCategory, boolean>;
-export type ConsentRecord = ConsentChoices & { version: number; updatedAt: string };
 export const rejectedChoices: ConsentChoices = { preferences: false, analytics: false, marketing: false };
 
 export function readLocal(key: string): unknown {
@@ -53,10 +51,13 @@ export function resolveAccessibility(preferences: AccessibilityPreferences, syst
   };
 }
 
-export function parseConsent(value: unknown): ConsentRecord | null {
+export function parseConsent(value: unknown, policy: ConsentPolicy = defaultConsentPolicy, now = Date.now()): ConsentRecord | null {
   if (!value || typeof value !== "object") return null;
   const record = value as ConsentRecord;
-  if (record.version !== CONSENT_POLICY_VERSION || typeof record.updatedAt !== "string" || !Number.isFinite(Date.parse(record.updatedAt))
+  const savedAt = typeof record.updatedAt === "string" ? Date.parse(record.updatedAt) : NaN;
+  if (record.version !== CONSENT_POLICY_VERSION || !Number.isFinite(savedAt) || savedAt > now
+    || record.region !== policy.region || record.revision !== policy.revision
+    || (policy.maxAgeDays !== null && now - savedAt >= policy.maxAgeDays * 86_400_000)
     || ![record.preferences, record.analytics, record.marketing].every((choice) => typeof choice === "boolean")) return null;
   return record;
 }

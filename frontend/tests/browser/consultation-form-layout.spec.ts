@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
 test.beforeEach(async ({ page }) => {
-  await page.addInitScript(() => localStorage.setItem("jr-consent", JSON.stringify({ version: 1, updatedAt: new Date().toISOString(), preferences: false, analytics: false, marketing: false })));
+  await page.addInitScript(() => localStorage.setItem("jr-consent", JSON.stringify({ version: 2, region: "unknown", revision: "2", updatedAt: new Date().toISOString(), preferences: false, analytics: false, marketing: false })));
 });
 
 for (const width of [1440, 320]) {

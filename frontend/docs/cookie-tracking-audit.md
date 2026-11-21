@@ -1,38 +1,179 @@
-# Frontend cookie and tracking audit
+# Frontend consent enforcement and setup
 
-Date: 19 November 2026. Source scope: active `frontend/app`, `components`, `lib`, dependency/configuration entry points, and references in fallback data. This is a source and local-browser audit, not an assertion about all production network traffic or legal requirements. No production configuration, vendor account, CMS record or backend was changed.
+Updated 21 November 2026. Scope: the active frontend and local browser tests.
+The updated Privacy Policy, its CMS content, navigation, forms, lead payloads,
+and accessibility controls have not been edited. No deployment or vendor-account
+configuration was performed.
 
-| Technology / data | Purpose and category | Loading / storage | Control and limits |
-| --- | --- | --- | --- |
-| Google Tag Manager; Google Analytics / Ads when configured in the container | Analytics / marketing | `GoogleTagManager` in the root layout loads `https://www.googletagmanager.com/gtm.js?id=GTM-K938HN3` asynchronously after hydration and consent | Registers both categories through the existing consent lifecycle. Requires analytics and marketing permission; GPC blocks activation. Initializes `dataLayer`/`gtag` and the GTM startup event once per document. Consent withdrawal sends denied Google Consent Mode updates; loading is deduplicated by `next/script`. Public container version 115 was inspected to diagnose the missing Meta base tag; other container integrations were not fully audited. |
-| Meta Pixel | Marketing | GTM version 115 has an active PageView tag (66), a paused base setup tag (52), and Pixel ID `1027798165813441`. After analytics and marketing consent, `GoogleTagManager` creates the standard `fbq` queue, initializes that existing ID, and loads `https://connect.facebook.net/en_US/fbevents.js` before the container can call an undefined function | GTM owns PageView/conversion events; the frontend adds no PageView call. The queue accepts events even when the SDK is delayed or blocked. An existing `fbq` is preserved without a duplicate frontend init/library. Withdrawal calls `fbq("consent", "revoke")`; regrant uses `grant`. Keep one base-initialization owner when changing the GTM setup. |
-| YouTube privacy-enhanced player | External media, conservatively grouped under Marketing | Previously a lazy `youtube-nocookie.com` iframe in optional CMS-managed service video sections; now `ConsentVideo` | No iframe or vendor request before marketing permission. Unmounting removes players on withdrawal. GPC blocks this category. A privacy-enhanced hostname alone does not establish that an embed is consent-free. Requests already received by Google cannot be recalled. Captions, transcripts and vendor retention require owner/vendor review. |
-| `jr-consent` localStorage | Necessary record of requested privacy choices | Version 1; three boolean optional-category choices, version, ISO timestamp; no identity data | Read after hydration; missing, corrupt or old-version records deny optional categories. Local-only; no consent API. Updated immediately, on reload and across tabs. Storage failure keeps current-visit state and announces that persistence is unavailable. |
-| `jr-accessibility-v1` localStorage | Necessary storage of explicitly requested accessibility preferences | Text scale, high contrast, reduced motion | Written only following visitor choices. Restores on later visits, handles invalid values, syncs across tabs and falls back to memory when blocked. Not an analytics identifier. |
-| Cookies and sessionStorage owned by frontend source | Necessary / other | No `document.cookie`, sessionStorage or application Set-Cookie writer found in active frontend source | Edge/server, Strapi and third-party cookies are outside this source-level finding. Production response/cookie inspection remains required. |
-| Contact form query parameters | Inquiry attribution within the existing lead contract | UTM source/medium/campaign read from the current URL only when submitting an inquiry; same-origin POST `/api/leads` | Existing endpoint/payload/consent checkbox unchanged. No background tracking or browser persistence introduced. Subsequent webhook/CRM/email processing belongs to backend and owner policy review. |
-| WhatsApp, phone, email, maps, social and other external links | Visitor-requested navigation/contact | Ordinary anchors; WhatsApp icon is local, no SDK/widget script | No embedded WhatsApp tracking starts on page load. Destination processing after navigation is outside frontend control. |
-| Strapi media, CMS rich-text images and external logos | Necessary content delivery under existing content contracts | Existing image URLs from approved local assets and CMS media; remote sources may receive network metadata | Content URLs and CMS data unchanged. Unknown editor-added remote media must be reviewed for tracking/consent before publication; they are not treated as verified non-tracking vendors. |
-| Inter through `next/font/google` | Necessary presentation | Font downloaded at build and served by Next from the application | No new runtime Google Fonts widget or consent-dependent font request introduced. |
-| Three.js / WebGL Earth | Decorative local rendering | Dynamically imported module, local Earth textures; no tracking integration found | Reduced motion stops/disposes the scene and timers. |
-| SEO JSON-LD and Next runtime | Necessary structured content / application operation | JSON-LD is data, not a tracker; framework scripts hydrate the application | Kept operational independently of optional consent. Development tooling/storage is not production tracking. |
+## Enforcement
 
-## Interface and integration behavior
+| Technology | Required permission | Withdrawal behavior |
+| --- | --- | --- |
+| Mixed GTM container `GTM-K938HN3`, its Google analytics/advertising tags, Meta Pixel `1027798165813441`, and any container-loaded trackers | Both analytics AND marketing, with marketing denied under GPC | Destroy the entire sandboxed frame, including its scripts, timers, listeners, nested frames and pending event queue. The page and unfinished forms stay mounted. |
+| YouTube privacy-enhanced service videos | Marketing/external media; also blocked by the existing Seizure Safe profile | Remove the player frame. |
+| Future independent analytics/heatmap adapters | Analytics; additional marketing permission when the purpose includes advertising | Must implement complete stop/cleanup via `useOptionalIntegration`, or use a removable isolated frame. No direct parent-page heatmap SDK is enabled. |
+| Optional preference integrations | Preferences | Stop through the same adapter lifecycle. None is currently configured in production. |
+| Navigation, inquiry forms, requested contact links, local assets, necessary accessibility and consent storage | No optional permission required | Continue working. |
 
-The reusable consent banner offers equal-style Accept All, Reject All and Customize Preferences. It appears only when the current page registers an optional integration and has no valid decision. Pages without optional technologies have no banner; the footer always allows reviewing and withdrawing stored choices. All optional categories default to off. Choices apply across the website and remain editable even when a category has no integration on the current page. Each category identifies whether a feature is available on the current page. Marketing remains locked off when Global Privacy Control is enabled. Saved choices can be withdrawn globally.
+No GTM/Meta script, tracking frame, analytics globals, pixel or optional player is
+created before the relevant permission. Accept All saves all optional categories;
+Reject All saves all off; custom choices remain independently editable. A mixed
+container is intentionally blocked for analytics-only or marketing-only choices,
+because its independently managed tags cannot safely be assigned one purpose.
 
-The production integrations are optional YouTube media and Google Tag Manager. GTM registers analytics and marketing on every route, so undecided visitors receive the existing consent banner sitewide. The preferences category has no production integration. The isolated browser-test fixture registers synthetic analytics, requests an intercepted local script only after consent, and verifies cleanup on withdrawal; it is never exposed as an application route or shipped as a vendor integration.
+The tracking frame uses `sandbox="allow-scripts"` **without** `allow-same-origin`.
+It cannot access the parent document or its storage. Scripts load only after a
+parent/frame startup handshake. Consent Mode defaults are denied before granted
+signals and before the container starts. Withdrawal destroys the execution
+context instead of relying on denied-consent pings to stop tracking. See
+[Google's consent-mode model](https://developers.google.com/tag-platform/security/concepts/consent-mode)
+and [iframe sandbox behavior](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/iframe#sandbox).
 
-GTM uses [Google Consent Mode](https://developers.google.com/tag-platform/security/guides/consent) defaults and updates for `analytics_storage`, `ad_storage`, `ad_user_data`, and `ad_personalization`. The loader stays inactive until both categories are allowed. After activation, denying either category sends denied updates for all four signals. Loaded JavaScript cannot be unloaded: Google tags may send cookieless pings under denied consent, and custom/third-party container tags require their own consent checks and stop behavior. The container owner must configure and verify those checks; this frontend change does not establish that arbitrary published tags stop all processing on withdrawal.
+Only `page_view`, `cta_click` and `whatsapp_click` events cross the boundary.
+The bridge allow-lists pathname, CTA type and CTA location, omitting query strings,
+form values, contact data and arbitrary event properties. Route changes do not
+reload the container; unchanged consent saves do not reinitialize it. A fresh
+grant after withdrawal creates one fresh frame. No rejected-period events are
+replayed. Events awaiting initial frame readiness are bounded and discarded on
+withdrawal. The existing BIS CTA publisher continues to use the same dataLayer
+event contract and consent checks.
 
-The Meta base uses [Meta's consent API](https://developers.facebook.com/documentation/meta-pixel/implementation/gdpr) to grant/revoke Pixel processing with the same consent lifecycle. It initializes the Pixel ID already present in the supplied GTM container; Meta library cookies and requests are vendor managed. The frontend regression tests execute the container's failing `fbq("track", "PageView")` call with stubbed/blocked SDK responses, and verify that consent gates and one-time initialization remain effective. They do not establish live event delivery to Meta.
+Known readable first-party Google, Meta, Hotjar and Clarity identifiers are
+removed from cookies/localStorage/sessionStorage for denied categories, including
+legacy identifiers created by the old parent-page loader. Necessary storage is
+retained. HttpOnly and third-party cookies, identifiers on unrelated paths or
+origins, and data already transmitted cannot be erased by frontend code.
 
-`useOptionalIntegration(id, category, start)` registers the category, starts only when permitted, avoids rerunning for unchanged consent, and runs the returned cleanup on withdrawal or unmount. Integrations must own and remove their listeners/timers/resources, disable further event collection and clear their own frontend-managed cookies/storage where supported. Removing a script tag alone cannot undo JavaScript or transmitted data. Vendors without a reliable stop mechanism must use an isolated removable frame or receive a reviewed adapter before being added. Necessary scripts bypass this hook.
+## Regional location setup
 
-Global Privacy Control is read on hydration and when the page becomes visible or is restored. It overrides marketing permission, including a previously saved grant. It does not automatically deny first-party analytics in this implementation; applicability and category definitions require owner/legal review. The UI describes the effective blocked state.
+No provider is selected or contacted. Without configured trusted location, the
+region is `unknown`; every optional purpose requires explicit opt-in. The
+read-only `/api/privacy/context` endpoint returns only a coarse region, renewal
+revision/interval and HTTP GPC flag. It uses `private, no-store` and exposes no
+IP address, raw country, proxy secret or CMS token. Static page rendering and
+existing CMS content loaders are preserved.
 
-## Outside this implementation
+Configure server-only values from `.env.example`:
 
-Infrastructure-injected scripts, response cookies, Cloudflare analytics, Nginx logs, server-side tagging, Strapi administration/storage, webhook recipients, CRM processing, destination-site cookies and already transmitted third-party data are outside frontend control. No claim is made that the supplied legal policy already describes the new interface or meets a particular jurisdiction. Legal text/category definitions and retention decisions need owner/legal review; existing CMS policy content was preserved.
+| Variable | Default | Required setup |
+| --- | --- | --- |
+| `PRIVACY_GEO_SHARED_SECRET` | Empty; all country headers ignored | At least 32 characters, shared only by the trusted reverse proxy and Next.js. |
+| `PRIVACY_GEO_COUNTRY_HEADER` | `x-jr-country` | The header containing the provider's ISO-style two-letter country. |
+| `PRIVACY_CONSENT_MAX_AGE_DAYS` | Empty; **no time-based expiry** | Set a positive whole number of days only after an interval is agreed. Test values do not establish production policy. Invalid configured values produce a 503 privacy-context response. |
+| `PRIVACY_CONSENT_REVISION` | `2` | Change after an approved purpose/consent-policy change to require a fresh decision. Letters, digits, dots, hyphens and underscores; maximum 64 characters. |
 
-Do not add optional scripts directly to root layout, `next/script`, raw HTML, preconnects, pixels or tag managers outside the consent lifecycle. A newly introduced category/purpose requires reviewing the policy and incrementing `CONSENT_POLICY_VERSION` when appropriate; old-version decisions then remain inactive until renewed.
+The trusted proxy must **overwrite**, rather than pass through, both the country
+header and `x-jr-geo-token`. The latter must contain the shared secret. Strip
+client-supplied values; use only the chosen provider's authenticated location
+metadata. Keep the Next.js origin bound to loopback/private networking as in
+`prod.md`, prevent edge bypass, and disable intermediary caching for the context
+endpoint. Never put the token in browser code, a `NEXT_PUBLIC_*` variable, URL or
+logs. Comparison in the app uses constant-time comparison of SHA-256 digests.
+An ordinary `CF-IPCountry`, `X-Vercel-IP-Country`, query parameter, browser locale
+or timezone is not trusted automatically.
+
+Region groups are EEA/UK, India, US, other and unknown. They all retain opt-in
+defaults. Regional explanatory copy appears in preferences; US visitors also
+receive an explicit sale/sharing opt-out that turns off marketing while retaining
+their other saved choices. This does not establish a sale/sharing data pipeline
+or claim that one exists. State-level legal distinctions are not inferred.
+
+Browser `navigator.globalPrivacyControl` and HTTP `Sec-GPC: 1` both deny marketing,
+including previously saved grants. The signal is rechecked on visibility and page
+restoration. Marketing choices are disabled while the signal is active. GPC does
+not independently deny analytics-only adapters, but blocks the mixed container.
+
+## Renewal and returning visits
+
+`jr-consent` schema version **2** stores three boolean choices, ISO timestamp,
+coarse region and consent revision. It contains no visitor identity or precise
+location. Version 1 grants require a fresh choice once because they lack the
+new context/revision contract. Missing, corrupt, future-dated, wrong-version,
+wrong-revision, changed-region and configured-expired records never activate
+tracking. An unset interval preserves otherwise valid records without inventing
+a retention period. Review the interval separately from vendor data retention.
+
+When an interval is configured, expiry is checked on restoration and with a
+deadline timer during an open visit, including intervals longer than the browser's
+maximum timer delay. Storage events synchronize withdrawal/clearing across tabs.
+Page restoration rechecks stored decisions and fetches fresh context. A context
+failure, malformed response or five-second timeout prevents restoring saved
+grants; the visitor can still make a current-visit choice. Those choices are not
+persisted while context is unavailable. Blocked localStorage similarly permits
+current-visit choices with a visible persistence notice. Optional tracking stays
+off throughout initial context loading.
+
+## External dependencies and verification limits
+
+- **GTM owner review is required before release.** The opaque frame intentionally
+  denies first-party cookies/storage and access to the real page DOM. Existing
+  GTM automatic click/form triggers, DOM variables, advertising attribution,
+  cookie-based sessions and heatmap/session-replay tags may fail or report only
+  the frame. Review the live published container, remove duplicate base tags,
+  use the supplied sanitized events/path variables, and verify analytics/Meta
+  delivery and attribution in staging. Frontend tests do not certify reporting.
+- Heatmaps requiring the real page DOM stay unavailable until a reviewed adapter
+  can stop all future collection. Do not add `allow-same-origin` or parent-page
+  SDK injection to work around that restriction. A separate analytics-only
+  container or reviewed per-vendor adapter can provide independent measurement.
+- Configure and verify the real location provider, proxy stripping/overwriting,
+  origin isolation and approved expiry/revision values. None has been installed
+  or assumed by this change. Edge CSP must permit the approved frame and scripts;
+  a restrictive policy can safely block optional tracking and needs staging QA.
+- Infrastructure-injected scripts, server-side tagging, edge/server logs,
+  third-party and HttpOnly cookies, Strapi, downstream CRM/webhooks and data
+  already sent are outside this frontend boundary. Audit them at deployment.
+- Browser tests intercept vendor responses with SDKs that make repeated test
+  requests, including a synthetic heatmap. They prove request gating and cessation
+  after withdrawal, not actual vendor delivery, historical-data deletion, real
+  device behavior or legal compliance. Native screen-reader review remains manual.
+
+## Validation
+
+`tests/privacy-enforcement.test.ts` covers trusted/spoofed location, configuration,
+no assumed expiry, exact expiry boundaries, version/revision/region changes,
+future timestamps and event payload filtering. `tests/browser/consent-enforcement.spec.ts`
+covers no consent, acceptance, rejection, custom combinations, returning visits,
+live vendor timers, withdrawal without form loss, storage/cross-tab changes,
+configured renewal, GPC, regional opt-out, context/storage failure, keyboard focus,
+mobile reflow and automated accessibility. Existing consent/video, campaign,
+navigation, form, accessibility-profile and layout regressions are retained.
+
+Validation on 21 November 2026:
+
+| Check | Result |
+| --- | --- |
+| `npm run test` | 188 passed, zero failed. |
+| `PLAYWRIGHT_CHANNEL=chrome npm run test:e2e -- --workers=2` | 141 passed across desktop Chrome, Firefox, WebKit, Pixel 7 and iPhone 13 emulations. Includes existing navigation, form, layout and accessibility regressions. |
+| Final affected-suite rerun after startup scheduling changes | 84 consent/privacy tests passed across all five browser projects, zero failed. |
+| Repeated cold Chrome starts | Three consecutive acceptance/returning-visit runs passed after deferring vendor startup until after the isolated document loads. |
+| Optimized production build on a separate local port | All 12 consent scenarios passed with intercepted vendor SDKs. |
+| `npm run typecheck` | Passed, including the final original Next declaration references. |
+| `npm run build` | Passed; 268 pages generated and existing public pages retain static generation. Only the privacy-context endpoint is newly dynamic. |
+| `git diff --check` | Passed. |
+
+The final startup scheduling change is also covered by a separate rerun of the
+affected consent/privacy suites across the five browser projects. Screenshots at
+1440, 820, 390 and 320 pixels are test artifacts; desktop and mobile samples were
+visually inspected. Browser emulations do not replace real-device or native
+screen-reader review. No live lead was submitted; lead transport was intercepted
+in regression tests. The full suite initially exposed launcher overlap and Safari
+focus restoration issues; both were corrected and the subsequent full run passed.
+
+## Changed files
+
+- Enforcement/UI: `components/privacy/privacy-provider.tsx`,
+  `components/privacy/google-tag-manager.tsx`, `data/privacy-fallback.ts`.
+- Contracts and policy: `lib/types.ts`, `lib/browser-preferences.ts`,
+  `lib/privacy-policy.ts`, `lib/privacy-tracking.ts`,
+  `app/api/privacy/context/route.ts`.
+- Setup/documentation: `.env.example`, `docs/cookie-tracking-audit.md`.
+- Tests: `playwright.config.ts`, `tests/browser-preferences.test.ts`,
+  `tests/privacy-enforcement.test.ts`, `tests/browser/consent-enforcement.spec.ts`,
+  `tests/browser/accessibility-privacy.spec.ts`,
+  `tests/browser/accessibility-profiles.spec.ts`, `tests/browser/bis-ads.spec.ts`,
+  `tests/browser/consultation-form-layout.spec.ts`. Existing fixture records were
+  updated for schema 2; assertions now inspect the isolated tracking frame.
+
+The user's edited `bootstrap.md` is preserved. Generated Next.js declarations
+are restored to their original references after validation.

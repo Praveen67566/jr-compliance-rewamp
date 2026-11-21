@@ -63,7 +63,7 @@ async function reflow(page: Page) {
 
 test.beforeEach(async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference", contrast: "no-preference" });
-  await page.addInitScript(() => localStorage.setItem("jr-consent", JSON.stringify({ version: 1, updatedAt: new Date().toISOString(), preferences: false, analytics: false, marketing: false })));
+  await page.addInitScript(() => localStorage.setItem("jr-consent", JSON.stringify({ version: 2, region: "unknown", revision: "2", updatedAt: new Date().toISOString(), preferences: false, analytics: false, marketing: false })));
   await page.goto("/privacy-policy");
 });
 

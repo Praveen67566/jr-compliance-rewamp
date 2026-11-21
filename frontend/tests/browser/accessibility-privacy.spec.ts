@@ -68,10 +68,10 @@ test("privacy choices are editable and persistent across pages", async ({ page }
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem("jr-consent")!))).toMatchObject({ preferences: true, analytics: false, marketing: true });
 });
 
-test("GTM waits for both categories, loads once per document, and receives withdrawal", async ({ page }) => {
+test("GTM waits for both categories, stays isolated and is destroyed on withdrawal", async ({ page }) => {
   const requests: string[] = [];
   page.on("request", (request) => {
-    if (request.url() === "https://www.googletagmanager.com/gtm.js?id=GTM-K938HN3") requests.push(request.url());
+    if (request.url().includes("googletagmanager.com/gtm.js")) requests.push(request.url());
   });
   await page.goto("/contact-us");
   await page.getByRole("button", { name: "Reject All", exact: true }).click();
@@ -82,48 +82,39 @@ test("GTM waits for both categories, loads once per document, and receives withd
   expect(requests).toEqual([]);
   expect(await page.evaluate("typeof window.gtag")).toBe("undefined");
   expect(await page.evaluate("typeof window.fbq")).toBe("undefined");
-  await expect(page.locator("#meta-pixel-base")).toHaveCount(0);
-
   await page.getByRole("button", { name: "Privacy preferences", exact: true }).click();
   await page.getByRole("checkbox", { name: /^External media/ }).check();
   await page.getByRole("button", { name: "Save preferences", exact: true }).click();
-  await expect.poll(() => page.evaluate("window.testGtmLoads || 0")).toBe(1);
-  await expect.poll(() => page.evaluate("window.testMetaLoads || 0")).toBe(1);
-  expect(await page.evaluate("window.fbq.queue")).toEqual([
+  const frame = () => page.frames().find((item) => item !== page.mainFrame())!;
+  await expect.poll(async () => frame()?.evaluate("window.testGtmLoads || 0")).toBe(1);
+  await expect.poll(async () => frame()?.evaluate("window.testMetaLoads || 0")).toBe(1);
+  expect(await frame().evaluate("window.fbq.queue")).toEqual([
     ["consent", "grant"], ["init", "1027798165813441"], ["track", "PageView"],
   ]);
-  expect(await page.evaluate("window.dataLayer.filter(entry => entry[0] === 'js').length")).toBe(1);
-  expect(await page.evaluate("window.dataLayer.filter(entry => entry.event === 'gtm.js').length")).toBe(1);
+  expect(await frame().evaluate("window.dataLayer.filter(entry => entry.event === 'gtm.js').length")).toBe(1);
+  await expect(page.locator("#google-tag-manager")).toHaveAttribute("sandbox", "allow-scripts");
   await page.locator('a[href="/about-us"]').first().click();
   await expect(page).toHaveURL(/\/about-us$/);
-  await expect.poll(() => page.evaluate("window.testGtmLoads || 0")).toBe(1);
-
+  await expect.poll(() => requests.length).toBe(2);
+  await page.getByRole("button", { name: "Privacy preferences", exact: true }).click();
+  await page.getByRole("button", { name: "Save preferences", exact: true }).click();
+  expect(requests).toHaveLength(2);
   await page.getByRole("button", { name: "Privacy preferences", exact: true }).click();
   await page.getByRole("button", { name: "Withdraw consent", exact: true }).click();
-  expect(await page.evaluate("window.fbq.queue.at(-1)")).toEqual(["consent", "revoke"]);
-  expect(await page.evaluate("Array.from(window.dataLayer.at(-1))")).toEqual([
-    "consent", "update", {
-      analytics_storage: "denied", ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied",
-    },
-  ]);
+  await expect(page.locator("#google-tag-manager")).toHaveCount(0);
+  expect(await page.evaluate("typeof window.fbq")).toBe("undefined");
   await page.getByRole("button", { name: "Privacy preferences", exact: true }).click();
   await page.getByRole("checkbox", { name: /^Analytics/ }).check();
   await page.getByRole("checkbox", { name: /^External media/ }).check();
   await page.getByRole("button", { name: "Save preferences", exact: true }).click();
-  expect(await page.evaluate("window.fbq.queue.at(-1)")).toEqual(["consent", "grant"]);
-  expect(await page.evaluate("window.fbq.queue.filter(entry => entry[0] === 'init').length")).toBe(1);
-  expect(await page.evaluate("Array.from(window.dataLayer.at(-1))")).toEqual([
-    "consent", "update", {
-      analytics_storage: "granted", ad_storage: "granted", ad_user_data: "granted", ad_personalization: "granted",
-    },
-  ]);
-  expect(requests).toHaveLength(2);
+  await expect.poll(() => requests.length).toBe(3);
+  await expect.poll(async () => frame()?.evaluate("window.testGtmLoads || 0")).toBe(1);
 });
 
 test("GPC blocks GTM even with saved analytics and marketing permission", async ({ page }) => {
   await page.addInitScript(() => {
     Object.defineProperty(navigator, "globalPrivacyControl", { value: true });
-    localStorage.setItem("jr-consent", JSON.stringify({ version: 1, updatedAt: new Date().toISOString(), preferences: false, analytics: true, marketing: true }));
+    localStorage.setItem("jr-consent", JSON.stringify({ version: 2, region: "unknown", revision: "2", updatedAt: new Date().toISOString(), preferences: false, analytics: true, marketing: true }));
   });
   await page.goto("/contact-us");
   await page.getByRole("button", { name: "Privacy preferences", exact: true }).click();
@@ -140,14 +131,15 @@ test("GTM PageView stays safe when the Meta library is blocked", async ({ page }
   await page.route("https://connect.facebook.net/en_US/fbevents.js", (route) => route.abort());
   await page.goto("/contact-us");
   await page.getByRole("button", { name: "Accept All", exact: true }).click();
-  await expect.poll(() => page.evaluate("window.testGtmLoads || 0")).toBe(1);
-  expect(await page.evaluate("window.fbq.queue")).toEqual([
+  const frame = () => page.frames().find((item) => item !== page.mainFrame())!;
+  await expect.poll(async () => frame()?.evaluate("window.testGtmLoads || 0")).toBe(1);
+  expect(await frame().evaluate("window.fbq.queue")).toEqual([
     ["consent", "grant"], ["init", "1027798165813441"], ["track", "PageView"],
   ]);
   expect(errors).toEqual([]);
 });
 
-test("GTM preserves an existing Meta Pixel without another library or initialization", async ({ page }) => {
+test("isolated GTM cannot use or overwrite a parent-page Pixel", async ({ page }) => {
   await page.addInitScript(`
     window.testMetaCalls = [];
     window.fbq = function () { window.testMetaCalls.push(Array.from(arguments)); };
@@ -155,13 +147,13 @@ test("GTM preserves an existing Meta Pixel without another library or initializa
   `);
   await page.goto("/contact-us");
   await page.getByRole("button", { name: "Accept All", exact: true }).click();
-  await expect.poll(() => page.evaluate("window.testGtmLoads || 0")).toBe(1);
+  const frame = () => page.frames().find((item) => item !== page.mainFrame())!;
+  await expect.poll(async () => frame()?.evaluate("window.testGtmLoads || 0")).toBe(1);
   expect(await page.evaluate("window.fbq === window.existingFbq")).toBe(true);
-  expect(await page.evaluate("window.testMetaCalls")).toEqual([["consent", "grant"], ["track", "PageView"]]);
-  await expect(page.locator("#meta-pixel-base")).toHaveCount(0);
+  expect(await page.evaluate("window.testMetaCalls")).toEqual([]);
   await page.getByRole("button", { name: "Privacy preferences", exact: true }).click();
   await page.getByRole("button", { name: "Withdraw consent", exact: true }).click();
-  expect(await page.evaluate("window.testMetaCalls.at(-1)")).toEqual(["consent", "revoke"]);
+  await expect(page.locator("#google-tag-manager")).toHaveCount(0);
 });
 
 test("FAQ questions keep their full-width themed controls and expand correctly", async ({ page }) => {
@@ -261,14 +253,14 @@ test("reject, GPC, unavailable storage and consent dialog accessibility", async 
 test("GPC overrides an existing grant; cross-tab withdrawal and policy upgrades stop tracking", async ({ page, context }) => {
   await page.addInitScript(() => {
     Object.defineProperty(navigator, "globalPrivacyControl", { value: true });
-    localStorage.setItem("jr-consent", JSON.stringify({ version: 1, updatedAt: new Date().toISOString(), preferences: false, analytics: true, marketing: true }));
+    localStorage.setItem("jr-consent", JSON.stringify({ version: 2, region: "unknown", revision: "2", updatedAt: new Date().toISOString(), preferences: false, analytics: true, marketing: true }));
   });
   await fixture(page);
   await expect(page.getByTestId("starts")).toHaveText("1");
   await expect(page.locator("iframe")).toHaveCount(0);
   const second = await context.newPage();
   await second.goto("/contact-us");
-  await second.evaluate(() => localStorage.setItem("jr-consent", JSON.stringify({ version: 1, updatedAt: new Date().toISOString(), preferences: false, analytics: false, marketing: false })));
+  await second.evaluate(() => localStorage.setItem("jr-consent", JSON.stringify({ version: 2, region: "unknown", revision: "2", updatedAt: new Date().toISOString(), preferences: false, analytics: false, marketing: false })));
   await expect(page.getByTestId("stops")).toHaveText("1");
   await second.evaluate(() => localStorage.setItem("jr-consent", JSON.stringify({ version: 0, updatedAt: new Date().toISOString(), preferences: true, analytics: true, marketing: true })));
   await expect(page.getByRole("button", { name: "Accept All", exact: true })).toBeVisible();

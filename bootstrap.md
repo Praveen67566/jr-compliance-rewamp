@@ -106,10 +106,11 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Implement an advanced accessibility toolbar with Seizure Safe, Blind, ADHD Friendly, Cognitive, Motor Impaired and Low Vision profiles, each with clearly defined behavior.
+Complete consent enforcement so optional analytics, GTM, pixels and heatmaps start only after the relevant permission and stop future tracking after withdrawal.
+Add regional privacy controls using trusted location data, agreed consent-renewal rules and existing GPC support. Use the updated privacy policy without editing it.
+Test no consent, acceptance, rejection, custom choices, withdrawal, renewal and returning visits. Report any external dependencies or verification gaps.
+completely test this.
 
-Add a dyslexia-friendly font toggle and a footer shortcut, retaining existing text size, contrast, reduced motion, save and reset controls.
+also inhance the ui of your privacy choice popup reference image is provided.
 
-Test keyboard navigation, screen-reader support, mobile layouts and combined settings across major browsers.
-
-Now apart from this don't change anything else and this advance accessibility can be done in frontend only so don't change anything else and propely test everything.
+Apart from this don't change anything else. i don't want any disruption in current website flow.

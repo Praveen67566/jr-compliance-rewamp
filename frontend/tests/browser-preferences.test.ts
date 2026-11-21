@@ -10,7 +10,7 @@ describe("versioned browser preferences", () => {
   });
   it("blocks every category before consent and lets GPC override marketing", () => {
     for (const category of ["preferences", "analytics", "marketing"] as const) assert.equal(categoryAllowed(category, null, false), false);
-    const record = parseConsent({ preferences: true, analytics: true, marketing: true, version: CONSENT_POLICY_VERSION, updatedAt: new Date().toISOString() });
+    const record = parseConsent({ preferences: true, analytics: true, marketing: true, version: CONSENT_POLICY_VERSION, updatedAt: new Date().toISOString(), region: "unknown", revision: "2" });
     assert.ok(record);
     assert.equal(categoryAllowed("analytics", record, true), true);
     assert.equal(categoryAllowed("marketing", record, true), false);

@@ -1070,3 +1070,8 @@ export type AccessibilityPreferences = {
   dyslexiaFont: boolean;
   profiles: AccessibilityProfile[];
 };
+export type OptionalCategory = "preferences" | "analytics" | "marketing";
+export type ConsentChoices = Record<OptionalCategory, boolean>;
+export type PrivacyRegion = "unknown" | "eea-uk" | "india" | "us" | "other";
+export type ConsentPolicy = { region: PrivacyRegion; revision: string; maxAgeDays: number | null; gpc: boolean };
+export type ConsentRecord = ConsentChoices & { version: number; updatedAt: string; region: PrivacyRegion; revision: string };
