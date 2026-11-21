@@ -1,14 +1,13 @@
+import type { AccessibilityPreferences, AccessibilityProfile } from "./types";
+export type { AccessibilityPreferences, AccessibilityProfile } from "./types";
+
 export const ACCESSIBILITY_STORAGE_KEY = "jr-accessibility-v1";
 export const CONSENT_STORAGE_KEY = "jr-consent";
 export const CONSENT_POLICY_VERSION = 1;
 
-export type AccessibilityPreferences = {
-  textScale: number;
-  highContrast: boolean;
-  reduceMotion: boolean;
-};
+export const accessibilityProfileIds: AccessibilityProfile[] = ["seizureSafe", "blind", "adhdFriendly", "cognitive", "motorImpaired", "lowVision"];
 export const defaultAccessibility: AccessibilityPreferences = {
-  textScale: 100, highContrast: false, reduceMotion: false,
+  textScale: 100, highContrast: false, reduceMotion: false, dyslexiaFont: false, profiles: [],
 };
 export type OptionalCategory = "preferences" | "analytics" | "marketing";
 export type ConsentChoices = Record<OptionalCategory, boolean>;
@@ -24,13 +23,33 @@ export function writeLocal(key: string, value: unknown): boolean {
 }
 
 export function parseAccessibility(value: unknown): AccessibilityPreferences {
-  if (!value || typeof value !== "object") return { ...defaultAccessibility };
+  if (!value || typeof value !== "object") return { ...defaultAccessibility, profiles: [] };
   const record = value as Partial<AccessibilityPreferences>;
   return {
     textScale: typeof record.textScale === "number" && Number.isFinite(record.textScale)
       ? Math.max(100, Math.min(200, record.textScale)) : 100,
     highContrast: record.highContrast === true,
     reduceMotion: record.reduceMotion === true,
+    dyslexiaFont: record.dyslexiaFont === true,
+    profiles: Array.isArray(record.profiles)
+      ? accessibilityProfileIds.filter((profile) => record.profiles!.includes(profile)) : [],
+  };
+}
+
+/** Profiles add requirements without overwriting the visitor's individual choices. */
+export function resolveAccessibility(preferences: AccessibilityPreferences, system = { reduceMotion: false, highContrast: false }) {
+  const active = (profile: AccessibilityProfile) => preferences.profiles.includes(profile);
+  return {
+    textScale: Math.max(preferences.textScale, active("lowVision") ? 150 : 100),
+    highContrast: preferences.highContrast || system.highContrast || active("lowVision"),
+    reduceMotion: preferences.reduceMotion || system.reduceMotion || active("seizureSafe") || active("blind") || active("adhdFriendly"),
+    seizureSafe: active("seizureSafe"),
+    blind: active("blind"),
+    adhdFriendly: active("adhdFriendly"),
+    cognitive: active("cognitive"),
+    motorImpaired: active("motorImpaired"),
+    lowVision: active("lowVision"),
+    dyslexiaFont: preferences.dyslexiaFont,
   };
 }
 

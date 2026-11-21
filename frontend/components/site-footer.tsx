@@ -1,5 +1,6 @@
 import { linkTargetProps } from "@/lib/link-props";
 import { PrivacyPreferencesButton } from "@/components/privacy/privacy-provider";
+import { AccessibilityPreferencesButton } from "@/components/accessibility/accessibility-toolbar";
 import type { FooterLinkGroup, HomepageContent } from "@/lib/types";
 
 type SiteFooterProps = Pick<HomepageContent, "site" | "footer">;
@@ -132,6 +133,7 @@ export function SiteFooter({ site, footer }: SiteFooterProps) {
           </div>
           <div className="footer-bottom-legal">
             <PrivacyPreferencesButton />
+            <AccessibilityPreferencesButton />
             {site.legalLinks.map((link) => (
               <a href={sharedHref(link.href)} key={link.label} {...linkTargetProps(link)}>
                 {link.label}

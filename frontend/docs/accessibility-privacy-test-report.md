@@ -107,3 +107,87 @@ Every eligible frontend workstream has an implementation. “Partially completed
 - Testing/docs: package.json, package-lock.json, playwright.config.ts, .gitignore; tests/browser-preferences.test.ts, tests/browser/accessibility-privacy.spec.ts, tests/browser/fixtures/controls.tsx, navigation.ts; tests/registration-markdown.test.ts, service-detail-content.test.ts; the three reports in docs/.
 
 All authored changes are inside frontend/. Existing root bootstrap.md changes were present before this task and preserved. No deployment, CMS/database mutation, backend/API change, lead payload change, URL change or SEO metadata change was performed.
+
+## Advanced accessibility toolbar — 21 November 2026
+
+This frontend-only update extends the existing toolbar and adds an “Accessibility settings” footer button that opens the same dialog. CMS contracts, CMS data, public routes and the default page theme are unchanged. Profile descriptions are attached to their buttons with `aria-describedby`; pressed states and a polite status region expose changes to assistive technology.
+
+| Profile | Defined behavior |
+| --- | --- |
+| Seizure Safe | Stops site CSS animation/transitions and JavaScript motion through the existing motion preference; hides GIF images/canvas artwork and decorative layers; unmounts YouTube frames, including videos loaded before enabling the profile. The UI explicitly avoids promising seizure prevention. |
+| Blind | Disables automatic site motion and adds focus-moving shortcuts to main content, visible site navigation, footer and current page headings. Existing semantic landmarks and screen-reader behavior remain available with every profile off. |
+| ADHD Friendly | Stops automatic site motion, hides decorative layers and enlarges the keyboard focus ring. Content and controls stay available. |
+| Cognitive | Increases reading line/word spacing, emphasizes headings, underlines content links and offers page-heading shortcuts. It preserves the original copy. |
+| Motor Impaired | Gives interactive targets a minimum 44 × 44 CSS pixel size and strengthens focus indicators. Toolbar Tab/Shift+Tab order is explicit so Safari's limited Tab mode still reaches every enabled control. |
+| Low Vision | Requires high contrast and a minimum 150% text scale; permits enlargement through 200%. |
+
+Profiles can be combined. They add minimum requirements without replacing individual text-size, contrast or motion choices. Turning a profile off restores those individual choices; reset clears all profiles and the font preference while retaining system accessibility requirements. Existing `jr-accessibility-v1` records migrate through parsing without losing their original settings. Changes save immediately; the explicit Save control retries saving and announces unavailable storage. Changes from another tab remain synchronized.
+
+The dyslexia-friendly font toggle uses the local Verdana/Arial/sans-serif stack with wider letter/word spacing. It works independently of Cognitive mode and needs no remote font request. Font preference is individual; no reading-outcome guarantee is made.
+
+### Validation scope
+
+- Unit coverage includes old saved records, malformed values, profile combination/removal, text limits and system overrides.
+- Browser coverage includes each profile, Enter/Space, Tab/Shift+Tab, Escape, dialog containment, both launcher focus-return paths, landmark/heading focus movement, accessible names/descriptions/pressed states, live status messages, save/reload/reset, blocked storage and cross-tab updates.
+- Combined settings include all six profiles, the font toggle and 200% text at 320px, plus shared home/contact/service templates at 320px, 768px and 1280px. Profile-specific overrides correct header, hero text, service shortcuts, phone fields and sticky CTA reflow without changing their default presentation.
+- Chromium and WebKit run full applicable axe WCAG A/AA scans for the toolbar states. Firefox runs the same functional tests and native accessibility-tree assertions: its bundled browser crashes inside axe on this macOS host, including focused name/label scans, with software rendering and with contrast disabled. That scanner limitation is annotated in the test, not counted as a successful full Firefox axe audit.
+- Mobile projects emulate Pixel 7/Chromium and iPhone 13/WebKit. These are browser simulations, not physical-device runs. WebKit is the Safari engine, not a run of the installed Safari application; installed Edge is not separately tested.
+- The video regression confirms that enabling Seizure Safe removes an already loaded frame, reload keeps it blocked, and removing the profile restores the frame only while external-media consent remains granted.
+- Mobile toolbar and combined-settings form screenshots were inspected locally.
+
+Human VoiceOver, NVDA and JAWS announcement testing remains unperformed in this environment. Automated semantic checks do not establish complete screen-reader compatibility or WCAG conformance. Visitor settings apply after frontend initialization; the profile cannot certify arbitrary CMS or third-party media as seizure-safe.
+
+### Files changed for this update
+
+- `components/accessibility/accessibility-toolbar.tsx`, `accessibility.css`, `preference-dialog.tsx`: profile controls, font, combined settings, visual overrides and responsive dialog behavior.
+- `components/site-footer.tsx`: the toolbar shortcut.
+- `components/privacy/consent-video.tsx`: Seizure Safe media blocking, independent of privacy consent.
+- `lib/browser-preferences.ts`, `lib/types.ts`, `lib/dialog-focus.ts`: saved preferences, profile contracts/composition and consistent dialog keyboard navigation.
+- `playwright.config.ts`, `tests/browser-preferences.test.ts`, `tests/browser/accessibility-profiles.spec.ts`, `tests/browser/accessibility-privacy.spec.ts`: browser projects and regression coverage. The existing enlargement test now dismisses consent before testing the mobile launcher.
+- `docs/accessibility-privacy-test-report.md`: behavior and validation evidence.
+
+### Final results — 21 November 2026
+
+| Check | Result |
+| --- | --- |
+| `npm run typecheck` | Passed. |
+| `npm run build` | Passed; production compilation, TypeScript and 268 static routes completed. |
+| `npm test` | 181 passed, zero failed. |
+| Accessibility/privacy browser scenarios | All 54 passed in the final run: 24 Chromium regression cases and 30 profile cases across desktop Chromium, Firefox, WebKit, Pixel 7 emulation and iPhone 13 emulation. |
+| Full `npm run test:e2e` | 65 passed, one unrelated failure. `tests/browser/bis-ads.spec.ts:33` expects eight `#eligibility li` elements; the unchanged BIS fallback contains seven audience items and the page renders seven. The campaign content and its test were left unchanged. |
+| Final source whitespace check | `git diff --check` passed. |
+
+The browser run used `PLAYWRIGHT_BROWSERS_PATH=/private/tmp/jr-accessibility-browsers`; matching browsers were downloaded for the installed Playwright version. Screenshots and generated reports remain local/ignored. Firefox's full axe scanner and human screen-reader limitations above still apply; the passing count includes native Firefox semantics checks, not a full Firefox axe scan.
+
+## Popup reference update — 21 November 2026
+
+This update supersedes the earlier UI and verification results above.
+
+The popup follows the supplied reference with a clean header, six icon cards in two columns on larger screens, visible toggle indicators, compact text-size buttons and separate display controls. Below 480px and with enlarged text, the cards become one column. Its content scrolls independently while Close, Save and Reset remain in view. The dialog description is explicitly associated with its accessible name. Accessible control names include their visible labels (Smaller, Larger, Default, Save preferences and Reset all settings), including speech-input label matching. An early footer request is retained until the toolbar listener is ready, preventing hydration from losing the first keyboard activation.
+
+Additional files for this revision are `components/accessibility/preference-icons.tsx` (profile icons) and `tests/browser/bis-ads.spec.ts` (the stale eight-item assertion now uses the unchanged audience array’s length). No campaign content or CMS record was changed.
+
+### Firefox audit coverage
+
+The full WCAG A/AA axe rules now run for Firefox as well. Its current engine crashes when axe follows Playwright ARIA inspection in the same page. The audit opens a fresh live application page with the same saved preferences, viewport and OS media settings. It checks matching effective root flags, text scale, profile/control labels, pressed states and disabled states before running axe. This page retains the actual Next.js application and all its interaction code. Keyboard, focus, persistence and profile tests run on the original live page. No axe rule is disabled or omitted; no static HTML substitute is used in the final tests.
+
+### Real assistive-technology verification
+
+Real VoiceOver automation was attempted in a dedicated visible browser. Despite the user's permission changes, the current execution process continued to report `AXIsProcessTrusted() = false`, and macOS returned `osascript is not allowed assistive access (-1719)`. Reading VoiceOver's last spoken phrase timed out. VoiceOver was initially stopped and was confirmed stopped afterward. This is a blocked check, not a passing screen-reader test. A fresh session with effective macOS assistive access, or a human VoiceOver session, is still required. NVDA/JAWS require a Windows environment and were not run here.
+
+Desktop, display-control and mobile screenshots were inspected locally against the supplied reference. Automated layout coverage checks two-column/single-column behavior and verifies that Close, Save and Reset stay in the viewport while the content scrolls at 1440px, 768px, 390px and 320px.
+
+### Completed automated verification for the revised popup
+
+| Check | Final result |
+| --- | --- |
+| `npm run typecheck` | Passed. |
+| `npm run build` | Passed after the final accessible-label update. |
+| `npm test` | 181 passed, zero failed. |
+| Full browser suite | 71 passed, zero failed, zero skipped, across Chromium, Firefox, WebKit and both mobile-emulation projects. |
+| Accessibility/privacy subset | 59 passed: 24 shared regressions and 35 profile/UI scenarios. |
+| Existing BIS regression | Passed after deriving the eligibility count from the existing content array; all campaign content remained unchanged. |
+| Whitespace/source check | `git diff --check` passed. |
+| Real VoiceOver speech verification | Blocked by macOS assistive-access denial; not recorded as passed. |
+
+The full browser run completed in 2.6 minutes. All automated checks are complete. Physical-device testing and real VoiceOver/NVDA/JAWS speech verification are not covered by those passing results. The fresh live Firefox audit procedure described above is used by the final suite.

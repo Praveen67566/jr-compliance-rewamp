@@ -1060,3 +1060,13 @@ export type CrawlerContent = {
   };
   pages: CrawlerPage[];
 };
+
+export type AccessibilityProfile = "seizureSafe" | "blind" | "adhdFriendly" | "cognitive" | "motorImpaired" | "lowVision";
+
+export type AccessibilityPreferences = {
+  textScale: number;
+  highContrast: boolean;
+  reduceMotion: boolean;
+  dyslexiaFont: boolean;
+  profiles: AccessibilityProfile[];
+};

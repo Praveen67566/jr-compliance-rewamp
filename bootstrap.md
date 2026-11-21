@@ -106,6 +106,10 @@ If a command cannot be run, clearly explain why.
 
 ## Prompt:-
 
-Now see the /ads/bis-certification the Cert types section looks bad because of 5 cards now arrange the card in a way that it look good refernce image also provided.
+Implement an advanced accessibility toolbar with Seizure Safe, Blind, ADHD Friendly, Cognitive, Motor Impaired and Low Vision profiles, each with clearly defined behavior.
 
-Apart from this don't change anything in website.
+Add a dyslexia-friendly font toggle and a footer shortcut, retaining existing text size, contrast, reduced motion, save and reset controls.
+
+Test keyboard navigation, screen-reader support, mobile layouts and combined settings across major browsers.
+
+Now apart from this don't change anything else and this advance accessibility can be done in frontend only so don't change anything else and propely test everything.

@@ -30,7 +30,7 @@ test("static copy, section sequence, metadata, anchors and contact destinations"
   for (const item of [...bisAdsPage.hero.services, ...bisAdsPage.hero.proof, ...bisAdsPage.audience.items]) expect(text).toContain(item);
   for (const faq of bisAdsPage.faqs.items) { expect(text).toContain(faq.question); expect(text).toContain(faq.answer); }
   await expect(page.locator("#documents article")).toHaveCount(9);
-  await expect(page.locator("#eligibility li")).toHaveCount(8);
+  await expect(page.locator("#eligibility li")).toHaveCount(bisAdsPage.audience.items.length);
   await expect(page.locator("#faqs details")).toHaveCount(10);
   await expect(page.locator("#penalties article")).toHaveCount(6);
   await expect(page.locator("#process ol > li h3")).toHaveText(bisAdsPage.process.cards.map((card) => card.title));

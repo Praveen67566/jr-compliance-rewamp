@@ -216,6 +216,27 @@ test("accept, persistence, custom choices, withdrawal, cleanup and no duplicate 
   await expect(page.locator("iframe")).toHaveCount(0);
 });
 
+test("Seizure Safe removes an already loaded video and keeps consent independent", async ({ page }) => {
+  await fixture(page);
+  await page.getByRole("button", { name: "Accept All", exact: true }).click();
+  await expect(page.locator("iframe")).toHaveCount(1);
+  await page.getByRole("button", { name: "Accessibility", exact: true }).click();
+  await page.getByRole("button", { name: "Seizure Safe", exact: true }).click();
+  await expect(page.locator("iframe")).toHaveCount(0);
+  await page.keyboard.press("Escape");
+  await expect(page.getByText(/Video .* is blocked by the Seizure Safe profile/)).toBeVisible();
+  await page.reload();
+  await expect(page.locator("html")).toHaveAttribute("data-seizure-safe", "true");
+  await expect(page.locator("iframe")).toHaveCount(0);
+  await page.getByRole("button", { name: "Accessibility", exact: true }).click();
+  await page.getByRole("button", { name: "Seizure Safe", exact: true }).click();
+  await page.keyboard.press("Escape");
+  await expect(page.locator("iframe")).toHaveCount(1);
+  await page.getByRole("button", { name: "Privacy preferences", exact: true }).click();
+  await page.getByRole("button", { name: "Withdraw consent", exact: true }).click();
+  await expect(page.locator("iframe")).toHaveCount(0);
+});
+
 test("reject, GPC, unavailable storage and consent dialog accessibility", async ({ page }) => {
   await page.addInitScript(() => {
     Object.defineProperty(navigator, "globalPrivacyControl", { value: true });
@@ -271,7 +292,7 @@ test("consent banner has unselected options, accessible mobile controls, reset a
   await page.keyboard.press("Escape");
   await expect(page.getByRole("button", { name: "Privacy preferences", exact: true })).toBeFocused();
   await page.getByRole("button", { name: "Accessibility", exact: true }).click();
-  for (let index = 0; index < 4; index++) await page.getByRole("button", { name: "Increase text size", exact: true }).click();
+  for (let index = 0; index < 4; index++) await page.getByRole("button", { name: "Larger text", exact: true }).click();
   await page.keyboard.press("Escape");
   await page.getByRole("button", { name: "Privacy preferences", exact: true }).click();
   expect(await page.getByRole("dialog").evaluate((dialog) => dialog.scrollWidth <= dialog.clientWidth)).toBe(true);
@@ -284,16 +305,16 @@ test("system motion and contrast, dialog keyboard containment and blocked access
   await page.getByRole("button", { name: "Accessibility", exact: true }).click();
   await expect(page.getByRole("button", { name: "Reduced motion", exact: true })).toBeDisabled();
   await expect(page.getByRole("button", { name: "High contrast", exact: true })).toHaveAttribute("aria-pressed", "true");
-  await page.getByRole("button", { name: "Increase text size", exact: true }).click();
+  await page.getByRole("button", { name: "Larger text", exact: true }).click();
   await expect(page.getByRole("dialog").getByRole("status")).toContainText("Browser storage is unavailable");
   await page.getByRole("button", { name: "Close accessibility settings", exact: true }).focus();
   await page.keyboard.press("Shift+Tab");
-  await expect(page.getByRole("button", { name: "Reset all accessibility preferences", exact: true })).toBeFocused();
+  await expect(page.getByRole("button", { name: "Reset all settings", exact: true })).toBeFocused();
   await page.keyboard.press("Tab");
   await expect(page.getByRole("button", { name: "Close accessibility settings", exact: true })).toBeFocused();
   const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"]).analyze();
   expect(results.violations).toEqual([]);
-  await page.getByRole("button", { name: "Reset all accessibility preferences", exact: true }).click();
+  await page.getByRole("button", { name: "Reset all settings", exact: true }).click();
   await expect(page.locator("html")).toHaveAttribute("data-reduce-motion", "true");
 });
 
@@ -319,8 +340,9 @@ test("campaign modal is visitor initiated and restores focus; WhatsApp preview d
 
 test("toolbar persists enlargement, contrast and motion; reset restores defaults", async ({ page }) => {
   await page.goto("/privacy-policy");
+  await page.getByRole("button", { name: "Reject All", exact: true }).click();
   await page.getByRole("button", { name: "Accessibility", exact: true }).click();
-  for (let index = 0; index < 4; index++) await page.getByRole("button", { name: "Increase text size", exact: true }).click();
+  for (let index = 0; index < 4; index++) await page.getByRole("button", { name: "Larger text", exact: true }).click();
   await page.getByRole("button", { name: "High contrast", exact: true }).click();
   await page.getByRole("button", { name: "Reduced motion", exact: true }).click();
   await page.keyboard.press("Escape");
@@ -334,11 +356,11 @@ test("toolbar persists enlargement, contrast and motion; reset restores defaults
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.getByRole("button", { name: "Accessibility", exact: true }).click();
   expect(await page.getByRole("dialog").evaluate((dialog) => dialog.scrollWidth <= dialog.clientWidth)).toBe(true);
-  await page.getByRole("button", { name: "Decrease text size", exact: true }).click();
+  await page.getByRole("button", { name: "Smaller text", exact: true }).click();
   expect(await page.locator("html").evaluate((root) => getComputedStyle(root).fontSize)).toBe("28px");
-  await page.getByRole("button", { name: "Reset text size", exact: true }).click();
+  await page.getByRole("button", { name: "Default text size", exact: true }).click();
   await expect(page.locator("html")).toHaveAttribute("data-high-contrast", "true");
-  await page.getByRole("button", { name: "Reset all accessibility preferences", exact: true }).click();
+  await page.getByRole("button", { name: "Reset all settings", exact: true }).click();
   await expect(page.locator("html")).toHaveAttribute("data-high-contrast", "false");
   expect(await page.locator("html").evaluate((root) => getComputedStyle(root).fontSize)).toBe("16px");
 });

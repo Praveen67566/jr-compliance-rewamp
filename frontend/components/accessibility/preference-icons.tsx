@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-type PreferenceIconName = "accessibility" | "shield" | "contrast" | "motion" | "reset" | "close" | "check" | "lock" | "pause" | "play";
+export type PreferenceIconName = "accessibility" | "shield" | "contrast" | "motion" | "reset" | "close" | "check" | "lock" | "pause" | "play" | "seizure" | "blind" | "attention" | "reading" | "hand" | "zoom";
 
 export function PreferenceIcon({ name, className = "size-5" }: { name: PreferenceIconName; className?: string }) {
   const paths: Record<PreferenceIconName, ReactNode> = {
@@ -14,6 +14,12 @@ export function PreferenceIcon({ name, className = "size-5" }: { name: Preferenc
     lock: <><rect x="5" y="10" width="14" height="11" rx="3" /><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2" /></>,
     pause: <path d="M8 5v14M16 5v14" />,
     play: <path d="m8 5 11 7-11 7V5Z" />,
+    seizure: <path d="m13 2-9 12h7l-1 8 10-13h-7l1-7Z" />,
+    blind: <><path d="m3 3 18 18M10.6 10.6a2 2 0 0 0 2.8 2.8M9.5 5.3A12 12 0 0 1 12 5c6 0 10 7 10 7a19 19 0 0 1-4 4.5M6.5 6.5A22 22 0 0 0 2 12s4 7 10 7a12 12 0 0 0 4-.7" /></>,
+    attention: <><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="5" /><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none" /></>,
+    reading: <><rect x="5" y="3" width="14" height="18" rx="2" /><path d="M9 7h6M9 11h6M9 15h4" /></>,
+    hand: <path d="M8 12V6a1.5 1.5 0 0 1 3 0v5-7a1.5 1.5 0 0 1 3 0v7-5a1.5 1.5 0 0 1 3 0v6-3a1.5 1.5 0 0 1 3 0v6c0 5-3 7-6 7h-1c-2 0-4-1-5-3l-4-5a1.5 1.5 0 0 1 2-2l2 2Z" />,
+    zoom: <><circle cx="10.5" cy="10.5" r="7.5" /><path d="m16 16 5 5M7 10.5h7m-3.5-3.5v7" /></>,
   };
   return <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">{paths[name]}</svg>;
 }
